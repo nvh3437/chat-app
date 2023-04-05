@@ -22,10 +22,14 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label class="form-label">
-                                        Ảnh đại diện <span class="text-danger">*</span>
+                                        Ảnh đại diện
                                     </label>
                                     <input accept="image/*" type="file" class="form-control" name="img">
-                                    <img class="img-fluid mt-2" src="{{ asset($partern->img) }}" style="max-width: 200px;"/>
+                                    @if($partern->img == '')
+                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="max-width: 200px;"/>
+                                    @else
+                                        <img class="img-fluid mt-2" src="{{ asset($partern->img) }}" style="max-width: 200px;"/>
+                                    @endif
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -87,7 +91,7 @@
                                     <label class="form-label mt-2">
                                         Mật khẩu <span class="text-danger">*</span>
                                     </label>
-                                    <input type="password" class="form-control" name="password" required>
+                                    <input type="password" class="form-control" name="password">
                                 </div>
                             </div>
                         </div>

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('avn_parterns', function (Blueprint $table) {
             $table->id();
-            $table->text('img');
+            $table->text('img')->nullable();
             $table->string('name');
             $table->string('exp');
             $table->smallInteger('gender');
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->smallInteger('address_status')->default(0);
             $table->smallInteger('description_status')->default(0);
             $table->smallInteger('money_status')->default(0);
+            $table->smallInteger('email_status')->default(0);
             $table->timestamps();
         });
     }

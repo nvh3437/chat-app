@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserRole;
 use App\Models\Role;
+use Modules\AvnUser\Entities\Customer;
 
 class User extends Authenticatable
 {
@@ -41,6 +42,11 @@ class User extends Authenticatable
     
     public function roles() {
       return $this->belongsToMany(Role::class, 'avn_user_roles', 'user_id', 'role_id');
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'id');
     }
 
 }

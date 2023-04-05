@@ -79,13 +79,13 @@
                                     <label class="form-label mt-2">
                                         Tên đăng nhập <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="username" required readonly value="{{$user->username}}">
+                                    <input type="text" class="form-control" name="username" readonly value="{{$user->username}}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Mật khẩu <span class="text-danger">*</span>
                                     </label>
-                                    <input type="password" class="form-control" name="password" required>
+                                    <input type="password" class="form-control" name="password">
                                 </div>
                             </div>
                         </div>

@@ -51,6 +51,7 @@ class CustomerController extends Controller
             $customer->address_status = 0;
             $customer->description_status = 0;
             $customer->money_status = 0;
+            $customer->email_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -96,6 +97,7 @@ class CustomerController extends Controller
             $customer->address_status = 0;
             $customer->description_status = 0;
             $customer->money_status = 0;
+            $customer->email_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($customer->img != null) {
                     File::delete($customer->img);

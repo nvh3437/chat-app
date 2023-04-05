@@ -21,9 +21,9 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label class="form-label">
-                                        Ảnh đại diện <span class="text-danger">*</span>
+                                        Ảnh đại diện
                                     </label>
-                                    <input accept="image/*" type="file" class="form-control" name="img" required>
+                                    <input accept="image/*" type="file" class="form-control" name="img">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
