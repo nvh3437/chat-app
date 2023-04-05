@@ -16,10 +16,12 @@ return new class extends Migration
             $table->smallInteger('gender');
             $table->text('address')->nullable();
             $table->text('description')->nullable();
+            $table->text('money')->nullable();
             $table->smallInteger('gender_status')->default(0);
             $table->smallInteger('exp_status')->default(0);
             $table->smallInteger('address_status')->default(0);
             $table->smallInteger('description_status')->default(0);
+            $table->smallInteger('money_status')->default(0);
             $table->timestamps();
         });
     }

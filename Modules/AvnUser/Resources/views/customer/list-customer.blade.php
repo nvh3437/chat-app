@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    Quản lý chuyên gia
+    Quản lý khách hàng
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -8,14 +8,14 @@
             <div class="col-12">
                 <div class="page-title-box">
                     <div class="page-title-right d-none d-sm-block">
-                        <a href="{{ route('add-partern') }}" class="btn btn-danger">
-                            <i class="mdi mdi-plus-circle me-1"></i>Thêm chuyên gia
+                        <a href="{{ route('add-customer') }}" class="btn btn-danger">
+                            <i class="mdi mdi-plus-circle me-1"></i>Thêm khách hàng
                         </a>
                     </div>
-                    <h4 class="page-title">Danh sách chuyên gia</h4>
+                    <h4 class="page-title">Danh sách khách hàng</h4>
                     <div class="d-sm-none mb-2">
-                        <a href="{{ route('add-partern') }}" class="btn btn-danger">
-                            <i class="mdi mdi-plus-circle me-1"></i>Thêm chuyên gia
+                        <a href="{{ route('add-customer') }}" class="btn btn-danger">
+                            <i class="mdi mdi-plus-circle me-1"></i>Thêm khách hàng
                         </a>
                     </div>
                 </div>
@@ -31,7 +31,6 @@
                                     <th>STT</th>
                                     <th>Tên</th>
                                     <th>Ảnh</th>
-                                    <th>Năm kinh nghiệm</th>
                                     <th>Chọn</th>
                                 </tr>
                             </thead>
@@ -39,17 +38,21 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($parterns as $item)
+                                @foreach ($customers as $item)
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>
+                                            @if($item->img == '')
+                                            <img src="{{ asset('/resources/assets/images/logo.png') }}"
+                                                class="rounded" style="width: 30px; height: 30px; object-fit: cover">
+                                            @else
                                             <img src="{{ asset($item->img) }}" alt=""
                                                 class="rounded" style="width: 30px; height: 30px; object-fit: cover">
+                                            @endif
                                         </td>
-                                        <td>{{ $item->exp }}</td>
                                         <td>
-                                            <a href="{{ route('edit-partern', $item->id) }}" class="action-icon">
+                                            <a href="{{ route('edit-customer', $item->id) }}" class="action-icon">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
                                             <a href="javascript: void(0);" data-bs-toggle="modal"
@@ -74,7 +77,7 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
                                                     </button>
-                                                    <form action="{{ route('delete-partern', [$item->id]) }}" method="POST">
+                                                    <form action="{{ route('delete-customer', [$item->id]) }}" method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn btn-primary">Xóa</button>
