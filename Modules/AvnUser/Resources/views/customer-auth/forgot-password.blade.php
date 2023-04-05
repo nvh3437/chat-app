@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Nhập lại mật khẩu</title>
+    <title>Quên mật khẩu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="{{ GeneralSettings::where('key', 'web_title')->first()->value ?? 'Quản trị doanh nghiệp' }}"
         name="description" />
@@ -51,21 +51,13 @@
                             </span>
                         </a>
                     </div>
-                    <h4 class="mt-5">Nhập lại mật khẩu</h4>
-                    <form method="POST" action="{{ route('password.update') }}">
+                    <h4 class="mt-5">Quên mật khẩu</h4>
+                    <p class="text-muted mb-4">Nhập email bạn đã đăng ký và chúng tôi sẽ gửi email cho các bạn để khôi phục mật khẩu</p>
+                    <form action="{{ route('password.email') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
                         <div class="mb-3">
-                            <label class="form-label">Email <span class="text-danger">*</span></label>
-                            <input class="form-control" type="email" name="email" required value="{{ $request->email }}">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Nhập mật khẩu mới <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" name="password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Nhập lại mật khẩu <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" name="password_confirmation" required>
+                            <label class="form-label">Nhập email</label>
+                            <input class="form-control" type="email" name="email" required>
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
@@ -109,4 +101,3 @@
         $.NotificationApp.send("Thất bại", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
     </script>
 @endif
-

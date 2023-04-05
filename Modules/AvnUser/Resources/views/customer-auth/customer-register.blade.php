@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Nhập lại mật khẩu</title>
+    <title>Đăng ký</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="{{ GeneralSettings::where('key', 'web_title')->first()->value ?? 'Quản trị doanh nghiệp' }}"
         name="description" />
@@ -51,25 +51,31 @@
                             </span>
                         </a>
                     </div>
-                    <h4 class="mt-5">Nhập lại mật khẩu</h4>
-                    <form method="POST" action="{{ route('password.update') }}">
+                    <h4 class="mt-5">Đăng ký</h4>
+                    <p class="text-muted mb-4">Bạn chưa có tài khoản, đăng ký ngay</p>
+                    <form action="{{ route('store-register') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
                         <div class="mb-3">
-                            <label class="form-label">Email <span class="text-danger">*</span></label>
-                            <input class="form-control" type="email" name="email" required value="{{ $request->email }}">
+                            <label class="form-label">Tên người dùng</label>
+                            <input class="form-control" type="text" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Nhập mật khẩu mới <span class="text-danger">*</span></label>
+                            <label class="form-label">@lang('auth.email_address')</label>
+                            <input class="form-control" type="text" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">@lang('auth.password')</label>
                             <input class="form-control" type="password" name="password" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Nhập lại mật khẩu <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" name="password_confirmation" required>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="remember">
+                                <label class="form-check-label" for="remember">@lang('auth.remember')</label>
+                            </div>
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
-                                Gửi
+                                Đăng ký
                             </button>
                         </div>
                         <footer class="footer footer-alt">
@@ -109,4 +115,3 @@
         $.NotificationApp.send("Thất bại", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
     </script>
 @endif
-

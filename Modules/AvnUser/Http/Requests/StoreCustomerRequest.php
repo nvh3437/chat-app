@@ -10,7 +10,6 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'gender' => 'required',
             'username' => 'required|unique:users',
             'email' => 'unique:users',
         ];
@@ -19,8 +18,7 @@ class StoreCustomerRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Tên chuyên gia không thể bỏ trống',
-            'gender.required' => 'Giới tính không thể bỏ trống',
+            'name.required' => 'Tên không thể bỏ trống',
             'username.required' => 'Tên đăng nhập không thể bỏ trống',
             'username.unique' => 'Đã có tên đăng nhập này',
             'email.unique' => 'Đã có email này',

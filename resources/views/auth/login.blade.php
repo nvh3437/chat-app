@@ -61,9 +61,9 @@
                                 value="{{ old('username') }}" placeholder="@lang('auth.enter_email_address')">
                         </div>
                         <div class="mb-3">
-                            {{-- <a class="text-muted float-end" href="#">
-                                    <small>Quên mật khẩu</small>
-                                </a> --}}
+                            <a class="text-muted float-end" href="{{ route('forgot-password') }}">
+                                <small>Quên mật khẩu</small>
+                            </a> 
                             <label class="form-label">@lang('auth.password')</label>
                             <input class="form-control" type="password" name="password" placeholder="@lang('auth.enter_password')">
                         </div>
@@ -78,6 +78,9 @@
                                 @lang('auth.login')
                             </button>
                         </div>
+                        <footer class="footer footer-alt">
+                            <p class="text-muted">Chưa có tài khoản? <a href="{{ route('customer-register') }}" class="text-muted ms-1"><b>Đăng ký ngay</b></a></p>
+                        </footer>
                     </form>
                 </div>
             </div>

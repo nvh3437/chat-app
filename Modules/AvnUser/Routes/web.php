@@ -1,5 +1,5 @@
 <?php
-
+use Modules\AvnUser\Http\Controllers\CustomerAuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,8 +11,8 @@
 |
 */
 
+//-------------------------- Quản lý ---------------------//
 Route::prefix('user')->group(function() {
-
     // Chuyên gia
     Route::get('/list-partern', 'ParternController@listPartern')->middleware(['auth', 'permission'])->name('list-partern');
     Route::get('/add-partern', 'ParternController@addPartern')->middleware(['auth', 'permission'])->name('add-partern');
@@ -29,3 +29,13 @@ Route::prefix('user')->group(function() {
     Route::put('/update-customer/{id}', 'CustomerController@updateCustomer')->middleware(['auth', 'permission'])->name('update-customer');
     Route::delete('/delete-customer/{id}', 'CustomerController@deleteCustomer')->middleware(['auth', 'permission'])->name('delete-customer');
 });
+
+//-------------------------- Khách hàng tự đăng ký, xem thông tin bản thân,... ---------------------//
+
+// Đăng ký, quên mật khẩu, đổi mật khẩu,....
+Route::get('/customer-register', [CustomerAuthController::class, 'customerRegister'])->name('customer-register');
+Route::post('/store-register', [CustomerAuthController::class, 'storeRegister'])->name('store-register');
+Route::get('/forgot-password', [CustomerAuthController::class, 'forgotPassword'])->name('forgot-password');
+
+    // Template reset password: resources\views\auth\reset-password.blade.php
+// Route::get('/reset-password/{token}', [CustomerAuthController::class, 'resetPassword'])->name('reset-password');
