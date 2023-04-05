@@ -1,29 +1,29 @@
 @extends('layouts.admin')
 @section('title')
-    Thêm chuyên gia
+    Thêm khách hàng
 @endsection
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Thêm chuyên gia</h4>
+                    <h4 class="page-title">Thêm khách hàng</h4>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('store-partern') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('store-customer') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Thông tin cơ bản</h4>
                             <div class="row">
-                                <div class="col-lg-12">
-                                    <label class="form-label">
-                                        Ảnh đại diện <span class="text-danger">*</span>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Ảnh đại diện
                                     </label>
-                                    <input accept="image/*" type="file" class="form-control" name="img" required>
+                                    <input accept="image/*" type="file" class="form-control" name="img">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -39,12 +39,6 @@
                                         <option value="0" class="form-control">Nam</option>
                                         <option value="1" class="form-control">Nữ</option>
                                     </select>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Năm kinh nghiệm <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" name="exp" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -89,7 +83,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
                             <button type="submit" class="btn btn-danger me-3">Thêm</button>
-                            <a href="{{ route('list-partern') }}" class="btn btn-secondary ms-3">Quay lại</a>
+                            <a href="{{ route('list-customer') }}" class="btn btn-secondary ms-3">Quay lại</a>
                         </div>
                     </div>
                 </form>

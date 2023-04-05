@@ -5,30 +5,29 @@ namespace Modules\AvnUser\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\AvnUser\Entities\Partern;
+use Modules\AvnUser\Entities\Customer;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Modules\AvnUser\Http\Requests\StoreParternRequest;
-use Modules\AvnUser\Http\Requests\UpdateParternRequest;
+use Modules\AvnUser\Http\Requests\StoreCustomerRequest;
+use Modules\AvnUser\Http\Requests\UpdateCustomerRequest;
 
-class ParternController extends Controller
+class CustomerController extends Controller
 {
-    // Quản lý
-    public function listPartern()
+    public function listCustomer()
     {
-        $parterns = Partern::get();
-        return view('avnuser::partern.list-partern', compact('parterns'));
+        $customers = Customer::get();
+        return view('avnuser::customer.list-customer', compact('customers'));
     }
 
-    public function addPartern()
+    public function addCustomer()
     {
-        return view('avnuser::partern.add-partern');
+        return view('avnuser::customer.add-customer');
     }
 
-    public function storePartern(StoreParternRequest $request)
+    public function storeCustomer(StoreCustomerRequest $request)
     {
         try {
             // Lưu bảng user 
@@ -36,24 +35,22 @@ class ParternController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->username = $request->username;
-            $user->type = 'partern';
+            $user->type = 'customer';
             $user->password = Hash::make($request->password);
             $user->save();
 
-            // Lưu bảng partern
-            $partern = new Partern();
-            $partern->id = $user->id;
-            $partern->name = $request->name;
-            $partern->exp = $request->exp;
-            $partern->gender = $request->gender;
-            $partern->address = $request->address;
-            $partern->description = $request->description;
-            $partern->money = 0;
-            $partern->gender_status = 0;
-            $partern->exp_status = 0;
-            $partern->address_status = 0;
-            $partern->description_status = 0;
-            $partern->money_status = 0;
+            // Lưu bảng customer
+            $customer = new Customer();
+            $customer->id = $user->id;
+            $customer->name = $request->name;
+            $customer->gender = $request->gender;
+            $customer->address = $request->address;
+            $customer->description = $request->description;
+            $customer->money = 0;
+            $customer->gender_status = 0;
+            $customer->address_status = 0;
+            $customer->description_status = 0;
+            $customer->money_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -62,23 +59,23 @@ class ParternController extends Controller
                 }
                 $image->storeAs('AvnUser', $filename);
                 $path = 'storage/app/AvnUser/' . $filename;
-                $partern->img = $path;
+                $customer->img = $path;
             }
-            $partern->save();
-            return redirect()->route('list-partern')->with('Success', 'Thêm thành công');
+            $customer->save();
+            return redirect()->route('list-customer')->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Thêm thất bại');
         }
     }
 
-    public function editPartern($id)
+    public function editCustomer($id)
     {
-        $partern = Partern::findOrFail($id);
+        $customer = Customer::findOrFail($id);
         $user = User::findOrFail($id);
-        return view('avnuser::partern.edit-partern', compact('partern', 'user'));
+        return view('avnuser::customer.edit-customer', compact('customer', 'user'));
     }
 
-    public function updatePartern(UpdateParternRequest $request, $id)
+    public function updateCustomer(UpdateCustomerRequest $request, $id)
     {
         try {
             // Lưu bảng user 
@@ -88,22 +85,20 @@ class ParternController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
 
-            // Lưu bảng partern
-            $partern = Partern::findOrFail($id);
-            $partern->name = $request->name;
-            $partern->exp = $request->exp;
-            $partern->gender = $request->gender;
-            $partern->address = $request->address;
-            $partern->description = $request->description;
-            $partern->money = 0;
-            $partern->gender_status = 0;
-            $partern->exp_status = 0;
-            $partern->address_status = 0;
-            $partern->description_status = 0;
-            $partern->money_status = 0;
+            // Lưu bảng customer
+            $customer = Customer::findOrFail($id);
+            $customer->name = $request->name;
+            $customer->gender = $request->gender;
+            $customer->address = $request->address;
+            $customer->description = $request->description;
+            $customer->money = 0;
+            $customer->gender_status = 0;
+            $customer->address_status = 0;
+            $customer->description_status = 0;
+            $customer->money_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
-                if ($partern->img != null) {
-                    File::delete($partern->img);
+                if ($customer->img != null) {
+                    File::delete($customer->img);
                 }
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -112,24 +107,24 @@ class ParternController extends Controller
                 }
                 $image->storeAs('AvnUser', $filename);
                 $path = 'storage/app/AvnUser/' . $filename;
-                $partern->img = $path;
+                $customer->img = $path;
             }
-            $partern->save();
-            return redirect()->route('list-partern')->with('Success', 'Cập nhật thành công');
+            $customer->save();
+            return redirect()->route('list-customer')->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
 
-    public function deletePartern($id)
+    public function deleteCustomer($id)
     {
         try{    
             $user = User::findOrFail($id)->delete();
-            $partern = Partern::findOrFail($id);
-            if ($partern->img != null) {
-                File::delete($partern->img);
+            $customer = Customer::findOrFail($id);
+            if ($customer->img != null) {
+                File::delete($customer->img);
             }
-            $partern->delete();
+            $customer->delete();
             return back()->with('Success', 'Xóa thành công');
         }
         catch(Exception $e){
