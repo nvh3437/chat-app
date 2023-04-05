@@ -48,9 +48,9 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Email
+                                        Email <span class="text-danger">*</span>
                                     </label>
-                                    <input type="email" class="form-control" name="email">
+                                    <input type="email" class="form-control" name="email" required>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
