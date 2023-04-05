@@ -1,0 +1,11 @@
+{
+    "name": "AvnService",
+    "alias": "avnservice",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AvnService\\Providers\\AvnServiceServiceProvider"
+    ],
+    "files": []
+}

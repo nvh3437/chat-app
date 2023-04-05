@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('avn_parterns', function (Blueprint $table) {
+            $table->id();
+            $table->text('img');
+            $table->string('name');
+            $table->string('exp');
+            $table->smallInteger('gender');
+            $table->text('address')->nullable();
+            $table->text('description')->nullable();
+            $table->text('money')->nullable();
+            $table->smallInteger('gender_status')->default(0);
+            $table->smallInteger('exp_status')->default(0);
+            $table->smallInteger('address_status')->default(0);
+            $table->smallInteger('description_status')->default(0);
+            $table->smallInteger('money_status')->default(0);
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('avn_parterns');
+    }
+};
