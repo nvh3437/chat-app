@@ -1,0 +1,14 @@
+table.dataTable>tbody>tr.child ul.dtr-details {
+
+  width: 100%;
+
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details .dtr-data{
+
+  white-space: initial !important;
+
+}
+.nav-user .account-user-avatar img, .table .table-user img{
+  object-fit: contain !important;
+}
