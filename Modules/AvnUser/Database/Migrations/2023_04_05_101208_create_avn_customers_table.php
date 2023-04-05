@@ -20,6 +20,7 @@ return new class extends Migration
             $table->smallInteger('address_status')->default(0);
             $table->smallInteger('description_status')->default(0);
             $table->smallInteger('money_status')->default(0);
+            $table->smallInteger('email_status')->default(0);
             $table->timestamps();
         });
     }

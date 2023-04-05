@@ -56,12 +56,16 @@
                     <form action="{{ route('store-register') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Tên người dùng</label>
+                            <label class="form-label">Tên người dùng <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">@lang('auth.email_address')</label>
+                            <label class="form-label">Tên tài khoản <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input class="form-control" type="email" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">@lang('auth.password')</label>

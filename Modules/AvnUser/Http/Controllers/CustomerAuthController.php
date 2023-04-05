@@ -53,4 +53,53 @@ class CustomerAuthController extends Controller
     {
         return view('avnuser::customer-auth.forgot-password');
     }
+    //---------------------  Thông tin cá nhân ------------------//
+
+    public function myProfile()
+    {
+        $user = Auth::user();
+        return view('avnuser::customer-auth.my-profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        try {
+            // Lưu bảng user 
+            $user = User::findOrFail($id);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            // Lưu bảng customer
+            $customer = Customer::findOrFail($id);
+            $customer->name = $request->name;
+            $customer->gender = $request->gender;
+            $customer->address = $request->address;
+            $customer->description = $request->description;
+            $customer->money = 0;
+            $customer->gender_status = $request->gender_status ?? 0;
+            $customer->address_status = $request->address_status ?? 0;
+            $customer->description_status = $request->description_status ?? 0;
+            $customer->email_status = $request->email_status ?? 0;
+            $customer->money_status = 0;
+            if ($request->hasFile('img') && $request->file('img')->isValid()) {
+                if ($customer->img != null) {
+                    File::delete($customer->img);
+                }
+                $image = $request->file('img');
+                $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnUser')) {
+                    File::makeDirectory('storage/app/AvnUser', 0777, true, true);
+                }
+                $image->storeAs('AvnUser', $filename);
+                $path = 'storage/app/AvnUser/' . $filename;
+                $customer->img = $path;
+            }
+            $customer->save();
+            return back()->with('Success', 'Cập nhật thành công');
+        } catch (Exception $e) {
+            return back()->with('Failed', 'Cập nhật thất bại');
+        }
+    }
 }

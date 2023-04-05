@@ -39,3 +39,7 @@ Route::get('/forgot-password', [CustomerAuthController::class, 'forgotPassword']
 
     // Template reset password: resources\views\auth\reset-password.blade.php
 // Route::get('/reset-password/{token}', [CustomerAuthController::class, 'resetPassword'])->name('reset-password');
+
+// Thông tin cá nhân
+Route::get('/my-profile', [CustomerAuthController::class, 'myProfile'])->name('my-profile');
+Route::put('/update-profile/{id}', [CustomerAuthController::class, 'updateProfile'])->name('update-profile');

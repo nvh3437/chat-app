@@ -54,6 +54,7 @@ class ParternController extends Controller
             $partern->address_status = 0;
             $partern->description_status = 0;
             $partern->money_status = 0;
+            $partern->email_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -101,6 +102,7 @@ class ParternController extends Controller
             $partern->address_status = 0;
             $partern->description_status = 0;
             $partern->money_status = 0;
+            $partern->email_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($partern->img != null) {
                     File::delete($partern->img);
