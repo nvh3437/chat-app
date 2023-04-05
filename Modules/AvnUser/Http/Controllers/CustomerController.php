@@ -12,28 +12,23 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Modules\AvnUser\Http\Requests\StoreCustomerRequest;
-use Modules\AvnUser\Http\Requests\UpdateCustomerRequest;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Registered;
 
 class CustomerController extends Controller
 {
-    public function listCustomer()
+    //------------------- Đăng ký, quên mật khẩu,... ----------------//
+    public function customerRegister()
     {
-        $customers = Customer::get();
-        return view('avnuser::customer.list-customer', compact('customers'));
+        return view('avnuser::customer.customer-register');
     }
 
-    public function addCustomer()
-    {
-        return view('avnuser::customer.add-customer');
-    }
-
-    public function storeCustomer(StoreCustomerRequest $request)
+    public function storeRegister(StoreCustomerRequest $request)
     {
         try {
             // Lưu bảng user 
             $user = new User();
             $user->name = $request->name;
-            $user->email = $request->email;
             $user->username = $request->username;
             $user->type = 'customer';
             $user->password = Hash::make($request->password);
@@ -43,47 +38,39 @@ class CustomerController extends Controller
             $customer = new Customer();
             $customer->id = $user->id;
             $customer->name = $request->name;
-            $customer->gender = $request->gender;
-            $customer->address = $request->address;
-            $customer->description = $request->description;
-            $customer->money = 0;
-            $customer->gender_status = 0;
-            $customer->address_status = 0;
-            $customer->description_status = 0;
-            $customer->money_status = 0;
-            $customer->email_status = 0;
-            if ($request->hasFile('img') && $request->file('img')->isValid()) {
-                $image = $request->file('img');
-                $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
-                if (!file_exists('storage/app/AvnUser')) {
-                    File::makeDirectory('storage/app/AvnUser', 0777, true, true);
-                }
-                $image->storeAs('AvnUser', $filename);
-                $path = 'storage/app/AvnUser/' . $filename;
-                $customer->img = $path;
-            }
+            $customer->gender = 0; // Mặc định là nam, sau sẽ tự sửa
+            $customer->money = 0; // Tiền nong để 0
             $customer->save();
-            return redirect()->route('list-customer')->with('Success', 'Thêm thành công');
+            event(new Registered($user));
+            Auth::login($user);
+            return redirect(RouteServiceProvider::HOME);
         } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
+            return back()->with('Failed', 'Đăng ký thất bại');
         }
     }
 
-    public function editCustomer($id)
+    public function forgotPassword()
     {
-        $customer = Customer::findOrFail($id);
-        $user = User::findOrFail($id);
-        return view('avnuser::customer.edit-customer', compact('customer', 'user'));
+        return view('avnuser::customer.forgot-password');
+    }
+    //---------------------  Thông tin cá nhân ------------------//
+
+    public function myProfile()
+    {
+        $user = Auth::user();
+        return view('avnuser::customer.my-profile', compact('user'));
     }
 
-    public function updateCustomer(UpdateCustomerRequest $request, $id)
+    public function updateCustomerProfile(Request $request, $id)
     {
         try {
             // Lưu bảng user 
             $user = User::findOrFail($id);
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = Hash::make($request->password);
+            if ($request->password != null && strlen($request->password) > 0) {
+                $user->password = Hash::make($request->password);
+            }
             $user->save();
 
             // Lưu bảng customer
@@ -93,11 +80,11 @@ class CustomerController extends Controller
             $customer->address = $request->address;
             $customer->description = $request->description;
             $customer->money = 0;
-            $customer->gender_status = 0;
-            $customer->address_status = 0;
-            $customer->description_status = 0;
+            $customer->gender_status = $request->gender_status ?? 0;
+            $customer->address_status = $request->address_status ?? 0;
+            $customer->description_status = $request->description_status ?? 0;
+            $customer->email_status = $request->email_status ?? 0;
             $customer->money_status = 0;
-            $customer->email_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($customer->img != null) {
                     File::delete($customer->img);
@@ -112,25 +99,9 @@ class CustomerController extends Controller
                 $customer->img = $path;
             }
             $customer->save();
-            return redirect()->route('list-customer')->with('Success', 'Cập nhật thành công');
+            return back()->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');
-        }
-    }
-
-    public function deleteCustomer($id)
-    {
-        try{    
-            $user = User::findOrFail($id)->delete();
-            $customer = Customer::findOrFail($id);
-            if ($customer->img != null) {
-                File::delete($customer->img);
-            }
-            $customer->delete();
-            return back()->with('Success', 'Xóa thành công');
-        }
-        catch(Exception $e){
-            return back()->with('Failed', 'Xóa thất bại');
         }
     }
 }

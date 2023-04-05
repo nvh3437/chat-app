@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserRole;
 use App\Models\Role;
 use Modules\AvnUser\Entities\Customer;
+use Modules\AvnUser\Entities\Partern;
 
 class User extends Authenticatable
 {
@@ -49,4 +50,8 @@ class User extends Authenticatable
         return $this->hasOne(Customer::class, 'id', 'id');
     }
 
+    public function partern()
+    {
+        return $this->hasOne(Partern::class, 'id', 'id');
+    }
 }

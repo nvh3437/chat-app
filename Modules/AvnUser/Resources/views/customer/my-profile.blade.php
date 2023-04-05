@@ -15,7 +15,11 @@
             <div class="col-xl-4 col-lg-5">
                 <div class="card text-center">
                     <div class="card-body">
-                        <img src="{{ asset('/resources/assets/images/logo.png') }}" class="rounded-circle avatar-lg img-thumbnail">
+                        @if($user->customer->img == '')
+                            <img src="{{ asset('/resources/assets/images/logo.png') }}" class="rounded-circle avatar-lg img-thumbnail">
+                        @else
+                            <img src="{{ asset($user->customer->img) }}" class="rounded-circle avatar-lg img-thumbnail">
+                        @endif
                         <h4 class="mb-0 mt-2">{{$user->name}}</h4>
                         <div class="text-start mt-3">
                             <h4 class="font-13 text-uppercase">Về tôi :</h4>
@@ -27,7 +31,12 @@
                             </p>
                             <p class="text-muted mb-2 font-13"><strong>Họ tên :</strong> <span class="ms-2">{{$user->name}}</span></p>
 
-                            <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span class="ms-2 ">{{$user->email}}</span></p>
+                            <p class="text-muted mb-2 font-13"><strong>Email :</strong> 
+                                <span class="ms-2 ">{{$user->email}}</span>
+                                @if($user->customer->email_status == '1')
+                                    <span class="badge bg-danger">Ẩn</span>
+                                @endif
+                            </p>
 
                             <p class="text-muted mb-1 font-13"><strong>Địa chỉ :</strong> 
                                 <span class="ms-2">{{$user->customer->address}}</span>
@@ -51,7 +60,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane show active" id="settings">
-                                <form action="{{ route('update-profile', $user->id) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('update-customer-profile', $user->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                     <h5 class="mb-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin cá nhân</h5>
@@ -115,12 +124,16 @@
                                             <div class="mb-2">
                                                 <label class="form-label">Email</label>
                                                 <input type="email" class="form-control" name="email" value="{{$user->email}}">
+                                                <div class="form-check mt-2">
+                                                    <input type="checkbox" name="email_status" value="1" class="form-check-input" {{ $user->customer->email_status == 1 ? 'checked' : '' }}>
+                                                    <label class="form-check-label">Ẩn email</label>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-2">
                                                 <label class="form-label">Mật khẩu</label>
-                                                <input type="password" class="form-control" name="password" value="{{$user->password}}">
+                                                <input type="password" class="form-control" name="password">
                                             </div>
                                         </div>
                                     </div> 
