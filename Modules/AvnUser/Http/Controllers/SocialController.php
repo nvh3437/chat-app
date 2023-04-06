@@ -18,14 +18,14 @@ class SocialController extends Controller
 
     public function handleProviderCallback(SocialUserService $service, $social)
     {
-        try {
+        // try {
             $user = $service->createOrGetUser(Socialite::driver($social));
             Auth::login($user);
 
             return redirect()->to('/');
-        } catch (\Throwable $th) {
-            //throw $th;
-            return redirect()->route('login')->with('Failed', 'Đăng nhập thất bại');
-        }
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        //     return redirect()->route('login')->with('Failed', 'Đăng nhập thất bại');
+        // }
     }
 }
