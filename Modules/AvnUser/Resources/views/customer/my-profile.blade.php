@@ -22,13 +22,6 @@
                         @endif
                         <h4 class="mb-0 mt-2">{{$user->name}}</h4>
                         <div class="text-start mt-3">
-                            <h4 class="font-13 text-uppercase">Về tôi :</h4>
-                            <p class="text-muted font-13 mb-3">
-                                {{$user->customer->description}}
-                                @if($user->customer->description_status == '1')
-                                    <span class="badge bg-danger">Ẩn</span>
-                                @endif
-                            </p>
                             <p class="text-muted mb-2 font-13"><strong>Họ tên :</strong> <span class="ms-2">{{$user->name}}</span></p>
 
                             <p class="text-muted mb-2 font-13"><strong>Email :</strong> 
@@ -38,9 +31,16 @@
                                 @endif
                             </p>
 
-                            <p class="text-muted mb-1 font-13"><strong>Địa chỉ :</strong> 
+                            <p class="text-muted mb-2 font-13"><strong>Địa chỉ :</strong> 
                                 <span class="ms-2">{{$user->customer->address}}</span>
                                 @if($user->customer->address_status == '1')
+                                    <span class="badge bg-danger">Ẩn</span>
+                                @endif
+                            </p>
+                            <h4 class="font-13 text-uppercase">Tiểu sử :</h4>
+                            <p class="text-muted font-13 mb-3">
+                                {{$user->customer->description}}
+                                @if($user->customer->description_status == '1')
                                     <span class="badge bg-danger">Ẩn</span>
                                 @endif
                             </p>
