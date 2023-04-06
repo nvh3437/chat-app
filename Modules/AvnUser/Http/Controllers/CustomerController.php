@@ -80,11 +80,15 @@ class CustomerController extends Controller
             $customer->gender = $request->gender;
             $customer->address = $request->address;
             $customer->description = $request->description;
+            $customer->birth = $request->birth;
+            $customer->phone = $request->phone;
             $customer->money = 0;
             $customer->gender_status = $request->gender_status ?? 0;
             $customer->address_status = $request->address_status ?? 0;
             $customer->description_status = $request->description_status ?? 0;
             $customer->email_status = $request->email_status ?? 0;
+            $customer->birth_status = $request->birth_status ?? 0;
+            $customer->phone_status = $request->phone_status ?? 0;
             $customer->money_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($customer->img != null) {

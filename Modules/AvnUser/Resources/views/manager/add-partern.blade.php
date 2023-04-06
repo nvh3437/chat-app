@@ -52,6 +52,18 @@
                                     </label>
                                     <input type="email" class="form-control" name="email" required>
                                 </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Số điện thoại
+                                    </label>
+                                    <input type="number" class="form-control" name="phone">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Ngày sinh
+                                    </label>
+                                    <input type="date" class="form-control" name="birth">
+                                </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Địa chỉ 
