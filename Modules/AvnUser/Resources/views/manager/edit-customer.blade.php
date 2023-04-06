@@ -78,7 +78,7 @@
                                     <label class="form-label mt-2">
                                         Thông tin bổ sung
                                     </label>
-                                    <textarea class="form-control" name="description" rows="5" placeholder="Số điện thoại, facebook,...">{!! $customer->description !!}</textarea>
+                                    <textarea class="form-control" name="description" rows="5">{!! $customer->description !!}</textarea>
                                 </div>
                             </div>
                         </div>

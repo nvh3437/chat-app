@@ -81,7 +81,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane show active" id="settings">
-                                <form action="{{ route('update-customer-profile', $user->id) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('update-customer-profile') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                     <h5 class="mb-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin cá nhân</h5>

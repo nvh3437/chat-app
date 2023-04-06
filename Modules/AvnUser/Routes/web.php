@@ -48,8 +48,8 @@ Route::get('login/{social}/callback', [SocialController::class, 'handleProviderC
 
 // Thông tin cá nhân
 Route::get('/my-profile', [CustomerController::class, 'myProfile'])->middleware(['auth'])->name('my-profile');
-Route::put('/update-customer-profile/{id}', [CustomerController::class, 'updateCustomerProfile'])->middleware(['auth'])->name('update-customer-profile');
+Route::put('/update-customer-profile', [CustomerController::class, 'updateCustomerProfile'])->middleware(['auth'])->name('update-customer-profile');
 
 //-------------------------- Chuyên gia xem thông tin bản thân,... ---------------------//
 Route::get('/profile', [ParternController::class, 'profile'])->middleware(['auth'])->name('profile');
-Route::put('/update-partern-profile/{id}', [ParternController::class, 'updateParternProfile'])->middleware(['auth'])->name('update-partern-profile');
+Route::put('/update-partern-profile', [ParternController::class, 'updateParternProfile'])->middleware(['auth'])->name('update-partern-profile');

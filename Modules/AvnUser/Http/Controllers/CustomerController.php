@@ -62,11 +62,11 @@ class CustomerController extends Controller
         return view('avnuser::customer.my-profile', compact('user'));
     }
 
-    public function updateCustomerProfile(Request $request, $id)
+    public function updateCustomerProfile(Request $request)
     {
         try {
             // Lưu bảng user 
-            $user = User::findOrFail($id);
+            $user = Auth::user();
             $user->name = $request->name;
             $user->email = $request->email;
             if ($request->password != null && strlen($request->password) > 0) {
@@ -75,7 +75,7 @@ class CustomerController extends Controller
             $user->save();
 
             // Lưu bảng customer
-            $customer = Customer::findOrFail($id);
+            $customer = Customer::find($user->id);
             $customer->name = $request->name;
             $customer->gender = $request->gender;
             $customer->address = $request->address;

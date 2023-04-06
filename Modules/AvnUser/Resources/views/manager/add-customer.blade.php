@@ -68,7 +68,7 @@
                                     <label class="form-label mt-2">
                                         Thông tin bổ sung
                                     </label>
-                                    <textarea class="form-control" name="description" rows="5" placeholder="Số điện thoại, facebook,..."></textarea>
+                                    <textarea class="form-control" name="description" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>

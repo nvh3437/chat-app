@@ -20,11 +20,11 @@ class ParternController extends Controller
         return view('avnuser::partern.profile', compact('user'));
     }
 
-    public function updateParternProfile(Request $request, $id)
+    public function updateParternProfile(Request $request)
     {
         try {
             // Lưu bảng user 
-            $user = User::findOrFail($id);
+            $user = Auth::user();
             $user->name = $request->name;
             $user->email = $request->email;
             if ($request->password != null && strlen($request->password) > 0) {
@@ -33,7 +33,7 @@ class ParternController extends Controller
             $user->save();
 
             // Lưu bảng partern
-            $partern = Partern::findOrFail($id);
+            $partern = Partern::find($user->id);
             $partern->name = $request->name;
             $partern->exp = $request->exp;
             $partern->gender = $request->gender;
