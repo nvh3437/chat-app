@@ -3,27 +3,27 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\SocialAccount;
+use Modules\AvnUser\Entities\SocialUser;
 use Laravel\Socialite\Contracts\Provider;
 use App\Http\Controllers\Helper;
 use Modules\AvnUser\Entities\Customer;
 use Illuminate\Support\Facades\Hash;
 
-class SocialAccountService
+class SocialUserService
 {
     public function createOrGetUser(Provider $provider)
     {
         $providerUser = $provider->user();
         $providerName = class_basename($provider);
 
-        $account = SocialAccount::whereProvider($providerName)
+        $account = SocialUser::whereProvider($providerName)
             ->whereProviderUserId($providerUser->getId())
             ->first();
 
         if ($account) {
             return $account->user;
         } else {
-            $account = new SocialAccount([
+            $account = new SocialUser([
                 'provider_user_id' => $providerUser->getId(),
                 'provider' => $providerName
             ]);
