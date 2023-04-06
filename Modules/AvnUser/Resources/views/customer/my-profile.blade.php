@@ -1,17 +1,10 @@
-@extends('layouts.admin')
+@extends('layouts.guest')
 @section('title')
     Thông tin cá nhân
 @endsection
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box">
-                    <h4 class="page-title">Thông tin cá nhân</h4>
-                </div>
-            </div>
-        </div>
-        <div class="row">
+    <div class="container">
+        <div class="row mt-2">
             <div class="col-xl-4 col-lg-5">
                 <div class="card text-center">
                     <div class="card-body">
@@ -86,7 +79,7 @@
                                 @method('PUT')
                                     <h5 class="mb-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin cá nhân</h5>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="mb-2">
                                                 <label class="form-label">Ảnh đại diện</label>
                                                 <input type="file" accept="image/*" class="form-control" name="img">
@@ -94,7 +87,13 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-2">
-                                                <label class="form-label">Tên <span class="text-danger">*</span></label>
+                                                <label class="form-label">Tài khoản</label>
+                                                <input type="text" class="form-control" name="username" readonly value="{{$user->username}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label class="form-label">Tên người dùng<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="name" required value="{{$user->name}}">
                                             </div>
                                         </div>

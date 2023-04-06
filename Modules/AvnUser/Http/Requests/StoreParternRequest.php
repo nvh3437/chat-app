@@ -13,7 +13,7 @@ class StoreParternRequest extends FormRequest
             'exp' => 'required',
             'gender' => 'required',
             'username' => 'required|unique:users',
-            'email' => 'nullable|unique:users',
+            'email' => 'unique:users',
         ];
     }
 

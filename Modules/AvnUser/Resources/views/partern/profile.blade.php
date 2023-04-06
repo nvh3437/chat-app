@@ -89,7 +89,7 @@
                                 @method('PUT')
                                     <h5 class="mb-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin cá nhân</h5>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="mb-2">
                                                 <label class="form-label">Ảnh đại diện</label>
                                                 <input type="file" accept="image/*" class="form-control" name="img">
@@ -97,8 +97,14 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-2">
-                                                <label class="form-label">Tên <span class="text-danger">*</span></label>
+                                                <label class="form-label">Tên người dùng <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="name" required value="{{$user->name}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label class="form-label">Tài khoản</label>
+                                                <input type="text" class="form-control" name="username" readonly value="{{$user->username}}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
