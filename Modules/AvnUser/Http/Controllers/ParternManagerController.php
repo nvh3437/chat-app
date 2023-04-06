@@ -47,6 +47,8 @@ class ParternManagerController extends Controller
             $partern->gender = $request->gender;
             $partern->address = $request->address;
             $partern->description = $request->description;
+            $partern->birth = $request->birth;
+            $partern->phone = $request->phone;
             $partern->money = 0;
             $partern->gender_status = 0;
             $partern->exp_status = 0;
@@ -54,6 +56,8 @@ class ParternManagerController extends Controller
             $partern->description_status = 0;
             $partern->money_status = 0;
             $partern->email_status = 0;
+            $partern->birth_status = 0;
+            $partern->phone_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -97,6 +101,8 @@ class ParternManagerController extends Controller
             $partern->gender = $request->gender;
             $partern->address = $request->address;
             $partern->description = $request->description;
+            $partern->birth = $request->birth;
+            $partern->phone = $request->phone;
             $partern->money = 0;
             $partern->gender_status = 0;
             $partern->exp_status = 0;
@@ -104,6 +110,8 @@ class ParternManagerController extends Controller
             $partern->description_status = 0;
             $partern->money_status = 0;
             $partern->email_status = 0;
+            $partern->birth_status = 0;
+            $partern->phone_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($partern->img != null) {
                     File::delete($partern->img);

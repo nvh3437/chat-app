@@ -24,26 +24,47 @@
                         <div class="text-start mt-3">
                             <p class="text-muted mb-2 font-13"><strong>Họ tên :</strong> <span class="ms-2">{{$user->name}}</span></p>
 
-                            <p class="text-muted mb-2 font-13"><strong>Email :</strong> 
-                                <span class="ms-2 ">{{$user->email}}</span>
-                                @if($user->customer->email_status == '1')
-                                    <span class="badge bg-danger">Ẩn</span>
-                                @endif
+                            <p class="text-muted mb-2 font-13">
+                                <strong>Ngày sinh :
+                                    @if($user->customer->birth_status == '1')
+                                        <span class="badge bg-danger">Ẩn</span>
+                                    @endif
+                                </strong> 
+                                <span class="ms-1">{{ date('d/m/Y', strtotime($user->customer->birth)) }}</span>
                             </p>
 
-                            <p class="text-muted mb-2 font-13"><strong>Địa chỉ :</strong> 
-                                <span class="ms-2">{{$user->customer->address}}</span>
-                                @if($user->customer->address_status == '1')
-                                    <span class="badge bg-danger">Ẩn</span>
-                                @endif
+                            <p class="text-muted mb-2 font-13">
+                                <strong>Số điện thoại :
+                                    @if($user->customer->phone_status == '1')
+                                        <span class="badge bg-danger">Ẩn</span>
+                                    @endif
+                                </strong> 
+                                <span class="ms-1">{{ $user->customer->phone }}</span>
                             </p>
-                            <h4 class="font-13 text-uppercase">Tiểu sử :</h4>
-                            <p class="text-muted font-13 mb-3">
-                                {{$user->customer->description}}
+
+                            <p class="text-muted mb-2 font-13">
+                                <strong>Email :
+                                    @if($user->customer->email_status == '1')
+                                        <span class="badge bg-danger">Ẩn</span>
+                                    @endif
+                                </strong> 
+                                <span class="ms-1">{{$user->email}}</span>
+                            </p>
+
+                            <p class="text-muted mb-2 font-13">
+                                <strong>Địa chỉ :
+                                    @if($user->customer->address_status == '1')
+                                        <span class="badge bg-danger">Ẩn</span> 
+                                    @endif
+                                </strong> 
+                                <span class="ms-1">{{$user->customer->address}}</span>
+                            </p>
+                            <h4 class="font-13 text-uppercase">Tiểu sử :
                                 @if($user->customer->description_status == '1')
                                     <span class="badge bg-danger">Ẩn</span>
                                 @endif
-                            </p>
+                            </h4>
+                            <textarea class="text-muted font-13 mb-1 bg-white p-0" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $user->customer->description !!}</textarea>
                         </div>
                     </div> 
                 </div>
@@ -79,6 +100,24 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-2">
+                                                <label class="form-label">Mật khẩu</label>
+                                                <input type="password" class="form-control" name="password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label class="form-label">Email <span class="text-danger">*</span></label>
+                                                <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
+                                                <div class="form-check mt-2">
+                                                    <input type="checkbox" name="email_status" value="1" class="form-check-input" {{ $user->customer->email_status == 1 ? 'checked' : '' }}>
+                                                    <label class="form-check-label">Ẩn email</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
                                                 <label class="form-label">Giới tính <span class="text-danger">*</span></label>
                                                 <select class="form-select" name="gender">
                                                     <option value="0" class="form-control"
@@ -95,6 +134,28 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label class="form-label">Ngày sinh</label>
+                                                <input type="date" class="form-control" name="birth" value="{{$user->customer->birth}}">
+                                                <div class="form-check mt-2">
+                                                    <input type="checkbox" name="birth_status" value="1" class="form-check-input" {{ $user->customer->birth_status == 1 ? 'checked' : '' }}>
+                                                    <label class="form-check-label">Ẩn ngày sinh</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-2">
+                                                <label class="form-label">Số điện thoại</label>
+                                                <input type="number" class="form-control" name="phone" value="{{$user->customer->phone}}">
+                                                <div class="form-check mt-2">
+                                                    <input type="checkbox" name="phone_status" value="1" class="form-check-input" {{ $user->customer->phone_status == 1 ? 'checked' : '' }}>
+                                                    <label class="form-check-label">Ẩn SĐT</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mb-2">
@@ -119,24 +180,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Email</label>
-                                                <input type="email" class="form-control" name="email" value="{{$user->email}}">
-                                                <div class="form-check mt-2">
-                                                    <input type="checkbox" name="email_status" value="1" class="form-check-input" {{ $user->customer->email_status == 1 ? 'checked' : '' }}>
-                                                    <label class="form-check-label">Ẩn email</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Mật khẩu</label>
-                                                <input type="password" class="form-control" name="password">
-                                            </div>
-                                        </div>
-                                    </div> 
                                     <div class="text-end">
                                         <button type="submit" class="btn btn-success mt-2"><i class="mdi mdi-content-save"></i> Lưu</button>
                                     </div>
@@ -159,6 +202,12 @@
     <!-- Datatable Init js -->
     <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript">
+        function setHeight(fieldId){
+            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
+        }
+        setHeight('textBox1');
+    </script>
 @endsection
 @section('css')
     <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
