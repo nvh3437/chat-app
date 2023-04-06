@@ -1,6 +1,7 @@
 <?php
 use Modules\AvnUser\Http\Controllers\CustomerController;
 use Modules\AvnUser\Http\Controllers\ParternController;
+use Modules\AvnUser\Http\Controllers\SocialController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +38,10 @@ Route::prefix('user')->group(function() {
 Route::get('/customer-register', [CustomerController::class, 'customerRegister'])->name('customer-register');
 Route::post('/store-register', [CustomerController::class, 'storeRegister'])->name('store-register');
 Route::get('/forgot-password', [CustomerController::class, 'forgotPassword'])->name('forgot-password');
+
+// Đăng nhập với fb, gg
+Route::get('login/{social}', [SocialController::class, 'redirectToProvider'])->name('login-social');
+Route::get('login/{social}/callback', [SocialController::class, 'handleProviderCallback'])->name('login-social-callback');
 
     // Template reset password: resources\views\auth\reset-password.blade.php
 // Route::get('/reset-password/{token}', [CustomerController::class, 'resetPassword'])->name('reset-password');
