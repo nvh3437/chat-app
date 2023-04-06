@@ -63,10 +63,14 @@
                         <div class="mb-3">
                             <a class="text-muted float-end" href="{{ route('forgot-password') }}">
                                 <small>Quên mật khẩu</small>
-                            </a> 
-                            <label class="form-label">@lang('auth.password')</label>
-                            <i class="mdi mdi-eye" onclick="myFunction()"></i>
-                            <input class="form-control" type="password" name="password" id="myInput" placeholder="@lang('auth.enter_password')">
+                            </a>
+                            <label class="form-label">Mật khẩu</label> 
+                            <div class="input-group input-group-merge">
+                                <input type="password" name="password" class="form-control">
+                                <div class="input-group-text" data-password="false">
+                                    <span class="password-eye"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
@@ -110,16 +114,6 @@
 <!-- bundle -->
 <script src="{{ asset('resources/assets/js/vendor.min.js') }}"></script>
 <script src="{{ asset('resources/assets/js/app.min.js') }}"></script>
-<script type="text/javascript">
-    function myFunction() {
-        var x = document.getElementById("myInput");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
-    }
-</script>
 <!--- Thông báo ---------->
 @if (session()->has('Success'))
     <script>

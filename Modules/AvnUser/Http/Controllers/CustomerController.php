@@ -30,6 +30,7 @@ class CustomerController extends Controller
             $user = new User();
             $user->name = $request->name;
             $user->username = $request->username;
+            $user->email = $request->email;
             $user->type = 'customer';
             $user->password = Hash::make($request->password);
             $user->save();

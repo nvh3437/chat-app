@@ -69,7 +69,12 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">@lang('auth.password')</label>
-                            <input class="form-control" type="password" name="password" required>
+                            <div class="input-group input-group-merge">
+                                <input type="password" name="password" class="form-control" required>
+                                <div class="input-group-text" data-password="false">
+                                    <span class="password-eye"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
@@ -81,6 +86,17 @@
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
                                 Đăng ký
                             </button>
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-muted font-16">Đăng nhập với</p>
+                            <ul class="social-list list-inline mt-3">
+                                <li class="list-inline-item">
+                                    <a href="{{ route('login-social', ['social' => 'facebook']) }}" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{{ route('login-social', ['social' => 'google']) }}" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
+                                </li>
+                            </ul>
                         </div>
                         <footer class="footer footer-alt">
                             <p class="text-muted">Đã có tài khoản? <a href="{{ route('login') }}" class="text-muted ms-1"><b>Đăng nhập</b></a></p>
