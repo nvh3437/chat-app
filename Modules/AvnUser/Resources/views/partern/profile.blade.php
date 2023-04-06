@@ -1,17 +1,10 @@
-@extends('layouts.admin')
+@extends('layouts.guest')
 @section('title')
     Thông tin cá nhân
 @endsection
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box">
-                    <h4 class="page-title">Thông tin cá nhân</h4>
-                </div>
-            </div>
-        </div>
-        <div class="row">
+    <div class="container">
+        <div class="row mt-2">
             <div class="col-xl-4 col-lg-5">
                 <div class="card text-center">
                     <div class="card-body">
@@ -91,7 +84,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane show active" id="settings">
-                                <form action="{{ route('update-partern-profile', $user->id) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('update-partern-profile') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                     <h5 class="mb-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin cá nhân</h5>
