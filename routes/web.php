@@ -20,17 +20,21 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('dashboard-week');
+    return redirect()->route('dashboard');
 })->name('home-page');
 
 Route::get('/dashboard', function () {
-    return redirect()->route('dashboard-week');
+    return redirect()->route('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/forbidden', function () {
     return view('forbidden');
 })->name('forbidden');
-Route::get('/dashboard-week', [DashboardController::class, 'dbWeek'])->middleware(['auth', 'verified'])->name('dashboard-week');
+
+// Dashboard
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard-manager', [DashboardController::class, 'dbManager'])->middleware(['auth', 'verified'])->name('dashboard-manager');
+
 // setting
 Route::get('/general-settings', [GeneralSettingsController::class, 'index'])->middleware(['auth', 'verified'])->name('general-settings');
 

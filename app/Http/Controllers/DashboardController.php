@@ -8,7 +8,11 @@ use Illuminate\Routing\Controller;
 
 class DashboardController extends Controller
 {
-    public function dbWeek(){
-        return view('dashboard.dashboard-week');
+    public function dashboard(){
+        return view('dashboard.dashboard');
+    }
+
+    public function dbManager(){
+        return view('dashboard.dashboard-manager');
     }
 }

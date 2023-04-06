@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -24,6 +25,9 @@ class AuthenticatedSessionController extends Controller
         try{
             $request->authenticate();
             $request->session()->regenerate();
+            $user = Auth::user();
+            if($user->type == 'system')
+                return redirect()->route('dashboard-manager');
             return redirect()->intended(RouteServiceProvider::HOME);
         }
         catch(Exception $e){
