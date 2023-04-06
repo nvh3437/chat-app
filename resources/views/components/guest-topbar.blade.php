@@ -10,35 +10,20 @@
         </a>
         <ul class="list-unstyled topbar-menu float-end mb-0">
             <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    @if($user->type == 'customer')
-                        <span class="account-user-avatar"> 
-                            @if($user == null || $user->customer->img == '' || $user->customer->img == null)
-                                <img src="{{ asset('resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
-                            @else
-                                <img src="{{ asset($user->customer->img) }}" alt="user-image" class="rounded-circle">
-                            @endif
-                        </span>
-                        <span>
-                            <span class="account-user-name">{{$user->name}}</span>
-                            <span class="account-user-name">{{ number_format($user->customer->money, 0, ',', '.') }} $</span>
-                        </span>
-                    @elseif($user->type == 'partern')
-                        <span class="account-user-avatar"> 
-                            @if($user == null || $user->partern->img == '' || $user->partern->img == null)
-                                <img src="{{ asset('resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
-                            @else
-                                <img src="{{ asset($user->partern->img) }}" alt="user-image" class="rounded-circle">
-                            @endif
-                        </span>
-                        <span>
-                            <span class="account-user-name">{{$user->name}}</span>
-                            <span class="account-user-name">{{ number_format($user->partern->money, 0, ',', '.') }} $</span>
-                        </span>
-                    @endif
+                <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
+                    aria-expanded="false">
+                    <span class="account-user-avatar"> 
+                        <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                    </span>
+                    <span>
+                        @php
+                            $user = App\Http\Controllers\Controller::getUser(); 
+                        @endphp
+                        <span class="account-user-name">{{$user->name}}</span>
+                        <span class="account-position">0 $</span>
+                    </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                    
                     <div class=" dropdown-header noti-title">
                         <h6 class="text-overflow m-0">Chào mừng !</h6>
                     </div>
