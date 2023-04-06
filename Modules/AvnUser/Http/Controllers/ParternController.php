@@ -26,7 +26,13 @@ class ParternController extends Controller
             // Lưu bảng user 
             $user = Auth::user();
             $user->name = $request->name;
-            $user->email = $request->email;
+            if ($user->email != $request->email && $request->email) {
+                $user_change_mail = User::where('email', $request->email)->first();
+                if ($user_change_mail) {
+                    return back()->with('Failed', 'Email đã tồn tại');
+                }
+                $user->email = $request->email;
+            }
             if ($request->password != null && strlen($request->password) > 0) {
                 $user->password = Hash::make($request->password);
             }
