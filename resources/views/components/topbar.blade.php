@@ -45,17 +45,11 @@
                 <div class=" dropdown-header noti-title">
                     <h6 class="text-overflow m-0">Chào mừng !</h6>
                 </div>
-                @if($user->type == 'partern')
-                    <a href="{{route('profile')}}" class="dropdown-item notify-item">
-                        <i class="mdi mdi-account-circle me-1"></i>
-                        <span>Thông tin cá nhân</span>
-                    </a>
-                @elseif($user->type == 'customer')
-                    <a href="{{route('my-profile')}}" class="dropdown-item notify-item">
-                        <i class="mdi mdi-account-circle me-1"></i>
-                        <span>Thông tin cá nhân</span>
-                    </a>
-                @endif
+                <!--- route info của quản lý -->
+                <a href="{{route('manager-profile')}}" class="dropdown-item notify-item">
+                    <i class="mdi mdi-account-circle me-1"></i>
+                    <span>Thông tin cá nhân</span>
+                </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="dropdown-item notify-item">

@@ -5,7 +5,7 @@
         use Nwidart\Modules\Facades\Module;
         $menus = App\Http\Controllers\Controller::getMenu();
     @endphp
-    <a href="{{ route('dashboard') }}" class="logo text-center logo-light">
+    <a href="{{ route('dashboard') }}" target="_blank" class="logo text-center logo-light">
         <span class="logo-lg">
             <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
                 alt="image" class="img-fluid" width="50">
@@ -15,7 +15,7 @@
                 alt="image" class="img-fluid" width="50">
         </span>
     </a>
-    <a href="{{ route('dashboard') }}" class="logo text-center logo-dark">
+    <a href="{{ route('dashboard') }}" target="_blank" class="logo text-center logo-dark">
         <span class="logo-lg">
             <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
                 alt="image" class="img-fluid" width="50">
@@ -28,7 +28,7 @@
     <div class="h-100" id="leftside-menu-container" data-simplebar>
         <ul class="side-nav">
             <li class="side-nav-item no-child">
-                <a href="{{ route('dashboard') }}" class="side-nav-link">
+                <a href="{{ route('dashboard') }}" target="_blank" class="side-nav-link">
                     <i class="uil-tachometer-fast"></i>
                         <span>Trang chủ </span>
                 </a>

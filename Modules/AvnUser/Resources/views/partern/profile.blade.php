@@ -23,7 +23,11 @@
                                         <span class="badge bg-danger">Ẩn</span>
                                     @endif
                                 </strong> 
-                                <span class="ms-1">{{ date('d/m/Y', strtotime($user->partern->birth)) }}</span>
+                                <span class="ms-1">
+                                     @if($user->partern->birth)
+                                        {{ date('d/m/Y', strtotime($user->partern->birth)) }}
+                                    @endif
+                                </span>
                             </p>
 
                             <p class="text-muted mb-2 font-13">
