@@ -30,6 +30,10 @@ Route::prefix('user')->group(function() {
     Route::post('/store-customer', 'CustomerManagerController@storeCustomer')->middleware(['auth', 'permission'])->name('store-customer');
     Route::put('/update-customer/{id}', 'CustomerManagerController@updateCustomer')->middleware(['auth', 'permission'])->name('update-customer');
     Route::delete('/delete-customer/{id}', 'CustomerManagerController@deleteCustomer')->middleware(['auth', 'permission'])->name('delete-customer');
+
+    // Quản lý
+    Route::get('/manager-profile', 'ManagerController@managerProfile')->middleware(['auth'])->name('manager-profile');
+    Route::put('/update-manager-profile', 'ManagerController@updateManagerProfile')->middleware(['auth'])->name('update-manager-profile');
 });
 
 //-------------------------- Khách hàng tự đăng ký, xem thông tin bản thân,... ---------------------//
