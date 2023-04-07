@@ -5,75 +5,78 @@ namespace Modules\AvnService\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\AvnService\Entities\ServiceType;
+use Modules\AvnService\Entities\Service;
 
 class AvnServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
+    //-------------------- Quản lý ----------------------//
+    public function listService()
     {
-        return view('avnservice::index');
+        $services = Service::get();
+        return view('avnservice::service.list-service', compact('services'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
+    public function addService()
     {
-        return view('avnservice::create');
+        $types = ServiceType::get();
+        return view('avnservice::service.add-service', compact('types'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
+    public function storeService(Request $request)
     {
-        //
+        try {
+            $service = new Service();
+            $service->name = $request->name;
+            $service->price = $request->price;
+            $service->description = $request->description;
+            $service->recommended = $request->recommended ?? 0;
+            $service->type_id = $request->type_id;
+            $service->save();
+            return redirect()->route('list-service')->with('Success', 'Thêm thành công');
+        } catch (Exception $e) {
+            return back()->with('Failed', 'Thêm thất bại');
+        }
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
+    public function editService($id)
     {
-        return view('avnservice::show');
+        $service = Service::findOrFail($id);
+        $types = ServiceType::get();
+        return view('avnservice::service.edit-service', compact('service', 'types'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
+    public function updateService(Request $request, $id)
     {
-        return view('avnservice::edit');
+        try {
+            $service = Service::findOrFail($id);
+            $service->name = $request->name;
+            $service->price = $request->price;
+            $service->description = $request->description;
+            $service->recommended = $request->recommended ?? 0;
+            $service->type_id = $request->type_id;
+            $service->save();
+            return redirect()->route('list-service')->with('Success', 'Cập nhật thành công');
+        } catch (Exception $e) {
+            return back()->with('Failed', 'Cập nhật thất bại');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
+    public function deleteService($id)
     {
-        //
+        try{
+            $service = Service::findOrFail($id)->delete();
+            return back()->with('Success', 'Xóa thất bại');
+        }
+        catch(Exception $e){
+            return back()->with('Failed', 'Xóa thất bại');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
+    //-------------------- Trang chủ ----------------------//
+    public function servicePage()
     {
-        //
+        $services = Service::get();
+        return view('avnservice::service.service-page', compact('services'));
     }
 }
