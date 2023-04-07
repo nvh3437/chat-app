@@ -57,7 +57,7 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Nhập email</label>
-                            <input class="form-control" type="email" name="email" required>
+                            <input class="form-control" type="email" name="email" required value="{{ old('email') }}">
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>

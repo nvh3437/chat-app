@@ -61,11 +61,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nhập mật khẩu mới <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" name="password" required>
+                            <input class="form-control" type="password" name="password" required placeholder="Ít nhất 8 ký tự cả chữ và số">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nhập lại mật khẩu <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" name="password_confirmation" required>
+                            <input class="form-control" type="password" name="password_confirmation" required placeholder="Ít nhất 8 ký tự cả chữ và số">
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>

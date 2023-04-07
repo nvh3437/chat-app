@@ -35,6 +35,9 @@
                 </span>
                 <span>
                     <span class="account-user-name">{{$user->name}}</span>
+                    @if($user->type == 'customer')
+                        <span class="account-user-name">{{ number_format($user->customer->money, 0, ',', '.') }} $</span>
+                    @endif
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
@@ -42,17 +45,11 @@
                 <div class=" dropdown-header noti-title">
                     <h6 class="text-overflow m-0">Chào mừng !</h6>
                 </div>
-
-                @if($staff != null)
-                    <a href="{{route('avnhumanresource-staff-info', ['id'=>$user->id])}}" class="dropdown-item notify-item">
-                        <i class="mdi mdi-account-circle me-1"></i>
-                        <span>Thông tin cá nhân</span>
-                    </a>
-                    <a href="{{route('avnhumanresource-staff-update', ['id'=>$user->id])}}" class="dropdown-item notify-item">
-                        <i class="mdi mdi-account-edit me-1"></i>
-                        <span>Cài đặt</span>
-                    </a>
-                @endif
+                <!--- route info của quản lý -->
+                <a href="{{route('manager-profile')}}" class="dropdown-item notify-item">
+                    <i class="mdi mdi-account-circle me-1"></i>
+                    <span>Thông tin cá nhân</span>
+                </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="dropdown-item notify-item">

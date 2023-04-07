@@ -56,16 +56,25 @@
                     <form action="{{ route('store-register') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Tên người dùng</label>
+                            <label class="form-label">Tên người dùng <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">@lang('auth.email_address')</label>
+                            <label class="form-label">Tên tài khoản <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" name="username" required>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input class="form-control" type="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">@lang('auth.password')</label>
-                            <input class="form-control" type="password" name="password" required>
+                            <div class="input-group input-group-merge">
+                                <input type="password" name="password" class="form-control" required>
+                                <div class="input-group-text" data-password="false">
+                                    <span class="password-eye"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
@@ -77,6 +86,17 @@
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
                                 Đăng ký
                             </button>
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-muted font-16">Đăng nhập với</p>
+                            <ul class="social-list list-inline mt-3">
+                                <li class="list-inline-item">
+                                    <a href="{{ route('login-social', ['social' => 'facebook']) }}" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{{ route('login-social', ['social' => 'google']) }}" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
+                                </li>
+                            </ul>
                         </div>
                         <footer class="footer footer-alt">
                             <p class="text-muted">Đã có tài khoản? <a href="{{ route('login') }}" class="text-muted ms-1"><b>Đăng nhập</b></a></p>

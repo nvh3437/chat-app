@@ -56,16 +56,21 @@
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">@lang('auth.email_address')</label>
+                            <label class="form-label">Tên đăng nhập</label>
                             <input class="form-control" type="text" id="username" name="username"
                                 value="{{ old('username') }}" placeholder="@lang('auth.enter_email_address')">
                         </div>
                         <div class="mb-3">
                             <a class="text-muted float-end" href="{{ route('forgot-password') }}">
                                 <small>Quên mật khẩu</small>
-                            </a> 
-                            <label class="form-label">@lang('auth.password')</label>
-                            <input class="form-control" type="password" name="password" placeholder="@lang('auth.enter_password')">
+                            </a>
+                            <label class="form-label">Mật khẩu</label> 
+                            <div class="input-group input-group-merge">
+                                <input type="password" name="password" class="form-control">
+                                <div class="input-group-text" data-password="false">
+                                    <span class="password-eye"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
@@ -77,6 +82,17 @@
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
                                 @lang('auth.login')
                             </button>
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-muted font-16">Đăng nhập với</p>
+                            <ul class="social-list list-inline mt-3">
+                                <li class="list-inline-item">
+                                    <a href="{{ route('login-social', ['social' => 'facebook']) }}" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{{ route('login-social', ['social' => 'google']) }}" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
+                                </li>
+                            </ul>
                         </div>
                         <footer class="footer footer-alt">
                             <p class="text-muted">Chưa có tài khoản? <a href="{{ route('customer-register') }}" class="text-muted ms-1"><b>Đăng ký ngay</b></a></p>

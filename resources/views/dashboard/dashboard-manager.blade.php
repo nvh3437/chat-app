@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 @section('title')
-    Lịch tuần
+    Trang chủ
 @endsection
 @section('content')
-    <div class="container-fluid">
-
-    </div>
+     <div class="container-fluid">
+         
+     </div>
 @endsection
 @section('js')
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
