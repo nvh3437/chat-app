@@ -21,7 +21,7 @@
     "AvnProductPrice": false,
     "AvnWareHouseManager": false,
     "AvnInventory": false,
-    "AvnPost": false,
+    "AvnPost": true,
     "AvnTakeCare": false,
     "AvnStudent": true,
     "AvnExam": false,
