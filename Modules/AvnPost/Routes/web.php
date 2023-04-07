@@ -1,5 +1,6 @@
 <?php
 use Modules\AvnPost\Http\Controllers\PostController;
+use Modules\AvnPost\Http\Controllers\PostCommentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,3 +34,8 @@ Route::prefix('post')->group(function() {
 Route::get('/post-page', [PostController::class, 'postPage'])->name('post-page');
 Route::get('/post-of-category/{alias}', [PostController::class, 'postOfCategory'])->name('post-of-category');
 Route::get('/view-post/{alias}', [PostController::class, 'viewPost'])->name('view-post');
+
+// ------------------------ Bình luận ----------------------//
+Route::post('/store-post-comment', [PostCommentController::class, 'storePostComment'])->middleware(['auth'])->name('store-post-comment');
+Route::put('/update-post-comment/{id}', [PostCommentController::class, 'updatePostComment'])->middleware(['auth'])->name('update-post-comment');
+Route::delete('/delete-post-comment/{id}', [PostCommentController::class, 'deletePostComment'])->middleware(['auth'])->name('delete-post-comment');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnPost\Entities\PostCategory;
 use Modules\AvnPost\Entities\Post;
+use Modules\AvnPost\Entities\PostComment;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Helper;
@@ -141,6 +142,7 @@ class PostController extends Controller
         if (!$post) {
             $post = Post::findOrFail($alias);
         }
-        return view('avnpost::post.view-post', compact('post'));
+        $comments = PostComment::where('post_id', $post->id)->get();
+        return view('avnpost::post.view-post', compact('post', 'comments'));
     }
 }
