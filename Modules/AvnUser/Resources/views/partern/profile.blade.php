@@ -66,12 +66,14 @@
                                 <span class="ms-1">{{$user->partern->address}}</span>
                             </p>
 
-                            <h4 class="font-13 text-uppercase">Tiểu sử :
+                            <p class="text-muted mb-2 font-13">
+                                <strong>Tiểu sử :
                                 @if($user->partern->description_status == '1')
                                     <span class="badge bg-danger">Ẩn</span>
                                 @endif
-                            </h4>
-                            <textarea class="text-muted font-13 mb-1 bg-white p-0" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $user->partern->description !!}</textarea>
+                                </strong>
+                            </p>
+                            <textarea class="text-muted font-13 mb-1 bg-white p-0 w-100" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $user->partern->description !!}</textarea>
                         </div>
                     </div> 
                 </div>
@@ -192,7 +194,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mb-2">
-                                                <label class="form-label">Thông tin cá nhân</label>
+                                                <label class="form-label">Tiểu sử</label>
                                                 <textarea class="form-control" name="description" rows="4">{!! $user->partern->description !!}</textarea>
                                                 <div class="form-check mt-2">
                                                     <input type="checkbox" name="description_status" value="1" class="form-check-input" {{ $user->partern->description_status == 1 ? 'checked' : '' }}>
