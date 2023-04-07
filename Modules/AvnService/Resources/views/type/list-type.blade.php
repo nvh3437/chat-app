@@ -20,11 +20,11 @@
 	                    @csrf
 	                        <div class="input-group mb-3 row">
 	                            <div class="mb-2 col-12">
-	                                <label class="form-label">Tên *</label>
+	                                <label class="form-label">Tên <span class="text-danger">*</span></label>
 	                                <input type="text" class="form-control" name="name" required>
 	                            </div>
 	                            <div class="mb-2 col-12">
-	                                <label class="form-label">Icon *</label>
+	                                <label class="form-label">Icon <span class="text-danger">*</span></label>
 	                                <input type="file" accept="image/*" class="form-control" name="img" required>
 	                            </div>
 	                            <div class="input-group-append d-flex justify-content-center">
@@ -81,12 +81,12 @@
 					                            @method('PUT')
 					                                <div class="modal-body text-dark">
 					                                	<div class="mb-2">
-						                                    <label class="form-label">Tên *</label>
+						                                    <label class="form-label">Tên <span class="text-danger">*</span></label>
 						                                    <input type="text" class="form-control" name="name" required value="{{$item->name}}">
 					                                    </div>
 					                                    <div class="mb-2">
-						                                    <label class="form-label">Icon *</label>
-						                                    <input type="file" class="form-control" name="img" value="{{$item->img}}">
+						                                    <label class="form-label">Icon <span class="text-danger">*</span></label>
+						                                    <input type="file" class="form-control" name="img">
 						                                    <img class="img-fluid mt-2" src="{{ asset($item->img) }}" style="max-width: 200px;" />
 					                                    </div>
 					                                </div>
