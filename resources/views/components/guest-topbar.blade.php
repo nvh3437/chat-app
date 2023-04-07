@@ -1,3 +1,6 @@
+@php
+    $user = App\Http\Controllers\Controller::getUser(); 
+@endphp
 <div class="navbar-custom topnav-navbar topnav-navbar-dark">
     <div class="container-fluid">
         <a href="" class="topnav-logo">
@@ -12,8 +15,20 @@
             <li class="dropdown notification-list">
                 <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
                     aria-expanded="false">
-                    <span class="account-user-avatar"> 
-                        <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                    <span class="account-user-avatar">
+                    @if($user->type == 'partern') 
+                        @if($user->partern->img == '')
+                            <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                        @else
+                            <img src="{{ asset($user->partern->img) }}" alt="user-image" class="rounded-circle">
+                        @endif
+                    @elseif($user->type == 'customer') 
+                        @if($user->customer->img == '')
+                            <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                        @else
+                            <img src="{{ asset($user->customer->img) }}" alt="user-image" class="rounded-circle">
+                        @endif
+                    @endif
                     </span>
                     <span>
                         @php
