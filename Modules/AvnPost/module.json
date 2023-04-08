@@ -1,0 +1,11 @@
+{
+    "name": "AvnPost",
+    "alias": "avnpost",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AvnPost\\Providers\\AvnPostServiceProvider"
+    ],
+    "files": []
+}

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->text('img')->nullable();
             $table->string('name');
             $table->string('exp');
-            $table->smallInteger('gender');
+            $table->smallInteger('gender')->nullable();
             $table->date('birth')->nullable();
             $table->string('phone')->nullable();
             $table->text('address')->nullable();

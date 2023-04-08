@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
-                                        Thông tin bổ sung
+                                        Tiểu sử
                                     </label>
                                     <textarea class="form-control" name="description" rows="5"></textarea>
                                 </div>

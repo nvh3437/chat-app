@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('img')->nullable();
-            $table->smallInteger('gender');
+            $table->smallInteger('gender')->nullable();
             $table->date('birth')->nullable();
             $table->string('phone')->nullable();
             $table->text('address')->nullable();

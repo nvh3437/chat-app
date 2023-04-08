@@ -9,7 +9,7 @@ class Customer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = ['id', 'name', 'img',];
     protected $table = 'avn_customers';
 
     protected static function newFactory()
