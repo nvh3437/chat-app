@@ -1,0 +1,11 @@
+{
+    "name": "AvnContact",
+    "alias": "avncontact",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AvnContact\\Providers\\AvnContactServiceProvider"
+    ],
+    "files": []
+}
