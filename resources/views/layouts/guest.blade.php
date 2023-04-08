@@ -33,7 +33,7 @@
         @yield('content')
     </div>
     <!-- Footer Start -->
-
+    @include('components.guest-footer')
     <!-- end Footer -->
     <!-- bundle -->
     <script src="{{ asset('resources/assets/js/vendor.min.js') }}"></script>

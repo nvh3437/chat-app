@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+    //------------------------------------ Trang chủ -----------------------------//
+    public static function getPost()
+    {
+        $posts = Post::orderByDesc('updated_at')->limit(3)->get();
+        return $posts;
+    }
+
     //------------------------------------ Quản lý -------------------------------//
     public function listPost()
     {
@@ -143,6 +150,9 @@ class PostController extends Controller
             $post = Post::findOrFail($alias);
         }
         $comments = PostComment::where('post_id', $post->id)->get();
-        return view('avnpost::post.view-post', compact('post', 'comments'));
+
+        // Các bài viết liên quan
+        $posts = Post::where('category_id', $post->category_id)->get();
+        return view('avnpost::post.view-post', compact('post', 'comments', 'posts'));
     }
 }

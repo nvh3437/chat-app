@@ -78,7 +78,7 @@
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label">Nội dung </label>
-                                                        <textarea class="form-control mb-1" id="textBox1" style="overflow: hidden; resize: none;">{!! $item->message !!}</textarea>
+                                                        <textarea class="form-control mb-1" id="textBox1" rows="5">{!! $item->message !!}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
