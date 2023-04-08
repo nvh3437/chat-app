@@ -11,40 +11,40 @@
                 <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="" class="logo-dark" height="50" />
             </span>
         </a>
-        <ul class="list-unstyled topbar-menu float-end mb-0">
-            <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
-                    aria-expanded="false">
-                    <span class="account-user-avatar">
-                    @if($user->type == 'partern') 
-                        @if($user->partern->img == '')
-                            <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
-                        @else
-                            <img src="{{ asset($user->partern->img) }}" alt="user-image" class="rounded-circle">
+        @if($user)
+            <ul class="list-unstyled topbar-menu float-end mb-0">
+                <li class="dropdown notification-list">
+                    <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span class="account-user-avatar">
+                        @if($user->type == 'partern') 
+                            @if($user->partern->img == '')
+                                <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                            @else
+                                <img src="{{ asset($user->partern->img) }}" alt="user-image" class="rounded-circle">
+                            @endif
+                        @elseif($user->type == 'customer') 
+                            @if($user->customer->img == '')
+                                <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                            @else
+                                <img src="{{ asset($user->customer->img) }}" alt="user-image" class="rounded-circle">
+                            @endif
                         @endif
-                    @elseif($user->type == 'customer') 
-                        @if($user->customer->img == '')
-                            <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
-                        @else
-                            <img src="{{ asset($user->customer->img) }}" alt="user-image" class="rounded-circle">
-                        @endif
-                    @endif
-                    </span>
-                    <span>
-                        @php
-                            $user = App\Http\Controllers\Controller::getUser(); 
-                        @endphp
-                        @if($user)
-                            <span class="account-user-name">{{$user->name}}</span>
-                            <span class="account-position">0 $</span>
-                        @endif
-                    </span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                    <div class=" dropdown-header noti-title">
-                        <h6 class="text-overflow m-0">Chào mừng !</h6>
-                    </div>
-                    @if($user)
+                        </span>
+                        <span>
+                            @php
+                                $user = App\Http\Controllers\Controller::getUser(); 
+                            @endphp
+                            @if($user)
+                                <span class="account-user-name">{{$user->name}}</span>
+                                <span class="account-position">0 $</span>
+                            @endif
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
+                        <div class=" dropdown-header noti-title">
+                            <h6 class="text-overflow m-0">Chào mừng !</h6>
+                        </div>
                         @if($user->type == 'partern')
                             <a href="{{route('profile')}}" class="dropdown-item notify-item">
                                 <i class="mdi mdi-account-circle me-1"></i>
@@ -63,9 +63,9 @@
                                 <span>Đăng xuất</span>
                             </button>
                         </form>
-                    @endif
-                </div>
-            </li>
-        </ul>
+                    </div>
+                </li>
+            </ul>
+        @endif
     </div>
 </div>

@@ -12,7 +12,7 @@
             style="object-fit: cover; height: 300px;" />
         @endif
         <div class="container">
-            <div class="row">
+            <div class="row mt-2">
                 <div class="card">
                     <div class="card-body">
                         <div class="col-lg-12 mx-auto mb-6">
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="row">
-                <h4 class="header-title">Bình luận</h4>
+                <h4 class="header-title p-0">Bình luận</h4>
                 @if($user == '')
                     <div class="card">
                         <div class="card-body">
@@ -46,7 +46,7 @@
                             @csrf
                                 <input type="hidden" name="post_id" value="{{$post->id}}">
                                 <textarea rows="4" class="form-control border-0 resize-none" placeholder="Nhập bình luận...." name="comment"></textarea>
-                                <div class="p-2 bg-light d-flex justify-content-end align-items-center">
+                                <div class="p-2 d-flex justify-content-end align-items-center">
                                     <button type="submit" class="btn btn-sm btn-success"><i class='uil uil-message me-1'></i>Gửi</button>
                                 </div>
                             </form>
