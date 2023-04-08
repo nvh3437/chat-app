@@ -39,30 +39,34 @@
                 @endphp
                 <div class="col-lg-8 mx-auto">
                     <div class="col-md-6 col-xxl-4">
-                    <a href="{{ route('view-post', $params) }}">
-                    <div class="card d-block">
-                        @if($item->img == '')
-                            <img class="card-img-top" src="{{ asset('/resources/assets/images/logo.png') }}" alt="{{$item->name}}">
-                        @else
-                            <img class="card-img-top" src="{{ asset($item->img) }}" alt="{{$item->name}}">
-                        @endif
-                        <div class="card-body position-relative">
-                            <h4 class="mt-0">
-                                <a href="apps-projects-details.html" class="text-title">{{$item->name}}</a>
-                            </h4>
-                            <p class="mb-3">
-                                <span class="pe-2 text-nowrap">
-                                    <i class="mdi mdi-timer-outline"></i>
-                                    <b>{{ date('d/m/Y', strtotime($item->updated_at)) }}</b>
-                                </span>
-                                <span class="text-nowrap">
-                                    <i class="mdi mdi-menu-open"></i>
-                                    <b>{{$item->category->name}}</b>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    </a> 
+                        <a href="{{ route('view-post', $params) }}">
+                            <div class="card d-block">
+                                @if($item->img == '')
+                                    <img class="card-img-top" src="{{ asset('/resources/assets/images/logo.png') }}" alt="{{$item->name}}">
+                                @else
+                                    <img class="card-img-top" src="{{ asset($item->img) }}" alt="{{$item->name}}">
+                                @endif
+                                <div class="card-body position-relative">
+                                    <h4 class="mt-0">
+                                        <a class="text-title">{{$item->name}}</a>
+                                    </h4>
+                                    <p class="mb-2">
+                                        <span class="pe-2 text-nowrap">
+                                            <i class="mdi mdi-timer-outline"></i>
+                                            <b>{{ date('d/m/Y', strtotime($item->updated_at)) }}</b>
+                                        </span>
+                                        <span class="pe-2 text-nowrap">
+                                            <i class="mdi mdi-menu-open"></i>
+                                            <b>{{$item->category->name}}</b>
+                                        </span>
+                                        <span class="text-nowrap">
+                                            <i class="mdi mdi-comment-multiple-outline"></i>
+                                            <b>{{count($item->comments)}}</b>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a> 
                     </div>
                 </div>
                 @endforeach

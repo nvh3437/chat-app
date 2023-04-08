@@ -198,7 +198,7 @@
                                                 <textarea class="form-control" name="description" rows="4">{!! $user->partern->description !!}</textarea>
                                                 <div class="form-check mt-2">
                                                     <input type="checkbox" name="description_status" value="1" class="form-check-input" {{ $user->partern->description_status == 1 ? 'checked' : '' }}>
-                                                    <label class="form-check-label">Ẩn thông tin cá nhân</label>
+                                                    <label class="form-check-label">Ẩn tiểu sử</label>
                                                 </div>
                                             </div>
                                         </div>

@@ -13,17 +13,21 @@
         @endif
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 mx-auto mb-6">
-                    <h1 class="fw-bold fs-3 fs-lg-5 lh-sm mb-3 mt-3">{{ $post->name }}</h1>
-                    <p class="text-muted">
-                        <span> <i class="far fa-clock text-primary"></i> {{ date('d/m/Y', strtotime($post->updated_at)) }}
-                            |</span>
-                        <span><i class="fas fa-book-open text-primary"></i> {{ $post->category->name }} |</span>
-                        <span><i class="fas fa-user-edit text-primary"></i>
-                            {{ $post->post_created->name }}</span>
-                    </p>
-                    <div class="ck-content" id="editor">
-                        {!! $post->description !!}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-lg-12 mx-auto mb-6">
+                            <h1 class="fw-bold fs-3 fs-lg-5 lh-sm mb-2 mt-1">{{ $post->name }}</h1>
+                            <p class="text-muted">
+                                <span> <i class="far fa-clock text-primary"></i> {{ date('d/m/Y', strtotime($post->updated_at)) }}
+                                    |</span>
+                                <span><i class="fas fa-book-open text-primary"></i> {{ $post->category->name }} |</span>
+                                <span><i class="fas fa-user-edit text-primary"></i>
+                                    {{ $post->post_created->name }}</span>
+                            </p>
+                            <div class="ck-content" id="editor">
+                                {!! $post->description !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

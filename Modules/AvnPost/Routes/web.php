@@ -1,6 +1,7 @@
 <?php
 use Modules\AvnPost\Http\Controllers\PostController;
 use Modules\AvnPost\Http\Controllers\PostCommentController;
+use Modules\AvnPost\Http\Controllers\PostLikeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,3 +40,7 @@ Route::get('/view-post/{alias}', [PostController::class, 'viewPost'])->name('vie
 Route::post('/store-post-comment', [PostCommentController::class, 'storePostComment'])->middleware(['auth'])->name('store-post-comment');
 Route::put('/update-post-comment/{id}', [PostCommentController::class, 'updatePostComment'])->middleware(['auth'])->name('update-post-comment');
 Route::delete('/delete-post-comment/{id}', [PostCommentController::class, 'deletePostComment'])->middleware(['auth'])->name('delete-post-comment');
+
+// ------------------------ Like ----------------------//
+Route::post('/store-post-like', [PostLikeController::class, 'storePostLike'])->middleware(['auth'])->name('store-post-like');
+Route::delete('/delete-post-like/{id}', [PostLikeController::class, 'deletePostLike'])->middleware(['auth'])->name('delete-post-like');

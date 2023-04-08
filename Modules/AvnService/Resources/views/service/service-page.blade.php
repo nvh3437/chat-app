@@ -27,7 +27,7 @@
                             <img src="{{ asset($item->service_type->img) }}" alt="{{$item->name}}" class="rounded" style="width: 50px; height: 50px; object-fit: cover">
                             <h2 class="card-pricing-price">{{$item->price}}</h2>
                             <ul class="card-pricing-features">
-                                <textarea class="text-muted text-center font-15 mb-1 bg-white p-0" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $item->description !!}</textarea>
+                                <textarea class="text-muted text-center font-15 mb-1 bg-white p-0 w-100" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $item->description !!}</textarea>
                             </ul>
                             <button class="btn btn-primary mt-4 mb-2 rounded-pill">Chọn</button>
                         </div>
