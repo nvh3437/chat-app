@@ -10,6 +10,12 @@ use Modules\AvnService\Entities\Service;
 
 class AvnServiceController extends Controller
 {
+    //-------------------- Trang chủ --------------------//
+    public static function getService()
+    {
+        $services = Service::orderByDesc('updated_at')->limit(3)->get();
+        return $services;
+    }
     //-------------------- Quản lý ----------------------//
     public function listService()
     {

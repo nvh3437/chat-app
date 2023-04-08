@@ -31,6 +31,40 @@
                     </div>
                 </div>
             </div>
+            @if(count($posts) > 1)
+            <div class="row">
+                <h4 class="header-title p-0">Bài viết liên quan</h4>
+                @foreach($posts as $item)
+                    @if($item->id != $post->id)
+                    @php
+                        $params = [
+                            'alias' => $item->alias ?? $item->id,
+                        ];
+                    @endphp
+                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 me-2 p-0">
+                            <a href="{{ route('view-post', $params) }}" class="text-muted">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                @if($item->img == '')
+                                                    <img class="rounded" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 120px; width: 120px; object-fit: cover;">
+                                                @else
+                                                    <img class="rounded" src="{{ asset($item->img) }}" style="height: 120px; width: 120px; object-fit: cover;">
+                                                @endif
+                                            </div>
+                                            <div class="col-auto">
+                                                <h5>{{$item->name}}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endif
+                @endforeach 
+            </div>
+            @endif  
             <div class="row">
                 <h4 class="header-title p-0">Bình luận</h4>
                 @if($user == '')
@@ -52,9 +86,9 @@
                             </form>
                         </div>
                     </div>
-                    @foreach($comments as $item)
-                        <div class="card">
-                            <div class="card-body pb-1">
+                    <div class="card">
+                        <div class="card-body pb-1">
+                            @foreach($comments as $item)
                                 <div class="d-flex">
                                     <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}" height="32">
                                     <div class="w-100">
@@ -123,13 +157,13 @@
                                         <p class="text-muted"><small><td>{{ date('d/m/Y', strtotime($item->updated_at)) }}</td></small></p>
                                     </div>
                                 </div>
-                                <hr class="m-0" />
-                                <div class="font-16 text-start text-dark my-2">
+                                <div class="font-16 text-start text-dark">
                                     {!! $item->comment !!}
                                 </div>
-                            </div>
+                                <hr class="mt-1"/>
+                            @endforeach 
                         </div>
-                    @endforeach 
+                    </div>
                 @endif
             </div>
         </div>

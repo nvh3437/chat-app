@@ -1,18 +1,61 @@
 @php
-    $user = App\Http\Controllers\Controller::getUser(); 
+    $user = App\Http\Controllers\Controller::getUser();
+    $menu = Modules\AvnSetting\Http\Controllers\NavbarController::getMenu(); 
 @endphp
-<div class="navbar-custom topnav-navbar topnav-navbar-dark">
+<div class="navbar-custom topnav-navbar">
     <div class="container-fluid">
         <a href="" class="topnav-logo">
             <span class="topnav-logo-lg">
-                <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="" class="logo-dark" height="50" />
+                <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="" height="50">
             </span>
             <span class="topnav-logo-sm">
-                <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="" class="logo-dark" height="50" />
+                <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="" height="50">
             </span>
         </a>
-        @if($user)
-            <ul class="list-unstyled topbar-menu float-end mb-0">
+        <ul class="list-unstyled topbar-menu float-end mb-0">
+            <li class="dropdown notification-list topbar-dropdown d-none d-lg-block">
+                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" id="topbar-languagedrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span> <i class="mdi mdi-chevron-down"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu" aria-labelledby="topbar-languagedrop">
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Japan</span>
+                    </a>
+                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Vietnam</span>
+                    </a>
+                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
+                    </a>
+                </div>
+            </li>
+            @if($user)
+                <li class="dropdown notification-list">
+                    <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" id="topbar-notifydrop" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="dripicons-bell noti-icon"></i>
+                        <span class="noti-icon-badge"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg" aria-labelledby="topbar-notifydrop">
+                        <!-- item-->
+                        <div class="dropdown-item noti-title">
+                            <h5 class="m-0">
+                                <span class="float-end">
+                                    <a href="javascript: void(0);" class="text-dark">
+                                        <small>Xóa hết</small>
+                                    </a>
+                                </span>Thông báo
+                            </h5>
+                        </div>    
+                    </div>
+                </li>
+                @if($user->type == 'system')
+                    <li class="notification-list">
+                        <a class="nav-link end-bar-toggle" href="{{ route('dashboard-manager') }}">
+                            <i class="dripicons-gear noti-icon"></i>
+                        </a>
+                    </li>
+                @endif
                 <li class="dropdown notification-list">
                     <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false">
@@ -29,6 +72,8 @@
                             @else
                                 <img src="{{ asset($user->customer->img) }}" alt="user-image" class="rounded-circle">
                             @endif
+                        @else
+                            <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
                         @endif
                         </span>
                         <span>
@@ -64,8 +109,52 @@
                             </button>
                         </form>
                     </div>
+                </li>     
+            @else
+                 <li class="notification-list">
+                    <a class="nav-link end-bar-toggle" href="{{ route('login') }}">
+                        <i class="noti-icon"></i>
+                        Đăng nhập
+                    </a>
                 </li>
-            </ul>
-        @endif
+            @endif
+        </ul>
+        <a class="navbar-toggle"  data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+            <div class="lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="topnav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-dark navbar-expand-lg topnav-menu">
+            <div class="collapse navbar-collapse" id="topnav-menu-content">
+                <ul class="navbar-nav">
+                    @foreach ($menu as $item)
+                        @if ($item->parent_id == '0' && count($item->childrens) > 0)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="menulink{{ $item->id }}" id="topnav-dashboards" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ $item->name }} <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-dashboards">
+                                    @foreach ($item->childrens as $child)
+                                        <a href="{{ $child->link }}" class="dropdown-item">{{ $child->name }}</a>
+                                    @endforeach
+                                </div>
+                            </li>
+                        @elseif($item->parent_id == '0')
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="{{ $item->link }}" id="topnav-dashboards">
+                                    {{ $item->name }} 
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            </div>
+        </nav>
     </div>
 </div>

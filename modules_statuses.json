@@ -37,5 +37,6 @@
     "WareHouse": true,
     "AvnContact": true,
     "AvnService": true,
-    "AvnUser": true
+    "AvnUser": true,
+    "AvnSetting": true
 }

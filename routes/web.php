@@ -32,7 +32,7 @@ Route::get('/forbidden', function () {
 })->name('forbidden');
 
 // Dashboard
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 Route::get('/dashboard-manager', [DashboardController::class, 'dbManager'])->middleware(['auth', 'verified'])->name('dashboard-manager');
 
 // setting

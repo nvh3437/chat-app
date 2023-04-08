@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\AvnContact\Entities\Contact;
 
 class ContactController extends Controller
-{
+{   
     //-------------------------------- Quản lý --------------------------//
     public function listContact()
     {
