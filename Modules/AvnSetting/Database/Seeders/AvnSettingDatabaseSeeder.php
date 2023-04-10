@@ -40,6 +40,14 @@ class AvnSettingDatabaseSeeder extends Seeder
             $menu_footer->parent = $menu->id;
             $menu_footer->save();
 
+            $menu_home = new AvnMenu();
+            $menu_home->label = 'SEO Trang chủ';
+            $menu_home->route_name = 'home-seo';
+            $menu_home->icon = 'uil-rss';
+            $menu_home->module = "AvnSetting";
+            $menu_home->parent = $menu->id;
+            $menu_home->save();
+
             $menu_contact = new AvnMenu();
             $menu_contact->label = 'SEO Liên hệ';
             $menu_contact->route_name = 'contact-seo';
@@ -66,7 +74,7 @@ class AvnSettingDatabaseSeeder extends Seeder
 
 
         $permission1 = new Permission();
-        $permission1->route_names = 'navbar, edit-navbar, store-navbar, update-navbar, delete-navbar, footer, store-footer, update-footer, delete-footer, store-footer-infor, update-footer-infor, delete-footer-infor, store-footer-icon, update-footer-icon, delete-footer-icon, contact-seo, update-contact-seo, service-seo, update-service-seo, post-seo, update-post-seo, update-footer-des';
+        $permission1->route_names = 'navbar, edit-navbar, store-navbar, update-navbar, delete-navbar, footer, store-footer, update-footer, delete-footer, store-footer-infor, update-footer-infor, delete-footer-infor, store-footer-icon, update-footer-icon, delete-footer-icon, contact-seo, update-contact-seo, service-seo, update-service-seo, post-seo, update-post-seo, update-footer-des, home-seo, update-home-seo';
         $permission1->name = 'Cài đặt trang';
         $permission1->menu_id = $menu->id;
         $permission1->save();

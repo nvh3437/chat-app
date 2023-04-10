@@ -19,10 +19,17 @@
     $description_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_description'])->first();
     $keyword_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_keywords'])->first();
     $img_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_image'])->first();
+
+    // SEO trang chủ
+    $title_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_title'])->first();
+    $description_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_description'])->first();
+    $keyword_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_keywords'])->first();
+    $img_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_image'])->first();
+    $link_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_link'])->first();
 @endphp
 @extends('layouts.guest')
 @section('title')
-    Trang chủ
+    {{ $title_home->value ?? '' }}
 @endsection
 @section('content')
     <!-- START HERO -->
@@ -31,24 +38,14 @@
             <div class="row align-items-center">
                 <div class="col-md-5">
                     <div class="mt-md-4">
-                        <div>
-                            <span class="badge bg-danger rounded-pill">New</span>
-                            <span class="text-white-50 ms-1">Welcome to new landing page</span>
-                        </div>
-                        <h2 class="text-white fw-normal mb-4 mt-3 hero-title">
-                            Responsive Web UI Kit & Dashboard Template
-                        </h2>
-
-                        <p class="mb-4 font-16 text-white-50">Hyper is a fully featured dashboard and admin template
-                            comes with tones of well designed UI elements, components, widgets and pages.</p>
-
-                        <a href="" target="_blank" class="btn btn-success">Preview <i
-                                class="mdi mdi-arrow-right ms-1"></i></a>
+                        <h2 class="text-white fw-normal mb-4 mt-3 hero-title">{{ $keyword_home->value ?? '' }}</h2>
+                        <p class="mb-4 font-16 text-white-50">{{ $description_home->value ?? '' }}</p>
+                        <a href="{{ $link_home->value ?? '' }}" target="_blank" class="btn btn-success">Xem thêm <i class="mdi mdi-arrow-right ms-1"></i></a>
                     </div>
                 </div>
                 <div class="col-md-5 offset-md-2">
                     <div class="text-md-end mt-3 mt-md-0">
-                        <img src="assets/images/startup.svg" alt="" class="img-fluid" />
+                        <img src="{{ asset($img_home->value ?? '/resources/assets/images/startup.svg') }}" style="max-height: 200px; object-fit: cover;" />
                     </div>
                 </div>
             </div>

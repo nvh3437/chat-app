@@ -27,7 +27,12 @@ class DashboardController extends Controller
             'phone_number',
             'email',
             'time_morning',
-            'time_afternoon'
+            'time_afternoon',
+            'home_seo_title',
+            'home_seo_description',
+            'home_seo_keywords',
+            'home_seo_link',
+            'home_seo_image'
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         return view('dashboard.dashboard', compact('home_seo'));
     }
