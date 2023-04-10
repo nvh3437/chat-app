@@ -10,6 +10,64 @@ use Illuminate\Support\Facades\File;
 
 class PageController extends Controller
 {
+    //------------------------------- Trang chủ -----------------------------//
+    public function homeSeo()
+    {
+        $home_seo = GeneralSettings::whereIn('key', [
+            'home_seo_title',
+            'home_seo_description',
+            'home_seo_keywords',
+            'home_seo_link',
+            'home_seo_image'
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
+        return view('avnsetting::page.home-seo', compact('home_seo'));
+    }
+
+    public function updateHomeSeo(Request $request)
+    {
+        try {
+            if ($request->home_seo_title) {
+                $setting = GeneralSettings::where('key', 'home_seo_title')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_title';
+                $setting->value = trim($request->home_seo_title);
+                $setting->save();
+            }
+            if ($request->home_seo_description) {
+                $setting = GeneralSettings::where('key', 'home_seo_description')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_description';
+                $setting->value = trim($request->home_seo_description);
+                $setting->save();
+            }
+            if ($request->home_seo_keywords) {
+                $setting = GeneralSettings::where('key', 'home_seo_keywords')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_keywords';
+                $setting->value = trim($request->home_seo_keywords);
+                $setting->save();
+            }
+            if ($request->home_seo_link) {
+                $setting = GeneralSettings::where('key', 'home_seo_link')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_link';
+                $setting->value = trim($request->home_seo_link);
+                $setting->save();
+            }
+            if ($request->hasFile('home_seo_image') && $request->file('home_seo_image')->isValid()) {
+                $setting = GeneralSettings::where('key', 'home_seo_image')->first() ?? new GeneralSettings();
+                $image = $request->file('home_seo_image');
+                $filename = date("Y-m-d-h-i-s-") . rand(00000000, 99999999). '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnSetting')) {
+                    File::makeDirectory('storage/app/AvnSetting', 0777, true, true);
+                }
+                $image->storeAs('AvnSetting', $filename);
+                $path = 'storage/app/AvnSetting/' . $filename;
+                $setting->key = $setting->key ?? 'home_seo_image';
+                $setting->value = $path;
+                $setting->save();
+            }
+            return back()->with('Success', 'Cập nhập thành công');
+        } catch (\Exception $e) {
+            return back()->with('Failed', 'Cập nhập thất bại');
+        }
+    }
     //------------------------------- Trang liên hệ -----------------------------//
     public function contactSeo()
     {

@@ -40,6 +40,11 @@ Route::prefix('setting')->group(function() {
     Route::delete('/delete-footer-icon/{id}', 'FooterController@deleteFooterIcon')->middleware(['auth', 'permission'])->name('delete-footer-icon');
 
     //------------------------------------------- Seo các trang -------------------------------//
+
+        // Trang chủ
+    Route::get('/home-seo', 'PageController@homeSeo')->middleware(['auth', 'permission'])->name('home-seo');
+    Route::put('/update-home-seo', 'PageController@updateHomeSeo')->middleware(['auth', 'permission'])->name('update-home-seo');
+
         // Liên hệ
     Route::get('/contact-seo', 'PageController@contactSeo')->middleware(['auth', 'permission'])->name('contact-seo');
     Route::put('/update-contact-seo', 'PageController@updateContactSeo')->middleware(['auth', 'permission'])->name('update-contact-seo');
