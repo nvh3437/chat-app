@@ -53,7 +53,7 @@ class NavbarController extends Controller
             $nav->order = $request->order;
             $nav->parent_id = $request->parent_id;
             $nav->save();
-            return redirect()->route('list-navbar')->with('Success', 'Cập nhật thành công');
+            return redirect()->route('navbar')->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');
         }
