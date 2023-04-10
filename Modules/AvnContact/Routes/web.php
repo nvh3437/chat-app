@@ -18,6 +18,6 @@ Route::prefix('')->group(function() {
 });
 
 //----------------------- Khách -----------------------//
-Route::get('/page-contact', [ContactController::class, 'pageContact'])->name('page-contact');
+Route::get('/contact-page', [ContactController::class, 'contactPage'])->name('contact-page');
 Route::get('/success-contact', [ContactController::class, 'successContact'])->name('success-contact');
 Route::post('/store-contact', [ContactController::class, 'storeContact'])->name('store-contact');

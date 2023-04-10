@@ -1,15 +1,16 @@
 @php
     $user = App\Http\Controllers\Controller::getUser();
     $menu = Modules\AvnSetting\Http\Controllers\NavbarController::getMenu(); 
+    $logo = App\Http\Controllers\Controller::getSetting('logo')->value;
 @endphp
 <div class="navbar-custom topnav-navbar">
-    <div class="container-fluid">
-        <a href="" class="topnav-logo">
+    <div class="container">
+        <a href="{{ route('dashboard') }}" class="topnav-logo">
             <span class="topnav-logo-lg">
-                <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="" height="50">
+                <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}" alt="image" class="img-fluid" width="50">
             </span>
             <span class="topnav-logo-sm">
-                <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="" height="50">
+                <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}" alt="image" class="img-fluid" width="50">
             </span>
         </a>
         <ul class="list-unstyled topbar-menu float-end mb-0">
@@ -129,7 +130,7 @@
     </div>
 </div>
 <div class="topnav">
-    <div class="container-fluid">
+    <div class="container">
         <nav class="navbar navbar-dark navbar-expand-lg topnav-menu">
             <div class="collapse navbar-collapse" id="topnav-menu-content">
                 <ul class="navbar-nav">

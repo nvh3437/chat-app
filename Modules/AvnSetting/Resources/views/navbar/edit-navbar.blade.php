@@ -57,7 +57,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
                             <button type="submit" class="btn btn-success me-3">Sửa</button>
-                            <a href="{{ route('list-navbar') }}" class="btn btn-secondary ms-3">Quay lại</a>
+                            <a href="{{ route('navbar') }}" class="btn btn-secondary ms-3">Quay lại</a>
                         </div>
                     </div>
                 </form>

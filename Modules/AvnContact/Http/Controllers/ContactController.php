@@ -29,7 +29,7 @@ class ContactController extends Controller
     }
 
     //-------------------------------- Khách --------------------------//
-    public function pageContact()
+    public function contactPage()
     {
         $contact_seo = GeneralSettings::whereIn('key', [
             'contact_seo_title',
@@ -42,7 +42,7 @@ class ContactController extends Controller
             'time_morning',
             'time_afternoon'
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
-        return view('avncontact::page-contact', compact('contact_seo'));
+        return view('avncontact::contact-page', compact('contact_seo'));
     }
 
     public function successContact()
