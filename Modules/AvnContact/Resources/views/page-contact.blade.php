@@ -1,6 +1,25 @@
-@extends('layouts.guest')
+@php
+    $seo_props = [];
+    if (isset($contact_seo['contact_seo_title'])) {
+        $seo_props['seo_title'] = $contact_seo['contact_seo_title']['value'] ?? '';
+    }
+    if (isset($contact_seo['contact_seo_description'])) {
+        $seo_props['seo_description'] = $contact_seo['contact_seo_description']['value'] ?? '';
+    }
+    if (isset($contact_seo['contact_seo_keywords'])) {
+        $seo_props['seo_keywords'] = [$contact_seo['contact_seo_keywords']['value'] ?? ''];
+    }
+    if (isset($contact_seo['contact_seo_image'])) {
+        $seo_props['seo_image'] = $contact_seo['contact_seo_image']['value'] ?? '';
+    }
+    $title = App\Models\GeneralSettings::whereIn('key', ['contact_seo_title'])->first();
+    $img = App\Models\GeneralSettings::whereIn('key', ['contact_seo_image'])->first();
+    $keyword = App\Models\GeneralSettings::whereIn('key', ['contact_seo_keywords'])->first();
+    $description = App\Models\GeneralSettings::whereIn('key', ['contact_seo_description'])->first();
+@endphp
+@extends('layouts.guest', $seo_props)
 @section('title')
-    Liên hệ
+    {{ $title->value ?? '' }}
 @endsection
 @section('content')
 <section class="py-5 bg-light-lighten border-top border-bottom border-light">
@@ -8,18 +27,20 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="text-center">
-                    <h3>Liên hệ với  <span class="text-primary">Chúng tôi</span></h3>
-                    <p class="text-muted mt-2">Nếu bạn muốn liên hệ với chúng tôi, vui lòng điền vào form dưới đây
-                        <br>để liên hệ với chúng tôi</p>
+                    <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                    <h3><span class="text-primary">{{ $keyword->value ?? '' }}</span></h3>
+                    <p class="text-muted mt-2">{{ $description->value ?? '' }}</p>
                 </div>
             </div>
         </div>
         <div class="row align-items-center mt-3">
             <div class="col-md-4">
-                <p class="text-muted"><span class="fw-bold">Số điện thoại:</span><br> <span class="d-block mt-1">+1 234 56 7894</span></p>
-                <p class="text-muted mt-4"><span class="fw-bold">Email :</span><br> <span class="d-block mt-1">info@gmail.com</span></p>
-                <p class="text-muted mt-4"><span class="fw-bold">Địa chỉ :</span><br> <span class="d-block mt-1">281 Tiên Dung - Tiên Cát - Việt Trì</span></p>
-                <p class="text-muted mt-4"><span class="fw-bold">Giờ làm việc:</span><br> <span class="d-block mt-1">8:00AM Tới 6:00PM</span></p>
+                <p class="text-muted"><span class="fw-bold">Số điện thoại:</span><br> <span class="d-block mt-1">{{ $contact_seo['phone_number']['value'] ?? '' }}</span></p>
+                <p class="text-muted mt-4"><span class="fw-bold">Email :</span><br> <span class="d-block mt-1">{{ $contact_seo['email']['value'] ?? '' }}</span></p>
+                <p class="text-muted mt-4"><span class="fw-bold">Địa chỉ :</span><br> <span class="d-block mt-1">{{ $contact_seo['address']['value'] ?? '' }}</span></p>
+                <p class="text-muted mt-4"><span class="fw-bold">Giờ làm việc:</span><br> <span class="d-block mt-1">{{ isset($contact_seo['time_morning']['value']) ? date('H:i', strtotime(explode(', ', $contact_seo['time_morning']['value'])[0])) : '' }} 
+                Tới 
+                {{ isset($contact_seo['time_morning']['value']) ? date('H:i', strtotime(explode(', ', $contact_seo['time_morning']['value'])[1])) : '' }}</span></p>
             </div>
             <div class="col-md-8">
                 <form action="{{ route('store-contact') }}" method="POST" enctype="multipart/form-data">

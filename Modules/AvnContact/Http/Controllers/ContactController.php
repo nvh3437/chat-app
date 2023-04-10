@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnContact\Entities\Contact;
+use App\Models\GeneralSettings;
 
 class ContactController extends Controller
 {   
@@ -30,7 +31,18 @@ class ContactController extends Controller
     //-------------------------------- Khách --------------------------//
     public function pageContact()
     {
-        return view('avncontact::page-contact');
+        $contact_seo = GeneralSettings::whereIn('key', [
+            'contact_seo_title',
+            'contact_seo_description',
+            'contact_seo_keywords',
+            'contact_seo_image',
+            'address',
+            'phone_number',
+            'email',
+            'time_morning',
+            'time_afternoon'
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
+        return view('avncontact::page-contact', compact('contact_seo'));
     }
 
     public function successContact()

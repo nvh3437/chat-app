@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnService\Entities\ServiceType;
 use Modules\AvnService\Entities\Service;
+use App\Models\GeneralSettings;
 
 class AvnServiceController extends Controller
 {
@@ -79,10 +80,16 @@ class AvnServiceController extends Controller
         }
     }
 
-    //-------------------- Trang chủ ----------------------//
+    //-------------------- Trang dịch vụ ----------------------//
     public function servicePage()
     {
         $services = Service::get();
-        return view('avnservice::service.service-page', compact('services'));
+        $service_seo = GeneralSettings::whereIn('key', [
+            'service_seo_title',
+            'service_seo_description',
+            'service_seo_keywords',
+            'service_seo_image'
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
+        return view('avnservice::service.service-page', compact('services', 'service_seo'));
     }
 }

@@ -1,6 +1,24 @@
 @php
     $services = Modules\AvnService\Http\Controllers\AvnServiceController::getService();
     $posts = Modules\AvnPost\Http\Controllers\PostController::getPost();
+
+    // SEO bài viết
+    $title_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_title'])->first();
+    $description_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_description'])->first();
+    $keyword_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_keywords'])->first();
+    $img_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_image'])->first();
+
+    // SEO dịch vụ
+    $title_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_title'])->first();
+    $description_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_description'])->first();
+    $keyword_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_keywords'])->first();
+    $img_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_image'])->first();
+
+    // SEO liên hệ
+    $title_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_title'])->first();
+    $description_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_description'])->first();
+    $keyword_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_keywords'])->first();
+    $img_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_image'])->first();
 @endphp
 @extends('layouts.guest')
 @section('title')
@@ -38,123 +56,15 @@
     </section>
     <!-- END HERO -->
 
-    <!-- START SERVICES -->
-    <!-- <section class="py-5">
-        <div class="container">
-            <div class="row py-4">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <h1 class="mt-0"><i class="mdi mdi-infinity"></i></h1>
-                        <h3>The admin is fully <span class="text-primary">responsive</span> and easy to <span
-                                class="text-primary">customize</span></h3>
-                        <p class="text-muted mt-2">The clean and well commented code allows easy customization of the
-                            theme.It's designed for
-                            <br>describing your app, agency or business.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="text-center p-3">
-                        <div class="avatar-sm m-auto">
-                            <span class="avatar-title bg-primary-lighten rounded-circle">
-                                <i class="uil uil-desktop text-primary font-24"></i>
-                            </span>
-                        </div>
-                        <h4 class="mt-3">Responsive Layouts</h4>
-                        <p class="text-muted mt-2 mb-0">Et harum quidem rerum as expedita distinctio nam libero tempore
-                            cum soluta nobis est cumque quo.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="text-center p-3">
-                        <div class="avatar-sm m-auto">
-                            <span class="avatar-title bg-primary-lighten rounded-circle">
-                                <i class="uil uil-vector-square text-primary font-24"></i>
-                            </span>
-                        </div>
-                        <h4 class="mt-3">Based on Bootstrap UI</h4>
-                        <p class="text-muted mt-2 mb-0">Temporibus autem quibusdam et aut officiis necessitatibus saepe
-                            eveniet ut sit et recusandae.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="text-center p-3">
-                        <div class="avatar-sm m-auto">
-                            <span class="avatar-title bg-primary-lighten rounded-circle">
-                                <i class="uil uil-presentation text-primary font-24"></i>
-                            </span>
-                        </div>
-                        <h4 class="mt-3">Creative Design</h4>
-                        <p class="text-muted mt-2 mb-0">Nam libero tempore, cum soluta a est eligendi minus id quod
-                            maxime placeate facere assumenda est.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="text-center p-3">
-                        <div class="avatar-sm m-auto">
-                            <span class="avatar-title bg-primary-lighten rounded-circle">
-                                <i class="uil uil-apps text-primary font-24"></i>
-                            </span>
-                        </div>
-                        <h4 class="mt-3">Multiple Applications</h4>
-                        <p class="text-muted mt-2 mb-0">Et harum quidem rerum as expedita distinctio nam libero tempore
-                            cum soluta nobis est cumque quo.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="text-center p-3">
-                        <div class="avatar-sm m-auto">
-                            <span class="avatar-title bg-primary-lighten rounded-circle">
-                                <i class="uil uil-shopping-cart-alt text-primary font-24"></i>
-                            </span>
-                        </div>
-                        <h4 class="mt-3">Ecommerce Pages</h4>
-                        <p class="text-muted mt-2 mb-0">Temporibus autem quibusdam et aut officiis necessitatibus saepe
-                            eveniet ut sit et recusandae.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="text-center p-3">
-                        <div class="avatar-sm m-auto">
-                            <span class="avatar-title bg-primary-lighten rounded-circle">
-                                <i class="uil uil-grids text-primary font-24"></i>
-                            </span>
-                        </div>
-                        <h4 class="mt-3">Multiple Layouts</h4>
-                        <p class="text-muted mt-2 mb-0">Nam libero tempore, cum soluta a est eligendi minus id quod
-                            maxime placeate facere assumenda est.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section> -->
-    <!-- END SERVICES -->
-
     <!-- START FEATURES 1 -->
     <section class="py-5 bg-light-lighten border-top border-bottom border-light">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <h1 class="mt-0"><i class="mdi mdi-post"></i></h1>
-                        <h3><span class="text-primary">Bài viết</span></h3>
-                        <p class="text-muted mt-2">Xem ngay các bài viết mới nhất của chúng tôi</p>
+                        <img src="{{ asset($img_post->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <h3><span class="text-primary">{{ $keyword_post->value ?? '' }}</span></h3>
+                        <p class="text-muted mt-2">{{ $description_post->value ?? '' }}</p>
                     </div>
                 </div>
             </div>
@@ -169,9 +79,9 @@
                         <a href="{{ route('view-post', $params) }}">
                             <div class="card d-block">
                                 @if($item->img == '')
-                                    <img class="card-img-top" src="{{ asset('/resources/assets/images/logo.png') }}" alt="{{$item->name}}">
+                                    <img class="card-img-top" src="{{ asset('/resources/assets/images/logo.png') }}" alt="{{$item->name}}" style="max-height: 400px; object-fit: cover;">
                                 @else
-                                    <img class="card-img-top" src="{{ asset($item->img) }}" alt="{{$item->name}}">
+                                    <img class="card-img-top" src="{{ asset($item->img) }}" alt="{{$item->name}}" style="max-height: 400px; object-fit: cover;">
                                 @endif
                                 <div class="card-body position-relative">
                                     <h4 class="mt-0">
@@ -204,73 +114,15 @@
     </section>
     <!-- END FEATURES 1 -->
 
-    <!-- START FEATURES 2 -->
-    <!-- <section class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <h1 class="mt-0"><i class="mdi mdi-heart-multiple-outline"></i></h1>
-                        <h3>Features you'll <span class="text-danger">love</span></h3>
-                        <p class="text-muted mt-2">Hyper comes with next generation ui design and have multiple benefits
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-2 py-5 align-items-center">
-                <div class="col-lg-5">
-                    <img src="assets/images/features-1.svg" class="img-fluid" alt="">
-                </div>
-                <div class="col-lg-6 offset-lg-1">
-                    <h3 class="fw-normal">Inbuilt applications and pages</h3>
-                    <p class="text-muted mt-3">Hyper comes with a variety of ready-to-use applications and pages that help to speed up the development</p>
-
-                    <div class="mt-4">
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Projects & Tasks</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Ecommerce Application Pages</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Profile, pricing, invoice</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Login, signup, forget password</p>
-                    </div>
-
-                    <a href="" class="btn btn-primary rounded-pill mt-3">Read More <i class="mdi mdi-arrow-right ms-1"></i></a>
-
-                </div>
-            </div>
-
-            <div class="row pb-3 pt-5 align-items-center">
-                <div class="col-lg-6">
-                    <h3 class="fw-normal">Simply beautiful design</h3>
-                    <p class="text-muted mt-3">The simplest and fastest way to build dashboard or admin panel. Hyper is built using the latest tech and tools and provide an easy way to customize anything, including an overall color schemes, layout, etc.</p>
-
-                    <div class="mt-4">
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Built with latest Bootstrap</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Extensive use of SCSS variables</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Well documented and structured code</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Detailed Documentation</p>
-                    </div>
-
-                    <a href="" class="btn btn-success rounded-pill mt-3">Read More <i class="mdi mdi-arrow-right ms-1"></i></a>
-
-                </div>
-                <div class="col-lg-5 offset-lg-1">
-                    <img src="assets/images/features-2.svg" class="img-fluid" alt="">
-                </div>
-            </div>
-
-        </div>
-    </section> -->
-    <!-- END FEATURES 2 -->
-
     <!-- START PRICING -->
     <section class="py-5 bg-light-lighten border-top border-bottom border-light">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <h1 class="mt-0"><i class="mdi mdi-tag-multiple"></i></h1>
-                        <h3>Chọn ngay <span class="text-primary">Dịch vụ</span></h3>
-                        <p class="text-muted mt-2">Các dịch vụ phiên dịch chuyên nghiệp nhất của chúng tôi
-                            <br>dành cho Doanh nghiệp, Cá nhân,...</p>
+                        <img src="{{ asset($img_service->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <h3><span class="text-primary">{{ $keyword_service->value ?? '' }}</span></h3>
+                        <p class="text-muted mt-2">{{ $description_service->value ?? '' }}</p>
                     </div>
                 </div>
             </div>
@@ -307,18 +159,20 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <h3>Liên hệ với  <span class="text-primary">Chúng tôi</span></h3>
-                        <p class="text-muted mt-2">Nếu bạn muốn liên hệ với chúng tôi, vui lòng điền vào form dưới đây
-                            <br>để liên hệ với chúng tôi</p>
+                        <img src="{{ asset($img_contact->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <h3><span class="text-primary">{{ $keyword_contact->value ?? '' }}</span></h3>
+                        <p class="text-muted mt-2">{{ $description_contact->value ?? '' }}</p>
                     </div>
                 </div>
             </div>
             <div class="row align-items-center mt-3">
                 <div class="col-md-4">
-                    <p class="text-muted"><span class="fw-bold">Số điện thoại:</span><br> <span class="d-block mt-1">+1 234 56 7894</span></p>
-                    <p class="text-muted mt-4"><span class="fw-bold">Email :</span><br> <span class="d-block mt-1">info@gmail.com</span></p>
-                    <p class="text-muted mt-4"><span class="fw-bold">Địa chỉ :</span><br> <span class="d-block mt-1">281 Tiên Dung - Tiên Cát - Việt Trì</span></p>
-                    <p class="text-muted mt-4"><span class="fw-bold">Giờ làm việc:</span><br> <span class="d-block mt-1">8:00AM Tới 6:00PM</span></p>
+                    <p class="text-muted"><span class="fw-bold">Số điện thoại:</span><br> <span class="d-block mt-1">{{ $home_seo['phone_number']['value'] ?? '' }}</span></p>
+                    <p class="text-muted mt-4"><span class="fw-bold">Email :</span><br> <span class="d-block mt-1">{{ $home_seo['email']['value'] ?? '' }}</span></p>
+                    <p class="text-muted mt-4"><span class="fw-bold">Địa chỉ :</span><br> <span class="d-block mt-1">{{ $home_seo['address']['value'] ?? '' }}</span></p>
+                    <p class="text-muted mt-4"><span class="fw-bold">Giờ làm việc:</span><br> <span class="d-block mt-1">{{ isset($home_seo['time_morning']['value']) ? date('H:i', strtotime(explode(', ', $home_seo['time_morning']['value'])[0])) : '' }} 
+                    Tới 
+                    {{ isset($home_seo['time_morning']['value']) ? date('H:i', strtotime(explode(', ', $home_seo['time_morning']['value'])[1])) : '' }}</span></p>
                 </div>
                 <div class="col-md-8">
                     <form action="{{ route('store-contact') }}" method="POST" enctype="multipart/form-data">
