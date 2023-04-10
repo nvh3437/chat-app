@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                Huu Chien
+                2022 © AVNTECH
             </div>
         </div>
     </div>

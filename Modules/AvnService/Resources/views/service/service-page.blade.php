@@ -1,6 +1,25 @@
-@extends('layouts.guest')
+@php
+    $seo_props = [];
+    if (isset($service_seo['service_seo_title'])) {
+        $seo_props['seo_title'] = $service_seo['service_seo_title']['value'] ?? '';
+    }
+    if (isset($service_seo['service_seo_description'])) {
+        $seo_props['seo_description'] = $service_seo['service_seo_description']['value'] ?? '';
+    }
+    if (isset($service_seo['service_seo_keywords'])) {
+        $seo_props['seo_keywords'] = [$service_seo['service_seo_keywords']['value'] ?? ''];
+    }
+    if (isset($service_seo['service_seo_image'])) {
+        $seo_props['seo_image'] = $service_seo['service_seo_image']['value'] ?? '';
+    }
+    $title = App\Models\GeneralSettings::whereIn('key', ['service_seo_title'])->first();
+    $img = App\Models\GeneralSettings::whereIn('key', ['service_seo_image'])->first();
+    $keyword = App\Models\GeneralSettings::whereIn('key', ['service_seo_keywords'])->first();
+    $description = App\Models\GeneralSettings::whereIn('key', ['service_seo_description'])->first();
+@endphp
+@extends('layouts.guest', $seo_props)
 @section('title')
-    Dịch vụ
+    {{ $title->value ?? '' }}
 @endsection
 @section('content')
     <section class="py-5 bg-light-lighten border-top border-bottom border-light">
@@ -8,10 +27,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <h1 class="mt-0"><i class="mdi mdi-tag-multiple"></i></h1>
-                        <h3>Chọn ngay <span class="text-primary">Dịch vụ</span></h3>
-                        <p class="text-muted mt-2">Các dịch vụ phiên dịch chuyên nghiệp nhất của chúng tôi
-                            <br>dành cho Doanh nghiệp, Cá nhân,...</p>
+                        <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <h3><span class="text-primary">{{ $keyword->value ?? '' }}</span></h3>
+                        <p class="text-muted mt-2">{{ $description->value ?? '' }}</p>
                     </div>
                 </div>
             </div>

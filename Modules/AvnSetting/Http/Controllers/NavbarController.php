@@ -16,10 +16,10 @@ class NavbarController extends Controller
         return $navbars;
     }
 
-    public function listNavbar()
+    public function navbar()
     {
         $navbars = Navbar::get();
-        return view('avnsetting::navbar.list-navbar', compact('navbars'));
+        return view('avnsetting::navbar.navbar', compact('navbars'));
     }
 
     public function storeNavbar(Request $request)
