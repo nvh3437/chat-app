@@ -1,76 +1,120 @@
-@extends('layouts.admin')
+@php
+    use App\Http\Controllers\NotificationController;
+    $user = App\Http\Controllers\Controller::getUser();
+    $notifications = App\Http\Controllers\NotificationController::getNotifications(); 
+@endphp
+@extends('layouts.guest')
 @section('title')
-    Sửa bài viết
+    Sửa bài
 @endsection
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box">
-                    <h4 class="page-title">Sửa bài dịch vụ</h4>
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-1">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown float-end">
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="javascript:void(0);" class="dropdown-item">Sửa hồ sơ</a>                         
+                        </div>
+                    </div>
+                    <div class="d-flex align-self-start">
+                        @if($user->type == 'system')
+                            <img class="d-flex align-self-start rounded me-2" src="{{ asset('/resources/assets/images/logo.png') }}" height="48">
+                        @elseif($user->type == 'customer')
+                            <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->customer->img ?? '/resources/assets/images/logo.png') }}" height="48">
+                        @elseif($user->type == 'partern')
+                            <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->partern->img ?? '/resources/assets/images/logo.png') }}" height="48">
+                        @endif
+                        <div class="w-100 overflow-hidden">
+                            <h5 class="mt-1 mb-0">{{$user->name}}</h5>
+                            <p class="mb-1 mt-1 text-muted">
+                                @if($user->type == 'system')
+                                    Quản lý
+                                @elseif($user->type == 'customer')
+                                    Khách hàng
+                                @else
+                                    Chuyên gia
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                    <div class="list-group list-group-flush mt-2">
+                        <a href="javascript:void(0);" class="list-group-item list-group-item-action text-primary border-0"><i class='uil uil-images me-1'></i> Bản tin</a>
+                        <a href="javascript:void(0);" class="list-group-item list-group-item-action border-0"><i class='uil uil-images me-1'></i> Tin của tôi</a>
+                        <a href="javascript:void(0);" class="list-group-item list-group-item-action border-0"><i class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown float-end">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <form action="{{ route('clear-notifications') }}" method="POST">
+                            @csrf
+                            @method('delete')
+                                <button type="submit" class="dropdown-item">Xóa hết</button>
+                            </form>
+                        </div>
+                    </div>
+                    <h4 class="header-title mb-1">Thông báo</h4>
+                    <div class="d-flex mt-3">
+                        @foreach ($notifications as $notification)
+                            <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
+                            <div>
+                                <a class="mt-1 font-14" href="{{ route('read-notifications', ['id'=>$notification->id]) }}"  data-link="{{ $notification->link ?? 'none' }}" data-id="{{ $notification->id }}" data-status="{{ $notification->status }}">
+                                    <strong>{{ $notification->title }}:</strong>
+                                    <span class="text-muted">
+                                        {!! $notification->content !!}
+                                    </span>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div> 
+            </div> 
+        </div>
+        <div class="col-xxl-9 col-lg-12 order-lg-2 order-xxl-1">
+            <div class="card">
+                <div class="card-body p-0">
+                    <ul class="nav nav-tabs nav-bordered">
+                        <li class="nav-item">
+                            <a href="#newpost" data-bs-toggle="tab" aria-expanded="false" class="nav-link active px-3 py-2">
+                                <i class="mdi mdi-pencil-box-multiple font-18 d-md-none d-block"></i>
+                                <span class="d-none d-md-block">Sửa bài</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane show active p-3" id="newpost">
+                            <div class="border rounded">
+                                <form action="{{ route('update-feed', $new_feed->id) }}" method="POST" enctype="multipart/form-data" class="comment-area-box">
+                                    @csrf
+                                    @method('PUT')
+                                    <textarea rows="4" class="form-control border-0 resize-none" name="description" id="editor">{!! $new_feed->description !!}</textarea>
+                                    <div class="p-2 bg-light d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="form-check">
+                                                <input type="checkbox" name="status" value="1" class="form-check-input" {{ $new_feed->status == 1 ? 'checked' : '' }}>
+                                                <label class="form-check-label">Cá nhân</label>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-sm btn-success"><i class='uil uil-message me-1'></i>Cập nhật</button>
+                                    </div>
+                                </form>
+                            </div> 
+                        </div> 
+                    </div> 
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <form action="{{ route('update-post', $post->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <label class="form-label">
-                                        Ảnh bìa
-                                    </label>
-                                    <input type="file" class="form-control" name="img" accept="images/*">
-                                    @if($post->img == '')
-                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="max-width: 200px;" />
-                                    @else
-                                        <img class="img-fluid mt-2" src="{{ asset($post->img) }}" style="max-width: 200px;" />
-                                    @endif
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Tiêu đề <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" name="name" required value="{{$post->name}}">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Danh mục <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="form-select " name="category_id" required>
-                                        @foreach ($categories as $item)
-                                            <option value="{{ $item->id }}"
-                                                {{ ( $item->id == $post->category_id) ? 'selected' : '' }}>
-                                                {{ $item->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-lg-12">
-                                    <label class="form-label mt-2">
-                                        Nội dung bài viết <span class="text-danger">*</span>
-                                    </label>
-                                    <textarea class="form-control" id="editor" name="description" style="height: 300px;" required>{!! $post->description !!}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center mt-3 mb-3">
-                            <button type="submit" class="btn btn-danger me-3">Sửa</button>
-                            <a href="{{ route('list-post') }}" class="btn btn-secondary ms-3">Quay lại</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    </div> 
+</div>
 @endsection
 @section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery-ui.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
     <script>
@@ -239,3 +283,4 @@
         });
     </script>
 @endsection
+
