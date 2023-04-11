@@ -59,6 +59,7 @@
 					                <th>STT</th>
 					                <th>Tên</th>
 					                <th>Đường dẫn</th>
+					                <th>Thứ tự</th>
 					                <th>Sở thuộc</th>
 					                <th>Chọn</th>
 					            </tr>
@@ -72,6 +73,7 @@
 					                    <td>{{ ++$i }}</td>
 					                    <td>{{ $item->name }}</td>
 					                    <td>{{ $item->link }}</td>
+					                    <td>{{ $item->order }}</td>
 					                    <td>
                                             @if($item->parent_id == '0')
                                                 Không có
