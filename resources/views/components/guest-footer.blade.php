@@ -3,12 +3,13 @@
     $footer_info = Modules\AvnSetting\Http\Controllers\FooterController::getFooterInfo(); 
     $footer_icon = Modules\AvnSetting\Http\Controllers\FooterController::getFooterIcon();
     $description = App\Models\GeneralSettings::whereIn('key', ['footer_description'])->first(); 
+    $logo = App\Http\Controllers\Controller::getSetting('logo')->value;
 @endphp
 <footer class="bg-dark py-5">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <img src="assets/images/logo.png" alt="" class="logo-dark" height="18" />
+                <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}" width="70" height="70" />
                 <p class="text-muted mt-4">{{ $description->value ?? '' }}</p>
                 <ul class="social-list list-inline mt-3">
                     @foreach($footer_icon as $item)

@@ -18,7 +18,18 @@ class PageController extends Controller
             'home_seo_description',
             'home_seo_keywords',
             'home_seo_link',
-            'home_seo_image'
+            'home_seo_image',
+            'home_seo_feature_icon',
+            'home_seo_feature_title',
+            'home_seo_feature_des',
+            'home_seo_feature_title_2',
+            'home_seo_feature_des_2',
+            'home_seo_feature_li_1',
+            'home_seo_feature_li_2',
+            'home_seo_feature_li_3',
+            'home_seo_feature_li_4',
+            'home_seo_feature_button',
+            'home_seo_feature_img'
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         return view('avnsetting::page.home-seo', compact('home_seo'));
     }
@@ -26,6 +37,7 @@ class PageController extends Controller
     public function updateHomeSeo(Request $request)
     {
         try {
+            // Banner
             if ($request->home_seo_title) {
                 $setting = GeneralSettings::where('key', 'home_seo_title')->first() ?? new GeneralSettings();
                 $setting->key = $setting->key ?? 'home_seo_title';
@@ -60,6 +72,87 @@ class PageController extends Controller
                 $image->storeAs('AvnSetting', $filename);
                 $path = 'storage/app/AvnSetting/' . $filename;
                 $setting->key = $setting->key ?? 'home_seo_image';
+                $setting->value = $path;
+                $setting->save();
+            }
+            // Giới thiệu
+            if ($request->home_seo_feature_title) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_title')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_title';
+                $setting->value = trim($request->home_seo_feature_title);
+                $setting->save();
+            }
+            if ($request->home_seo_feature_des) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_des')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_des';
+                $setting->value = trim($request->home_seo_feature_des);
+                $setting->save();
+            }
+            if ($request->home_seo_feature_title_2) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_title_2')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_title_2';
+                $setting->value = trim($request->home_seo_feature_title_2);
+                $setting->save();
+            }
+            if ($request->home_seo_feature_des_2) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_des_2')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_des_2';
+                $setting->value = trim($request->home_seo_feature_des_2);
+                $setting->save();
+            }
+            if ($request->home_seo_feature_li_1) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_li_1')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_li_1';
+                $setting->value = trim($request->home_seo_feature_li_1);
+                $setting->save();
+            }
+            if ($request->home_seo_feature_li_2) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_li_2')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_li_2';
+                $setting->value = trim($request->home_seo_feature_li_2);
+                $setting->save();
+            }
+            if ($request->home_seo_feature_li_3) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_li_3')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_li_3';
+                $setting->value = trim($request->home_seo_feature_li_3);
+                $setting->save();
+            }
+            if ($request->home_seo_feature_li_4) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_li_4')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_li_4';
+                $setting->value = trim($request->home_seo_feature_li_4);
+                $setting->save();
+            }
+            if ($request->home_seo_feature_button) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_button')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'home_seo_feature_button';
+                $setting->value = trim($request->home_seo_feature_button);
+                $setting->save();
+            }
+            if ($request->hasFile('home_seo_feature_icon') && $request->file('home_seo_feature_icon')->isValid()) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_icon')->first() ?? new GeneralSettings();
+                $image = $request->file('home_seo_feature_icon');
+                $filename = date("Y-m-d-h-i-s-") . rand(00000000, 99999999). '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnSetting')) {
+                    File::makeDirectory('storage/app/AvnSetting', 0777, true, true);
+                }
+                $image->storeAs('AvnSetting', $filename);
+                $path = 'storage/app/AvnSetting/' . $filename;
+                $setting->key = $setting->key ?? 'home_seo_feature_icon';
+                $setting->value = $path;
+                $setting->save();
+            }
+            if ($request->hasFile('home_seo_feature_img') && $request->file('home_seo_feature_img')->isValid()) {
+                $setting = GeneralSettings::where('key', 'home_seo_feature_img')->first() ?? new GeneralSettings();
+                $image = $request->file('home_seo_feature_img');
+                $filename = date("Y-m-d-h-i-s-") . rand(00000000, 99999999). '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnSetting')) {
+                    File::makeDirectory('storage/app/AvnSetting', 0777, true, true);
+                }
+                $image->storeAs('AvnSetting', $filename);
+                $path = 'storage/app/AvnSetting/' . $filename;
+                $setting->key = $setting->key ?? 'home_seo_feature_img';
                 $setting->value = $path;
                 $setting->save();
             }
