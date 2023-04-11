@@ -1,0 +1,11 @@
+{
+    "name": "AvnNewFeed",
+    "alias": "avnnewfeed",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AvnNewFeed\\Providers\\AvnNewFeedServiceProvider"
+    ],
+    "files": []
+}

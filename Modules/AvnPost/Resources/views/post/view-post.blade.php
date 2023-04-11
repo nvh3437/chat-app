@@ -12,7 +12,7 @@
             style="object-fit: cover; height: 300px;" />
         @endif
         <div class="container">
-            <div class="row">
+            <div class="row mt-2">
                 <div class="card">
                     <div class="card-body">
                         <div class="col-lg-12 mx-auto mb-6">
@@ -31,8 +31,42 @@
                     </div>
                 </div>
             </div>
+            @if(count($posts) > 1)
             <div class="row">
-                <h4 class="header-title">Bình luận</h4>
+                <h4 class="header-title p-0">Bài viết liên quan</h4>
+                @foreach($posts as $item)
+                    @if($item->id != $post->id)
+                    @php
+                        $params = [
+                            'alias' => $item->alias ?? $item->id,
+                        ];
+                    @endphp
+                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 me-2 p-0">
+                            <a href="{{ route('view-post', $params) }}" class="text-muted">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                @if($item->img == '')
+                                                    <img class="rounded" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 120px; width: 120px; object-fit: cover;">
+                                                @else
+                                                    <img class="rounded" src="{{ asset($item->img) }}" style="height: 120px; width: 120px; object-fit: cover;">
+                                                @endif
+                                            </div>
+                                            <div class="col-auto">
+                                                <h5>{{$item->name}}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endif
+                @endforeach 
+            </div>
+            @endif  
+            <div class="row">
+                <h4 class="header-title p-0">Bình luận</h4>
                 @if($user == '')
                     <div class="card">
                         <div class="card-body">
@@ -46,15 +80,15 @@
                             @csrf
                                 <input type="hidden" name="post_id" value="{{$post->id}}">
                                 <textarea rows="4" class="form-control border-0 resize-none" placeholder="Nhập bình luận...." name="comment"></textarea>
-                                <div class="p-2 bg-light d-flex justify-content-end align-items-center">
+                                <div class="p-2 d-flex justify-content-end align-items-center">
                                     <button type="submit" class="btn btn-sm btn-success"><i class='uil uil-message me-1'></i>Gửi</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    @foreach($comments as $item)
-                        <div class="card">
-                            <div class="card-body pb-1">
+                    <div class="card">
+                        <div class="card-body pb-1">
+                            @foreach($comments as $item)
                                 <div class="d-flex">
                                     <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}" height="32">
                                     <div class="w-100">
@@ -123,13 +157,13 @@
                                         <p class="text-muted"><small><td>{{ date('d/m/Y', strtotime($item->updated_at)) }}</td></small></p>
                                     </div>
                                 </div>
-                                <hr class="m-0" />
-                                <div class="font-16 text-start text-dark my-2">
+                                <div class="font-16 text-start text-dark">
                                     {!! $item->comment !!}
                                 </div>
-                            </div>
+                                <hr class="mt-1"/>
+                            @endforeach 
                         </div>
-                    @endforeach 
+                    </div>
                 @endif
             </div>
         </div>
@@ -138,15 +172,5 @@
 @section('js')
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
-    <script>
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4&appId=241110544128";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
 @endsection
 

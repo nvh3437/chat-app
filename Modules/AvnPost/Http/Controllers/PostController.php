@@ -13,9 +13,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Helper;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\GeneralSettings;
 
 class PostController extends Controller
 {
+    //------------------------------------ Trang chủ -----------------------------//
+    public static function getPost()
+    {
+        $posts = Post::orderByDesc('updated_at')->limit(3)->get();
+        return $posts;
+    }
+
     //------------------------------------ Quản lý -------------------------------//
     public function listPost()
     {
@@ -117,12 +125,18 @@ class PostController extends Controller
         }
     }
 
-    //------------------------------------ Trang chủ -------------------------------//
+    //------------------------------------ Trang bài viết -------------------------------//
     public function postPage()
     {
         $posts = Post::orderByDesc('updated_at')->limit(15)->get();
         $categories = PostCategory::get();
-        return view('avnpost::post.post-page', compact('posts', 'categories'));
+        $post_seo = GeneralSettings::whereIn('key', [
+            'post_seo_title',
+            'post_seo_description',
+            'post_seo_keywords',
+            'post_seo_image'
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
+        return view('avnpost::post.post-page', compact('posts', 'categories', 'post_seo'));
     }
 
     public function postOfCategory($alias)
@@ -133,7 +147,13 @@ class PostController extends Controller
         }
         $posts = Post::where('category_id', $category->id)->orderByDesc('updated_at')->limit(15)->get();
         $categories = PostCategory::get();
-        return view('avnpost::post.post-of-category', compact('category', 'posts', 'categories'));
+        $post_seo = GeneralSettings::whereIn('key', [
+            'post_seo_title',
+            'post_seo_description',
+            'post_seo_keywords',
+            'post_seo_image'
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
+        return view('avnpost::post.post-of-category', compact('category', 'posts', 'categories', 'post_seo'));
     }
 
     public function viewPost($alias)
@@ -143,6 +163,9 @@ class PostController extends Controller
             $post = Post::findOrFail($alias);
         }
         $comments = PostComment::where('post_id', $post->id)->get();
-        return view('avnpost::post.view-post', compact('post', 'comments'));
+
+        // Các bài viết liên quan
+        $posts = Post::where('category_id', $post->category_id)->get();
+        return view('avnpost::post.view-post', compact('post', 'comments', 'posts'));
     }
 }

@@ -1,6 +1,25 @@
-@extends('layouts.guest')
+@php
+    $seo_props = [];
+    if (isset($post_seo['post_seo_title'])) {
+        $seo_props['seo_title'] = $post_seo['post_seo_title']['value'] ?? '';
+    }
+    if (isset($post_seo['post_seo_description'])) {
+        $seo_props['seo_description'] = $post_seo['post_seo_description']['value'] ?? '';
+    }
+    if (isset($post_seo['post_seo_keywords'])) {
+        $seo_props['seo_keywords'] = [$post_seo['post_seo_keywords']['value'] ?? ''];
+    }
+    if (isset($post_seo['post_seo_image'])) {
+        $seo_props['seo_image'] = $post_seo['post_seo_image']['value'] ?? '';
+    }
+    $title = App\Models\GeneralSettings::whereIn('key', ['post_seo_title'])->first();
+    $img = App\Models\GeneralSettings::whereIn('key', ['post_seo_image'])->first();
+    $keyword = App\Models\GeneralSettings::whereIn('key', ['post_seo_keywords'])->first();
+    $description = App\Models\GeneralSettings::whereIn('key', ['post_seo_description'])->first();
+@endphp
+@extends('layouts.guest', $seo_props)
 @section('title')
-    Bài viết
+    {{ $title->value ?? '' }}
 @endsection
 @section('content')
     <section class="py-5 bg-light-lighten border-top border-bottom border-light">
@@ -8,9 +27,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <h1 class="mt-0"><i class="mdi mdi-post"></i></h1>
-                        <h3><span class="text-primary">Bài viết</span></h3>
-                        <p class="text-muted mt-2">Xem ngay các bài viết mới nhất của chúng tôi</p>
+                        <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <h3><span class="text-primary">{{ $keyword->value ?? '' }}</span></h3>
+                        <p class="text-muted mt-2">{{ $description->value ?? '' }}</p>
                     </div>
                 </div>
             </div>
@@ -31,45 +50,43 @@
                         </div>
                     </div>
                 </div>
-                @foreach($posts as $item)
-                @php
-                    $params = [
-                        'alias' => $item->alias ?? $item->id,
-                    ];
-                @endphp
                 <div class="col-lg-8 mx-auto">
-                    <div class="col-md-6 col-xxl-4">
-                        <a href="{{ route('view-post', $params) }}">
-                            <div class="card d-block">
-                                @if($item->img == '')
-                                    <img class="card-img-top" src="{{ asset('/resources/assets/images/logo.png') }}" alt="{{$item->name}}">
-                                @else
-                                    <img class="card-img-top" src="{{ asset($item->img) }}" alt="{{$item->name}}">
-                                @endif
-                                <div class="card-body position-relative">
-                                    <h4 class="mt-0">
-                                        <a class="text-title">{{$item->name}}</a>
-                                    </h4>
-                                    <p class="mb-2">
-                                        <span class="pe-2 text-nowrap">
-                                            <i class="mdi mdi-timer-outline"></i>
-                                            <b>{{ date('d/m/Y', strtotime($item->updated_at)) }}</b>
-                                        </span>
-                                        <span class="pe-2 text-nowrap">
-                                            <i class="mdi mdi-menu-open"></i>
-                                            <b>{{$item->category->name}}</b>
-                                        </span>
-                                        <span class="text-nowrap">
-                                            <i class="mdi mdi-comment-multiple-outline"></i>
-                                            <b>{{count($item->comments)}}</b>
-                                        </span>
-                                    </p>
-                                </div>
+                    <div class="row">
+                        @foreach($posts as $item)
+                        @php
+                            $params = [
+                                'alias' => $item->alias ?? $item->id,
+                            ];
+                        @endphp
+                            <div class="col-md-6 col-xxl-3">
+                                <a href="{{ route('view-post', $params) }}">
+                                    <div class="card d-block">
+                                        <img class="card-img-top" src="{{ asset($item->img ?? '/resources/assets/images/logo.png') }}" alt="{{$item->name}}" style="max-height: 400px; object-fit: cover;">
+                                        <div class="card-body position-relative">
+                                            <h4 class="mt-0">
+                                                <a class="text-title">{{$item->name}}</a>
+                                            </h4>
+                                            <p class="mb-2">
+                                                <span class="pe-2 text-nowrap">
+                                                    <i class="mdi mdi-timer-outline"></i>
+                                                    <b>{{ date('d/m/Y', strtotime($item->updated_at)) }}</b>
+                                                </span>
+                                                <span class="pe-2 text-nowrap">
+                                                    <i class="mdi mdi-menu-open"></i>
+                                                    <b>{{$item->category->name}}</b>
+                                                </span>
+                                                <span class="text-nowrap">
+                                                    <i class="mdi mdi-comment-multiple-outline"></i>
+                                                    <b>{{count($item->comments)}}</b>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a> 
                             </div>
-                        </a> 
+                        @endforeach
                     </div>
                 </div>
-                @endforeach
             </div>
         </div>
     </section>

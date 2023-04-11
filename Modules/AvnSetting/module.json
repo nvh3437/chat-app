@@ -1,0 +1,11 @@
+{
+    "name": "AvnSetting",
+    "alias": "avnsetting",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AvnSetting\\Providers\\AvnSettingServiceProvider"
+    ],
+    "files": []
+}
