@@ -32,24 +32,7 @@
                 </div>
             </li>
             @if($user)
-                <li class="dropdown notification-list">
-                    <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" id="topbar-notifydrop" role="button" aria-haspopup="true" aria-expanded="false">
-                        <i class="dripicons-bell noti-icon"></i>
-                        <span class="noti-icon-badge"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg" aria-labelledby="topbar-notifydrop">
-                        <!-- item-->
-                        <div class="dropdown-item noti-title">
-                            <h5 class="m-0">
-                                <span class="float-end">
-                                    <a href="javascript: void(0);" class="text-dark">
-                                        <small>Xóa hết</small>
-                                    </a>
-                                </span>Thông báo
-                            </h5>
-                        </div>    
-                    </div>
-                </li>
+                @include('components.notification')
                 @if($user->type == 'system')
                     <li class="notification-list">
                         <a class="nav-link end-bar-toggle" href="{{ route('dashboard-manager') }}">
