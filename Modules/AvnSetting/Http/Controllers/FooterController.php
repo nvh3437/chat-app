@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnSetting\Entities\Footer;
 use Modules\AvnSetting\Entities\FooterIcon;
-use Modules\AvnSetting\Entities\FooterInfor;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GeneralSettings;
@@ -21,12 +20,6 @@ class FooterController extends Controller
         return $footer;
     }
 
-    public static function getFooterInfo()
-    {
-        $footer_info = FooterInfor::get();
-        return $footer_info;
-    }
-
     public static function getFooterIcon()
     {
         $footer_icon = FooterICon::get();
@@ -37,12 +30,11 @@ class FooterController extends Controller
     public function footer()
     {
         $footer = Footer::get();
-        $footer_info = FooterInfor::get();
         $footer_icon = FooterICon::get();
         $footer_description = GeneralSettings::whereIn('key', [
             'footer_description'
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
-        return view('avnsetting::footer.footer', compact('footer', 'footer_info', 'footer_icon', 'footer_description'));
+        return view('avnsetting::footer.footer', compact('footer', 'footer_icon', 'footer_description'));
     }
 
     public function updateFooterDes(Request $request)
@@ -65,7 +57,9 @@ class FooterController extends Controller
     {
         try {
             $footer = new Footer();
-            $footer->infor = $request->infor;
+            $footer->name = $request->name;
+            $footer->link = $request->link;
+            $footer->parent_id = $request->parent_id;
             $footer->save();
             return back()->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
@@ -77,7 +71,9 @@ class FooterController extends Controller
     {
         try {
             $footer = Footer::findOrFail($id);
-            $footer->infor = $request->infor;
+            $footer->name = $request->name;
+            $footer->link = $request->link;
+            $footer->parent_id = $request->parent_id;
             $footer->save();
             return back()->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
@@ -89,46 +85,6 @@ class FooterController extends Controller
     {
         try{
             $footer = Footer::findOrFail($id)->delete();
-            return back()->with('Success', 'Xóa thành công');
-        }
-        catch(Exception $e){
-            return back()->with('Failed', 'Xóa thất bại');
-        }
-    }
-
-    //------------------------------ Infor -------------------------------//
-    public function storeFooterInfor(Request $request)
-    {
-        try {
-            $footer_infor = new FooterInfor();
-            $footer_infor->name = $request->name;
-            $footer_infor->link = $request->link;
-            $footer_infor->infor_id = $request->infor_id;
-            $footer_infor->save();
-            return back()->with('Success', 'Thêm thành công');
-        } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
-        }
-    }
-
-    public function updateFooterInfor(Request $request, $id)
-    {
-        try {
-            $footer_infor = FooterInfor::findOrFail($id);
-            $footer_infor->name = $request->name;
-            $footer_infor->link = $request->link;
-            $footer_infor->infor_id = $request->infor_id;
-            $footer_infor->save();
-            return back()->with('Success', 'Cập nhật thành công');
-        } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
-        }
-    }
-
-    public function deleteFooterInfor($id)
-    {
-        try{
-            $footer_infor = FooterInfor::findOrFail($id)->delete();
             return back()->with('Success', 'Xóa thành công');
         }
         catch(Exception $e){

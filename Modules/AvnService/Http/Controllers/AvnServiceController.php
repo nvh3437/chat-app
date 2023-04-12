@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\AvnService\Entities\ServiceType;
 use Modules\AvnService\Entities\Service;
 use App\Models\GeneralSettings;
+use Modules\AvnService\Http\Requests\ServiceRequest;
 
 class AvnServiceController extends Controller
 {
@@ -30,7 +31,7 @@ class AvnServiceController extends Controller
         return view('avnservice::service.add-service', compact('types'));
     }
 
-    public function storeService(Request $request)
+    public function storeService(ServiceRequest $request)
     {
         try {
             $service = new Service();
@@ -53,7 +54,7 @@ class AvnServiceController extends Controller
         return view('avnservice::service.edit-service', compact('service', 'types'));
     }
 
-    public function updateService(Request $request, $id)
+    public function updateService(ServiceRequest $request, $id)
     {
         try {
             $service = Service::findOrFail($id);

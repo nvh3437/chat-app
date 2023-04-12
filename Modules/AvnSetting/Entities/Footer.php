@@ -17,8 +17,13 @@ class Footer extends Model
         return \Modules\AvnSetting\Database\factories\FooterFactory::new();
     }
 
-    public function infors()
+    public function parent()
     {
-        return $this->hasMany(FooterInfor::class, 'infor_id', 'id');
+        return $this->hasOne(Footer::class, 'id', 'parent_id');
+    }
+
+    public function childrens()
+    {
+        return $this->hasMany(Footer::class,'parent_id', 'id');
     }
 }

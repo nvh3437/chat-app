@@ -29,11 +29,6 @@ Route::prefix('setting')->group(function() {
     Route::put('/update-footer/{id}', 'FooterController@updateFooter')->middleware(['auth', 'permission'])->name('update-footer');
     Route::delete('/delete-footer/{id}', 'FooterController@deleteFooter')->middleware(['auth', 'permission'])->name('delete-footer');
 
-        // Infor
-    Route::post('/store-footer-infor', 'FooterController@storeFooterInfor')->middleware(['auth', 'permission'])->name('store-footer-infor');
-    Route::put('/update-footer-infor/{id}', 'FooterController@updateFooterInfor')->middleware(['auth', 'permission'])->name('update-footer-infor');
-    Route::delete('/delete-footer-infor/{id}', 'FooterController@deleteFooterInfor')->middleware(['auth', 'permission'])->name('delete-footer-infor');
-
         // Icon
     Route::post('/store-footer-icon', 'FooterController@storeFooterIcon')->middleware(['auth', 'permission'])->name('store-footer-icon');
     Route::put('/update-footer-icon/{id}', 'FooterController@updateFooterIcon')->middleware(['auth', 'permission'])->name('update-footer-icon');
