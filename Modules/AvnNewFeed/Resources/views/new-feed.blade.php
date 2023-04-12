@@ -202,7 +202,7 @@
                                     <div>
                                         <h5 class="m-0">{{$child->new_feed_comment_user->name}} </h5>
                                         <p class="text-muted mb-0"><small>{{ NotificationController::timeAgo($child->updated_at) }}</small></p>
-                                        <textarea class="bg-white" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;" readonly>{!! $child->comment !!}</textarea>
+                                        <p class="text-dark mb-2">{!! $child->comment !!}</p>
                                         <!--- Người bình luận đc sửa --->
                                         @if($user->id == $child->user_id)
                                             <div>
@@ -227,7 +227,7 @@
                                                             @method('PUT')
                                                             <input type="hidden" name="feed_id" value="{{$child->feed_id}}">
                                                             <div class="modal-body text-dark">
-                                                                <textarea class="form-control" name="comment">{!! $child->comment !!}</textarea>
+                                                                <input type="text" class="form-control border-0 form-control-sm" name="comment" value="{{$child->comment}}">
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
@@ -286,7 +286,7 @@
                                     <form action="{{ route('store-comment-feed') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="feed_id" value="{{$item->id}}">
-                                        <textarea rows="3" class="form-control bg-light border-0 resize-none" name="comment" placeholder="Bình luận...."></textarea>
+                                        <input type="text" class="form-control border-0 form-control-sm" name="comment" placeholder="Bình luận....">
                                         <div class="mt-2 d-flex justify-content-end align-items-center">
                                             <button type="submit" class="btn btn-sm btn-success">Bình luận</button>
                                         </div>
@@ -304,12 +304,6 @@
 @section('js')
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
-    <script type="text/javascript">
-        function setHeight(fieldId){
-            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
-        }
-        setHeight('textBox1');
-    </script>
     <script>
         CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
             toolbar: {

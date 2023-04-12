@@ -10,7 +10,9 @@ return new class extends Migration
     {
         Schema::create('avn_setting_footer', function (Blueprint $table) {
             $table->id();
-            $table->string('infor');
+            $table->string('name');
+            $table->text('link')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
         });
     }

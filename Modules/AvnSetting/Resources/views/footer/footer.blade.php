@@ -33,264 +33,148 @@
                 <div class="tab-content">
                     <div class="tab-pane show active" id="settings">
                         <div class="row">
-                            <div class="col-12 col-lg-6 col-xl-6">
+                            <div class="col-12 col-lg-4 col-xl-4">
                                 <div class="card">
                                     <div class="card-body">
-                                    <h4 class="header-title">Thông tin</h4>
-                                        <div class="row mb-3">
-                                            <form action="{{ route('store-footer') }}" method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                <div class="col-12">
-                                                    <label class="form-label mt-2">
-                                                        Tên <span class="text-danger">*</span>
-                                                    </label>
-                                                    <input type="text" name="infor" class="form-control" required>
-                                                    <div class="row">
-                                                        <div class="col-12 d-flex justify-content-center mt-2 mb-2">
-                                                            <button type="submit" class="btn btn-success me-3">Thêm</button>
-                                                        </div>
-                                                    </div>
+                                        <h4 class="header-title">Thêm thông tin khung phải</h4>
+                                        <form action="{{ route('store-footer') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                            <div class="input-group mb-3 row">
+                                                <div class="mb-2 col-12">
+                                                    <label class="form-label">Tên <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="name" required>
                                                 </div>
-                                            </form>
-                                            <hr>
-                                            <div class="col-lg-12">
-                                                <h4 class="header-title">Cập nhập</h4>
-                                                <div class="col-12">
-                                                    <table id="basic-datatable" class="table activate-select dt-responsive nowrap w-100">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>STT</th>
-                                                                <th>Tên</th>
-                                                                <th>Chọn</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @php
-                                                                $i = 0;
-                                                            @endphp
-                                                            @foreach ($footer as $item)
-                                                                <tr>
-                                                                    <td>{{ ++$i }}</td>
-                                                                    <td>{{ $item->infor }}</td>
-                                                                    <td>
-                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-{{ $item->id }}" class="action-icon">
-                                                                            <i class="mdi mdi-pencil"></i>
-                                                                        </a>
-                                                                        <a href="javascript: void(0);" data-bs-toggle="modal"
-                                                                            data-bs-target="#delete-{{ $item->id }}" class="action-icon">
-                                                                            <i class="mdi mdi-delete"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                <!----Modal Edit----->
-                                                                <div class="modal fade" id="edit-{{ $item->id }}" tabindex="-1" aria-hidden="true">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title text-dark">Sửa</h5>
-                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                            </div>
-                                                                            <form action="{{ route('update-footer', $item->id) }}" method="POST">
-                                                                            @csrf
-                                                                            @method('PUT')
-                                                                                <div class="modal-body text-dark">
-                                                                                    <div class="mb-2">
-                                                                                        <label class="form-label">
-                                                                                            Tên <span class="text-danger">*</span>
-                                                                                        </label>
-                                                                                        <input type="text" name="infor" class="form-control" value="{{$item->infor}}" required>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                                                                                    <button type="submit" class="btn btn-success">Sửa</button>  
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!----Modal Delete----->
-                                                                <div class="modal fade" id="delete-{{ $item->id }}" tabindex="-1"
-                                                                    aria-hidden="true">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title text-dark">Xác nhận</h5>
-                                                                                <button type="button" class="btn-close"
-                                                                                    data-bs-dismiss="modal"aria-label="Close"></button>
-                                                                            </div>
-                                                                            <div class="modal-body text-dark">
-                                                                                <p>Bạn có muốn xóa không?</p>
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
-                                                                                </button>
-                                                                                <form action="{{ route('delete-footer', [$item->id]) }}" method="POST">
-                                                                                    @csrf
-                                                                                    @method('delete')
-                                                                                    <button type="submit" class="btn btn-primary">Xóa</button>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
+                                                <div class="mb-2 col-12">
+                                                    <label class="form-label">Đường dẫn</label>
+                                                    <input type="text" class="form-control" name="link">
+                                                </div>
+                                                <div class="mb-2 col-12">
+                                                    <label class="form-label">Sở thuộc</label>
+                                                    <select class="form-select" name="parent_id">
+                                                        <option value="0" class="bg-white">Không có</option>
+                                                        @foreach ($footer as $item)
+                                                            <option value="{{ $item->id }}" class="bg-white">
+                                                                {{ $item->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="input-group-append d-flex justify-content-center">
+                                                    <button class="btn btn-success" type="submit">Thêm</button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6 col-xl-6">
+                            <div class="col-12 col-lg-8 col-xl-8">
                                 <div class="card">
                                     <div class="card-body">
-                                    <h4 class="header-title">Thông tin đính kèm</h4>
-                                        <div class="row mb-3">
-                                            <form action="{{ route('store-footer-infor') }}" method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-12 col-lg-4">
-                                                            <label class="form-label mt-2">
-                                                                Thuộc <span class="text-danger">*</span>
-                                                            </label>
-                                                            <select class="form-select " name="infor_id" required>
-                                                                @foreach ($footer as $item)
-                                                                    <option value="{{ $item->id }}" class="bg-white">{{ $item->infor }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-12 col-lg-4">
-                                                            <label class="form-label mt-2">
-                                                                Tên <span class="text-danger">*</span>
-                                                            </label>
-                                                            <input type="text" name="name" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-12 col-lg-4">
-                                                            <label class="form-label mt-2">
-                                                                Đường dẫn
-                                                            </label>
-                                                            <input type="text" name="link" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12 d-flex justify-content-center mt-2 mb-2">
-                                                            <button type="submit" class="btn btn-success me-3">Thêm</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <hr>
-                                            <div class="col-lg-12">
-                                                <h4 class="header-title">Cập nhập</h4>
-                                                <div class="col-12">
-                                                    <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>STT</th>
-                                                                <th>Tên</th>
-                                                                <th>Link</th>
-                                                                <th>Thuộc</th>
-                                                                <th>Chọn</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @php
-                                                                $i = 0;
-                                                            @endphp
-                                                            @foreach ($footer_info as $item)
-                                                                <tr>
-                                                                    <td>{{ ++$i }}</td>
-                                                                    <td>{{ $item->name }}</td>
-                                                                    <td>{{ $item->link }}</td>
-                                                                    <td>{{ $item->infor->infor }}</td>
-                                                                    <td>
-                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-infor-{{ $item->id }}" class="action-icon">
-                                                                            <i class="mdi mdi-pencil"></i>
-                                                                        </a>
-                                                                        <a href="javascript: void(0);" data-bs-toggle="modal"
-                                                                            data-bs-target="#delete-infor-{{ $item->id }}" class="action-icon">
-                                                                            <i class="mdi mdi-delete"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                <!----Modal Edit----->
-                                                                <div class="modal fade" id="edit-infor-{{ $item->id }}" tabindex="-1" aria-hidden="true">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title text-dark">Sửa</h5>
-                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                            </div>
-                                                                            <form action="{{ route('update-footer-infor', $item->id) }}" method="POST">
-                                                                            @csrf
-                                                                            @method('PUT')
-                                                                                <div class="modal-body text-dark">
-                                                                                    <div class="mb-2">
-                                                                                        <label class="form-label">Thuộc <span class="text-danger">*</span></label>
-                                                                                        <select class="form-select" name="infor_id" required>
-                                                                                            @foreach ($footer as $child)
-                                                                                                <option value="{{ $child->id }}"
-                                                                                                    {{ ( $child->id == $item->infor_id) ? 'selected' : '' }}>
-                                                                                                    {{ $child->infor }}
-                                                                                                </option>
-                                                                                            @endforeach
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="mb-2">
-                                                                                        <label class="form-label">
-                                                                                            Tên <span class="text-danger">*</span>
-                                                                                        </label>
-                                                                                        <input type="text" name="name" class="form-control" value="{{$item->name}}" required>
-                                                                                    </div>
-                                                                                    <div class="mb-2">
-                                                                                        <label class="form-label">
-                                                                                            Đường dẫn
-                                                                                        </label>
-                                                                                        <input type="text" name="link" class="form-control" value="{{$item->link}}">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                                                                                    <button type="submit" class="btn btn-success">Sửa</button>  
-                                                                                </div>
-                                                                            </form>
+                                        <h4 class="header-title">Danh sách thông tin</h4>
+                                        <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Tên</th>
+                                                    <th>Sở thuộc</th>
+                                                    <th>Link</th>
+                                                    <th>Chọn</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $i = 0;
+                                                @endphp
+                                                @foreach ($footer as $item)
+                                                    <tr>
+                                                        <td>{{ ++$i }}</td>
+                                                        <td>{{ $item->name }}</td>
+                                                        <td>
+                                                            @if($item->parent_id == '0')
+                                                                Không có
+                                                            @else
+                                                                {{ $item->parent->name }}
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->link }}</td>
+                                                        <td>
+                                                            <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-{{ $item->id }}" class="action-icon">
+                                                                <i class="mdi mdi-pencil"></i>
+                                                            </a>
+                                                            <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#delete-{{ $item->id }}" class="action-icon">
+                                                                <i class="mdi mdi-delete"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <!----Modal Edit----->
+                                                    <div class="modal fade" id="edit-{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title text-dark">Sửa thông tin</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <form action="{{ route('update-footer', $item->id) }}" method="POST">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                    <div class="modal-body text-dark">
+                                                                        <div class="mb-2">
+                                                                            <label class="form-label">Tên <span class="text-danger">*</span></label>
+                                                                            <input type="text" class="form-control" name="name" required value="{{$item->name}}">
+                                                                        </div>
+                                                                        <div class="mb-2">
+                                                                            <label class="form-label">Đường dẫn</label>
+                                                                            <input type="text" class="form-control" name="link" value="{{$item->link}}">
+                                                                        </div>
+                                                                        <div class="mb-2">
+                                                                            <label class="form-label">Sở thuộc</label>
+                                                                            <select class="form-select" name="parent_id">
+                                                                                <option value="0" class="bg-white">Không có</option>
+                                                                                @foreach ($footer as $child)
+                                                                                    <option value="{{ $child->id }}"
+                                                                                        {{ ( $child->id == $item->parent_id) ? 'selected' : '' }}>
+                                                                                        {{ $child->name }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <!----Modal Delete----->
-                                                                <div class="modal fade" id="delete-infor-{{ $item->id }}" tabindex="-1"
-                                                                    aria-hidden="true">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title text-dark">Xác nhận</h5>
-                                                                                <button type="button" class="btn-close"
-                                                                                    data-bs-dismiss="modal"aria-label="Close"></button>
-                                                                            </div>
-                                                                            <div class="modal-body text-dark">
-                                                                                <p>Bạn có muốn xóa không?</p>
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
-                                                                                </button>
-                                                                                <form action="{{ route('delete-footer-infor', [$item->id]) }}" method="POST">
-                                                                                    @csrf
-                                                                                    @method('delete')
-                                                                                    <button type="submit" class="btn btn-primary">Xóa</button>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+                                                                        <button type="submit" class="btn btn-success">Sửa</button>  
                                                                     </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!----Modal Delete----->
+                                                    <div class="modal fade" id="delete-{{ $item->id }}" tabindex="-1"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
                                                                 </div>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                                <div class="modal-body text-dark">
+                                                                    <p>Bạn có muốn xóa không?</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                                                                    </button>
+                                                                    <form action="{{ route('delete-footer', [$item->id]) }}"
+                                                                        method="POST">
+                                                                        @csrf
+                                                                        @method('delete')
+                                                                        <button type="submit" class="btn btn-primary">Xóa</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
