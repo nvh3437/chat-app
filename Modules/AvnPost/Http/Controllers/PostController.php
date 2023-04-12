@@ -14,6 +14,7 @@ use App\Http\Controllers\Helper;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GeneralSettings;
+use Modules\AvnPost\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -37,7 +38,7 @@ class PostController extends Controller
         return view('avnpost::post.add-post', compact('categories'));
     }
 
-    public function storePost(Request $request)
+    public function storePost(PostRequest $request)
     {
         try {
             $post = new Post();
@@ -74,7 +75,7 @@ class PostController extends Controller
         return view('avnpost::post.edit-post', compact('post', 'categories'));
     }
 
-    public function updatePost(Request $request, $id)
+    public function updatePost(PostRequest $request, $id)
     {
         try {
             $post = Post::findOrFail($id);
