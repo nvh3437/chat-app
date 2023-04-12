@@ -24,11 +24,7 @@
                                         Ảnh bìa
                                     </label>
                                     <input type="file" class="form-control" name="img" accept="images/*">
-                                    @if($post->img == '')
-                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="max-width: 200px;" />
-                                    @else
-                                        <img class="img-fluid mt-2" src="{{ asset($post->img) }}" style="max-width: 200px;" />
-                                    @endif
+                                    <img class="img-fluid mt-2" src="{{ asset($post->img ?? '/resources/assets/images/logo.png') }}" style="max-width: 200px;" />
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -53,7 +49,7 @@
                                     <label class="form-label mt-2">
                                         Nội dung bài viết <span class="text-danger">*</span>
                                     </label>
-                                    <textarea class="form-control" id="editor" name="description" style="height: 300px;" required>{!! $post->description !!}</textarea>
+                                    <textarea class="form-control" id="editor" name="description">{!! $post->description !!}</textarea>
                                 </div>
                             </div>
                         </div>

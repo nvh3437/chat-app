@@ -30,10 +30,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-
                         <div class="row">
                             <div class="col-12">
-                                <form action="{{ route('avnrole-update-user', ['id' => $role->id]) }}" method="POST">
+                                <form action="{{ route('role-update-user', ['id' => $role->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row">
@@ -47,7 +46,7 @@
                                                 </div>
                                                 <div class="mb-3 row">
                                                     @foreach ($users as $user)
-                                                        @if ($user->username != 'superadmin' && $user->staff != null && $user->staff->status == '0')
+                                                        @if ($user->username != 'superadmin' && $user->type == 'system')
                                                             <div class="col-6 form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     value="{{ $user->id }}"

@@ -8,13 +8,13 @@
             <div class="col-12">
                 <div class="page-title-box">
                     <div class="page-title-right d-none d-sm-block">
-                        <a href="{{ route('page-contact') }}" class="btn btn-success">
+                        <a href="{{ route('contact-page') }}" class="btn btn-success">
                             Trang liên hệ
                         </a>
                     </div>
                     <h4 class="page-title">Danh sách đơn liên hệ</h4>
                     <div class="d-sm-none mb-2">
-                        <a href="{{ route('page-contact') }}" class="btn btn-success">
+                        <a href="{{ route('contact-page') }}" class="btn btn-success">
                             Trang liên hệ
                         </a>
                     </div>

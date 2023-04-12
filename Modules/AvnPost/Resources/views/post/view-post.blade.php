@@ -47,11 +47,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-auto">
-                                                @if($item->img == '')
-                                                    <img class="rounded" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 120px; width: 120px; object-fit: cover;">
-                                                @else
-                                                    <img class="rounded" src="{{ asset($item->img) }}" style="height: 120px; width: 120px; object-fit: cover;">
-                                                @endif
+                                                <img class="rounded" src="{{ asset($item->img ?? '/resources/assets/images/logo.png') }}" style="height: 120px; width: 120px; object-fit: cover;">
                                             </div>
                                             <div class="col-auto">
                                                 <h5>{{$item->name}}</h5>

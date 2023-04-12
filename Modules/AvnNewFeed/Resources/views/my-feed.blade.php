@@ -10,7 +10,7 @@
 @section('content')
 <div class="container">
     <div class="row mt-2">
-        <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-1">
+        <div class="col-xxl-3 col-lg-3 col-md-4 col-sm-12 order-lg-1 order-xxl-1">
             <div class="card">
                 <div class="card-body">
                     <div class="dropdown float-end">
@@ -77,7 +77,7 @@
                 </div> 
             </div> 
         </div>
-        <div class="col-xxl-9 col-lg-12 order-lg-2 order-xxl-1">
+        <div class="col-xxl-9 col-lg-9 col-md-8 col-sm-12 order-lg-2 order-xxl-1">
             <div class="card">
                 <div class="card-body p-0">
                     <ul class="nav nav-tabs nav-bordered">
@@ -183,8 +183,7 @@
                         </div>
                         <hr class="m-0" />
                         <div class="my-1">
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted ps-0"><i class='mdi mdi-heart text-danger'></i> 2k</a>
-                            <a href="javascript: void(0);" data-bs-toggle="collapse" data-bs-target="#open-{{$item->id}}" aria-expanded="false" aria-controls="open-{{$item->id}}" class="btn btn-sm btn-link text-muted">
+                            <a href="javascript: void(0);" data-bs-toggle="collapse" data-bs-target="#open-{{$item->id}}" aria-expanded="false" aria-controls="open-{{$item->id}}" class="btn btn-sm btn-link text-muted ps-0">
                                 <i class='uil uil-comments-alt'></i> {{count($item->new_feed_comments)}}</a>
                         </div>
                         <hr class="m-0" />

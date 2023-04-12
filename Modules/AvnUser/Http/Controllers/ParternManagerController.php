@@ -18,7 +18,7 @@ class ParternManagerController extends Controller
 {
     public function listPartern()
     {
-        $parterns = Partern::get();
+        $parterns = Partern::orderByDesc('updated_at')->get();
         return view('avnuser::manager.list-partern', compact('parterns'));
     }
 

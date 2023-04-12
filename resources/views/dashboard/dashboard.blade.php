@@ -70,7 +70,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($feature_icon->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($feature_icon->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $feature_title->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $feature_des->value ?? '' }}</p>
                     </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="row mt-2 py-5 align-items-center">
                 <div class="col-lg-5">
-                    <img src="{{ asset($feature_img->value ?? '/resources/assets/images/logo.png') }}" style="height: 500px; width: 500px; object-fit: cover;">
+                    <img src="{{ asset($feature_img->value ?? '/resources/assets/images/logo.png') }}" class="img-fluid">
                 </div>
                 <div class="col-lg-6 offset-lg-1">
                     <h3 class="fw-normal">{{ $feature_title_2->value ?? '' }}</h3>
@@ -102,7 +102,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img_post->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($img_post->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $keyword_post->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $description_post->value ?? '' }}</p>
                     </div>
@@ -156,7 +156,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img_service->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($img_service->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $keyword_service->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $description_service->value ?? '' }}</p>
                     </div>
@@ -171,10 +171,12 @@
                                 <div class="card-pricing-plan-tag">Khuyến nghị</div>
                             @endif
                             <p class="card-pricing-plan-name fw-bold text-uppercase">{{$item->service_type->name}}</p>
-                            <img src="{{ asset($item->service_type->img) }}" alt="{{$item->name}}" class="rounded" style="width: 50px; height: 50px; object-fit: cover">
+                            <img src="{{ asset($item->service_type->img) }}" alt="{{$item->name}}" class="rounded" style="width: 80px; height: 80px; object-fit: cover">
                             <h2 class="card-pricing-price">{{$item->price}}</h2>
                             <ul class="card-pricing-features">
-                                <textarea class="text-muted text-center font-15 mb-1 bg-white p-0 w-100" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $item->description !!}</textarea>
+                                <div id="editor">
+                                    {!! $item->description !!}
+                                </div>
                             </ul>
                             <button class="btn btn-primary mt-4 mb-2 rounded-pill">Chọn</button>
                         </div>
@@ -195,7 +197,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img_contact->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($img_contact->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $keyword_contact->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $description_contact->value ?? '' }}</p>
                     </div>
