@@ -73,7 +73,6 @@
 					                    <td>{{ ++$i }}</td>
 					                    <td>{{ $item->name }}</td>
 					                    <td>{{ $item->link }}</td>
-					                    <td>{{ $item->order }}</td>
 					                    <td>
                                             @if($item->parent_id == '0')
                                                 Không có
@@ -81,6 +80,7 @@
                                                 {{ $item->parent->name }}
                                             @endif
                                         </td>
+                                        <td>{{ $item->order }}</td>
 					                    <td>
 					                    	<a href="{{ route('edit-navbar', $item->id) }}" class="action-icon">
                                                 <i class="mdi mdi-pencil"></i>
