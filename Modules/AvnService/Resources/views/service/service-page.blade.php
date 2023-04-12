@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $keyword->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $description->value ?? '' }}</p>
                     </div>
@@ -35,14 +35,14 @@
             </div>
             <div class="row mt-5 pt-3">
                 @foreach($services as $item)
-                <div class="col-md-4">
+                <div class="col-md-4 mb-2">
                     <div class="card card-pricing card-pricing-recommended">
                         <div class="card-body text-center">
                             @if($item->recommended == '1')
                                 <div class="card-pricing-plan-tag">Khuyến nghị</div>
                             @endif
                             <p class="card-pricing-plan-name fw-bold text-uppercase">{{$item->service_type->name}}</p>
-                            <img src="{{ asset($item->service_type->img) }}" alt="{{$item->name}}" class="rounded" style="width: 50px; height: 50px; object-fit: cover">
+                            <img src="{{ asset($item->service_type->img) }}" alt="{{$item->name}}" class="rounded" style="width: 80px; height: 80px; object-fit: cover">
                             <h2 class="card-pricing-price">{{$item->price}}</h2>
                             <ul class="card-pricing-features">
                                 <div id="editor">

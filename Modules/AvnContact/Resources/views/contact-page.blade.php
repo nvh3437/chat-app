@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="text-center">
-                    <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                    <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                     <h3><span class="text-primary">{{ $keyword->value ?? '' }}</span></h3>
                     <p class="text-muted mt-2">{{ $description->value ?? '' }}</p>
                 </div>

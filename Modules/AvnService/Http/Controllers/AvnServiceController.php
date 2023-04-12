@@ -15,7 +15,7 @@ class AvnServiceController extends Controller
     //-------------------- Trang chủ --------------------//
     public static function getService()
     {
-        $services = Service::orderByDesc('updated_at')->limit(3)->get();
+        $services = Service::orderByDesc('recommended', 1)->limit(4)->get();
         return $services;
     }
     //-------------------- Quản lý ----------------------//
@@ -84,7 +84,7 @@ class AvnServiceController extends Controller
     //-------------------- Trang dịch vụ ----------------------//
     public function servicePage()
     {
-        $services = Service::get();
+        $services = Service::orderByDesc('recommended', 1)->get();
         $service_seo = GeneralSettings::whereIn('key', [
             'service_seo_title',
             'service_seo_description',
