@@ -185,8 +185,7 @@
                         </div>
                         <hr class="m-0" />
                         <div class="my-1">
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted ps-0"><i class='mdi mdi-heart text-danger'></i> 2k</a>
-                            <a href="javascript: void(0);" data-bs-toggle="collapse" data-bs-target="#open-{{$item->id}}" aria-expanded="false" aria-controls="open-{{$item->id}}" class="btn btn-sm btn-link text-muted"><i class='uil uil-comments-alt'></i> {{count($item->new_feed_comments)}}</a>
+                            <a href="javascript: void(0);" data-bs-toggle="collapse" data-bs-target="#open-{{$item->id}}" aria-expanded="false" aria-controls="open-{{$item->id}}" class="btn btn-sm btn-link text-muted ps-0"><i class='uil uil-comments-alt'></i> {{count($item->new_feed_comments)}}</a>
                         </div>
                         <hr class="m-0" />
                         <div class="mt-3 collapse hide" id="open-{{$item->id}}">
