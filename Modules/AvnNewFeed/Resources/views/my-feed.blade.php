@@ -10,7 +10,7 @@
 @section('content')
 <div class="container">
     <div class="row mt-2">
-        <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-1">
+        <div class="col-xxl-3 col-lg-3 col-md-4 col-sm-12 order-lg-1 order-xxl-1">
             <div class="card">
                 <div class="card-body">
                     <div class="dropdown float-end">
@@ -77,7 +77,7 @@
                 </div> 
             </div> 
         </div>
-        <div class="col-xxl-9 col-lg-12 order-lg-2 order-xxl-1">
+        <div class="col-xxl-9 col-lg-9 col-md-8 col-sm-12 order-lg-2 order-xxl-1">
             <div class="card">
                 <div class="card-body p-0">
                     <ul class="nav nav-tabs nav-bordered">
