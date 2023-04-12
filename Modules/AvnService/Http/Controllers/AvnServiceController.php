@@ -21,7 +21,7 @@ class AvnServiceController extends Controller
     //-------------------- Quản lý ----------------------//
     public function listService()
     {
-        $services = Service::get();
+        $services = Service::orderByDesc('updated_at')->get();
         return view('avnservice::service.list-service', compact('services'));
     }
 

@@ -18,7 +18,7 @@ class CustomerManagerController extends Controller
 {
     public function listCustomer()
     {
-        $customers = Customer::get();
+        $customers = Customer::orderByDesc('updated_at')->get();
         return view('avnuser::manager.list-customer', compact('customers'));
     }
 

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    Quản lý bài viết
+    Quản lý trang CMS
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -8,20 +8,14 @@
             <div class="col-12">
                 <div class="page-title-box">
                     <div class="page-title-right d-none d-sm-block">
-                        <a href="{{ route('post-page') }}" class="btn btn-success">
-                            Trang bài viết
-                        </a>
-                        <a href="{{ route('add-post') }}" class="btn btn-danger">
-                            <i class="mdi mdi-plus-circle me-1"></i>Thêm bài
+                        <a href="{{ route('add-cms') }}" class="btn btn-danger">
+                            <i class="mdi mdi-plus-circle me-1"></i>Thêm trang
                         </a>
                     </div>
-                    <h4 class="page-title">Danh sách bài viết</h4>
+                    <h4 class="page-title">Danh sách trang CMS</h4>
                     <div class="d-sm-none mb-2">
-                        <a href="{{ route('post-page') }}" class="btn btn-success">
-                            Trang bài viết
-                        </a>
-                        <a href="{{ route('add-post') }}" class="btn btn-danger">
-                            <i class="mdi mdi-plus-circle me-1"></i>Thêm bài
+                        <a href="{{ route('add-cms') }}" class="btn btn-danger">
+                            <i class="mdi mdi-plus-circle me-1"></i>Thêm trang
                         </a>
                     </div>
                 </div>
@@ -35,11 +29,9 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Danh mục</th>
                                     <th>Tiêu đề</th>
                                     <th>Ảnh</th>
-                                    <th>Người đăng</th>
-                                    <th>Người sửa</th>
+                                    <th>Đường dẫn trang</th>
                                     <th>Chọn</th>
                                 </tr>
                             </thead>
@@ -47,18 +39,23 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($posts as $item)
+                                @foreach ($cms as $item)
                                     <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $item->category->name }}</td>                                       
+                                        <td>{{ ++$i }}</td>                                    
                                         <td>{{ $item->name }}</td>
                                         <td>
                                             <img src="{{ asset($item->img ?? '/resources/assets/images/logo.png') }}" class="rounded" style="width: 30px; height: 30px; object-fit: cover">
                                         </td>
-                                        <td>{{ $item->post_created->name }}</td>
-                                        <td>{{ $item->post_updated->name }}</td>
+                                        @php
+                                            $params = [
+                                                'link' => $item->link ?? $item->id,
+                                            ];
+                                        @endphp
                                         <td>
-                                            <a href="{{ route('edit-post', $item->id) }}" class="action-icon">
+                                            <a href="{{ route('cms-page', $params) }}" class="text-primary">{{$item->link}}</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('edit-cms', $item->id) }}" class="action-icon">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
                                             <a href="javascript: void(0);" data-bs-toggle="modal"
@@ -83,7 +80,7 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
                                                     </button>
-                                                    <form action="{{ route('delete-post', [$item->id]) }}" method="POST">
+                                                    <form action="{{ route('delete-cms', [$item->id]) }}" method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn btn-primary">Xóa</button>
