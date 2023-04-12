@@ -23,4 +23,4 @@ Route::prefix('cms')->group(function() {
 });
 
 //------------------------------------- Trang CMS ---------------------//
-Route::get('/{link}', [CMSController::class, 'cmsPage'])->name('cms-page');
+Route::get('cms/{link}', [CMSController::class, 'cmsPage'])->name('cms-page');

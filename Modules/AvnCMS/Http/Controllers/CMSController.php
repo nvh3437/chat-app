@@ -20,7 +20,7 @@ class CMSController extends Controller
     {
         $cms = CMS::where('link', $link)->first();
         if (!$cms) {
-            $cms = Post::findOrFail($cms);
+            $cms = CMS::findOrFail($cms);
         }
         return view('avncms::cms-page', compact('cms'));
     }
