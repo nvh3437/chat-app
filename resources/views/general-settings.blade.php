@@ -165,34 +165,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row">
-                                                                        <div class="col-lg-12">
-                                                                            <div class="card">
-                                                                                <div class="card-body">
-                                                                                    <h4 class="header-title">@lang('settings.admin_bkg_title')</h4>
-                                                                                    <form class="text-center" action="{{ route('general-settings-update-image') }}" method="POST" enctype="multipart/form-data">
-                                                                                        @csrf
-                                                                                        @method('put')
-                                                                                        <div class="mb-3">
-                                                                                            @if ($settings['admin_background']['value'])
-    <img src="{{ asset('/storage/app/AvnGeneralSettings/' . $settings['admin_background']['value']) }}" alt="image" class="img-fluid"/>
-    @endif
-                                                                                        </div>
-                                                                                        <div class="row">
-                                                                                            <div class="col-6 d-flex justify-content-start">
-                                                                                                <label for="upload-admin_background" class="form-label btn btn-primary">@lang('settings.upload')</label>
-                                                                                                <input type="file" id="upload-admin_background" name="admin_background" class="form-control d-none">
-                                                                                            </div>
-                                                                                            <div class="col-6 d-flex justify-content-end align-items-start">
-                                                                                                <button type="submit" class="btn btn-primary">@lang('settings.save')</button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div> -->
-
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">

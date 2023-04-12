@@ -101,9 +101,8 @@
                 </div>
             </div>
         </div>
-        <div class="auth-fluid-right text-center" style="background-image: url(https://system.avntech.vn/storage/app/AvnGeneralSettings/1672023779-t-a72919ff65c8bd96e4d9.jpg);background-size: auto;background-repeat: no-repeat;background-position: center;">
+        <div class="auth-fluid-right text-center" style="background-image: url('{{asset($login_background_img ? asset('/storage/app/AvnGeneralSettings/' . $login_background_img) : asset('/resources/assets/images/logo.png'))}}'); background-size: auto;background-repeat: no-repeat;background-position: center;">
             <div class="auth-user-testimonial">
-                <!-- <p class="lead"></p> -->
                 {!! $login_background_text !!}
             </div>
         </div>
