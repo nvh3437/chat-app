@@ -1,0 +1,11 @@
+{
+    "name": "AvnCMS",
+    "alias": "avncms",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AvnCMS\\Providers\\AvnCMSServiceProvider"
+    ],
+    "files": []
+}

@@ -20,14 +20,14 @@ class PostController extends Controller
     //------------------------------------ Trang chủ -----------------------------//
     public static function getPost()
     {
-        $posts = Post::orderByDesc('updated_at')->limit(3)->get();
+        $posts = Post::orderByDesc('updated_at')->limit(4)->get();
         return $posts;
     }
 
     //------------------------------------ Quản lý -------------------------------//
     public function listPost()
     {
-        $posts = Post::get();
+        $posts = Post::orderByDesc('updated_at')->get();
         return view('avnpost::post.list-post', compact('posts'));
     }
 

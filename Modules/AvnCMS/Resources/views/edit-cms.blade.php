@@ -1,19 +1,19 @@
 @extends('layouts.admin')
 @section('title')
-    Sửa bài viết
+    Sửa trang CMS
 @endsection
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Sửa bài dịch vụ</h4>
+                    <h4 class="page-title">Sửa trang CMS</h4>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('update-post', $post->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('update-cms', $cms->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="card">
@@ -24,32 +24,25 @@
                                         Ảnh bìa
                                     </label>
                                     <input type="file" class="form-control" name="img" accept="images/*">
-                                    <img class="img-fluid mt-2" src="{{ asset($post->img ?? '/resources/assets/images/logo.png') }}" style="max-width: 200px;" />
+                                    <img class="img-fluid mt-2" src="{{ asset($cms->img ?? '/resources/assets/images/logo.png') }}" style="max-width: 200px;" />
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Tiêu đề <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="name" required value="{{$post->name}}">
+                                    <input type="text" class="form-control" name="name" required value="{{$cms->name}}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Danh mục <span class="text-danger">*</span>
+                                        Đường dẫn
                                     </label>
-                                    <select class="form-select " name="category_id" required>
-                                        @foreach ($categories as $item)
-                                            <option value="{{ $item->id }}"
-                                                {{ ( $item->id == $post->category_id) ? 'selected' : '' }}>
-                                                {{ $item->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="link" value="{{$cms->link}}">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Nội dung bài viết <span class="text-danger">*</span>
                                     </label>
-                                    <textarea class="form-control" id="editor" name="description">{!! $post->description !!}</textarea>
+                                    <textarea class="form-control" id="editor" name="description">{!! $cms->description !!}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +50,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
                             <button type="submit" class="btn btn-danger me-3">Sửa</button>
-                            <a href="{{ route('list-post') }}" class="btn btn-secondary ms-3">Quay lại</a>
+                            <a href="{{ route('list-cms') }}" class="btn btn-secondary ms-3">Quay lại</a>
                         </div>
                     </div>
                 </form>
@@ -73,13 +66,17 @@
         CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
             toolbar: {
                 items: [
+                    'undo', 'redo',
                     'heading', '|',
-                    'bold', 'italic', 'strikethrough', 'underline',
-                    'bulletedList', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript',
+                    'removeFormat', '|',
+                    'bulletedList', 'numberedList', 'todoList', '|',
+                    'outdent', 'indent', '|',
                     'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
                     'alignment', '|',
-                    'link', 'insertImage', 'blockQuote', 'mediaEmbed',
+                    'link', 'insertImage', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed',
                     '|',
+                    'horizontalLine', 'pageBreak', '|',
                 ],
                 shouldNotGroupWhenFull: true
             },

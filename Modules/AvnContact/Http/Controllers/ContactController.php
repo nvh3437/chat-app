@@ -13,7 +13,7 @@ class ContactController extends Controller
     //-------------------------------- Quản lý --------------------------//
     public function listContact()
     {
-        $contacts = Contact::get();
+        $contacts = Contact::orderByDesc('updated_at')->get();
         return view('avncontact::list-contact', compact('contacts'));
     }
 
