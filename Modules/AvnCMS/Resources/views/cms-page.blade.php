@@ -1,6 +1,6 @@
 @extends('layouts.guest')
 @section('title')
-    {{$cms->alias}}
+    {{$cms->name}}
 @endsection
 @section('content')
     <section class="bg-light-lighten border-top border-bottom border-light">
