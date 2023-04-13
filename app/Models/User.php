@@ -11,6 +11,8 @@ use App\Models\UserRole;
 use App\Models\Role;
 use Modules\AvnUser\Entities\Customer;
 use Modules\AvnUser\Entities\Partern;
+use Modules\AvnChat\Entities\ChatRoomUser;
+use Modules\AvnChat\Entities\ChatRoom;
 use Modules\AvnChat\Entities\Message;
 
 class User extends Authenticatable
@@ -55,6 +57,14 @@ class User extends Authenticatable
     public function partern()
     {
         return $this->hasOne(Partern::class, 'id', 'id');
+    }
+    public function room_users()
+    {
+        return $this->hasMany(ChatRoomUser::class, 'user_id', 'id');
+    }
+    public function rooms()
+    {
+        return $this->belongsToMany(ChatRoom::class, 'avn_chat_room_users', 'user_id', 'room_id');
     }
     public function messages()
     {

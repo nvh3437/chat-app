@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('avnchat')->group(function() {
-    Route::get('/', 'AvnChatController@chat')->middleware(['auth']);
+Route::prefix('chat')->group(function() {
+    Route::get('/', 'AvnChatController@index')->middleware(['auth']);
 });
