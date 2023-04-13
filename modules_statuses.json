@@ -39,5 +39,6 @@
     "AvnService": true,
     "AvnUser": true,
     "AvnSetting": true,
-    "AvnNewFeed": true
+    "AvnNewFeed": true,
+    "AvnChat": true
 }

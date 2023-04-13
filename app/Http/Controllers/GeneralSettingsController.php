@@ -82,7 +82,7 @@ class GeneralSettingsController extends Controller
             }
 
             return back()->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhập thất bại');
         }
     }
@@ -165,7 +165,7 @@ class GeneralSettingsController extends Controller
         $setting->save();
 
         return redirect()->route('general-settings')->with('Success', 'Cập nhập thành công');
-        // } catch (\Exception $e) {
+        // } catch (Exception $e) {
         //     return back()->with('Failed', 'Cập nhập thất bại');
         // }
     }

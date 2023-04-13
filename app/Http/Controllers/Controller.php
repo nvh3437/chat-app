@@ -57,7 +57,7 @@ class Controller extends BaseController
             $user->password = Hash::make($request->password);
             $user->save();
             return back()->with('Success','Thêm thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('Failed','Thêm thất bại');
         }   
     }
@@ -71,7 +71,7 @@ class Controller extends BaseController
             $user->password = Hash::make($request->password);
             $user->save();
             return back()->with('Success','Cập nhập thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('Failed','Cập nhập thất bại');
         }   
     }
@@ -80,7 +80,7 @@ class Controller extends BaseController
             $user = User::findOrFail($id);
             User::destroy($id);
             return back()->with('Success','Xóa thành công');
-        } catch  (\Exception $e) {
+        } catch  (Exception $e) {
             return back()->with('Failed','Xóa thất bại');
         }
     }

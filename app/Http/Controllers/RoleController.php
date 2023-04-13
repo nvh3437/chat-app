@@ -29,7 +29,7 @@ class RoleController extends Controller
             $role->name = $request->name;
             $role->save();
             return redirect()->route('avnrole-list')->with('Success', 'Thêm thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('avnrole-list')->with('Failed', 'Thêm thất bại');
         }
     }
@@ -65,7 +65,7 @@ class RoleController extends Controller
                 }
             }
             return redirect()->route('avnrole-list')->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('avnrole-list')->with('Failed', 'Cập nhập thất bại');
         }
     }
@@ -96,7 +96,7 @@ class RoleController extends Controller
                 }
             }
             return redirect()->route('avnrole-list')->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('avnrole-list')->with('Failed', 'Cập nhập thất bại');
         }
     }
@@ -110,7 +110,7 @@ class RoleController extends Controller
             }
             $role->delete();
             return redirect()->route('avnrole-list')->with('Success', 'Xóa thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('avnrole-list')->with('Failed', 'Xóa thất bại');
         }
     }
