@@ -47,27 +47,23 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     encrypted: true,
 // });
 
-import Echo from '@ably/laravel-echo';
+// import Echo from '@ably/laravel-echo';
 
-import * as Ably from 'ably';
+// import * as Ably from 'ably';
 
-window.Ably = Ably;
-
+// window.Ably = Ably;
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+ 
+window.Pusher = Pusher;
+ 
 // Create new echo client instance using ably-js client driver.
 window.Echo = new Echo({
-    broadcaster: 'ably',
-    key: 'jvbNfg.p8LWnw:l4WcXuacguRddK0R-4fA39AUkAx8x5W22fG7aupI89M',
-    realtimeHost: 'realtime-pusher.ably.io',
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_ABLY_PUBLIC_KEY,
+    wsHost: 'realtime-pusher.ably.io',
     wsPort: 443,
     disableStats: true,
     encrypted: true,
-    authEndpoint: '/japan-chat-app/broadcasting/auth',
-});
-
-// Register a callback for listing to connection state change 
-window.Echo.connector.ably.connection.on((stateChange) => {
-    console.log("LOGGER:: Connection event :: ", stateChange);
-    if (stateChange.current === 'disconnected' && stateChange.reason?.code === 40142) { // key/token status expired
-        console.log("LOGGER:: Connection token expired https://help.ably.io/error/40142");
-    }
+    cluster:''
 });

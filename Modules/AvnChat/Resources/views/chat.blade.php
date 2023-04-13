@@ -60,8 +60,8 @@
         <div class="row">
 
             <div class="col-sm-6 offset-sm-3 my-2">
-                <input type="text" class="form-control" name="user" id="user"
-                    placeholder="Enter a user ..........">
+                <input type="text" class="form-control" name="username" id="username"
+                    placeholder="Enter a username ..........">
             </div>
 
             <div class="col-sm-6 offset-sm-3">
