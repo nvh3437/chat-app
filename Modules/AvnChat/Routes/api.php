@@ -15,6 +15,6 @@ use Illuminate\Http\Request;
 
 Route::post('/avnchat/send-message', function (Request $request) {
     $message = $request->message;
-    $user = $request->user();
-    broadcast(new App\Events\SendMessage( $user, $message ));
-});
+    $username = $request->username;
+    broadcast(new App\Events\SendMessage( $username, $message ));
+})->middleware(['auth:sanctum']);

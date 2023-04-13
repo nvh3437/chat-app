@@ -18,9 +18,9 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::get('/user', function (Request $request) {
     return $request->user();
-});
+})->middleware('web');
 Route::middleware('guest')->group(function () {
     Route::post(
         'call-api',
@@ -40,7 +40,7 @@ Route::middleware('guest')->group(function () {
     );
 });
 // refresh token
-Route::post('/tokens/create', function (Request $request) {
+Route::middleware('auth:sanctum')->post('/tokens/create', function (Request $request) {
     $token = $request->user()->createToken($request->token_name);
     return ['token' => $token->plainTextToken];
 });
@@ -51,11 +51,7 @@ Route::post('/tokens/destroy', function (Request $request) {
 });
 // login
 Route::post('/sanctum/token', function (Request $request) {
-    $request->validate([
-        'username' => 'required|username',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
+
  
     $user = User::where('username', $request->username)->first();
  
