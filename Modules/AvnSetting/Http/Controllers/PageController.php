@@ -157,7 +157,7 @@ class PageController extends Controller
                 $setting->save();
             }
             return back()->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhập thất bại');
         }
     }
@@ -208,7 +208,7 @@ class PageController extends Controller
                 $setting->save();
             }
             return back()->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhập thất bại');
         }
     }
@@ -260,7 +260,7 @@ class PageController extends Controller
                 $setting->save();
             }
             return back()->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhập thất bại');
         }
     }
@@ -312,7 +312,7 @@ class PageController extends Controller
                 $setting->save();
             }
             return back()->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhập thất bại');
         }
     }

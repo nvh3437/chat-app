@@ -28,9 +28,9 @@ class RoleController extends Controller
             $role = new Role();
             $role->name = $request->name;
             $role->save();
-            return redirect()->route('role-list')->with('Success', 'Thêm thành công');
-        } catch (\Exception $e) {
-            return redirect()->route('role-list')->with('Failed', 'Thêm thất bại');
+            return redirect()->route('avnrole-list')->with('Success', 'Thêm thành công');
+        } catch (Exception $e) {
+            return redirect()->route('avnrole-list')->with('Failed', 'Thêm thất bại');
         }
     }
 
@@ -64,9 +64,9 @@ class RoleController extends Controller
                     $permission_role->save();
                 }
             }
-            return redirect()->route('role-list')->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
-            return redirect()->route('role-list')->with('Failed', 'Cập nhập thất bại');
+            return redirect()->route('avnrole-list')->with('Success', 'Cập nhập thành công');
+        } catch (Exception $e) {
+            return redirect()->route('avnrole-list')->with('Failed', 'Cập nhập thất bại');
         }
     }
 
@@ -95,9 +95,9 @@ class RoleController extends Controller
                     $user_role->save();
                 }
             }
-            return redirect()->route('role-list')->with('Success', 'Cập nhập thành công');
-        } catch (\Exception $e) {
-            return redirect()->route('role-list')->with('Failed', 'Cập nhập thất bại');
+            return redirect()->route('avnrole-list')->with('Success', 'Cập nhập thành công');
+        } catch (Exception $e) {
+            return redirect()->route('avnrole-list')->with('Failed', 'Cập nhập thất bại');
         }
     }
 
@@ -109,9 +109,9 @@ class RoleController extends Controller
                 return redirect()->route('role-list')->with('Failed', 'Role mặc định không thể xóa');
             }
             $role->delete();
-            return redirect()->route('role-list')->with('Success', 'Xóa thành công');
-        } catch (\Exception $e) {
-            return redirect()->route('role-list')->with('Failed', 'Xóa thất bại');
+            return redirect()->route('avnrole-list')->with('Success', 'Xóa thành công');
+        } catch (Exception $e) {
+            return redirect()->route('avnrole-list')->with('Failed', 'Xóa thất bại');
         }
     }
     public static function isNotBlock($menu = null, $route_names = null)

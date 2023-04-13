@@ -40,5 +40,6 @@
     "AvnUser": true,
     "AvnSetting": true,
     "AvnNewFeed": true,
+    "AvnChat": true,
     "AvnCMS": true
 }

@@ -1,0 +1,11 @@
+{
+    "name": "AvnChat",
+    "alias": "avnchat",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AvnChat\\Providers\\AvnChatServiceProvider"
+    ],
+    "files": []
+}

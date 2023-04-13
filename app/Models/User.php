@@ -11,6 +11,7 @@ use App\Models\UserRole;
 use App\Models\Role;
 use Modules\AvnUser\Entities\Customer;
 use Modules\AvnUser\Entities\Partern;
+use Modules\AvnChat\Entities\Message;
 
 class User extends Authenticatable
 {
@@ -35,14 +36,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+
     public function user_role()
     {
-      return $this->hasMany(UserRole::class, 'user_id');
+        return $this->hasMany(UserRole::class, 'user_id');
     }
-    
-    public function roles() {
-      return $this->belongsToMany(Role::class, 'avn_user_roles', 'user_id', 'role_id');
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'avn_user_roles', 'user_id', 'role_id');
     }
 
     public function customer()
@@ -53,5 +55,9 @@ class User extends Authenticatable
     public function partern()
     {
         return $this->hasOne(Partern::class, 'id', 'id');
+    }
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'user_id', 'id');
     }
 }
