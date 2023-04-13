@@ -38,7 +38,7 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         if ($role->id == 1) {
-            return redirect()->route('avnrole-list')->with('Failed', 'Role mặc định không thể sửa');
+            return redirect()->route('role-list')->with('Failed', 'Role mặc định không thể sửa');
         }
         $menus = AvnMenu::get();
         $other_permissions = Permission::where('menu_id', null)->get();
@@ -50,7 +50,7 @@ class RoleController extends Controller
         try {
             $role = Role::findOrFail($id);
             if ($role->id == 1) {
-                return redirect()->route('avnrole-list')->with('Failed', 'Role mặc định không thể xóa');
+                return redirect()->route('role-list')->with('Failed', 'Role mặc định không thể xóa');
             }
             $role->name = $request->name;
             $role->save();
@@ -106,7 +106,7 @@ class RoleController extends Controller
         try {
             $role = Role::findOrFail($id);
             if ($role->id == 1) {
-                return redirect()->route('avnrole-list')->with('Failed', 'Role mặc định không thể xóa');
+                return redirect()->route('role-list')->with('Failed', 'Role mặc định không thể xóa');
             }
             $role->delete();
             return redirect()->route('avnrole-list')->with('Success', 'Xóa thành công');

@@ -74,7 +74,7 @@ class AvnSettingDatabaseSeeder extends Seeder
 
 
         $permission1 = new Permission();
-        $permission1->route_names = 'navbar, edit-navbar, store-navbar, update-navbar, delete-navbar, footer, store-footer, update-footer, delete-footer, store-footer-infor, update-footer-infor, delete-footer-infor, store-footer-icon, update-footer-icon, delete-footer-icon, contact-seo, update-contact-seo, service-seo, update-service-seo, post-seo, update-post-seo, update-footer-des, home-seo, update-home-seo';
+        $permission1->route_names = 'navbar, edit-navbar, store-navbar, update-navbar, delete-navbar, footer, store-footer, update-footer, delete-footer, store-footer-icon, update-footer-icon, delete-footer-icon, contact-seo, update-contact-seo, service-seo, update-service-seo, post-seo, update-post-seo, update-footer-des, home-seo, update-home-seo';
         $permission1->name = 'Cài đặt trang';
         $permission1->menu_id = $menu->id;
         $permission1->save();

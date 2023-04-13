@@ -10,7 +10,7 @@
 @section('content')
 <div class="container">
     <div class="row mt-2">
-        <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-1">
+        <div class="col-xxl-3 col-lg-3 col-md-4 col-sm-12 order-lg-1 order-xxl-1">
             <div class="card">
                 <div class="card-body">
                     <div class="dropdown float-end">
@@ -77,7 +77,7 @@
                 </div> 
             </div> 
         </div>
-        <div class="col-xxl-9 col-lg-12 order-lg-2 order-xxl-1">
+        <div class="col-xxl-9 col-lg-9 col-md-8 col-sm-12 order-lg-2 order-xxl-1">
             <div class="card">
                 <div class="card-body p-0">
                     <ul class="nav nav-tabs nav-bordered">
@@ -164,7 +164,7 @@
                                 </div>
                                 <h5 class="m-0">{{$user->name}}</h5>
                                 <p class="text-muted">
-                                    <small>{{ NotificationController::timeAgo($item->created_at) }}
+                                    <small>{{ NotificationController::timeAgo($item->updated_at) }}
                                         <span class="mx-1">⚬</span> 
                                         <span>
                                             @if($item->status == '0')
@@ -183,11 +183,11 @@
                         </div>
                         <hr class="m-0" />
                         <div class="my-1">
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted ps-0"><i class='mdi mdi-heart text-danger'></i> 2k</a>
-                            <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i class='uil uil-comments-alt'></i> {{count($item->new_feed_comments)}}</a>
+                            <a href="javascript: void(0);" data-bs-toggle="collapse" data-bs-target="#open-{{$item->id}}" aria-expanded="false" aria-controls="open-{{$item->id}}" class="btn btn-sm btn-link text-muted ps-0">
+                                <i class='uil uil-comments-alt'></i> {{count($item->new_feed_comments)}}</a>
                         </div>
                         <hr class="m-0" />
-                        <div class="mt-3">
+                        <div class="mt-3 collapse hide" id="open-{{$item->id}}">
                             @foreach($item->new_feed_comments as $child)
                                 <div class="d-flex">
                                     @if($child->new_feed_comment_user->type == 'system')
@@ -200,7 +200,7 @@
                                     <div>
                                         <h5 class="m-0">{{$child->new_feed_comment_user->name}} </h5>
                                         <p class="text-muted mb-0"><small>{{ NotificationController::timeAgo($child->updated_at) }}</small></p>
-                                        <textarea class="bg-white" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;" readonly>{!! $child->comment !!}</textarea>
+                                        <p class="text-dark mb-2">{!! $child->comment !!}</p>
                                         <!--- Người bình luận đc sửa --->
                                         @if($user->id == $child->user_id)
                                             <div>
@@ -225,7 +225,7 @@
                                                             @method('PUT')
                                                             <input type="hidden" name="feed_id" value="{{$child->feed_id}}">
                                                             <div class="modal-body text-dark">
-                                                                <textarea class="form-control" name="comment">{!! $child->comment !!}</textarea>
+                                                                <input type="text" class="form-control border-0 form-control-sm" name="comment" value="{{$child->comment}}">
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
@@ -276,7 +276,7 @@
                                     <form action="{{ route('store-comment-feed') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="feed_id" value="{{$item->id}}">
-                                        <textarea rows="3" class="form-control bg-light border-0 resize-none" name="comment" placeholder="Bình luận...."></textarea>
+                                        <input type="text" class="form-control border-0 form-control-sm" name="comment" placeholder="Bình luận....">
                                         <div class="mt-2 d-flex justify-content-end align-items-center">
                                             <button type="submit" class="btn btn-sm btn-success">Bình luận</button>
                                         </div>

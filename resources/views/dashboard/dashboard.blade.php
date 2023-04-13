@@ -26,6 +26,17 @@
     $keyword_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_keywords'])->first();
     $img_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_image'])->first();
     $link_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_link'])->first();
+    $feature_icon = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_icon'])->first();
+    $feature_img = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_img'])->first();
+    $feature_title = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_title'])->first();
+    $feature_des = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_des'])->first();
+    $feature_title_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_title_2'])->first();
+    $feature_des_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_des_2'])->first();
+    $feature_li_1 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_1'])->first();
+    $feature_li_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_2'])->first();
+    $feature_li_3 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_3'])->first();
+    $feature_li_4 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_4'])->first();
+    $feature_button = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_button'])->first();
 @endphp
 @extends('layouts.guest')
 @section('title')
@@ -53,13 +64,45 @@
     </section>
     <!-- END HERO -->
 
+    <!-- START FEATURES 2 -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center">
+                        <img src="{{ asset($feature_icon->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                        <h3><span class="text-primary">{{ $feature_title->value ?? '' }}</span></h3>
+                        <p class="text-muted mt-2">{{ $feature_des->value ?? '' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 py-5 align-items-center">
+                <div class="col-lg-5">
+                    <img src="{{ asset($feature_img->value ?? '/resources/assets/images/logo.png') }}" class="img-fluid">
+                </div>
+                <div class="col-lg-6 offset-lg-1">
+                    <h3 class="fw-normal">{{ $feature_title_2->value ?? '' }}</h3>
+                    <p class="text-muted mt-3">{{ $feature_des_2->value ?? '' }}</p>
+                    <div class="mt-4">
+                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> {{ $feature_li_1->value ?? '' }}</p>
+                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> {{ $feature_li_2->value ?? '' }}</p>
+                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> {{ $feature_li_3->value ?? '' }}</p>
+                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> {{ $feature_li_4->value ?? '' }}</p>
+                    </div>
+                    <a href="{{ $feature_button->value ?? '' }}" class="btn btn-primary rounded-pill mt-3">Xem thêm <i class="mdi mdi-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END FEATURES 2 -->
+
     <!-- START FEATURES 1 -->
     <section class="py-5 bg-light-lighten border-top border-bottom border-light">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img_post->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($img_post->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $keyword_post->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $description_post->value ?? '' }}</p>
                     </div>
@@ -72,14 +115,10 @@
                             'alias' => $item->alias ?? $item->id,
                         ];
                     @endphp
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <a href="{{ route('view-post', $params) }}">
                             <div class="card d-block">
-                                @if($item->img == '')
-                                    <img class="card-img-top" src="{{ asset('/resources/assets/images/logo.png') }}" alt="{{$item->name}}" style="max-height: 400px; object-fit: cover;">
-                                @else
-                                    <img class="card-img-top" src="{{ asset($item->img) }}" alt="{{$item->name}}" style="max-height: 400px; object-fit: cover;">
-                                @endif
+                                <img class="card-img-top" src="{{ asset($item->img ?? '/resources/assets/images/logo.png') }}" alt="{{$item->name}}" style="max-height: 400px; object-fit: cover;">
                                 <div class="card-body position-relative">
                                     <h4 class="mt-0">
                                         <a class="text-title">{{$item->name}}</a>
@@ -117,7 +156,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img_service->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($img_service->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $keyword_service->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $description_service->value ?? '' }}</p>
                     </div>
@@ -125,17 +164,19 @@
             </div>
             <div class="row mt-5 pt-3">
                 @foreach($services as $item)
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card card-pricing card-pricing-recommended">
                         <div class="card-body text-center">
                             @if($item->recommended == '1')
                                 <div class="card-pricing-plan-tag">Khuyến nghị</div>
                             @endif
                             <p class="card-pricing-plan-name fw-bold text-uppercase">{{$item->service_type->name}}</p>
-                            <img src="{{ asset($item->service_type->img) }}" alt="{{$item->name}}" class="rounded" style="width: 50px; height: 50px; object-fit: cover">
+                            <img src="{{ asset($item->service_type->img) }}" alt="{{$item->name}}" class="rounded" style="width: 80px; height: 80px; object-fit: cover">
                             <h2 class="card-pricing-price">{{$item->price}}</h2>
                             <ul class="card-pricing-features">
-                                <textarea class="text-muted text-center font-15 mb-1 bg-white p-0 w-100" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $item->description !!}</textarea>
+                                <div id="editor">
+                                    {!! $item->description !!}
+                                </div>
                             </ul>
                             <button class="btn btn-primary mt-4 mb-2 rounded-pill">Chọn</button>
                         </div>
@@ -156,7 +197,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img_contact->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($img_contact->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $keyword_contact->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $description_contact->value ?? '' }}</p>
                     </div>

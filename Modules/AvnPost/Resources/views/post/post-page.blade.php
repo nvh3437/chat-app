@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 50px; width: 50px; object-fit: cover;" />
+                        <img src="{{ asset($img->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
                         <h3><span class="text-primary">{{ $keyword->value ?? '' }}</span></h3>
                         <p class="text-muted mt-2">{{ $description->value ?? '' }}</p>
                     </div>
@@ -58,14 +58,10 @@
                                 'alias' => $item->alias ?? $item->id,
                             ];
                         @endphp
-                            <div class="col-md-6 col-xxl-4">
+                            <div class="col-md-6 col-xxl-3">
                                 <a href="{{ route('view-post', $params) }}">
                                     <div class="card d-block">
-                                        @if($item->img == '')
-                                            <img class="card-img-top" src="{{ asset('/resources/assets/images/logo.png') }}" alt="{{$item->name}}">
-                                        @else
-                                            <img class="card-img-top" src="{{ asset($item->img) }}" alt="{{$item->name}}">
-                                        @endif
+                                        <img class="card-img-top" src="{{ asset($item->img ?? '/resources/assets/images/logo.png') }}" alt="{{$item->name}}" style="max-height: 400px; object-fit: cover;">
                                         <div class="card-body position-relative">
                                             <h4 class="mt-0">
                                                 <a class="text-title">{{$item->name}}</a>

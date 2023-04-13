@@ -42,7 +42,7 @@ class AvnServiceDatabaseSeeder extends Seeder
 
         $permission1 = new Permission();
         $permission1->route_names = 'list-type, store-type, update-type, delete-type, list-service, add-service, edit-service, store-service, update-service, delete-service';
-        $permission1->name = 'Duyệt tin và thêm phân loại tuyển dụng';
+        $permission1->name = 'Quản lý dịch vụ';
         $permission1->menu_id = $menu->id;
         $permission1->save();
 

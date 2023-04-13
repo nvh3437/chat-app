@@ -14,20 +14,21 @@ use App\Http\Controllers\Helper;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GeneralSettings;
+use Modules\AvnPost\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
     //------------------------------------ Trang chủ -----------------------------//
     public static function getPost()
     {
-        $posts = Post::orderByDesc('updated_at')->limit(3)->get();
+        $posts = Post::orderByDesc('updated_at')->limit(4)->get();
         return $posts;
     }
 
     //------------------------------------ Quản lý -------------------------------//
     public function listPost()
     {
-        $posts = Post::get();
+        $posts = Post::orderByDesc('updated_at')->get();
         return view('avnpost::post.list-post', compact('posts'));
     }
 
@@ -37,7 +38,7 @@ class PostController extends Controller
         return view('avnpost::post.add-post', compact('categories'));
     }
 
-    public function storePost(Request $request)
+    public function storePost(PostRequest $request)
     {
         try {
             $post = new Post();
@@ -74,7 +75,7 @@ class PostController extends Controller
         return view('avnpost::post.edit-post', compact('post', 'categories'));
     }
 
-    public function updatePost(Request $request, $id)
+    public function updatePost(PostRequest $request, $id)
     {
         try {
             $post = Post::findOrFail($id);

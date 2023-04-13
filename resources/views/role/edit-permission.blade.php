@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <form action="{{ route('avnrole-update-permission', ['id' => $role->id]) }}" method="POST">
+                                <form action="{{ route('role-update-permission', ['id' => $role->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row">

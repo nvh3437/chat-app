@@ -53,11 +53,7 @@
                                         <td>{{ $item->category->name }}</td>                                       
                                         <td>{{ $item->name }}</td>
                                         <td>
-                                            @if($item->img == '')
-                                                <img src="{{ asset('/resources/assets/images/logo.png') }}" class="rounded" style="width: 30px; height: 30px; object-fit: cover">
-                                            @else
-                                                <img src="{{ asset($item->img) }}" class="rounded" style="width: 30px; height: 30px; object-fit: cover">
-                                            @endif
+                                            <img src="{{ asset($item->img ?? '/resources/assets/images/logo.png') }}" class="rounded" style="width: 30px; height: 30px; object-fit: cover">
                                         </td>
                                         <td>{{ $item->post_created->name }}</td>
                                         <td>{{ $item->post_updated->name }}</td>

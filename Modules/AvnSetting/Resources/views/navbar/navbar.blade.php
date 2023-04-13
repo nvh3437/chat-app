@@ -60,6 +60,7 @@
 					                <th>Tên</th>
 					                <th>Đường dẫn</th>
 					                <th>Sở thuộc</th>
+					                <th>Thứ tự</th>
 					                <th>Chọn</th>
 					            </tr>
 					        </thead>
@@ -79,6 +80,7 @@
                                                 {{ $item->parent->name }}
                                             @endif
                                         </td>
+                                        <td>{{ $item->order }}</td>
 					                    <td>
 					                    	<a href="{{ route('edit-navbar', $item->id) }}" class="action-icon">
                                                 <i class="mdi mdi-pencil"></i>
