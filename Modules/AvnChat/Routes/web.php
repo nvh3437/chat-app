@@ -13,6 +13,6 @@
 
 Route::prefix('chat')->group(function () {
     Route::get('/', 'AvnChatController@index')->middleware(['auth']);
-    Route::get('/get-message', 'AvnChatController@getMessage')->middleware(['auth'])->name('get-message');
+    Route::get('/get-messages', 'AvnChatController@getMessages')->middleware(['auth'])->name('get-messages');
     Route::post('/send-message', 'AvnChatController@sendMessage')->middleware('auth')->name('send-message-to-user');
 });

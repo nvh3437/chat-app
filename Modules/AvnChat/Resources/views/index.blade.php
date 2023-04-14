@@ -9,7 +9,7 @@
         <div class="row mt-3">
             <!-- start chat users-->
             <div class="col-xxl-3 col-xl-6 order-xl-1">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body p-0">
                         <ul class="nav nav-tabs nav-bordered">
                             <li class="nav-item">
@@ -66,7 +66,8 @@
                                                             <p class="mt-1 mb-0 text-muted font-14">
                                                                 <span class="w-25 float-end text-end"><span
                                                                         class="badge badge-danger-lighten">3</span></span>
-                                                                <span class="w-75 new-message">How are you today?</span>
+                                                                <span
+                                                                    class="w-75 new-message">{{ $room->messages->last()->message ?? '' }}</span>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -86,59 +87,27 @@
             <!-- chat area -->
             <div class="col-xxl-6 col-xl-12 order-xl-2">
                 <div class="card chat-conatiner d-none">
-                    <div class="card-body">
-                        <ul class="conversation-list min-vh-75" data-simplebar style="max-height: 537px">
-                            <li class="clearfix">
-                                <div class="chat-avatar">
-                                    <img src="{{ asset('resources/assets/images/users/avatar-1.jpg') }}" class="rounded"
-                                        alt="Shreyu N" />
-                                    <i>10:00</i>
-                                </div>
-                                <div class="conversation-text">
-                                    <div class="ctext-wrap">
-                                        <i>{{ $users->first()->name }}</i>
-                                        <p>
-                                            Hello!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="conversation-actions dropdown">
-                                    <button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i
-                                            class='uil uil-ellipsis-v'></i></button>
-
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">Copy Message</a>
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="clearfix odd">
-                                <div class="chat-avatar">
-                                    <img src="assets/images/users/avatar-1.jpg" class="rounded" alt="dominic" />
-                                    <i>10:01</i>
-                                </div>
-                                <div class="conversation-text">
-                                    <div class="ctext-wrap">
-                                        <i>Dominic</i>
-                                        <p>
-                                            Hi, How are you? What about our next meeting?
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="conversation-actions dropdown">
-                                    <button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i
-                                            class='uil uil-ellipsis-v'></i></button>
-
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Copy Message</a>
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </li>
+                    <div class="card-body position-relative">
+                        <div class="pre-loader position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
+                            style="z-index: 1">
+                            <div class="btn btn-primary position-absolute top-50 start-50"
+                                style="transform: translate(-50%, -50%);">
+                                <span class="spinner-border spinner-border-sm me-1" role="status"
+                                    aria-hidden="true"></span>
+                                Đang tải tin nhắn...
+                            </div>
+                        </div>
+                        <div class="pre-loader-error position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
+                            style="z-index: 1">
+                            <div class="btn btn-danger position-absolute top-50 start-50"
+                                style="transform: translate(-50%, -50%);">
+                                <span class="spinner-border spinner-border-sm me-1" role="status"
+                                    aria-hidden="true"></span>
+                                Có lỗi xảy ra hãy thông báo với quản trị viên...
+                            </div>
+                        </div>
+                        <ul class="conversation-list min-vh-75" data-simplebar style="height: 537px">
                         </ul>
-
                         <div class="row">
                             <div class="col">
                                 <div class="mt-2 bg-light p-3 rounded">
@@ -152,8 +121,7 @@
                                                 <div class="btn-group">
                                                     <a href="#" class="btn btn-light"><i
                                                             class="uil uil-paperclip"></i></a>
-                                                    <a href="#" class="btn btn-light"> <i
-                                                            class='uil uil-smile'></i>
+                                                    <a href="#" class="btn btn-light"> <i class='uil uil-smile'></i>
                                                     </a>
                                                     <div class="d-grid">
                                                         <button type="submit" class="btn btn-success chat-send"><i
@@ -174,7 +142,7 @@
 
             <!-- start user detail -->
             <div class="col-xxl-3 col-xl-6 order-xl-1 order-xxl-2">
-                <div class="card">
+                <div class="card d-none">
                     <div class="card-body">
                         <div class="dropdown float-end">
                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
@@ -249,8 +217,42 @@
                     }
                 });
             $('.chat-room').on('click', function() {
-                $('.chat-conatiner').removeClass('d-none');
-                room_id = $(this).data('id')
+                $('.chat-conatiner').removeClass('d-none')
+                if (room_id != $(this).data('id')) {
+                    $('.chat-conatiner .pre-loader').removeClass('d-none')
+                    room_id = $(this).data('id')
+                    clear_message()
+                    $.ajax({
+                        method: 'get',
+                        url: "{{ route('get-messages') }}",
+                        dataType: "json",
+                        data: {
+                            id: room_id,
+                        },
+                        success: function(res) {
+                            console.log(res);
+                            res.forEach(message => {
+                                if (message.user_id == {{ $user->id }}) {
+                                    add_my_send_message(message.message, false)
+                                } else {
+                                    add_my_receive_message(message.user.name, message
+                                        .user
+                                        .customer.img ??
+                                        'resources/assets/images/users/avatar-1.jpg',
+                                        message.message, false)
+                                }
+                            });
+                            $('.chat-conatiner .pre-loader').addClass('d-none')
+                            $('.chat-conatiner .pre-loader-error').addClass('d-none')
+                            scroll_to_bottom_message_container()
+
+                        },
+                        error: function() {
+                            $('.chat-conatiner .pre-loader-error').removeClass('d-none')
+                        }
+                    });
+                }
+
             })
 
             $('#chat-form').on('submit', function(e) {
@@ -272,9 +274,21 @@
                     }
                 });
 
-            });
+            })
 
-            function add_my_send_message(message) {
+            function clear_message() {
+                $('.conversation-list .clearfix').remove()
+            }
+
+            function scroll_to_bottom_message_container() {
+                $(".conversation-list .simplebar-content-wrapper").animate({
+                    scrollTop: $(
+                            '.conversation-list .simplebar-content-wrapper .simplebar-content')
+                        .height()
+                }, 1500);
+            }
+
+            function add_my_send_message(message, append = true) {
                 var htm = '<li class="clearfix odd">'
                 htm += '<div class="chat-avatar">'
                 htm +=
@@ -300,10 +314,14 @@
                 htm += '</div>'
                 htm += '</li>'
                 // $(htm).insertAfter('li.clearfix:last-child');
-                $('.conversation-list .simplebar-content').append(htm);
+                if (append) {
+                    $('.conversation-list .simplebar-content').append(htm);
+                } else {
+                    $('.conversation-list .simplebar-content').prepend(htm);
+                }
             }
 
-            function add_my_receive_message(name, img, message) {
+            function add_my_receive_message(name, img, message, append = true) {
                 var htm = '<li class="clearfix">'
                 htm += '<div class="chat-avatar">'
                 htm += '<img src="' + (img) + '" class="rounded"'
@@ -328,8 +346,11 @@
                 htm += '</div>'
                 htm += '</div>'
                 htm += '</li>'
-                // $(htm).insertAfter('li.clearfix:last-child');
-                $('.conversation-list .simplebar-content').append(htm);
+                if (append) {
+                    $('.conversation-list .simplebar-content').append(htm);
+                } else {
+                    $('.conversation-list .simplebar-content').prepend(htm);
+                }
             }
         });
     </script>

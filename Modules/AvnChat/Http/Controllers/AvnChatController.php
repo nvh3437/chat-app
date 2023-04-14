@@ -50,12 +50,13 @@ class AvnChatController extends Controller
         broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, room_id: $room->id, message: $message->message));
         return true;
     }
-    public function getMessage(Request $request)
+    public function getMessages(Request $request)
     {
         $user = Auth::user();
         $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
             $query->where('user_id', $user->id);
-        })->findOrFail()->load('messages');
-        return $room;
+        })->findOrFail($request->id);
+        $messages = Message::where('room_id', $room->id)->latest()->take(15)->with('user:id,name', 'user.customer:id,img')->get();
+        return $messages;
     }
 }
