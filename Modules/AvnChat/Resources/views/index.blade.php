@@ -278,7 +278,7 @@
                 var htm = '<li class="clearfix odd">'
                 htm += '<div class="chat-avatar">'
                 htm +=
-                    '<img src="{{ asset($user->img ?? 'resources/assets/images/users/avatar-1.jpg') }}" class="rounded" alt="{{ $user->name }}" />'
+                    '<img src="{{ asset($user->customer->img ?? 'resources/assets/images/users/avatar-1.jpg') }}" class="rounded" alt="{{ $user->name }}" />'
                 htm += '<i>10:01</i>'
                 htm += '</div>'
                 htm += '<div class="conversation-text">'
@@ -299,7 +299,8 @@
                 htm += '</div>'
                 htm += '</div>'
                 htm += '</li>'
-                $(htm).insertAfter('li.clearfix:last-child');
+                // $(htm).insertAfter('li.clearfix:last-child');
+                $('.conversation-list .simplebar-content').append(htm);
             }
 
             function add_my_receive_message(name, img, message) {
@@ -327,7 +328,8 @@
                 htm += '</div>'
                 htm += '</div>'
                 htm += '</li>'
-                $(htm).insertAfter('li.clearfix:last-child');
+                // $(htm).insertAfter('li.clearfix:last-child');
+                $('.conversation-list .simplebar-content').append(htm);
             }
         });
     </script>
