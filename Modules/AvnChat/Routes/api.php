@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use Modules\AvnChat\Http\Controllers\AvnChatAPIController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,8 +13,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/avnchat/send-message', function (Request $request) {
-    $message = $request->message;
-    $username = $request->username;
-    broadcast(new App\Events\SendMessage( $username, $message ));
-})->middleware(['auth:sanctum']);
+// Route::post('/chat/send-message', 'AvnChatAPIController@sendMessage')->middleware('auth')->name('send-message-to-user');

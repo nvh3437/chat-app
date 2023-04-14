@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +19,7 @@ use Illuminate\Support\Facades\Broadcast;
 // });
 Broadcast::channel('chat', function () {
     return true;
+});
+Broadcast::channel('chat.user.{userId}', function ($user, $userId) {
+    return $user->id == $userId;
 });

@@ -12,15 +12,22 @@ return new class extends Migration {
      */
     public function up()
     {
+        Schema::dropIfExists('avn_chat_messages');
         Schema::create('avn_chat_messages', function (Blueprint $table) {
             $table->id();
-            $table->text('message');
+            $table->unsignedBigInteger('room_id');
+            $table->foreign('room_id')
+                ->references('id')
+                ->on('avn_chat_rooms')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')
+            $table->foreign('user_id')
+                ->references('id')
                 ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->text('message');
             $table->timestamps();
         });
     }
