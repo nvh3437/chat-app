@@ -26,7 +26,9 @@ class AvnChatController extends Controller
     public function sendMessage(Request $request)
     {
         $user_send = Auth::user();
-        $room = ChatRoom::findOrFail($request->id);
+        $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user_send) {
+            $query->where('user_id', $user_send->id);
+        })->findOrFail($request->id);
         // if (!$room) {
         //     $room = new ChatRoom();
         //     $room->save();
