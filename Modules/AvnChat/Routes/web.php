@@ -11,6 +11,8 @@
 |
 */
 
-Route::prefix('chat')->group(function() {
+Route::prefix('chat')->group(function () {
     Route::get('/', 'AvnChatController@index')->middleware(['auth']);
+    Route::get('/get-message', 'AvnChatController@getMessage')->middleware(['auth'])->name('get-message');
+    Route::post('/send-message', 'AvnChatController@sendMessage')->middleware('auth')->name('send-message-to-user');
 });

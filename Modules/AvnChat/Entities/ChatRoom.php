@@ -22,7 +22,7 @@ class ChatRoom extends Model
     {
         return $this->hasMany(ChatRoomUser::class, 'room_id', 'id');
     }
-    public function rooms()
+    public function users()
     {
         return $this->belongsToMany(User::class, 'avn_chat_room_users', 'room_id', 'user_id');
     }

@@ -47,21 +47,26 @@
                                 <div class="row">
                                     <div class="col">
                                         <div data-simplebar style="max-height: 550px">
-                                            @foreach ($users as $user)
-                                                <a href="javascript:void(0);" class="text-body">
+                                            @foreach ($rooms as $room)
+                                                <a href="javascript:void(0);" class="text-body chat-room"
+                                                    data-id="{{ $room->id }}" id="room-{{ $room->id }}">
                                                     <div class="d-flex align-items-start mt-1 p-2">
-                                                        <img src="{{ asset($user->customer->img ?? 'resources/assets/images/users/avatar-1.jpg') }}"
+                                                        <img src="{{ asset('resources/assets/images/users/avatar-1.jpg') }}"
                                                             class="me-2 rounded-circle" height="48"
                                                             alt="Brandon Smith" />
                                                         <div class="w-100 overflow-hidden">
                                                             <h5 class="mt-0 mb-0 font-14">
                                                                 <span class="float-end text-muted font-12">4:30am</span>
-                                                                {{$user->name}}
+                                                                @if ($room->is_group)
+                                                                    {{ $room->name }}
+                                                                @else
+                                                                    {{ $room->users->where('id', '!=', $user->id)->first()->name }}
+                                                                @endif
                                                             </h5>
                                                             <p class="mt-1 mb-0 text-muted font-14">
                                                                 <span class="w-25 float-end text-end"><span
                                                                         class="badge badge-danger-lighten">3</span></span>
-                                                                <span class="w-75">How are you today?</span>
+                                                                <span class="w-75 new-message">How are you today?</span>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -80,17 +85,18 @@
 
             <!-- chat area -->
             <div class="col-xxl-6 col-xl-12 order-xl-2">
-                <div class="card">
+                <div class="card chat-conatiner d-none">
                     <div class="card-body">
-                        <ul class="conversation-list  min-vh-75" data-simplebar style="max-height: 537px">
+                        <ul class="conversation-list min-vh-75" data-simplebar style="max-height: 537px">
                             <li class="clearfix">
                                 <div class="chat-avatar">
-                                    <img src="assets/images/users/avatar-5.jpg" class="rounded" alt="Shreyu N" />
+                                    <img src="{{ asset('resources/assets/images/users/avatar-1.jpg') }}" class="rounded"
+                                        alt="Shreyu N" />
                                     <i>10:00</i>
                                 </div>
                                 <div class="conversation-text">
                                     <div class="ctext-wrap">
-                                        <i>Shreyu N</i>
+                                        <i>{{ $users->first()->name }}</i>
                                         <p>
                                             Hello!
                                         </p>
@@ -107,26 +113,48 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="clearfix odd">
+                                <div class="chat-avatar">
+                                    <img src="assets/images/users/avatar-1.jpg" class="rounded" alt="dominic" />
+                                    <i>10:01</i>
+                                </div>
+                                <div class="conversation-text">
+                                    <div class="ctext-wrap">
+                                        <i>Dominic</i>
+                                        <p>
+                                            Hi, How are you? What about our next meeting?
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="conversation-actions dropdown">
+                                    <button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                            class='uil uil-ellipsis-v'></i></button>
+
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Copy Message</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
 
                         <div class="row">
                             <div class="col">
                                 <div class="mt-2 bg-light p-3 rounded">
-                                    <form class="needs-validation" novalidate="" name="chat-form" id="chat-form">
+                                    <form class="chat-form" name="chat-form" id="chat-form">
                                         <div class="row">
                                             <div class="col mb-2 mb-sm-0">
                                                 <input type="text" class="form-control border-0"
-                                                    placeholder="Enter your text" required="">
-                                                <div class="invalid-feedback">
-                                                    Please enter your messsage
-                                                </div>
+                                                    placeholder="Enter your text" id="message" required="">
                                             </div>
                                             <div class="col-sm-auto">
                                                 <div class="btn-group">
                                                     <a href="#" class="btn btn-light"><i
                                                             class="uil uil-paperclip"></i></a>
                                                     <a href="#" class="btn btn-light"> <i
-                                                            class='uil uil-smile'></i> </a>
+                                                            class='uil uil-smile'></i>
+                                                    </a>
                                                     <div class="d-grid">
                                                         <button type="submit" class="btn btn-success chat-send"><i
                                                                 class='uil uil-message'></i></button>
@@ -198,10 +226,111 @@
             </div> <!-- end col -->
             <!-- end user detail -->
         </div> <!-- end row-->
-
     </div> <!-- container -->
 @endsection
 @section('js')
+    @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
+    <script>
+        $(document).ready(function() {
+            var room_id = null;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                }
+            });
+
+            window.Echo.private('chat.user.{{ $user->id }}')
+                .listen('.newMessage', (e) => {
+                    console.log(e);
+                    if (room_id == e.room_id) {
+                        add_my_receive_message(e.name, e.img, e.message)
+                    } else {
+                        $("#room-" + e.room_id + " .new-message").html(e.message);
+                    }
+                });
+            $('.chat-room').on('click', function() {
+                $('.chat-conatiner').removeClass('d-none');
+                room_id = $(this).data('id')
+            })
+
+            $('#chat-form').on('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var message = $('#message').val();
+                add_my_send_message(message)
+                $('#message').val('')
+                $.ajax({
+                    method: 'post',
+                    url: "{{ route('send-message-to-user') }}",
+                    dataType: "json",
+                    data: {
+                        id: room_id,
+                        message: message
+                    },
+                    success: function(res) {
+                        console.log(res);
+                    }
+                });
+
+            });
+
+            function add_my_send_message(message) {
+                var htm = '<li class="clearfix odd">'
+                htm += '<div class="chat-avatar">'
+                htm +=
+                    '<img src="{{ asset($user->img ?? 'resources/assets/images/users/avatar-1.jpg') }}" class="rounded" alt="{{ $user->name }}" />'
+                htm += '<i>10:01</i>'
+                htm += '</div>'
+                htm += '<div class="conversation-text">'
+                htm += '<div class="ctext-wrap">'
+                htm += '<i>{{ $user->name }}</i>'
+                htm += '<p>'
+                htm += message
+                htm += '</p>'
+                htm += '</div>'
+                htm += '</div>'
+                htm += '<div class="conversation-actions dropdown">'
+                htm +=
+                    '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil - ellipsis - v "></i></button>'
+                htm += '<div class="dropdown-menu">'
+                htm += '<a class="dropdown-item" href="#">Copy Message</a>'
+                htm += '<a class="dropdown-item" href="#">Edit</a>'
+                htm += '<a class="dropdown-item" href="#">Delete</a>'
+                htm += '</div>'
+                htm += '</div>'
+                htm += '</li>'
+                $(htm).insertAfter('li.clearfix:last-child');
+            }
+
+            function add_my_receive_message(name, img, message) {
+                var htm = '<li class="clearfix">'
+                htm += '<div class="chat-avatar">'
+                htm += '<img src="' + (img) + '" class="rounded"'
+                htm += 'alt="' + name + '" />'
+                htm += '<i>10:00</i>'
+                htm += '</div>'
+                htm += '<div class="conversation-text">'
+                htm += '<div class="ctext-wrap">'
+                htm += '<i>' + name + '</i>'
+                htm += '<p>'
+                htm += message
+                htm += '</p>'
+                htm += '</div>'
+                htm += '</div>'
+                htm += '<div class="conversation-actions dropdown">'
+                htm +=
+                    '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil-ellipsis-v"></i></button>'
+                htm += '<div class="dropdown-menu dropdown-menu-end">'
+                htm += '<a class="dropdown-item" href="#">Copy Message</a>'
+                htm += '<a class="dropdown-item" href="#">Edit</a>'
+                htm += '<a class="dropdown-item" href="#">Delete</a>'
+                htm += '</div>'
+                htm += '</div>'
+                htm += '</li>'
+                $(htm).insertAfter('li.clearfix:last-child');
+            }
+        });
+    </script>
 @endsection
 @section('css')
 @endsection
