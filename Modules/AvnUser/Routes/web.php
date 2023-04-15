@@ -1,6 +1,6 @@
 <?php
 use Modules\AvnUser\Http\Controllers\CustomerController;
-use Modules\AvnUser\Http\Controllers\ParternController;
+use Modules\AvnUser\Http\Controllers\PartnerController;
 use Modules\AvnUser\Http\Controllers\SocialController;
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +16,12 @@ use Modules\AvnUser\Http\Controllers\SocialController;
 //-------------------------- Quản lý ---------------------//
 Route::prefix('user')->group(function() {
     // Chuyên gia
-    Route::get('/list-partern', 'ParternManagerController@listPartern')->middleware(['auth', 'permission'])->name('list-partern');
-    Route::get('/add-partern', 'ParternManagerController@addPartern')->middleware(['auth', 'permission'])->name('add-partern');
-    Route::get('/edit-partern/{id}', 'ParternManagerController@editPartern')->middleware(['auth', 'permission'])->name('edit-partern');
-    Route::post('/store-partern', 'ParternManagerController@storePartern')->middleware(['auth', 'permission'])->name('store-partern');
-    Route::put('/update-partern/{id}', 'ParternManagerController@updatePartern')->middleware(['auth', 'permission'])->name('update-partern');
-    Route::delete('/delete-partern/{id}', 'ParternManagerController@deletePartern')->middleware(['auth', 'permission'])->name('delete-partern');
+    Route::get('/list-partner', 'PartnerManagerController@listPartner')->middleware(['auth', 'permission'])->name('list-partner');
+    Route::get('/add-partner', 'PartnerManagerController@addPartner')->middleware(['auth', 'permission'])->name('add-partner');
+    Route::get('/edit-partner/{id}', 'PartnerManagerController@editPartner')->middleware(['auth', 'permission'])->name('edit-partner');
+    Route::post('/store-partner', 'PartnerManagerController@storePartner')->middleware(['auth', 'permission'])->name('store-partner');
+    Route::put('/update-partner/{id}', 'PartnerManagerController@updatePartner')->middleware(['auth', 'permission'])->name('update-partner');
+    Route::delete('/delete-partner/{id}', 'PartnerManagerController@deletePartner')->middleware(['auth', 'permission'])->name('delete-partner');
 
     // Khách
     Route::get('/list-customer', 'CustomerManagerController@listCustomer')->middleware(['auth', 'permission'])->name('list-customer');
@@ -55,5 +55,5 @@ Route::get('/my-profile', [CustomerController::class, 'myProfile'])->middleware(
 Route::put('/update-customer-profile', [CustomerController::class, 'updateCustomerProfile'])->middleware(['auth'])->name('update-customer-profile');
 
 //-------------------------- Chuyên gia xem thông tin bản thân,... ---------------------//
-Route::get('/profile', [ParternController::class, 'profile'])->middleware(['auth'])->name('profile');
-Route::put('/update-partern-profile', [ParternController::class, 'updateParternProfile'])->middleware(['auth'])->name('update-partern-profile');
+Route::get('/profile', [PartnerController::class, 'profile'])->middleware(['auth'])->name('profile');
+Route::put('/update-partner-profile', [PartnerController::class, 'updatePartnerProfile'])->middleware(['auth'])->name('update-partner-profile');

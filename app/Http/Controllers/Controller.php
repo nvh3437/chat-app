@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Modules\AvnChat\Entities\ChatRoomUser;
 
 class Controller extends BaseController
 {
@@ -64,6 +65,10 @@ class Controller extends BaseController
             $user->name = $request->name;
             $user->password = Hash::make($request->password);
             $user->save();
+            $global_chat_room_user = new ChatRoomUser();
+            $global_chat_room_user->user_id = $user->id;
+            $global_chat_room_user->room_id = 1;
+            $global_chat_room_user->save();
             return back()->with('Success','Thêm thành công');
         } catch (Exception $e) {
             return back()->with('Failed','Thêm thất bại');
@@ -75,7 +80,6 @@ class Controller extends BaseController
             $user = User::findOrFail($id);
             $user->username = $request->username;
             $user->email = $request->email;
-            $user->type = 'system';
             $user->name = $request->name;
             if ($request->password != null && strlen($request->password) > 0) {
                 $user->password = Hash::make($request->password);

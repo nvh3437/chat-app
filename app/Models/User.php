@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserRole;
 use App\Models\Role;
 use Modules\AvnUser\Entities\Customer;
-use Modules\AvnUser\Entities\Partern;
+use Modules\AvnUser\Entities\Partner;
 use Modules\AvnChat\Entities\ChatRoomUser;
 use Modules\AvnChat\Entities\ChatRoom;
 use Modules\AvnChat\Entities\Message;
@@ -54,9 +54,9 @@ class User extends Authenticatable
         return $this->hasOne(Customer::class, 'id', 'id');
     }
 
-    public function partern()
+    public function partner()
     {
-        return $this->hasOne(Partern::class, 'id', 'id');
+        return $this->hasOne(Partner::class, 'id', 'id');
     }
     public function room_users()
     {

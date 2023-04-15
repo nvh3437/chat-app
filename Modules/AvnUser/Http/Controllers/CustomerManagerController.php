@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Modules\AvnUser\Http\Requests\StoreCustomerRequest;
 use Modules\AvnUser\Http\Requests\UpdateCustomerRequest;
+use Modules\AvnChat\Entities\ChatRoomUser;
 
 class CustomerManagerController extends Controller
 {
@@ -39,10 +40,13 @@ class CustomerManagerController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
 
+            $global_chat_room_user = new ChatRoomUser();
+            $global_chat_room_user->user_id = $user->id;
+            $global_chat_room_user->room_id = 1;
+            $global_chat_room_user->save();
             // Lưu bảng customer
             $customer = new Customer();
             $customer->id = $user->id;
-            $customer->name = $request->name;
             $customer->gender = $request->gender;
             $customer->address = $request->address;
             $customer->description = $request->description;
@@ -100,7 +104,6 @@ class CustomerManagerController extends Controller
 
             // Lưu bảng customer
             $customer = Customer::findOrFail($id);
-            $customer->name = $request->name;
             $customer->gender = $request->gender;
             $customer->address = $request->address;
             $customer->description = $request->description;

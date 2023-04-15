@@ -8,10 +8,9 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('avn_parterns', function (Blueprint $table) {
+        Schema::create('avn_partners', function (Blueprint $table) {
             $table->id();
             $table->text('img')->nullable();
-            $table->string('name');
             $table->string('exp');
             $table->smallInteger('gender')->nullable();
             $table->date('birth')->nullable();
@@ -33,6 +32,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('avn_parterns');
+        Schema::dropIfExists('avn_partners');
     }
 };

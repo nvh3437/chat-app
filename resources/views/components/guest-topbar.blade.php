@@ -44,11 +44,11 @@
                     <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false">
                         <span class="account-user-avatar">
-                        @if($user->type == 'partern') 
-                            @if($user->partern->img == '')
+                        @if($user->type == 'partner') 
+                            @if($user->partner->img == '')
                                 <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
                             @else
-                                <img src="{{ asset($user->partern->img) }}" alt="user-image" class="rounded-circle">
+                                <img src="{{ asset($user->partner->img) }}" alt="user-image" class="rounded-circle">
                             @endif
                         @elseif($user->type == 'customer') 
                             @if($user->customer->img == '')
@@ -74,7 +74,7 @@
                         <div class=" dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Chào mừng !</h6>
                         </div>
-                        @if($user->type == 'partern')
+                        @if($user->type == 'partner')
                             <a href="{{route('profile')}}" class="dropdown-item notify-item">
                                 <i class="mdi mdi-account-circle me-1"></i>
                                 <span>Thông tin cá nhân</span>

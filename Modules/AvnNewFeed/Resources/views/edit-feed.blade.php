@@ -23,8 +23,8 @@
                             <img class="d-flex align-self-start rounded me-2" src="{{ asset('/resources/assets/images/logo.png') }}" height="48">
                         @elseif($user->type == 'customer')
                             <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->customer->img ?? '/resources/assets/images/logo.png') }}" height="48">
-                        @elseif($user->type == 'partern')
-                            <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->partern->img ?? '/resources/assets/images/logo.png') }}" height="48">
+                        @elseif($user->type == 'partner')
+                            <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->partner->img ?? '/resources/assets/images/logo.png') }}" height="48">
                         @endif
                         <div class="w-100 overflow-hidden">
                             <h5 class="mt-1 mb-0">{{$user->name}}</h5>

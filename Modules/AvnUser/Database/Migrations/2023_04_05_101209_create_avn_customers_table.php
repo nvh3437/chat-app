@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('avn_customers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->text('img')->nullable();
             $table->smallInteger('gender')->nullable();
             $table->date('birth')->nullable();

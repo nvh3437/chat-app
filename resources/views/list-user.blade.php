@@ -43,7 +43,7 @@
 									<td>
 										@if($item->type == 'customer')
 											<span class="badge bg-success">Khách hàng</span>
-										@elseif($item->type == 'partern')
+										@elseif($item->type == 'partner')
 											<span class="badge bg-primary">Chuyên gia</span>
 										@else
 											<span class="badge bg-danger">Quản lý</span>
@@ -52,8 +52,8 @@
 									<td>
 										@if($item->type == 'customer')
 											<a href="{{route('edit-customer',$item->id)}}" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
-										@elseif($item->type == 'partern')
-											<a href="{{route('edit-partern',$item->id)}}" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+										@elseif($item->type == 'partner')
+											<a href="{{route('edit-partner',$item->id)}}" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
 										@else
 											<a href="{{route('edit-user',$item->id)}}" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
 										@endif

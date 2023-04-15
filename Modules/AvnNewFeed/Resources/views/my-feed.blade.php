@@ -23,8 +23,8 @@
                             <img class="d-flex align-self-start rounded me-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 48px; width: 48px; object-fit: cover;">
                         @elseif($user->type == 'customer')
                             <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->customer->img ?? '/resources/assets/images/logo.png') }}" style="height: 48px; width: 48px; object-fit: cover;">
-                        @elseif($user->type == 'partern')
-                            <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->partern->img ?? '/resources/assets/images/logo.png') }}" style="height: 48px; width: 48px; object-fit: cover;">
+                        @elseif($user->type == 'partner')
+                            <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->partner->img ?? '/resources/assets/images/logo.png') }}" style="height: 48px; width: 48px; object-fit: cover;">
                         @endif
                         <div class="w-100 overflow-hidden">
                             <h5 class="mt-1 mb-0">{{$user->name}}</h5>
@@ -117,8 +117,8 @@
                                 <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}" height="32">
                             @elseif($item->new_feed_user->type == 'customer')
                                 <img class="me-2 rounded" src="{{ asset($item->new_feed_user->customer->img ?? '/resources/assets/images/logo.png') }}" height="32">
-                            @elseif($item->new_feed_user->type == 'partern')
-                                <img class="me-2 rounded" src="{{ asset($item->new_feed_user->partern->img ?? '/resources/assets/images/logo.png') }}" height="32">
+                            @elseif($item->new_feed_user->type == 'partner')
+                                <img class="me-2 rounded" src="{{ asset($item->new_feed_user->partner->img ?? '/resources/assets/images/logo.png') }}" height="32">
                             @endif
                             <div class="w-100">
                                 <div class="dropdown float-end text-muted">
@@ -194,8 +194,8 @@
                                         <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
                                     @elseif($child->new_feed_comment_user->type == 'customer')
                                         <img class="me-2 rounded" src="{{ asset($child->new_feed_comment_user->customer->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
-                                    @elseif($child->new_feed_comment_user->type == 'partern')
-                                        <img class="me-2 rounded" src="{{ asset($child->new_feed_comment_user->partern->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
+                                    @elseif($child->new_feed_comment_user->type == 'partner')
+                                        <img class="me-2 rounded" src="{{ asset($child->new_feed_comment_user->partner->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
                                     @endif
                                     <div>
                                         <h5 class="m-0">{{$child->new_feed_comment_user->name}} </h5>
@@ -269,8 +269,8 @@
                                     <img class="align-self-start rounded me-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
                                 @elseif($user->type == 'customer')
                                     <img class="align-self-start rounded me-2" src="{{ asset($user->customer->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
-                                @elseif($user->type == 'partern')
-                                    <img class="align-self-start rounded me-2" src="{{ asset($user->partern->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
+                                @elseif($user->type == 'partner')
+                                    <img class="align-self-start rounded me-2" src="{{ asset($user->partner->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
                                 @endif
                                 <div class="w-100">
                                     <form action="{{ route('store-comment-feed') }}" method="POST" enctype="multipart/form-data">

@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('avn_chat_rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->tinyInteger('is_group')->default(0);
+            $table->text('img')->nullable();
             $table->timestamps();
         });
     }

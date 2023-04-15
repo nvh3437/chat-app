@@ -8,13 +8,13 @@
             <div class="col-12">
                 <div class="page-title-box">
                     <div class="page-title-right d-none d-sm-block">
-                        <a href="{{ route('add-partern') }}" class="btn btn-danger">
+                        <a href="{{ route('add-partner') }}" class="btn btn-danger">
                             <i class="mdi mdi-plus-circle me-1"></i>Thêm chuyên gia
                         </a>
                     </div>
                     <h4 class="page-title">Danh sách chuyên gia</h4>
                     <div class="d-sm-none mb-2">
-                        <a href="{{ route('add-partern') }}" class="btn btn-danger">
+                        <a href="{{ route('add-partner') }}" class="btn btn-danger">
                             <i class="mdi mdi-plus-circle me-1"></i>Thêm chuyên gia
                         </a>
                     </div>
@@ -39,7 +39,7 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($parterns as $item)
+                                @foreach ($partners as $item)
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $item->name }}</td>
@@ -54,7 +54,7 @@
                                         </td>
                                         <td>{{ $item->exp }}</td>
                                         <td>
-                                            <a href="{{ route('edit-partern', $item->id) }}" class="action-icon">
+                                            <a href="{{ route('edit-partner', $item->id) }}" class="action-icon">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
                                             <a href="javascript: void(0);" data-bs-toggle="modal"
@@ -79,7 +79,7 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
                                                     </button>
-                                                    <form action="{{ route('delete-partern', [$item->id]) }}" method="POST">
+                                                    <form action="{{ route('delete-partner', [$item->id]) }}" method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn btn-primary">Xóa</button>

@@ -13,7 +13,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('store-partern') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('store-partner') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card">
                         <div class="card-body">
@@ -101,7 +101,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
                             <button type="submit" class="btn btn-danger me-3">Thêm</button>
-                            <a href="{{ route('list-partern') }}" class="btn btn-secondary ms-3">Quay lại</a>
+                            <a href="{{ route('list-partner') }}" class="btn btn-secondary ms-3">Quay lại</a>
                         </div>
                     </div>
                 </form>
