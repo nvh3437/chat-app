@@ -1,302 +1,348 @@
 @php
     use App\Http\Controllers\NotificationController;
     $user = App\Http\Controllers\Controller::getUser();
-    $notifications = App\Http\Controllers\NotificationController::getNotifications(); 
+    $notifications = App\Http\Controllers\NotificationController::getNotifications();
 @endphp
 @extends('layouts.guest')
 @section('title')
     Bài đăng của tôi
 @endsection
 @section('content')
-<div class="container">
-    <div class="row mt-2">
-        <div class="col-xxl-3 col-lg-3 col-md-4 col-sm-12 order-lg-1 order-xxl-1">
-            <div class="card">
-                <div class="card-body">
-                    <div class="dropdown float-end">
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a href="javascript:void(0);" class="dropdown-item">Sửa hồ sơ</a>                         
-                        </div>
-                    </div>
-                    <div class="d-flex align-self-start">
-                        @if($user->type == 'system')
-                            <img class="d-flex align-self-start rounded me-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 48px; width: 48px; object-fit: cover;">
-                        @elseif($user->type == 'customer')
-                            <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->customer->img ?? '/resources/assets/images/logo.png') }}" style="height: 48px; width: 48px; object-fit: cover;">
-                        @elseif($user->type == 'partner')
-                            <img class="d-flex align-self-start rounded me-2" src="{{ asset($user->partner->img ?? '/resources/assets/images/logo.png') }}" style="height: 48px; width: 48px; object-fit: cover;">
-                        @endif
-                        <div class="w-100 overflow-hidden">
-                            <h5 class="mt-1 mb-0">{{$user->name}}</h5>
-                            <p class="mb-1 mt-1 text-muted">
-                                @if($user->type == 'system')
-                                    Quản lý
-                                @elseif($user->type == 'customer')
-                                    Khách hàng
-                                @else
-                                    Chuyên gia
-                                @endif
-                            </p>
-                        </div>
-                    </div>
-                    <div class="list-group list-group-flush mt-2">
-                        <a href="{{ route('new-feed') }}" class="list-group-item list-group-item-action border-0"><i class='uil uil-images me-1'></i> Bản tin</a>
-                        <a href="{{ route('my-feed') }}" class="list-group-item list-group-item-action text-primary border-0"><i class='uil uil-images me-1'></i> Tin của tôi</a>
-                        <a href="javascript:void(0);" class="list-group-item list-group-item-action border-0"><i class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="mdi mdi-dots-horizontal"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <form action="{{ route('clear-notifications') }}" method="POST">
-                            @csrf
-                            @method('delete')
-                                <button type="submit" class="dropdown-item">Xóa hết</button>
-                            </form>
-                        </div>
-                    </div>
-                    <h4 class="header-title mb-1">Thông báo</h4>
-                    <div class="d-flex mt-3">
-                        @foreach ($notifications as $notification)
-                            <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
-                            <div>
-                                <a class="mt-1 font-14" href="{{ route('read-notifications', ['id'=>$notification->id]) }}"  data-link="{{ $notification->link ?? 'none' }}" data-id="{{ $notification->id }}" data-status="{{ $notification->status }}">
-                                    <strong>{{ $notification->title }}:</strong>
-                                    <span class="text-muted">
-                                        {!! $notification->content !!}
-                                    </span>
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                </div> 
-            </div> 
-        </div>
-        <div class="col-xxl-9 col-lg-9 col-md-8 col-sm-12 order-lg-2 order-xxl-1">
-            <div class="card">
-                <div class="card-body p-0">
-                    <ul class="nav nav-tabs nav-bordered">
-                        <li class="nav-item">
-                            <a href="#newpost" data-bs-toggle="tab" aria-expanded="false" class="nav-link active px-3 py-2">
-                                <i class="mdi mdi-pencil-box-multiple font-18 d-md-none d-block"></i>
-                                <span class="d-none d-md-block">Đăng bài</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane show active p-3" id="newpost">
-                            <div class="border rounded">
-                                <form action="{{ route('store-feed') }}" method="POST" enctype="multipart/form-data" class="comment-area-box">
-                                    @csrf
-                                    <textarea rows="4" class="form-control border-0 resize-none" name="description" id="editor" placeholder="Nhập bài đăng...."></textarea>
-                                    <div class="p-2 bg-light d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="status" value="1">
-                                                <label class="form-check-label">Cá nhân</label>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-sm btn-success"><i class='uil uil-message me-1'></i>Đăng</button>
-                                    </div>
-                                </form>
-                            </div> 
-                        </div> 
-                    </div> 
-                </div>
-            </div>
-            @foreach($my_feeds as $item)
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col-xxl-3 col-lg-3 col-md-4 col-sm-12 order-lg-1 order-xxl-1">
                 <div class="card">
-                    <div class="card-body pb-1">
-                        <div class="d-flex">
-                            @if($item->new_feed_user->type == 'system')
-                                <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}" height="32">
-                            @elseif($item->new_feed_user->type == 'customer')
-                                <img class="me-2 rounded" src="{{ asset($item->new_feed_user->customer->img ?? '/resources/assets/images/logo.png') }}" height="32">
-                            @elseif($item->new_feed_user->type == 'partner')
-                                <img class="me-2 rounded" src="{{ asset($item->new_feed_user->partner->img ?? '/resources/assets/images/logo.png') }}" height="32">
+                    <div class="card-body">
+                        <div class="dropdown float-end">
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a href="javascript:void(0);" class="dropdown-item">Sửa hồ sơ</a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-self-start">
+                            @if ($user->profile && $user->profile->img)
+                                <img class="d-flex align-self-start rounded me-2"
+                                    src="{{ asset($user->profile->img ?? '/resources/assets/images/logo.png') }}"
+                                    style="height: 48px; width: 48px; object-fit: cover;">
+                            @else
+                                <img class="d-flex align-self-start rounded me-2"
+                                    src="{{ asset('/resources/assets/images/logo.png') }}"
+                                    style="height: 48px; width: 48px; object-fit: cover;">
                             @endif
-                            <div class="w-100">
-                                <div class="dropdown float-end text-muted">
-                                    <a href="#" class="dropdown-toggle arrow-none card-drop"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="mdi mdi-dots-horizontal"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        @php
-                                            $params = [
-                                                'alias' => $item->alias ?? $item->id,
-                                            ];
-                                        @endphp
-                                        <a href="{{ route('edit-feed', $params) }}" class="dropdown-item">Chỉnh sửa</a>
-                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-{{ $item->id }}" class="dropdown-item">Xóa</a>
-                                    </div>
-                                </div>
-                                <!----Modal Delete----->
-                                <div class="modal fade" id="delete-{{ $item->id }}" tabindex="-1"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-dark">Xác nhận</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body text-dark">
-                                                <p>Bạn có muốn xóa không?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
-                                                </button>
-                                                <form action="{{ route('delete-feed', [$item->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-primary">Xóa</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h5 class="m-0">{{$user->name}}</h5>
-                                <p class="text-muted">
-                                    <small>{{ NotificationController::timeAgo($item->updated_at) }}
-                                        <span class="mx-1">⚬</span> 
-                                        <span>
-                                            @if($item->status == '0')
-                                                Public
-                                            @else
-                                                Cá nhân
-                                            @endif
-                                        </span>
-                                    </small>
+                            <div class="w-100 overflow-hidden">
+                                <h5 class="mt-1 mb-0">{{ $user->name }}</h5>
+                                <p class="mb-1 mt-1 text-muted">
+                                    @if ($user->type == 'system')
+                                        Quản lý
+                                    @elseif($user->type == 'customer')
+                                        Khách hàng
+                                    @else
+                                        Chuyên gia
+                                    @endif
                                 </p>
                             </div>
                         </div>
-                        <hr class="m-0" />
-                        <div class="my-3" id="editor">
-                            {!! $item->description !!}
+                        <div class="list-group list-group-flush mt-2">
+                            <a href="{{ route('new-feed') }}" class="list-group-item list-group-item-action border-0"><i
+                                    class='uil uil-images me-1'></i> Bản tin</a>
+                            <a href="{{ route('my-feed') }}"
+                                class="list-group-item list-group-item-action text-primary border-0"><i
+                                    class='uil uil-images me-1'></i> Tin của tôi</a>
+                            <a href="javascript:void(0);" class="list-group-item list-group-item-action border-0"><i
+                                    class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
                         </div>
-                        <hr class="m-0" />
-                        <div class="my-1">
-                            <a href="javascript: void(0);" data-bs-toggle="collapse" data-bs-target="#open-{{$item->id}}" aria-expanded="false" aria-controls="open-{{$item->id}}" class="btn btn-sm btn-link text-muted ps-0">
-                                <i class='uil uil-comments-alt'></i> {{count($item->new_feed_comments)}}</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dropdown float-end">
+                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <form action="{{ route('clear-notifications') }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="dropdown-item">Xóa hết</button>
+                                </form>
+                            </div>
                         </div>
-                        <hr class="m-0" />
-                        <div class="mt-3 collapse hide" id="open-{{$item->id}}">
-                            @foreach($item->new_feed_comments as $child)
-                                <div class="d-flex">
-                                    @if($child->new_feed_comment_user->type == 'system')
-                                        <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
-                                    @elseif($child->new_feed_comment_user->type == 'customer')
-                                        <img class="me-2 rounded" src="{{ asset($child->new_feed_comment_user->customer->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
-                                    @elseif($child->new_feed_comment_user->type == 'partner')
-                                        <img class="me-2 rounded" src="{{ asset($child->new_feed_comment_user->partner->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
-                                    @endif
-                                    <div>
-                                        <h5 class="m-0">{{$child->new_feed_comment_user->name}} </h5>
-                                        <p class="text-muted mb-0"><small>{{ NotificationController::timeAgo($child->updated_at) }}</small></p>
-                                        <p class="text-dark mb-2">{!! $child->comment !!}</p>
-                                        <!--- Người bình luận đc sửa --->
-                                        @if($user->id == $child->user_id)
+                        <h4 class="header-title mb-1">Thông báo</h4>
+                        <div class="d-flex mt-3">
+                            @foreach ($notifications as $notification)
+                                <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
+                                <div>
+                                    <a class="mt-1 font-14"
+                                        href="{{ route('read-notifications', ['id' => $notification->id]) }}"
+                                        data-link="{{ $notification->link ?? 'none' }}" data-id="{{ $notification->id }}"
+                                        data-status="{{ $notification->status }}">
+                                        <strong>{{ $notification->title }}:</strong>
+                                        <span class="text-muted">
+                                            {!! $notification->content !!}
+                                        </span>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-9 col-lg-9 col-md-8 col-sm-12 order-lg-2 order-xxl-1">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <ul class="nav nav-tabs nav-bordered">
+                            <li class="nav-item">
+                                <a href="#newpost" data-bs-toggle="tab" aria-expanded="false"
+                                    class="nav-link active px-3 py-2">
+                                    <i class="mdi mdi-pencil-box-multiple font-18 d-md-none d-block"></i>
+                                    <span class="d-none d-md-block">Đăng bài</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane show active p-3" id="newpost">
+                                <div class="border rounded">
+                                    <form action="{{ route('store-feed') }}" method="POST" enctype="multipart/form-data"
+                                        class="comment-area-box">
+                                        @csrf
+                                        <textarea rows="4" class="form-control border-0 resize-none" name="description" id="editor"
+                                            placeholder="Nhập bài đăng...."></textarea>
+                                        <div class="p-2 bg-light d-flex justify-content-between align-items-center">
                                             <div>
-                                                <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-child-{{ $child->id }}" class="btn btn-sm btn-link text-muted p-0">
-                                                    <i class='mdi mdi-pencil'></i> Sửa
-                                                </a>
-                                                <a href="javascript: void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#delete-child-{{ $child->id }}" class="btn btn-sm btn-link text-muted p-0 ps-2">
-                                                    <i class='mdi mdi-delete'></i> Xóa
-                                                </a>
-                                            </div>
-                                            <!----Modal Edit----->
-                                            <div class="modal fade" id="edit-child-{{ $child->id }}" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title text-dark">Sửa bình luận</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <form action="{{ route('update-comment-feed', $child->id) }}" method="POST">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <input type="hidden" name="feed_id" value="{{$child->feed_id}}">
-                                                            <div class="modal-body text-dark">
-                                                                <input type="text" class="form-control border-0 form-control-sm" name="comment" value="{{$child->comment}}">
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                                                                <button type="submit" class="btn btn-success">Sửa</button>  
-                                                            </div>
-                                                        </form>
-                                                    </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="status"
+                                                        value="1">
+                                                    <label class="form-check-label">Cá nhân</label>
                                                 </div>
                                             </div>
-                                            <!----Modal Delete bình luận----->
-                                            <div class="modal fade" id="delete-child-{{ $child->id }}" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title text-dark">Xác nhận</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body text-dark">
-                                                            <p>Bạn có muốn xóa không?</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
-                                                            </button>
-                                                            <form action="{{ route('delete-comment-feed', [$child->id]) }}" method="POST">
+                                            <button type="submit" class="btn btn-sm btn-success"><i
+                                                    class='uil uil-message me-1'></i>Đăng</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @foreach ($my_feeds as $item)
+                    <div class="card">
+                        <div class="card-body pb-1">
+                            <div class="d-flex">
+                                @if ($item->new_feed_user->profile && $item->new_feed_user->profile->img)
+                                    <img class="me-2 rounded"
+                                        src="{{ asset($item->new_feed_user->profile->img ?? '/resources/assets/images/logo.png') }}"
+                                        height="32">
+                                @else
+                                    <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}"
+                                        height="32">
+                                @endif
+                                <div class="w-100">
+                                    <div class="dropdown float-end text-muted">
+                                        <a href="#" class="dropdown-toggle arrow-none card-drop"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-horizontal"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            @php
+                                                $params = [
+                                                    'alias' => $item->alias ?? $item->id,
+                                                ];
+                                            @endphp
+                                            <a href="{{ route('edit-feed', $params) }}" class="dropdown-item">Chỉnh
+                                                sửa</a>
+                                            <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#delete-{{ $item->id }}"
+                                                class="dropdown-item">Xóa</a>
+                                        </div>
+                                    </div>
+                                    <!----Modal Delete----->
+                                    <div class="modal fade" id="delete-{{ $item->id }}" tabindex="-1"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body text-dark">
+                                                    <p>Bạn có muốn xóa không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light"
+                                                        data-bs-dismiss="modal">Hủy
+                                                    </button>
+                                                    <form action="{{ route('delete-feed', [$item->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="btn btn-primary">Xóa</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 class="m-0">{{ $user->name }}</h5>
+                                    <p class="text-muted">
+                                        <small>{{ NotificationController::timeAgo($item->updated_at) }}
+                                            <span class="mx-1">⚬</span>
+                                            <span>
+                                                @if ($item->status == '0')
+                                                    Public
+                                                @else
+                                                    Cá nhân
+                                                @endif
+                                            </span>
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr class="m-0" />
+                            <div class="my-3" id="editor">
+                                {!! $item->description !!}
+                            </div>
+                            <hr class="m-0" />
+                            <div class="my-1">
+                                <a href="javascript: void(0);" data-bs-toggle="collapse"
+                                    data-bs-target="#open-{{ $item->id }}" aria-expanded="false"
+                                    aria-controls="open-{{ $item->id }}" class="btn btn-sm btn-link text-muted ps-0">
+                                    <i class='uil uil-comments-alt'></i> {{ count($item->new_feed_comments) }}</a>
+                            </div>
+                            <hr class="m-0" />
+                            <div class="mt-3 collapse hide" id="open-{{ $item->id }}">
+                                @foreach ($item->new_feed_comments as $child)
+                                    <div class="d-flex">
+                                        @if ($child->new_feed_comment_user->profile && $child->new_feed_comment_user->profile->img)
+                                            <img class="me-2 rounded"
+                                                src="{{ asset($child->new_feed_comment_user->profile->img ?? '/resources/assets/images/logo.png') }}"
+                                                style="height: 32px; width: 32px; object-fit: cover;">
+                                        @else
+                                            <img class="me-2 rounded"
+                                                src="{{ asset('/resources/assets/images/logo.png') }}"
+                                                style="height: 32px; width: 32px; object-fit: cover;">
+                                        @endif
+                                        <div>
+                                            <h5 class="m-0">{{ $child->new_feed_comment_user->name }} </h5>
+                                            <p class="text-muted mb-0">
+                                                <small>{{ NotificationController::timeAgo($child->updated_at) }}</small>
+                                            </p>
+                                            <p class="text-dark mb-2">{!! $child->comment !!}</p>
+                                            <!--- Người bình luận đc sửa --->
+                                            @if ($user->id == $child->user_id)
+                                                <div>
+                                                    <a href="javascript: void(0);" data-bs-toggle="modal"
+                                                        data-bs-target="#edit-child-{{ $child->id }}"
+                                                        class="btn btn-sm btn-link text-muted p-0">
+                                                        <i class='mdi mdi-pencil'></i> Sửa
+                                                    </a>
+                                                    <a href="javascript: void(0);" data-bs-toggle="modal"
+                                                        data-bs-target="#delete-child-{{ $child->id }}"
+                                                        class="btn btn-sm btn-link text-muted p-0 ps-2">
+                                                        <i class='mdi mdi-delete'></i> Xóa
+                                                    </a>
+                                                </div>
+                                                <!----Modal Edit----->
+                                                <div class="modal fade" id="edit-child-{{ $child->id }}"
+                                                    tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title text-dark">Sửa bình luận</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <form action="{{ route('update-comment-feed', $child->id) }}"
+                                                                method="POST">
                                                                 @csrf
-                                                                @method('delete')
-                                                                <button type="submit" class="btn btn-primary">Xóa</button>
+                                                                @method('PUT')
+                                                                <input type="hidden" name="feed_id"
+                                                                    value="{{ $child->feed_id }}">
+                                                                <div class="modal-body text-dark">
+                                                                    <input type="text"
+                                                                        class="form-control border-0 form-control-sm"
+                                                                        name="comment" value="{{ $child->comment }}">
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-light"
+                                                                        data-bs-dismiss="modal">Hủy</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-success">Sửa</button>
+                                                                </div>
                                                             </form>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!----Modal Delete bình luận----->
+                                                <div class="modal fade" id="delete-child-{{ $child->id }}"
+                                                    tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-dark">
+                                                                <p>Bạn có muốn xóa không?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-light"
+                                                                    data-bs-dismiss="modal">Hủy
+                                                                </button>
+                                                                <form
+                                                                    action="{{ route('delete-comment-feed', [$child->id]) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">Xóa</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <hr />
+                                @endforeach
+                                <div class="d-flex mb-2">
+                                    @if ($user->profile && $user->profile->img)
+                                        <img class="align-self-start rounded me-2"
+                                            src="{{ asset($user->profile->img ?? '/resources/assets/images/logo.png') }}"
+                                            style="height: 32px; width: 32px; object-fit: cover;">
+                                    @else
+                                        <img class="align-self-start rounded me-2"
+                                            src="{{ asset('/resources/assets/images/logo.png') }}"
+                                            style="height: 32px; width: 32px; object-fit: cover;">
+                                    @endif
+                                    <div class="w-100">
+                                        <form action="{{ route('store-comment-feed') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="feed_id" value="{{ $item->id }}">
+                                            <input type="text" class="form-control border-0 form-control-sm"
+                                                name="comment" placeholder="Bình luận....">
+                                            <div class="mt-2 d-flex justify-content-end align-items-center">
+                                                <button type="submit" class="btn btn-sm btn-success">Bình luận</button>
                                             </div>
-                                        @endif
+                                        </form>
                                     </div>
                                 </div>
-                                <hr/>
-                            @endforeach 
-                            <div class="d-flex mb-2">
-                                @if($user->type == 'system')
-                                    <img class="align-self-start rounded me-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
-                                @elseif($user->type == 'customer')
-                                    <img class="align-self-start rounded me-2" src="{{ asset($user->customer->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
-                                @elseif($user->type == 'partner')
-                                    <img class="align-self-start rounded me-2" src="{{ asset($user->partner->img ?? '/resources/assets/images/logo.png') }}" style="height: 32px; width: 32px; object-fit: cover;">
-                                @endif
-                                <div class="w-100">
-                                    <form action="{{ route('store-comment-feed') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" name="feed_id" value="{{$item->id}}">
-                                        <input type="text" class="form-control border-0 form-control-sm" name="comment" placeholder="Bình luận....">
-                                        <div class="mt-2 d-flex justify-content-end align-items-center">
-                                            <button type="submit" class="btn btn-sm btn-success">Bình luận</button>
-                                        </div>
-                                    </form>
-                                </div> 
-                            </div> 
+                            </div>
                         </div>
-                    </div> 
-                </div> 
-            @endforeach()
+                    </div>
+                @endforeach()
+            </div>
         </div>
-    </div> 
-</div>
+    </div>
 @endsection
 @section('js')
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
     <script type="text/javascript">
-        function setHeight(fieldId){
-            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
+        function setHeight(fieldId) {
+            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight + 'px';
         }
         setHeight('textBox1');
     </script>
@@ -466,4 +512,3 @@
         });
     </script>
 @endsection
-

@@ -5,7 +5,7 @@ namespace Modules\AvnUser\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\AvnUser\Entities\Partner;
+use Modules\AvnUser\Entities\Profile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
@@ -15,12 +15,15 @@ use Modules\AvnUser\Http\Requests\StorePartnerRequest;
 use Modules\AvnUser\Http\Requests\UpdatePartnerRequest;
 use Modules\AvnChat\Entities\ChatRoomUser;
 use Modules\AvnChat\Entities\ChatRoom;
+use Illuminate\Database\Eloquent\Builder;
 
 class PartnerManagerController extends Controller
 {
     public function listPartner()
     {
-        $partners = Partner::orderByDesc('updated_at')->get();
+        $partners = Profile::whereHas('user', function (Builder $query) {
+            $query->where('type', 'partner');
+        })->orderByDesc('updated_at')->get();
         return view('avnuser::manager.list-partner', compact('partners'));
     }
 
@@ -47,6 +50,7 @@ class PartnerManagerController extends Controller
             $global_chat_room_user->save();
 
             $partner_chat_room = new ChatRoom();
+            $partner_chat_room->is_workspace = 1;
             $partner_chat_room->save();
 
             $partner_chat_room_user = new ChatRoomUser();
@@ -55,7 +59,7 @@ class PartnerManagerController extends Controller
             $partner_chat_room_user->save();
 
             // Lưu bảng partner
-            $partner = new Partner();
+            $partner = new Profile();
             $partner->id = $user->id;
             $partner->exp = $request->exp;
             $partner->gender = $request->gender;
@@ -91,7 +95,7 @@ class PartnerManagerController extends Controller
 
     public function editPartner($id)
     {
-        $partner = Partner::findOrFail($id);
+        $partner = Profile::findOrFail($id);
         $user = User::findOrFail($id);
         return view('avnuser::manager.edit-partner', compact('partner', 'user'));
     }
@@ -115,7 +119,7 @@ class PartnerManagerController extends Controller
             $user->save();
 
             // Lưu bảng partner
-            $partner = Partner::findOrFail($id);
+            $partner = Profile::findOrFail($id);
             $partner->exp = $request->exp;
             $partner->gender = $request->gender;
             $partner->address = $request->address;
@@ -155,7 +159,7 @@ class PartnerManagerController extends Controller
     {
         try {
             $user = User::findOrFail($id)->delete();
-            $partner = Partner::findOrFail($id);
+            $partner = Profile::findOrFail($id);
             if ($partner->img != null) {
                 File::delete($partner->img);
             }

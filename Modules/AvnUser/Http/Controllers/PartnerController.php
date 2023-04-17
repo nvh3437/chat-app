@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Modules\AvnUser\Entities\Profile;
 
 class PartnerController extends Controller
 {
@@ -39,7 +40,7 @@ class PartnerController extends Controller
             $user->save();
 
             // Lưu bảng partner
-            $partner = Partner::find($user->id);
+            $partner = Profile::find($user->id);
             $partner->exp = $request->exp;
             $partner->gender = $request->gender;
             $partner->address = $request->address;

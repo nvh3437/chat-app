@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserRole;
 use App\Models\Role;
-use Modules\AvnUser\Entities\Customer;
-use Modules\AvnUser\Entities\Partner;
+use Modules\AvnUser\Entities\Profile;
 use Modules\AvnChat\Entities\ChatRoomUser;
 use Modules\AvnChat\Entities\ChatRoom;
+use Modules\AvnChat\Entities\ChatRoomSession;
+use Modules\AvnChat\Entities\ChatRoomSessionUser;
 use Modules\AvnChat\Entities\Message;
 
 class User extends Authenticatable
@@ -49,14 +50,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'avn_user_roles', 'user_id', 'role_id');
     }
 
-    public function customer()
+    public function profile()
     {
-        return $this->hasOne(Customer::class, 'id', 'id');
-    }
-
-    public function partner()
-    {
-        return $this->hasOne(Partner::class, 'id', 'id');
+        return $this->hasOne(Profile::class, 'id', 'id');
     }
     public function room_users()
     {
@@ -69,5 +65,13 @@ class User extends Authenticatable
     public function messages()
     {
         return $this->hasMany(Message::class, 'user_id', 'id');
+    }
+    public function session_users()
+    {
+        return $this->hasMany(ChatRoomSessionUser::class, 'user_id', 'id');
+    }
+    public function sessions()
+    {
+        return $this->belongsToMany(ChatRoomSession::class, 'avn_chat_room_session_users', 'user_id', 'session_id');
     }
 }

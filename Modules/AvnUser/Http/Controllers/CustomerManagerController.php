@@ -5,7 +5,7 @@ namespace Modules\AvnUser\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\AvnUser\Entities\Customer;
+use Modules\AvnUser\Entities\Profile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
@@ -14,12 +14,15 @@ use Illuminate\Support\Facades\Auth;
 use Modules\AvnUser\Http\Requests\StoreCustomerRequest;
 use Modules\AvnUser\Http\Requests\UpdateCustomerRequest;
 use Modules\AvnChat\Entities\ChatRoomUser;
+use Illuminate\Database\Eloquent\Builder;
 
 class CustomerManagerController extends Controller
 {
     public function listCustomer()
     {
-        $customers = Customer::orderByDesc('updated_at')->get();
+        $customers = Profile::whereHas('user', function (Builder $query) {
+            $query->where('type', 'customer');
+        })->orderByDesc('updated_at')->get();
         return view('avnuser::manager.list-customer', compact('customers'));
     }
 
@@ -45,7 +48,7 @@ class CustomerManagerController extends Controller
             $global_chat_room_user->room_id = 1;
             $global_chat_room_user->save();
             // Lưu bảng customer
-            $customer = new Customer();
+            $customer = new Profile();
             $customer->id = $user->id;
             $customer->gender = $request->gender;
             $customer->address = $request->address;
@@ -79,7 +82,7 @@ class CustomerManagerController extends Controller
 
     public function editCustomer($id)
     {
-        $customer = Customer::findOrFail($id);
+        $customer = Profile::findOrFail($id);
         $user = User::findOrFail($id);
         return view('avnuser::manager.edit-customer', compact('customer', 'user'));
     }
@@ -103,7 +106,7 @@ class CustomerManagerController extends Controller
             $user->save();
 
             // Lưu bảng customer
-            $customer = Customer::findOrFail($id);
+            $customer = Profile::findOrFail($id);
             $customer->gender = $request->gender;
             $customer->address = $request->address;
             $customer->description = $request->description;
@@ -139,16 +142,15 @@ class CustomerManagerController extends Controller
 
     public function deleteCustomer($id)
     {
-        try{    
+        try {
             $user = User::findOrFail($id)->delete();
-            $customer = Customer::findOrFail($id);
+            $customer = Profile::findOrFail($id);
             if ($customer->img != null) {
                 File::delete($customer->img);
             }
             $customer->delete();
             return back()->with('Success', 'Xóa thành công');
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return back()->with('Failed', 'Xóa thất bại');
         }
     }

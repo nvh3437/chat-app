@@ -5,7 +5,7 @@ namespace Modules\AvnUser\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\AvnUser\Entities\Customer;
+use Modules\AvnUser\Entities\Profile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
@@ -42,7 +42,7 @@ class CustomerController extends Controller
             $global_chat_room_user->save();
             
             // Lưu bảng customer
-            $customer = new Customer();
+            $customer = new Profile();
             $customer->id = $user->id;
             $customer->gender = 0; // Mặc định là nam, sau sẽ tự sửa
             $customer->money = 0; // Tiền nong để 0
@@ -86,7 +86,7 @@ class CustomerController extends Controller
             $user->save();
 
             // Lưu bảng customer
-            $customer = Customer::find($user->id);
+            $customer = Profile::find($user->id);
             $customer->gender = $request->gender;
             $customer->address = $request->address;
             $customer->description = $request->description;

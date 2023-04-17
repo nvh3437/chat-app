@@ -35,7 +35,7 @@
                                     <label class="form-label mt-2">
                                         Tên <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="name" value="{{$partner->name}}" required>
+                                    <input type="text" class="form-control" name="name" value="{{$partner->user->name}}" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -52,9 +52,9 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Năm kinh nghiệm <span class="text-danger">*</span>
+                                        Năm kinh nghiệm
                                     </label>
-                                    <input type="text" class="form-control" name="exp" value="{{$partner->exp}}" required>
+                                    <input type="text" class="form-control" name="exp" value="{{$partner->exp}}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">

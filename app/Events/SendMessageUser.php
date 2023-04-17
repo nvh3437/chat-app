@@ -36,6 +36,6 @@ class SendMessageUser implements ShouldBroadcast
     }
     public function broadcastWith()
     {
-        return ['room_id' => $this->room_id, 'name' => $this->user_send->name, 'img' => asset($this->user_send->customer->img ?? '/resources/assets/images/users/avatar-1.jpg'), 'message' => $this->message];
+        return ['room_id' => $this->room_id, 'name' => $this->user_send->name, 'img' => asset($this->user_send->profile->img ?? '/resources/assets/images/users/avatar-1.jpg'), 'message' => $this->message];
     }
 }

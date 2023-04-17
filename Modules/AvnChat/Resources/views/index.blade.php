@@ -2,6 +2,9 @@
 @section('title')
     Chat
 @endsection
+@php
+    use App\Http\Controllers\Helper;
+@endphp
 @section('content')
     <!-- Start Content-->
     <div class="container-fluid">
@@ -103,7 +106,7 @@
                 <div class="card chat-conatiner d-none">
                     <div class="card-body position-relative">
                         <div class="pre-loader position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
-                            style="z-index: 1">
+                            style="z-index: 10">
                             <div class="btn btn-primary position-absolute top-50 start-50"
                                 style="transform: translate(-50%, -50%);">
                                 <span class="spinner-border spinner-border-sm me-1" role="status"
@@ -112,7 +115,7 @@
                             </div>
                         </div>
                         <div class="pre-loader-error position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
-                            style="z-index: 1">
+                            style="z-index: 10">
                             <div class="btn btn-danger position-absolute top-50 start-50"
                                 style="transform: translate(-50%, -50%);">
                                 <span class="spinner-border spinner-border-sm me-1" role="status"
@@ -164,7 +167,7 @@
                 <div class="card chat-info d-none">
                     <div class="card-body position-relative">
                         <div class="pre-loader position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
-                            style="z-index: 1">
+                            style="z-index: 10">
                             <div class="btn btn-primary position-absolute top-50 start-50"
                                 style="transform: translate(-50%, -50%);">
                                 <span class="spinner-border spinner-border-sm me-1" role="status"
@@ -173,7 +176,7 @@
                             </div>
                         </div>
                         <div class="pre-loader-error position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
-                            style="z-index: 1">
+                            style="z-index: 10">
                             <div class="btn btn-danger position-absolute top-50 start-50"
                                 style="transform: translate(-50%, -50%);">
                                 <span class="spinner-border spinner-border-sm me-1" role="status"
@@ -206,7 +209,27 @@
                             <h4 class="chat-info-name"></h4>
                             <button class="btn btn-primary btn-sm mt-1 join-room"><i class='uil uil-plus me-1'></i>Tham
                                 gia</button>
-                            <p class="text-muted mt-2 font-14">Last Interacted: <strong>Few hours back</strong></p>
+                            <div class="group text-center mt-1 add-users-group d-none">
+                                <label class="form-label">Thêm thành viên</label>
+                                <!-- Multiple Select -->
+                                <select class="form-control" multiple="multiple" data-placeholder="Choose ..."
+                                    id="add-users-select">
+                                </select>
+                                <button class="btn btn-primary btn-sm mt-1 add-users"><i
+                                        class='uil uil-plus me-1'></i>Thêm
+                                    thành viên</button>
+                            </div>
+                            <div class="mt-2 workspace-session d-none">
+                                <hr class="" />
+                                <button class="btn btn-success btn-sm mt-1 start-sesion d-none"><i
+                                        class='mdi mdi-connection me-1'></i>Bắt đầu phiên làm việc</button>
+                                <button class="btn btn-danger btn-sm mt-1 end-sesion d-none"><i
+                                        class='mdi mdi-clock-check-outline me-1'></i>Kết thúc phiên làm việc</button>
+                                <p class="text-muted mt-2 font-14">Last Interacted: <strong>Few hours back</strong></p>
+                            </div>
+                        </div>
+                        <hr class="" />
+                        <div class="mt-3 list-users-in-room" data-simplebar style="height: 350px">
                         </div>
                     </div> <!-- end card-body -->
                 </div> <!-- end card-->
@@ -218,6 +241,77 @@
 @section('js')
     @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
     <script>
+        function formatSelect(data) {
+            if (data.loading) {
+                return $('<span>Đang tải...</span>')
+            }
+            var htm = '<div class="d-flex align-items-center">'
+            htm += '<img src="'
+            if (data && data.profile && data.profile.img) {
+                htm += data.profile.img
+            } else {
+                htm += 'resources/assets/images/users/avatar-1.jpg'
+            }
+            htm +=
+                '" class="rounded-circle img-thumbnail me-2 p-0 bottom-0 end-0" style="object-fit: cover;height:36px; width:36px;">'
+            htm += '<span class="text-body fw-semibold">'
+            htm += data.name
+            htm += '<br>'
+            htm += '<small class="text-body fw-semibold">'
+            htm += data.username
+            htm += '</small>'
+            htm += '</span>'
+            htm += '</div>'
+            var $select_option = $(htm);
+            return $select_option;
+        }
+
+        function formatSelectSelection(data) {
+            var htm = '<div class="d-flex align-items-center text-start">'
+            htm += '<img src="'
+            if (data && data.profile && data.profile.img) {
+                htm += data.profile.img
+            } else {
+                htm += 'resources/assets/images/users/avatar-1.jpg'
+            }
+            htm +=
+                '" class="rounded-circle img-thumbnail me-2 p-0 bottom-0 end-0" style="object-fit: cover;height:36px; width:36px;">'
+            htm += '<span class="fw-semibold">'
+            htm += data.name
+            htm += '<br>'
+            htm += '<small class="fw-semibold">'
+            htm += data.username
+            htm += '</small>'
+            htm += '</span>'
+            htm += '</div>'
+            var $select_option = $(htm);
+            return $select_option;
+        }
+
+        $('#add-users-select').select2({
+            ajax: {
+                url: "{{ route('get-users') }}",
+                dataType: 'json',
+                data: function(params) {
+                    var query = {
+                        search: params.term,
+                    }
+                    return query;
+                },
+                processResults: function(data) {
+                    console.log(data);
+                    return {
+                        results: data
+                    };
+                },
+                delay: 250,
+                cache: true,
+                minimumInputLength: 4,
+            },
+            templateResult: formatSelect,
+            templateSelection: formatSelectSelection,
+        });
+
         $(document).ready(function() {
             var room_id = null;
             var page = null;
@@ -241,6 +335,48 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 }
             });
+            // add users to room
+            $('.add-users').on('click', function() {
+                users = $('#add-users-select').val()
+                if (users.length) {
+                    $.ajax({
+                        method: 'post',
+                        url: "{{ route('add-users-chat') }}",
+                        dataType: "json",
+                        data: {
+                            id: room_id,
+                            users: users,
+                        },
+                        success: function(res) {
+                            if (res) {
+                                $('#add-users-select').val(null).trigger('change');
+                                set_name_image_chat_info(res.name, res.imgs)
+                                set_name_image_chat_room(res.name, res.imgs)
+                                update_users_in_list_users_in_room(res.join_users)
+                            }
+                        }
+                    });
+                }
+            })
+            // add users to room
+            $('.start-session').on('click', function() {
+                $.ajax({
+                    method: 'post',
+                    url: "{{ route('start-session-chat') }}",
+                    dataType: "json",
+                    data: {
+                        id: room_id,
+                    },
+                    success: function(res) {
+                        if (res) {
+                            $('#add-users-select').val(null).trigger('change');
+                            set_name_image_chat_info(res.name, res.imgs)
+                            set_name_image_chat_room(res.name, res.imgs)
+                            update_users_in_list_users_in_room(res.join_users)
+                        }
+                    }
+                });
+            })
             // join room
             $('.join-room').on('click', function(e) {
                 $.ajax({
@@ -252,6 +388,9 @@
                     },
                     success: function(res) {
                         if (res) {
+                            set_name_image_chat_info(res.name, res.imgs)
+                            set_name_image_chat_room(res.name, res.imgs)
+                            update_users_in_list_users_in_room(res.join_users)
                             $('#chat-form').removeClass('d-none')
                             $('.alert-join-room').addClass('d-none')
                             $('button.join-room').addClass('d-none')
@@ -305,9 +444,13 @@
                     $('.chat-room .chat-room-badge.bg-light').removeClass('bg-light')
                     $('.chat-conatiner .pre-loader').removeClass('d-none')
                     $('.chat-info .pre-loader').removeClass('d-none')
+                    $('.workspace-session').addClass('d-none')
+                    $('.workspace-session .start-sesion').addClass('d-none')
+                    $('.workspace-session .end-sesion').addClass('d-none')
+                    $('.add-users-group').addClass('d-none')
+                    clear_message()
                     room_id = $(this).data('id')
                     $('.chat-room[data-id=' + room_id + '] .chat-room-badge').addClass('bg-light')
-                    clear_message()
                     // load room info
                     $.ajax({
                         method: 'get',
@@ -317,28 +460,8 @@
                             id: room_id,
                         },
                         success: function(res) {
-                            $('.chat-info-name').html(res.name)
-                            if (res.imgs.length == 1) {
-                                $('.chat-info-img').attr('src', res.imgs[0] ??
-                                    'resources/assets/images/users/avatar-1.jpg')
-                                $('.chat-info-img').attr('alt', res.name)
-                                $('.chat-info-img').removeClass('d-none')
-                                $('.chat-info-imgs').addClass('d-none')
-                            } else {
-                                var htm = ''
-                                console.log(res.imgs);
-                                res.imgs.forEach((img, index) => {
-                                    htm += '<img src="' + (img ??
-                                            'resources/assets/images/users/avatar-1.jpg'
-                                        ) +
-                                        '" class="rounded-circle img-thumbnail avatar-sm" style="object-fit: cover;" alt="' +
-                                        res.name + '" />'
-                                });
-                                $('.chat-info-imgs').html(htm)
-                                $('.chat-info-imgs').removeClass('d-none')
-                                $('.chat-info-img').addClass('d-none')
-                            }
-                            console.log(res.join_room);
+                            set_name_image_chat_info(res.name, res.imgs)
+                            update_users_in_list_users_in_room(res.join_users)
                             if (!res.join_room) {
                                 $('#chat-form').addClass('d-none')
                                 $('.alert-join-room').removeClass('d-none')
@@ -347,6 +470,12 @@
                                 $('#chat-form').removeClass('d-none')
                                 $('.alert-join-room').addClass('d-none')
                                 $('button.join-room').addClass('d-none')
+                                $('.add-users-group').removeClass('d-none')
+                                if (res.is_workspace) {
+                                    $('.workspace-session').removeClass('d-none')
+                                    $('.workspace-session .start-sesion').removeClass('d-none')
+                                    $('.workspace-session .end-sesion').removeClass('d-none')
+                                }
                             }
                             $('.chat-info .pre-loader').addClass('d-none')
                             $('.chat-info .pre-loader-error').addClass('d-none')
@@ -375,7 +504,6 @@
                         }
                     });
                 }
-
             })
             // send message
             $('#chat-form').on('submit', function(e) {
@@ -397,6 +525,79 @@
                 });
 
             })
+
+            function update_users_in_list_users_in_room(join_users) {
+                var htm = ''
+                join_users.reverse().forEach(element => {
+                    htm += '<div class="d-flex align-items-center mb-2">'
+                    htm +=
+                        '<img src="' + (element.img ?? 'resources/assets/images/users/avatar-1.jpg') +
+                        '" class="rounded-circle img-thumbnail me-2 p-0 bottom-0 end-0" style="object-fit: cover;height:36px; width:36px;">'
+                    htm += '<span class="text-body fw-semibold">'
+                    htm += element.name
+                    htm += '<br>'
+                    if (element.type == 'system') {
+                        htm += '<span class="badge badge-danger-lighten p-1 font-12">Admin</span>'
+                    } else if (element.type == 'partner') {
+                        htm += '<span class="badge badge-primary-lighten p-1 font-12">Partner</span>'
+                    } else {
+                        htm += '<span class="badge badge-success-lighten p-1 font-12">Client</span>'
+                    }
+                    htm += '</span>'
+                    htm += '</div>'
+                });
+                $('.list-users-in-room .simplebar-content').html(htm)
+            }
+
+            function set_name_image_chat_room(name, imgs) {
+                $('.chat-room[data-id=' + room_id + '] .room-name').html(name)
+                var htm = ''
+                if (imgs.length == 1) {
+                    htm += '<img src="' + (imgs[0] ??
+                            'resources/assets/images/users/avatar-1.jpg') +
+                        '" class="rounded-circle img-thumbnail p-0" style="object-fit: cover; height:48px; width:48px;" />'
+                } else {
+                    htm +=
+                        '<div class="position-relative" style="width: 48px; height: 48px;">'
+                    imgs.forEach((img, index) => {
+                        htm += '<img src="' + (img ??
+                                'resources/assets/images/users/avatar-1.jpg'
+                            ) +
+                            '" class="rounded-circle img-thumbnail position-absolute p-0 ' +
+                            (index % 2 == 0 ? 'top-0' : 'bottom-0') + ' ' +
+                            (
+                                index % 2 == 0 ? 'start-0' : 'end-0') +
+                            '" style="object-fit: cover; height:36px; width:36px;" />'
+
+                    });
+                    htm += '</div>'
+                }
+                $('.chat-room[data-id=' + room_id + '] .chat-room-img').html(htm)
+            }
+
+            function set_name_image_chat_info(name, imgs) {
+                $('.chat-info-name').html(name)
+                if (imgs.length == 1) {
+                    $('.chat-info-img').attr('src', imgs[0] ??
+                        'resources/assets/images/users/avatar-1.jpg')
+                    $('.chat-info-img').attr('alt', name)
+                    $('.chat-info-img').removeClass('d-none')
+                    $('.chat-info-imgs').addClass('d-none')
+                } else {
+                    var htm = ''
+                    console.log(imgs);
+                    imgs.forEach((img, index) => {
+                        htm += '<img src="' + (img ??
+                                'resources/assets/images/users/avatar-1.jpg'
+                            ) +
+                            '" class="rounded-circle img-thumbnail avatar-sm" style="object-fit: cover;" alt="' +
+                            name + '" />'
+                    });
+                    $('.chat-info-imgs').html(htm)
+                    $('.chat-info-imgs').removeClass('d-none')
+                    $('.chat-info-img').addClass('d-none')
+                }
+            }
             // ajax response json to messages
             function message_ajax_to_element(res) {
                 var now = new Date()
@@ -415,12 +616,16 @@
                     if (message.user_id == {{ $user->id }}) {
                         add_my_send_message(message.message, date, false)
                     } else {
-                        add_my_receive_message(message.user.name,
-                            message
-                            .user
-                            .customer.img ??
-                            'resources/assets/images/users/avatar-1.jpg',
-                            message.message, date, false)
+                        var avatar = 'resources/assets/images/users/avatar-1.jpg'
+                        if (message.user.profile.img) {
+                            avatar = message.user.profile.img
+                        }
+                        add_my_receive_message(
+                            message.user.name,
+                            avatar,
+                            message.message,
+                            date,
+                            false)
                     }
                 });
                 page = res.current_page
@@ -443,7 +648,7 @@
                 var htm = '<li class="clearfix odd">'
                 htm += '<div class="chat-avatar">'
                 htm +=
-                    '<img src="{{ asset($user->customer->img ?? 'resources/assets/images/users/avatar-1.jpg') }}" class="rounded" alt="{{ $user->name }}" />'
+                    '<img src="{{ asset($user->profile->img ?? 'resources/assets/images/users/avatar-1.jpg') }}" class="rounded" alt="{{ $user->name }}" />'
                 htm += '<i>' + date.getHours() + ':' + date.getMinutes() + '</i>'
                 htm += '</div>'
                 htm += '<div class="conversation-text">'
@@ -514,6 +719,17 @@
             line-clamp: 3;
             -webkit-box-orient: vertical;
             white-space: normal;
+        }
+
+        .select2-selection__choice {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+        }
+
+        .select2-selection__choice__remove {
+            margin-left: 5px;
+            margin-right: 0px;
         }
     </style>
 @endsection
