@@ -10,7 +10,11 @@ class Profile extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'id',
+        'name',
+        'img',
+    ];
     protected $table = 'avn_profiles';
 
     protected static function newFactory()
