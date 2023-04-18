@@ -36,7 +36,7 @@
                 <span>
                     <span class="account-user-name">{{$user->name}}</span>
                     @if($user->type == 'customer')
-                        <span class="account-user-name">{{ number_format($user->customer->money, 0, ',', '.') }} $</span>
+                        <span class="account-user-name">{{ number_format($user->profile->money, 0, ',', '.') }} $</span>
                     @endif
                 </span>
             </a>
