@@ -339,7 +339,8 @@
                 .listen('.newMessage', (e) => {
                     console.log(e);
                     if (room_id == e.room_id) {
-                        add_my_receive_message(e.name, e.img, e.message)
+                        date = new Date(e.created_at)
+                        add_my_receive_message(e.name, e.img, e.message, date)
                     } else {
                         $(".chat-room[data-id=" + room_id + "] .new-message").html(e.message);
                     }
