@@ -750,7 +750,7 @@
                         add_my_send_message(message.message, date, false)
                     } else {
                         var avatar = 'resources/assets/images/users/avatar-1.jpg'
-                        if (message.user.profile.img) {
+                        if (message.user.profile && message.user.profile.img) {
                             avatar = message.user.profile.img
                         }
                         add_my_receive_message(
