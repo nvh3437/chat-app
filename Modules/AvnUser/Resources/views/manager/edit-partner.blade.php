@@ -1,20 +1,21 @@
 @extends('layouts.admin')
 @section('title')
-    Thêm chuyên gia
+    Sửa chuyên gia
 @endsection
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Thêm chuyên gia</h4>
+                    <h4 class="page-title">Sửa chuyên gia</h4>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('store-partern') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('update-partner', $partner->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Thông tin cơ bản</h4>
@@ -24,57 +25,66 @@
                                         Ảnh đại diện
                                     </label>
                                     <input accept="image/*" type="file" class="form-control" name="img">
+                                    @if($partner->img == '')
+                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="max-width: 200px;"/>
+                                    @else
+                                        <img class="img-fluid mt-2" src="{{ asset($partner->img) }}" style="max-width: 200px;"/>
+                                    @endif
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Tên <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="name" required>
+                                    <input type="text" class="form-control" name="name" value="{{$partner->user->name}}" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Giới tính <span class="text-danger">*</span>
                                     </label>
                                     <select class="form-select" name="gender">
-                                        <option value="0" class="form-control">Nam</option>
-                                        <option value="1" class="form-control">Nữ</option>
+                                        <option value="0" class="form-control"
+                                            {{ $partner && $partner->gender == '0' ? 'selected' : '' }}>Nam
+                                        </option>
+                                        <option value="1" class="form-control"
+                                            {{ $partner && $partner->gender == '1' ? 'selected' : '' }}>Nữ
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Năm kinh nghiệm <span class="text-danger">*</span>
+                                        Năm kinh nghiệm
                                     </label>
-                                    <input type="text" class="form-control" name="exp" required>
+                                    <input type="text" class="form-control" name="exp" value="{{$partner->exp}}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Email <span class="text-danger">*</span>
                                     </label>
-                                    <input type="email" class="form-control" name="email" required>
+                                    <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Số điện thoại
                                     </label>
-                                    <input type="number" class="form-control" name="phone">
+                                    <input type="number" class="form-control" name="phone" value="{{$partner->phone}}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Ngày sinh
                                     </label>
-                                    <input type="date" class="form-control" name="birth">
+                                    <input type="date" class="form-control" name="birth" value="{{$partner->birth}}">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Địa chỉ 
                                     </label>
-                                    <textarea class="form-control" name="address" rows="5"></textarea>
+                                    <textarea class="form-control" name="address" rows="5">{!! $partner->address !!}</textarea>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Tiểu sử
                                     </label>
-                                    <textarea class="form-control" name="description" rows="5"></textarea>
+                                    <textarea class="form-control" name="description" rows="5">{!! $partner->description !!}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -87,21 +97,21 @@
                                     <label class="form-label mt-2">
                                         Tên đăng nhập <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="username" required>
+                                    <input type="text" class="form-control" name="username" value="{{$user->username}}" required readonly>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Mật khẩu <span class="text-danger">*</span>
                                     </label>
-                                    <input type="password" class="form-control" name="password" required>
+                                    <input type="password" class="form-control" name="password">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
-                            <button type="submit" class="btn btn-danger me-3">Thêm</button>
-                            <a href="{{ route('list-partern') }}" class="btn btn-secondary ms-3">Quay lại</a>
+                            <button type="submit" class="btn btn-danger me-3">Cập nhật</button>
+                            <a href="{{ route('list-partner') }}" class="btn btn-secondary ms-3">Quay lại</a>
                         </div>
                     </div>
                 </form>

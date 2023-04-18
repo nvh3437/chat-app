@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Events\SendMessageUser;
 use Modules\AvnChat\Entities\Message;
 use Modules\AvnChat\Entities\ChatRoom;
+use Modules\AvnChat\Entities\ChatRoomSession;
+use Modules\AvnChat\Entities\ChatRoomSessionUser;
 use Modules\AvnChat\Entities\ChatRoomUser;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -18,10 +20,13 @@ class AvnChatController extends Controller
     public function index(Request $request)
     {
         // setcookie('Authorization', '' . Auth::user()->createToken('avnchat')->plainTextToken);
-        $users = User::get();
-        $rooms = ChatRoom::get();
         $user = Auth::user();
-        return view('avnchat::index', compact('users', 'rooms', 'user'));
+        if ($user->type == "system") {
+            $rooms = ChatRoom::get();
+        } else {
+            $rooms = $user->rooms;
+        }
+        return view('avnchat::index', compact('rooms', 'user'));
     }
     public function sendMessage(Request $request)
     {
@@ -29,33 +34,166 @@ class AvnChatController extends Controller
         $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user_send) {
             $query->where('user_id', $user_send->id);
         })->findOrFail($request->id);
-        // if (!$room) {
-        //     $room = new ChatRoom();
-        //     $room->save();
-        //     $room_user = new ChatRoomUser();
-        //     $room_user->room_id = $room->id;
-        //     $room_user->user_id = $user_send->id;
-        //     $room_user->save();
-        //     $room_user = new ChatRoomUser();
-        //     $room_user->room_id = $room->id;
-        //     $room_user->user_id = $user_send->id;
-        //     $room_user->save();
-        // }
         $message = new Message();
         $message->user_id = $user_send->id;
         $message->room_id = $room->id;
         $message->message = $request->message;
         $message->save();
-        $user_receive = $room->users->where('id', '!=', $user_send->id)->first();
-        broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, room_id: $room->id, message: $message->message));
+        $user_receives = $room->users->where('id', '!=', $user_send->id);
+        foreach ($user_receives as $user_receive) {
+            broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, room_id: $room->id, message: $message->message));
+        }
         return true;
     }
-    public function getMessage(Request $request)
+    public function getMessages(Request $request)
     {
         $user = Auth::user();
-        $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
-            $query->where('user_id', $user->id);
-        })->findOrFail()->load('messages');
-        return $room;
+        if ($user->type == "system") {
+            $room = ChatRoom::findOrFail($request->id);
+        } else {
+            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($request->id);
+        }
+        $messages = Message::where('room_id', $room->id)
+            ->orderByDesc('created_at')
+            ->with('user:id,name', 'user.profile:id,img')
+            ->paginate(10);
+        return $messages;
+    }
+    public function getRoomInfo(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == "system") {
+            $room = ChatRoom::findOrFail($request->id);
+        } else {
+            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($request->id);
+        }
+        return AvnChatHelper::roomInfo($user, $room);
+    }
+    public function joinRoom(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == "system") {
+            $room = ChatRoom::findOrFail($request->id);
+            if (!$room->room_users->where('user_id', $user->id)->count()) {
+                $chat_room_user = new ChatRoomUser();
+                $chat_room_user->user_id = $user->id;
+                $chat_room_user->room_id = $room->id;
+                $chat_room_user->save();
+            }
+            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($request->id);
+            return AvnChatHelper::roomInfo($user, $room);
+        }
+        return false;
+    }
+    public function addUsers(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == "system") {
+            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($request->id);
+            foreach ($request->users as $user_id) {
+                if (!$room->room_users->where('user_id', $user_id)->count()) {
+                    $chat_room_user = new ChatRoomUser();
+                    $chat_room_user->user_id = $user_id;
+                    $chat_room_user->room_id = $room->id;
+                    $chat_room_user->save();
+                }
+            }
+            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($request->id);
+            return AvnChatHelper::roomInfo($user, $room);
+        }
+        return false;
+    }
+    public function kickUser(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == "system") {
+            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($request->id);
+            $room_user = $room->room_users->where('user_id', $request->user_id)->first();
+            $session_chat = $room->session_chats->where('end_on', null)->first();
+            if ($session_chat) {
+                $session_user = $session_chat->session_users->where('user_id', $request->user_id)->first();
+                $session_user->end_on = date('Y-m-d H:i:s');
+                $session_user->save();
+                $session_customer_users = $session_chat->session_users->filter(function ($value, $key) {
+                    return $value->end_on == null && $value->user->type == 'customer';
+                });
+                if (!$session_customer_users->count()) {
+                    $session_chat->end_on = date('Y-m-d H:i:s');
+                    $session_chat->save();
+                    foreach ($session_chat->session_users->where('end_on', null) as $session_user) {
+                        $session_user->end_on = date('Y-m-d H:i:s');
+                        $session_user->save();
+                    }
+                }
+            }
+            $room_user->delete();
+            $room = ChatRoom::findOrFail($request->id);
+            return AvnChatHelper::roomInfo($user, $room);
+        }
+        return false;
+    }
+    public function startSession(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == "system") {
+            $room = ChatRoom::where('is_workspace', 1)
+                ->whereDoesntHave(
+                    'session_chats',
+                    function ($query) {
+                        $query->where('end_on', null);
+                    }
+                )->whereHas('room_users', function (Builder $query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->findOrFail($request->id);
+            $session_chat = new ChatRoomSession();
+            $session_chat->room_id = $room->id;
+            $session_chat->save();
+            foreach ($room->users as $key => $value) {
+                $session_user = new ChatRoomSessionUser();
+                $session_user->session_id = $session_chat->id;
+                $session_user->user_id = $value->id;
+                $session_user->save();
+            }
+            return $session_chat->created_at;
+        }
+        return false;
+    }
+    public function endSession(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == "system") {
+            $room = ChatRoom::where('is_workspace', 1)
+                ->whereHas(
+                    'session_chats',
+                    function ($query) {
+                        $query->where('end_on', null);
+                    }
+                )->whereHas('room_users', function (Builder $query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->findOrFail($request->id);
+            $session_chat = $room->session_chats->where('end_on', null)->first();
+            $session_chat->end_on = date('Y-m-d H:i:s');
+            $session_chat->save();
+            foreach ($session_chat->session_users as $session_user) {
+                $session_user->end_on = date('Y-m-d H:i:s');
+                $session_user->save();
+            }
+            return true;
+        }
+        return false;
     }
 }

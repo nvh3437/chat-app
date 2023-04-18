@@ -5,22 +5,23 @@ namespace Modules\AvnUser\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\AvnUser\Entities\Partern;
+use Modules\AvnUser\Entities\Partner;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Modules\AvnUser\Entities\Profile;
 
-class ParternController extends Controller
+class PartnerController extends Controller
 {
     public function profile()
     {
         $user = Auth::user();
-        return view('avnuser::partern.profile', compact('user'));
+        return view('avnuser::partner.profile', compact('user'));
     }
 
-    public function updateParternProfile(Request $request)
+    public function updatePartnerProfile(Request $request)
     {
         try {
             // Lưu bảng user 
@@ -38,27 +39,26 @@ class ParternController extends Controller
             }
             $user->save();
 
-            // Lưu bảng partern
-            $partern = Partern::find($user->id);
-            $partern->name = $request->name;
-            $partern->exp = $request->exp;
-            $partern->gender = $request->gender;
-            $partern->address = $request->address;
-            $partern->description = $request->description;
-            $partern->birth = $request->birth;
-            $partern->phone = $request->phone;
-            $partern->money = 0;
-            $partern->gender_status = $request->gender_status ?? 0;
-            $partern->exp_status = $request->exp_status ?? 0;
-            $partern->address_status = $request->address_status ?? 0;
-            $partern->description_status = $request->description_status ?? 0;
-            $partern->email_status = $request->email_status ?? 0;
-            $partern->birth_status = $request->birth_status ?? 0;
-            $partern->phone_status = $request->phone_status ?? 0;
-            $partern->money_status = 0;
+            // Lưu bảng partner
+            $partner = Profile::find($user->id);
+            $partner->exp = $request->exp;
+            $partner->gender = $request->gender;
+            $partner->address = $request->address;
+            $partner->description = $request->description;
+            $partner->birth = $request->birth;
+            $partner->phone = $request->phone;
+            $partner->money = 0;
+            $partner->gender_status = $request->gender_status ?? 0;
+            $partner->exp_status = $request->exp_status ?? 0;
+            $partner->address_status = $request->address_status ?? 0;
+            $partner->description_status = $request->description_status ?? 0;
+            $partner->email_status = $request->email_status ?? 0;
+            $partner->birth_status = $request->birth_status ?? 0;
+            $partner->phone_status = $request->phone_status ?? 0;
+            $partner->money_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
-                if ($partern->img != null) {
-                    File::delete($partern->img);
+                if ($partner->img != null) {
+                    File::delete($partner->img);
                 }
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -67,9 +67,9 @@ class ParternController extends Controller
                 }
                 $image->storeAs('AvnUser', $filename);
                 $path = 'storage/app/AvnUser/' . $filename;
-                $partern->img = $path;
+                $partner->img = $path;
             }
-            $partern->save();
+            $partner->save();
             return back()->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');

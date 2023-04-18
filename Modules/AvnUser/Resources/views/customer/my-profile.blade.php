@@ -8,10 +8,10 @@
             <div class="col-xl-4 col-lg-5">
                 <div class="card text-center">
                     <div class="card-body">
-                        @if($user->customer->img == '')
+                        @if($user->profile->img == '')
                             <img src="{{ asset('/resources/assets/images/logo.png') }}" class="rounded-circle avatar-lg img-thumbnail">
                         @else
-                            <img src="{{ asset($user->customer->img) }}" class="rounded-circle avatar-lg img-thumbnail">
+                            <img src="{{ asset($user->profile->img) }}" class="rounded-circle avatar-lg img-thumbnail">
                         @endif
                         <h4 class="mb-0 mt-2">{{$user->name}}</h4>
                         <div class="text-start mt-3">
@@ -19,29 +19,29 @@
 
                             <p class="text-muted mb-2 font-13">
                                 <strong>Ngày sinh :
-                                    @if($user->customer->birth_status == '1')
+                                    @if($user->profile->birth_status == '1')
                                         <span class="badge bg-danger">Ẩn</span>
                                     @endif
                                 </strong> 
                                 <span class="ms-1">
-                                    @if($user->customer->birth)
-                                        {{ date('d/m/Y', strtotime($user->customer->birth)) }}
+                                    @if($user->profile->birth)
+                                        {{ date('d/m/Y', strtotime($user->profile->birth)) }}
                                     @endif
                                 </span>
                             </p>
 
                             <p class="text-muted mb-2 font-13">
                                 <strong>Số điện thoại :
-                                    @if($user->customer->phone_status == '1')
+                                    @if($user->profile->phone_status == '1')
                                         <span class="badge bg-danger">Ẩn</span>
                                     @endif
                                 </strong> 
-                                <span class="ms-1">{{ $user->customer->phone }}</span>
+                                <span class="ms-1">{{ $user->profile->phone }}</span>
                             </p>
 
                             <p class="text-muted mb-2 font-13">
                                 <strong>Email :
-                                    @if($user->customer->email_status == '1')
+                                    @if($user->profile->email_status == '1')
                                         <span class="badge bg-danger">Ẩn</span>
                                     @endif
                                 </strong> 
@@ -50,20 +50,20 @@
 
                             <p class="text-muted mb-2 font-13">
                                 <strong>Địa chỉ :
-                                    @if($user->customer->address_status == '1')
+                                    @if($user->profile->address_status == '1')
                                         <span class="badge bg-danger">Ẩn</span> 
                                     @endif
                                 </strong> 
-                                <span class="ms-1">{{$user->customer->address}}</span>
+                                <span class="ms-1">{{$user->profile->address}}</span>
                             </p>
                             <p class="text-muted mb-2 font-13">
                                 <strong>Tiểu sử :
-                                @if($user->customer->description_status == '1')
+                                @if($user->profile->description_status == '1')
                                     <span class="badge bg-danger">Ẩn</span>
                                 @endif
                                 </strong>
                             </p>
-                            <textarea class="text-muted font-13 mb-1 bg-white p-0 w-100" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $user->customer->description !!}</textarea>
+                            <textarea class="text-muted font-13 mb-1 bg-white p-0 w-100" id="textBox1" style="overflow: hidden; border: none; outline: none; resize: none;">{!! $user->profile->description !!}</textarea>
                         </div>
                     </div> 
                 </div>
@@ -116,7 +116,7 @@
                                                 <label class="form-label">Email <span class="text-danger">*</span></label>
                                                 <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
                                                 <div class="form-check mt-2">
-                                                    <input type="checkbox" name="email_status" value="1" class="form-check-input" {{ $user->customer->email_status == 1 ? 'checked' : '' }}>
+                                                    <input type="checkbox" name="email_status" value="1" class="form-check-input" {{ $user->profile->email_status == 1 ? 'checked' : '' }}>
                                                     <label class="form-check-label">Ẩn email</label>
                                                 </div>
                                             </div>
@@ -126,14 +126,14 @@
                                                 <label class="form-label">Giới tính <span class="text-danger">*</span></label>
                                                 <select class="form-select" name="gender">
                                                     <option value="0" class="form-control"
-                                                        {{ $user->customer && $user->customer->gender == '0' ? 'selected' : '' }}>Nam
+                                                        {{ $user->profile && $user->profile->gender == '0' ? 'selected' : '' }}>Nam
                                                     </option>
                                                     <option value="1" class="form-control"
-                                                        {{ $user->customer && $user->customer->gender == '1' ? 'selected' : '' }}>Nữ
+                                                        {{ $user->profile && $user->profile->gender == '1' ? 'selected' : '' }}>Nữ
                                                     </option>
                                                 </select>
                                                 <div class="form-check mt-2">
-                                                    <input type="checkbox" name="gender_status" value="1" class="form-check-input" {{ $user->customer->gender_status == 1 ? 'checked' : '' }}>
+                                                    <input type="checkbox" name="gender_status" value="1" class="form-check-input" {{ $user->profile->gender_status == 1 ? 'checked' : '' }}>
                                                     <label class="form-check-label">Ẩn giới tính</label>
                                                 </div>
                                             </div>
@@ -143,9 +143,9 @@
                                         <div class="col-md-6">
                                             <div class="mb-2">
                                                 <label class="form-label">Ngày sinh</label>
-                                                <input type="date" class="form-control" name="birth" value="{{$user->customer->birth}}">
+                                                <input type="date" class="form-control" name="birth" value="{{$user->profile->birth}}">
                                                 <div class="form-check mt-2">
-                                                    <input type="checkbox" name="birth_status" value="1" class="form-check-input" {{ $user->customer->birth_status == 1 ? 'checked' : '' }}>
+                                                    <input type="checkbox" name="birth_status" value="1" class="form-check-input" {{ $user->profile->birth_status == 1 ? 'checked' : '' }}>
                                                     <label class="form-check-label">Ẩn ngày sinh</label>
                                                 </div>
                                             </div>
@@ -153,9 +153,9 @@
                                         <div class="col-md-6">
                                             <div class="mb-2">
                                                 <label class="form-label">Số điện thoại</label>
-                                                <input type="number" class="form-control" name="phone" value="{{$user->customer->phone}}">
+                                                <input type="number" class="form-control" name="phone" value="{{$user->profile->phone}}">
                                                 <div class="form-check mt-2">
-                                                    <input type="checkbox" name="phone_status" value="1" class="form-check-input" {{ $user->customer->phone_status == 1 ? 'checked' : '' }}>
+                                                    <input type="checkbox" name="phone_status" value="1" class="form-check-input" {{ $user->profile->phone_status == 1 ? 'checked' : '' }}>
                                                     <label class="form-check-label">Ẩn SĐT</label>
                                                 </div>
                                             </div>
@@ -165,9 +165,9 @@
                                         <div class="col-12">
                                             <div class="mb-2">
                                                 <label class="form-label">Địa chỉ</label>
-                                                <textarea class="form-control" name="address" rows="4">{!! $user->customer->address !!}</textarea>
+                                                <textarea class="form-control" name="address" rows="4">{!! $user->profile->address !!}</textarea>
                                                 <div class="form-check mt-2">
-                                                    <input type="checkbox" name="address_status" value="1" class="form-check-input" {{ $user->customer->address_status == 1 ? 'checked' : '' }}>
+                                                    <input type="checkbox" name="address_status" value="1" class="form-check-input" {{ $user->profile->address_status == 1 ? 'checked' : '' }}>
                                                     <label class="form-check-label">Ẩn địa chỉ</label>
                                                 </div>
                                             </div>
@@ -177,9 +177,9 @@
                                         <div class="col-12">
                                             <div class="mb-2">
                                                 <label class="form-label">Tiểu sử</label>
-                                                <textarea class="form-control" name="description" rows="4">{!! $user->customer->description !!}</textarea>
+                                                <textarea class="form-control" name="description" rows="4">{!! $user->profile->description !!}</textarea>
                                                 <div class="form-check mt-2">
-                                                    <input type="checkbox" name="description_status" value="1" class="form-check-input" {{ $user->customer->description_status == 1 ? 'checked' : '' }}>
+                                                    <input type="checkbox" name="description_status" value="1" class="form-check-input" {{ $user->profile->description_status == 1 ? 'checked' : '' }}>
                                                     <label class="form-check-label">Ẩn tiểu sử</label>
                                                 </div>
                                             </div>

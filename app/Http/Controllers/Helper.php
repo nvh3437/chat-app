@@ -89,6 +89,10 @@ class Helper
     {
         return GeneralSettings::where('key', 'address')->first()->value ?? null;
     }
+    public static function getLogo()
+    {
+        return GeneralSettings::where('key', 'logo')->first()->value ?? 'resources/assets/images/logo.png';
+    }
     public static function countWorkCalendar($from, $to)
     {
         $setting = GeneralSettings::where('key', 'work_calendar')->first()->value ?? null;

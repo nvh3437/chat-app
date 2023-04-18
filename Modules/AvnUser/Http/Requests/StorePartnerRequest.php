@@ -4,7 +4,7 @@ namespace Modules\AvnUser\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreParternRequest extends FormRequest
+class StorePartnerRequest extends FormRequest
 {
     public function rules()
     {

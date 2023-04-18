@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('avn_customers', function (Blueprint $table) {
+        Schema::create('avn_profiles', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->text('img')->nullable();
+            $table->string('exp')->nullable();
             $table->smallInteger('gender')->nullable();
             $table->date('birth')->nullable();
             $table->string('phone')->nullable();
@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('money')->nullable();
             $table->smallInteger('gender_status')->default(0);
+            $table->smallInteger('exp_status')->default(0);
             $table->smallInteger('address_status')->default(0);
             $table->smallInteger('description_status')->default(0);
             $table->smallInteger('money_status')->default(0);
@@ -31,6 +32,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('avn_customers');
+        Schema::dropIfExists('avn_profiles');
     }
 };

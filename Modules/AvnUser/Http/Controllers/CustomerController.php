@@ -5,7 +5,7 @@ namespace Modules\AvnUser\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\AvnUser\Entities\Customer;
+use Modules\AvnUser\Entities\Profile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\AvnUser\Http\Requests\StoreCustomerRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
+use Modules\AvnChat\Entities\ChatRoomUser;
 
 class CustomerController extends Controller
 {
@@ -35,10 +36,14 @@ class CustomerController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
 
+            $global_chat_room_user = new ChatRoomUser();
+            $global_chat_room_user->user_id = $user->id;
+            $global_chat_room_user->room_id = 1;
+            $global_chat_room_user->save();
+            
             // Lưu bảng customer
-            $customer = new Customer();
+            $customer = new Profile();
             $customer->id = $user->id;
-            $customer->name = $request->name;
             $customer->gender = 0; // Mặc định là nam, sau sẽ tự sửa
             $customer->money = 0; // Tiền nong để 0
             $customer->save();
@@ -81,8 +86,7 @@ class CustomerController extends Controller
             $user->save();
 
             // Lưu bảng customer
-            $customer = Customer::find($user->id);
-            $customer->name = $request->name;
+            $customer = Profile::find($user->id);
             $customer->gender = $request->gender;
             $customer->address = $request->address;
             $customer->description = $request->description;

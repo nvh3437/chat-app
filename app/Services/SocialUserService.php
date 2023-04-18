@@ -6,7 +6,7 @@ use App\Models\User;
 use Modules\AvnUser\Entities\SocialUser;
 use Laravel\Socialite\Contracts\Provider;
 use App\Http\Controllers\Helper;
-use Modules\AvnUser\Entities\Customer;
+use Modules\AvnUser\Entities\Profile;
 use Illuminate\Support\Facades\Hash;
 
 class SocialUserService
@@ -42,7 +42,7 @@ class SocialUserService
             $customer = $user->customer_id;
 
             if (!$customer) {
-                $customer = Customer::create([
+                $customer = Profile::create([
                     'id' => $user->id,
                     'name' => $user->name,
                     'img' => $providerUser->getAvatar(),

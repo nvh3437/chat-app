@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class ManagerController extends Controller
 {
@@ -41,5 +42,20 @@ class ManagerController extends Controller
             return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
-
+    public function getUsers(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == 'system') {
+            $users = User::where('username', '!=', 'superadmin')->select('id', 'name', 'username')->with('profile:id,img');
+            if ($request->search) {
+                $search = $request->search;
+                $users->where(function ($query) use ($search) {
+                    $query->where('username', 'like', '%' . $search . '%');
+                    $query->orWhere('name', 'like', '%' . $search . '%');
+                });
+            }
+            return $users->get();
+        }
+        return false;
+    }
 }

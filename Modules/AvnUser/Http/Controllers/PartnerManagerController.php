@@ -11,27 +11,28 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Modules\AvnUser\Http\Requests\StoreCustomerRequest;
-use Modules\AvnUser\Http\Requests\UpdateCustomerRequest;
+use Modules\AvnUser\Http\Requests\StorePartnerRequest;
+use Modules\AvnUser\Http\Requests\UpdatePartnerRequest;
 use Modules\AvnChat\Entities\ChatRoomUser;
+use Modules\AvnChat\Entities\ChatRoom;
 use Illuminate\Database\Eloquent\Builder;
 
-class CustomerManagerController extends Controller
+class PartnerManagerController extends Controller
 {
-    public function listCustomer()
+    public function listPartner()
     {
-        $customers = Profile::whereHas('user', function (Builder $query) {
-            $query->where('type', 'customer');
+        $partners = Profile::whereHas('user', function (Builder $query) {
+            $query->where('type', 'partner');
         })->orderByDesc('updated_at')->get();
-        return view('avnuser::manager.list-customer', compact('customers'));
+        return view('avnuser::manager.list-partner', compact('partners'));
     }
 
-    public function addCustomer()
+    public function addPartner()
     {
-        return view('avnuser::manager.add-customer');
+        return view('avnuser::manager.add-partner');
     }
 
-    public function storeCustomer(StoreCustomerRequest $request)
+    public function storePartner(StorePartnerRequest $request)
     {
         try {
             // Lưu bảng user 
@@ -39,7 +40,7 @@ class CustomerManagerController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->username = $request->username;
-            $user->type = 'customer';
+            $user->type = 'partner';
             $user->password = Hash::make($request->password);
             $user->save();
 
@@ -47,22 +48,34 @@ class CustomerManagerController extends Controller
             $global_chat_room_user->user_id = $user->id;
             $global_chat_room_user->room_id = 1;
             $global_chat_room_user->save();
-            // Lưu bảng customer
-            $customer = new Profile();
-            $customer->id = $user->id;
-            $customer->gender = $request->gender;
-            $customer->address = $request->address;
-            $customer->description = $request->description;
-            $customer->birth = $request->birth;
-            $customer->phone = $request->phone;
-            $customer->money = 0;
-            $customer->gender_status = 0;
-            $customer->address_status = 0;
-            $customer->description_status = 0;
-            $customer->money_status = 0;
-            $customer->email_status = 0;
-            $customer->birth_status = 0;
-            $customer->phone_status = 0;
+
+            $partner_chat_room = new ChatRoom();
+            $partner_chat_room->is_workspace = 1;
+            $partner_chat_room->save();
+
+            $partner_chat_room_user = new ChatRoomUser();
+            $partner_chat_room_user->user_id = $user->id;
+            $partner_chat_room_user->room_id = $partner_chat_room->id;
+            $partner_chat_room_user->save();
+
+            // Lưu bảng partner
+            $partner = new Profile();
+            $partner->id = $user->id;
+            $partner->exp = $request->exp;
+            $partner->gender = $request->gender;
+            $partner->address = $request->address;
+            $partner->description = $request->description;
+            $partner->birth = $request->birth;
+            $partner->phone = $request->phone;
+            $partner->money = 0;
+            $partner->gender_status = 0;
+            $partner->exp_status = 0;
+            $partner->address_status = 0;
+            $partner->description_status = 0;
+            $partner->money_status = 0;
+            $partner->email_status = 0;
+            $partner->birth_status = 0;
+            $partner->phone_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -71,23 +84,23 @@ class CustomerManagerController extends Controller
                 }
                 $image->storeAs('AvnUser', $filename);
                 $path = 'storage/app/AvnUser/' . $filename;
-                $customer->img = $path;
+                $partner->img = $path;
             }
-            $customer->save();
-            return redirect()->route('list-customer')->with('Success', 'Thêm thành công');
+            $partner->save();
+            return redirect()->route('list-partner')->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Thêm thất bại');
         }
     }
 
-    public function editCustomer($id)
+    public function editPartner($id)
     {
-        $customer = Profile::findOrFail($id);
+        $partner = Profile::findOrFail($id);
         $user = User::findOrFail($id);
-        return view('avnuser::manager.edit-customer', compact('customer', 'user'));
+        return view('avnuser::manager.edit-partner', compact('partner', 'user'));
     }
 
-    public function updateCustomer(UpdateCustomerRequest $request, $id)
+    public function updatePartner(UpdatePartnerRequest $request, $id)
     {
         try {
             // Lưu bảng user 
@@ -105,24 +118,26 @@ class CustomerManagerController extends Controller
             }
             $user->save();
 
-            // Lưu bảng customer
-            $customer = Profile::findOrFail($id);
-            $customer->gender = $request->gender;
-            $customer->address = $request->address;
-            $customer->description = $request->description;
-            $customer->birth = $request->birth;
-            $customer->phone = $request->phone;
-            $customer->money = 0;
-            $customer->gender_status = 0;
-            $customer->address_status = 0;
-            $customer->description_status = 0;
-            $customer->money_status = 0;
-            $customer->email_status = 0;
-            $customer->birth_status = 0;
-            $customer->phone_status = 0;
+            // Lưu bảng partner
+            $partner = Profile::findOrFail($id);
+            $partner->exp = $request->exp;
+            $partner->gender = $request->gender;
+            $partner->address = $request->address;
+            $partner->description = $request->description;
+            $partner->birth = $request->birth;
+            $partner->phone = $request->phone;
+            $partner->money = 0;
+            $partner->gender_status = 0;
+            $partner->exp_status = 0;
+            $partner->address_status = 0;
+            $partner->description_status = 0;
+            $partner->money_status = 0;
+            $partner->email_status = 0;
+            $partner->birth_status = 0;
+            $partner->phone_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
-                if ($customer->img != null) {
-                    File::delete($customer->img);
+                if ($partner->img != null) {
+                    File::delete($partner->img);
                 }
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -131,24 +146,24 @@ class CustomerManagerController extends Controller
                 }
                 $image->storeAs('AvnUser', $filename);
                 $path = 'storage/app/AvnUser/' . $filename;
-                $customer->img = $path;
+                $partner->img = $path;
             }
-            $customer->save();
-            return redirect()->route('list-customer')->with('Success', 'Cập nhật thành công');
+            $partner->save();
+            return redirect()->route('list-partner')->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
 
-    public function deleteCustomer($id)
+    public function deletePartner($id)
     {
         try {
             $user = User::findOrFail($id)->delete();
-            $customer = Profile::findOrFail($id);
-            if ($customer->img != null) {
-                File::delete($customer->img);
+            $partner = Profile::findOrFail($id);
+            if ($partner->img != null) {
+                File::delete($partner->img);
             }
-            $customer->delete();
+            $partner->delete();
             return back()->with('Success', 'Xóa thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Xóa thất bại');

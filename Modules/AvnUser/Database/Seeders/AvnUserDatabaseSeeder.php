@@ -17,17 +17,17 @@ class AvnUserDatabaseSeeder extends Seeder
 {
     public function run()
     {
-        $menu_partern = new AvnMenu();
-        $menu_partern->label = 'Chuyên gia';
-        $menu_partern->route_name = 'list-partern';
-        $menu_partern->icon = 'dripicons-user-id';
-        $menu_partern->module = "AvnUser";
-        $menu_partern->save();
+        $menu_partner = new AvnMenu();
+        $menu_partner->label = 'Chuyên gia';
+        $menu_partner->route_name = 'list-partner';
+        $menu_partner->icon = 'dripicons-user-id';
+        $menu_partner->module = "AvnUser";
+        $menu_partner->save();
 
         $permission1 = new Permission();
-        $permission1->route_names = 'list-partern, add-partern, edit-partern, store-partern, update-partern, delete-partern';
+        $permission1->route_names = 'list-partner, add-partner, edit-partner, store-partner, update-partner, delete-partner';
         $permission1->name = 'Quản lý chuyên gia';
-        $permission1->menu_id = $menu_partern->id;
+        $permission1->menu_id = $menu_partner->id;
         $permission1->save();
 
         $pr1 = new PermissionRole();

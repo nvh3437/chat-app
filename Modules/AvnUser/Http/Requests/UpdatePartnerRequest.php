@@ -4,7 +4,7 @@ namespace Modules\AvnUser\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateParternRequest extends FormRequest
+class UpdatePartnerRequest extends FormRequest
 {
     public function rules()
     {

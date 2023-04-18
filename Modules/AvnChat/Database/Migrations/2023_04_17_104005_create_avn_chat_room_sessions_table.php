@@ -12,11 +12,15 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('avn_chat_rooms', function (Blueprint $table) {
+        Schema::create('avn_chat_room_sessions', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->text('img')->nullable();
-            $table->tinyInteger('is_workspace')->default(0);
+            $table->unsignedBigInteger('room_id')->nullable();
+            $table->foreign('room_id')
+                ->references('id')
+                ->on('avn_chat_rooms')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+            $table->dateTime('end_on')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('avn_chat_rooms');
+        Schema::dropIfExists('avn_chat_room_sessions');
     }
 };
