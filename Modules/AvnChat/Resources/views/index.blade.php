@@ -247,7 +247,7 @@
 @endsection
 @section('js')
     @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
-    <script src="{{ asset('Modules/AvnChat/resources/assets/js/index.js') }}"></script>
+    {{-- <script src="{{ asset('Modules/AvnChat/resources/assets/js/index.js') }}"></script> --}}
     <script>
         // add csrf
         $.ajaxSetup({
