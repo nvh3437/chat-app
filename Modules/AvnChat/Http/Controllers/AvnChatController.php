@@ -41,7 +41,7 @@ class AvnChatController extends Controller
         $message->save();
         $user_receives = $room->users->where('id', '!=', $user_send->id);
         foreach ($user_receives as $user_receive) {
-            broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, room_id: $room->id, message: $message->message));
+            broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, room_id: $room->id, message: $message));
         }
         return true;
     }

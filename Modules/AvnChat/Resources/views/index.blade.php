@@ -339,16 +339,8 @@
                 .listen('.newMessage', (e) => {
                     console.log(e);
                     if (room_id == e.room_id) {
-                        var avatar = 'resources/assets/images/users/avatar-1.jpg'
-                        if (message.user.profile.img) {
-                            avatar = message.user.profile.img
-                        }
-                        add_my_receive_message(
-                            message.user.name,
-                            avatar,
-                            message.message,
-                            date,
-                            false)
+                        date = new Date(e.created_at)
+                        add_my_receive_message(e.name, e.img, e.message, date)
                     }
                     $(".chat-room[data-id=" + room_id + "] .new-message").html(e.message);
 
