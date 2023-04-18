@@ -12,7 +12,6 @@ class Profile extends Model
 
     protected $fillable = [
         'id',
-        'name',
         'img',
     ];
     protected $table = 'avn_profiles';

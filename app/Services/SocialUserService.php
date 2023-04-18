@@ -44,7 +44,6 @@ class SocialUserService
             if (!$customer) {
                 $customer = Profile::create([
                     'id' => $user->id,
-                    'name' => $user->name,
                     'img' => $providerUser->getAvatar(),
                 ]);
             }
