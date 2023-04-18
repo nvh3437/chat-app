@@ -26,12 +26,22 @@ class AvnChatHelper
         $join_users = $room->room_users->map(function ($item, $key) {
             return ['id' => $item->user_id, 'name' => $item->user->name, 'type' => $item->user->type, 'img' => $item->user->profile->img ?? null];
         });
+        if ($room->session_chats->where('end_on', null)->count()) {
+            $has_session = $room->session_chats->where('end_on', null)->count();
+            $session_start_on = $room->session_chats->where('end_on', null)->first()->created_at;
+        } else {
+
+            $has_session = false;
+            $session_start_on = false;
+        }
         return [
             'join_room' => $join_room,
             'name' => $room_name,
             'imgs' => $imgs,
             'join_users' => $join_users,
             'is_workspace' => $room->is_workspace,
+            'has_session' => $has_session,
+            'session_start_on' => $session_start_on,
         ];
     }
 }

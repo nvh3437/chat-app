@@ -221,11 +221,18 @@
                             </div>
                             <div class="mt-2 workspace-session d-none">
                                 <hr class="" />
-                                <button class="btn btn-success btn-sm mt-1 start-sesion d-none"><i
+                                <button class="btn btn-success btn-sm mt-1 start-session d-none"><i
                                         class='mdi mdi-connection me-1'></i>Bắt đầu phiên làm việc</button>
-                                <button class="btn btn-danger btn-sm mt-1 end-sesion d-none"><i
+                                <button class="btn btn-danger btn-sm mt-1 end-session d-none"><i
                                         class='mdi mdi-clock-check-outline me-1'></i>Kết thúc phiên làm việc</button>
-                                <p class="text-muted mt-2 font-14">Last Interacted: <strong>Few hours back</strong></p>
+                                <p class="text-muted mt-2 font-14 time-session d-none">Thời gian hoạt động: <br>
+                                    <span class="text-success">
+                                        <strong class="day d-none">10days : </strong>
+                                        <strong class="hour d-none">10hours : </strong>
+                                        <strong class="minute d-none">10mins : </strong>
+                                        <strong class="second d-none">10secs</strong>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                         <hr class="" />
@@ -240,54 +247,15 @@
 @endsection
 @section('js')
     @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
+    <script src="{{ asset('Modules/AvnChat/resources/assets/js/index.js') }}"></script>
     <script>
-        function formatSelect(data) {
-            if (data.loading) {
-                return $('<span>Đang tải...</span>')
+        // add csrf
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
             }
-            var htm = '<div class="d-flex align-items-center">'
-            htm += '<img src="'
-            if (data && data.profile && data.profile.img) {
-                htm += data.profile.img
-            } else {
-                htm += 'resources/assets/images/users/avatar-1.jpg'
-            }
-            htm +=
-                '" class="rounded-circle img-thumbnail me-2 p-0 bottom-0 end-0" style="object-fit: cover;height:36px; width:36px;">'
-            htm += '<span class="text-body fw-semibold">'
-            htm += data.name
-            htm += '<br>'
-            htm += '<small class="text-body fw-semibold">'
-            htm += data.username
-            htm += '</small>'
-            htm += '</span>'
-            htm += '</div>'
-            var $select_option = $(htm);
-            return $select_option;
-        }
-
-        function formatSelectSelection(data) {
-            var htm = '<div class="d-flex align-items-center text-start">'
-            htm += '<img src="'
-            if (data && data.profile && data.profile.img) {
-                htm += data.profile.img
-            } else {
-                htm += 'resources/assets/images/users/avatar-1.jpg'
-            }
-            htm +=
-                '" class="rounded-circle img-thumbnail me-2 p-0 bottom-0 end-0" style="object-fit: cover;height:36px; width:36px;">'
-            htm += '<span class="fw-semibold">'
-            htm += data.name
-            htm += '<br>'
-            htm += '<small class="fw-semibold">'
-            htm += data.username
-            htm += '</small>'
-            htm += '</span>'
-            htm += '</div>'
-            var $select_option = $(htm);
-            return $select_option;
-        }
-
+        });
+        // init select users add to chat
         $('#add-users-select').select2({
             ajax: {
                 url: "{{ route('get-users') }}",
@@ -317,7 +285,7 @@
             var page = null;
             var last_page = null;
             var load_more = true;
-
+            var count_up = null;
             // listen chanel 
             window.Echo.private('chat.user.{{ $user->id }}')
                 .listen('.newMessage', (e) => {
@@ -329,12 +297,6 @@
                     }
                 })
 
-            // add csrf
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                }
-            });
             // add users to room
             $('.add-users').on('click', function() {
                 users = $('#add-users-select').val()
@@ -358,7 +320,7 @@
                     });
                 }
             })
-            // add users to room
+            // start session
             $('.start-session').on('click', function() {
                 $.ajax({
                     method: 'post',
@@ -369,10 +331,39 @@
                     },
                     success: function(res) {
                         if (res) {
-                            $('#add-users-select').val(null).trigger('change');
-                            set_name_image_chat_info(res.name, res.imgs)
-                            set_name_image_chat_room(res.name, res.imgs)
-                            update_users_in_list_users_in_room(res.join_users)
+                            $('.workspace-session .start-session').addClass(
+                                'd-none')
+                            $('.workspace-session .end-session').removeClass(
+                                'd-none')
+                            $('.workspace-session .time-session').removeClass(
+                                'd-none')
+                            $('.workspace-session .time-session').removeClass(
+                                'd-none')
+                            timer_count_up(res)
+                        }
+                    }
+                });
+            })
+            // end session
+            $('.end-session').on('click', function() {
+                $.ajax({
+                    method: 'post',
+                    url: "{{ route('end-session-chat') }}",
+                    dataType: "json",
+                    data: {
+                        id: room_id,
+                    },
+                    success: function(res) {
+                        if (res) {
+                            $('.workspace-session .start-session').removeClass(
+                                'd-none')
+                            $('.workspace-session .end-session').addClass(
+                                'd-none')
+                            $('.workspace-session .time-session').addClass(
+                                'd-none')
+                            $('.workspace-session .time-session').addClass(
+                                'd-none')
+                            clearInterval(count_up);
                         }
                     }
                 });
@@ -445,9 +436,12 @@
                     $('.chat-conatiner .pre-loader').removeClass('d-none')
                     $('.chat-info .pre-loader').removeClass('d-none')
                     $('.workspace-session').addClass('d-none')
-                    $('.workspace-session .start-sesion').addClass('d-none')
-                    $('.workspace-session .end-sesion').addClass('d-none')
+                    $('.workspace-session .start-session').addClass('d-none')
+                    $('.workspace-session .end-session').addClass('d-none')
                     $('.add-users-group').addClass('d-none')
+                    $('.workspace-session .time-session').addClass(
+                        'd-none')
+                    clearInterval(count_up);
                     clear_message()
                     room_id = $(this).data('id')
                     $('.chat-room[data-id=' + room_id + '] .chat-room-badge').addClass('bg-light')
@@ -473,8 +467,16 @@
                                 $('.add-users-group').removeClass('d-none')
                                 if (res.is_workspace) {
                                     $('.workspace-session').removeClass('d-none')
-                                    $('.workspace-session .start-sesion').removeClass('d-none')
-                                    $('.workspace-session .end-sesion').removeClass('d-none')
+                                    if (res.has_session) {
+                                        $('.workspace-session .end-session').removeClass(
+                                            'd-none')
+                                        $('.workspace-session .time-session').removeClass(
+                                            'd-none')
+                                        timer_count_up(res.session_start_on)
+                                    } else {
+                                        $('.workspace-session .start-session').removeClass(
+                                            'd-none')
+                                    }
                                 }
                             }
                             $('.chat-info .pre-loader').addClass('d-none')
@@ -525,6 +527,85 @@
                 });
 
             })
+            // remove user
+            $('.list-users-in-room').on('click', '.remove-user', function() {
+                var user_id = $(this).attr('data-id');
+                $.ajax({
+                    method: 'post',
+                    url: "{{ route('kick-user-chat') }}",
+                    dataType: "json",
+                    data: {
+                        id: room_id,
+                        user_id: user_id
+                    },
+                    success: function(res) {
+                        set_name_image_chat_info(res.name, res.imgs)
+                        set_name_image_chat_room(res.name, res.imgs)
+                        update_users_in_list_users_in_room(res.join_users)
+                        if (res.is_workspace) {
+                            $('.workspace-session').removeClass('d-none')
+                            if (res.has_session) {
+                                $('.workspace-session .end-session').removeClass(
+                                    'd-none')
+                                $('.workspace-session .time-session').removeClass(
+                                    'd-none')
+                                timer_count_up(res.session_start_on)
+                            } else {
+                                $('.workspace-session .start-session').removeClass(
+                                    'd-none')
+                            }
+                        }
+                    }
+                });
+            })
+
+            function timer_count_up(date) {
+                var countDownDate = new Date(date).getTime();
+                count_up = setInterval(function() {
+                    var now = new Date().getTime();
+                    var distance = now - countDownDate;
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    var day_elem = $('.workspace-session .time-session .day')
+                    var hour_elem = $('.workspace-session .time-session .hour')
+                    var minute_elem = $('.workspace-session .time-session .minute')
+                    var second_elem = $('.workspace-session .time-session .second')
+                    if (days) {
+                        $(day_elem).removeClass(
+                            'd-none')
+                        $(day_elem).html(days + 'days')
+                    } else {
+                        $(day_elem).addClass(
+                            'd-none')
+                    }
+                    if (hours) {
+                        $(hour_elem).removeClass(
+                            'd-none')
+                        $(hour_elem).html(hours + 'hours')
+                    } else {
+                        $(hour_elem).addClass(
+                            'd-none')
+                    }
+                    if (minutes) {
+                        $(minute_elem).removeClass(
+                            'd-none')
+                        $(minute_elem).html(minutes + 'mins')
+                    } else {
+                        $(minute_elem).addClass(
+                            'd-none')
+                    }
+                    if (seconds) {
+                        $(second_elem).removeClass(
+                            'd-none')
+                        $(second_elem).html(seconds + 'secs')
+                    } else {
+                        $(second_elem).addClass(
+                            'd-none')
+                    }
+                }, 1000);
+            }
 
             function update_users_in_list_users_in_room(join_users) {
                 var htm = ''
@@ -543,6 +624,8 @@
                     } else {
                         htm += '<span class="badge badge-success-lighten p-1 font-12">Client</span>'
                     }
+                    htm += '<span role="button" class="text-primary ms-2 font-12 remove-user" data-id="' +
+                        element.id + '">Xóa</span>'
                     htm += '</span>'
                     htm += '</div>'
                 });
@@ -633,7 +716,7 @@
             }
 
             function clear_message() {
-                $('.conversation-list .clearfix').remove()
+                $('.conversation-list .simplebar-content').html('')
             }
 
             function scroll_to_bottom_message_container() {
@@ -661,7 +744,7 @@
                 htm += '</div>'
                 htm += '<div class="conversation-actions dropdown">'
                 htm +=
-                    '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil - ellipsis - v "></i></button>'
+                    '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil-ellipsis-v "></i></button>'
                 htm += '<div class="dropdown-menu">'
                 htm += '<a class="dropdown-item" href="#">Copy Message</a>'
                 htm += '<a class="dropdown-item" href="#">Edit</a>'

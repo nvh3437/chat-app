@@ -30,7 +30,7 @@ class ChatRoom extends Model
     {
         return $this->hasMany(Message::class, 'room_id', 'id');
     }
-    public function session_chat()
+    public function session_chats()
     {
         return $this->hasMany(ChatRoomSession::class, 'room_id', 'id');
     }

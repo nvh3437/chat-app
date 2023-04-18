@@ -55,7 +55,10 @@ class AvnChatController extends Controller
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
         }
-        $messages = Message::where('room_id', $room->id)->orderByDesc('created_at')->with('user:id,name', 'user.profile:id,img')->paginate(10);
+        $messages = Message::where('room_id', $room->id)
+            ->orderByDesc('created_at')
+            ->with('user:id,name', 'user.profile:id,img')
+            ->paginate(10);
         return $messages;
     }
     public function getRoomInfo(Request $request)
@@ -110,13 +113,44 @@ class AvnChatController extends Controller
         }
         return false;
     }
+    public function kickUser(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == "system") {
+            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($request->id);
+            $room_user = $room->room_users->where('user_id', $request->user_id)->first();
+            $session_chat = $room->session_chats->where('end_on', null)->first();
+            if ($session_chat) {
+                $session_user = $session_chat->session_users->where('user_id', $request->user_id)->first();
+                $session_user->end_on = date('Y-m-d H:i:s');
+                $session_user->save();
+                $session_customer_users = $session_chat->session_users->filter(function ($value, $key) {
+                    return $value->end_on == null && $value->user->type == 'customer';
+                });
+                if (!$session_customer_users->count()) {
+                    $session_chat->end_on = date('Y-m-d H:i:s');
+                    $session_chat->save();
+                    foreach ($session_chat->session_users->where('end_on', null) as $session_user) {
+                        $session_user->end_on = date('Y-m-d H:i:s');
+                        $session_user->save();
+                    }
+                }
+            }
+            $room_user->delete();
+            $room = ChatRoom::findOrFail($request->id);
+            return AvnChatHelper::roomInfo($user, $room);
+        }
+        return false;
+    }
     public function startSession(Request $request)
     {
         $user = Auth::user();
         if ($user->type == "system") {
             $room = ChatRoom::where('is_workspace', 1)
                 ->whereDoesntHave(
-                    'session_chat',
+                    'session_chats',
                     function ($query) {
                         $query->where('end_on', null);
                     }
@@ -131,6 +165,31 @@ class AvnChatController extends Controller
                 $session_user = new ChatRoomSessionUser();
                 $session_user->session_id = $session_chat->id;
                 $session_user->user_id = $value->id;
+                $session_user->save();
+            }
+            return $session_chat->created_at;
+        }
+        return false;
+    }
+    public function endSession(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == "system") {
+            $room = ChatRoom::where('is_workspace', 1)
+                ->whereHas(
+                    'session_chats',
+                    function ($query) {
+                        $query->where('end_on', null);
+                    }
+                )->whereHas('room_users', function (Builder $query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->findOrFail($request->id);
+            $session_chat = $room->session_chats->where('end_on', null)->first();
+            $session_chat->end_on = date('Y-m-d H:i:s');
+            $session_chat->save();
+            foreach ($session_chat->session_users as $session_user) {
+                $session_user->end_on = date('Y-m-d H:i:s');
                 $session_user->save();
             }
             return true;
