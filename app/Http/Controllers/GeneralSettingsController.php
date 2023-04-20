@@ -212,48 +212,34 @@ class GeneralSettingsController extends Controller
         $setting = GeneralSettings::where('key', 'type_d')->first();
         $setting->value = $request->type_d;
         $setting->save();
-        if ($request->social_facebook) {
-            $setting = GeneralSettings::where('key', 'social_facebook')->first() ?? new GeneralSettings();
-            $setting->key = $setting->key ?? 'social_facebook';
-            $setting->value = trim($request->social_facebook);
-            $setting->save();
-        }
-        if ($request->social_google) {
-            $setting = GeneralSettings::where('key', 'social_google')->first() ?? new GeneralSettings();
-            $setting->key = $setting->key ?? 'social_google';
-            $setting->value = trim($request->social_google);
-            $setting->save();
-        }
-        if ($request->social_instagram) {
-            $setting = GeneralSettings::where('key', 'social_instagram')->first() ?? new GeneralSettings();
-            $setting->key = $setting->key ?? 'social_instagram';
-            $setting->value = trim($request->social_instagram);
-            $setting->save();
-        }
-        if ($request->social_youtube) {
-            $setting = GeneralSettings::where('key', 'social_youtube')->first() ?? new GeneralSettings();
-            $setting->key = $setting->key ?? 'social_youtube';
-            $setting->value = trim($request->social_youtube);
-            $setting->save();
-        }
-        if ($request->social_twitter) {
-            $setting = GeneralSettings::where('key', 'social_twitter')->first() ?? new GeneralSettings();
-            $setting->key = $setting->key ?? 'social_twitter';
-            $setting->value = trim($request->social_twitter);
-            $setting->save();
-        }
-        if ($request->social_linkedin) {
-            $setting = GeneralSettings::where('key', 'social_linkedin')->first() ?? new GeneralSettings();
-            $setting->key = $setting->key ?? 'social_linkedin';
-            $setting->value = trim($request->social_linkedin);
-            $setting->save();
-        }
-        if ($request->social_whatsapp) {
-            $setting = GeneralSettings::where('key', 'social_whatsapp')->first() ?? new GeneralSettings();
-            $setting->key = $setting->key ?? 'social_whatsapp';
-            $setting->value = trim($request->social_whatsapp);
-            $setting->save();
-        }
+        $setting = GeneralSettings::where('key', 'social_facebook')->first() ?? new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_facebook';
+        $setting->value = trim($request->social_facebook);
+        $setting->save();
+        $setting = GeneralSettings::where('key', 'social_google')->first() ?? new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_google';
+        $setting->value = trim($request->social_google);
+        $setting->save();
+        $setting = GeneralSettings::where('key', 'social_instagram')->first() ?? new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_instagram';
+        $setting->value = trim($request->social_instagram);
+        $setting->save();
+        $setting = GeneralSettings::where('key', 'social_youtube')->first() ?? new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_youtube';
+        $setting->value = trim($request->social_youtube);
+        $setting->save();
+        $setting = GeneralSettings::where('key', 'social_twitter')->first() ?? new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_twitter';
+        $setting->value = trim($request->social_twitter);
+        $setting->save();
+        $setting = GeneralSettings::where('key', 'social_linkedin')->first() ?? new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_linkedin';
+        $setting->value = trim($request->social_linkedin);
+        $setting->save();
+        $setting = GeneralSettings::where('key', 'social_whatsapp')->first() ?? new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_whatsapp';
+        $setting->value = trim($request->social_whatsapp);
+        $setting->save();
         return redirect()->route('general-settings')->with('Success', 'Cập nhập thành công');
         // } catch (Exception $e) {
         //     return back()->with('Failed', 'Cập nhập thất bại');

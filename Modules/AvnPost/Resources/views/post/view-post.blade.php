@@ -37,7 +37,7 @@
                 </div>
             </div>
             @if (count($posts) > 1)
-                <div class="row">
+                <div class="row g-2 mb-2">
                     <h4 class="header-title p-0">Bài viết liên quan</h4>
                     @foreach ($posts as $item)
                         @php

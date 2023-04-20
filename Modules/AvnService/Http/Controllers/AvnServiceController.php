@@ -30,24 +30,18 @@ class AvnServiceController extends Controller
     public function updateServiceSetting(Request $request)
     {
         try {
-            if ($request->service_seo_title) {
-                $setting = GeneralSettings::where('key', 'service_seo_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'service_seo_title';
-                $setting->value = trim($request->service_seo_title);
-                $setting->save();
-            }
-            if ($request->service_seo_description) {
-                $setting = GeneralSettings::where('key', 'service_seo_description')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'service_seo_description';
-                $setting->value = trim($request->service_seo_description);
-                $setting->save();
-            }
-            if ($request->service_seo_keywords) {
-                $setting = GeneralSettings::where('key', 'service_seo_keywords')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'service_seo_keywords';
-                $setting->value = trim($request->service_seo_keywords);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'service_seo_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'service_seo_title';
+            $setting->value = trim($request->service_seo_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'service_seo_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'service_seo_description';
+            $setting->value = trim($request->service_seo_description);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'service_seo_keywords')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'service_seo_keywords';
+            $setting->value = trim($request->service_seo_keywords);
+            $setting->save();
             if ($request->hasFile('service_seo_image') && $request->file('service_seo_image')->isValid()) {
                 $setting = GeneralSettings::where('key', 'service_seo_image')->first() ?? new GeneralSettings();
                 if ($setting->value != null) {
@@ -64,18 +58,14 @@ class AvnServiceController extends Controller
                 $setting->value = $path;
                 $setting->save();
             }
-            if ($request->service_page_title) {
-                $setting = GeneralSettings::where('key', 'service_page_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'service_page_title';
-                $setting->value = trim($request->service_page_title);
-                $setting->save();
-            }
-            if ($request->service_page_description) {
-                $setting = GeneralSettings::where('key', 'service_page_description')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'service_page_description';
-                $setting->value = trim($request->service_page_description);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'service_page_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'service_page_title';
+            $setting->value = trim($request->service_page_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'service_page_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'service_page_description';
+            $setting->value = trim($request->service_page_description);
+            $setting->save();
             if ($request->hasFile('service_page_icon') && $request->file('service_page_icon')->isValid()) {
                 $setting = GeneralSettings::where('key', 'service_page_icon')->first() ?? new GeneralSettings();
                 if ($setting->value != null) {

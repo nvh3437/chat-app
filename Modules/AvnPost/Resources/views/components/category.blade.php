@@ -1,4 +1,4 @@
-<div class="col-lg-4 mx-auto mb-3 sticky-sm-top">
+<div class="col-lg-4 mx-auto mb-3">
     <div class="card">
         <div class="card-body shadow-lg">
             <h4>Danh mục</h4>

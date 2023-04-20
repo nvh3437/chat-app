@@ -29,11 +29,6 @@ Route::prefix('setting')->group(function() {
     Route::put('/update-footer/{id}', 'FooterController@updateFooter')->middleware(['auth', 'permission'])->name('update-footer');
     Route::delete('/delete-footer/{id}', 'FooterController@deleteFooter')->middleware(['auth', 'permission'])->name('delete-footer');
 
-        // Icon
-    Route::post('/store-footer-icon', 'FooterController@storeFooterIcon')->middleware(['auth', 'permission'])->name('store-footer-icon');
-    Route::put('/update-footer-icon/{id}', 'FooterController@updateFooterIcon')->middleware(['auth', 'permission'])->name('update-footer-icon');
-    Route::delete('/delete-footer-icon/{id}', 'FooterController@deleteFooterIcon')->middleware(['auth', 'permission'])->name('delete-footer-icon');
-
     //------------------------------------------- Seo các trang -------------------------------//
 
         // Trang chủ

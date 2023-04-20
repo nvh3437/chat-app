@@ -70,7 +70,7 @@ class AvnSettingDatabaseSeeder extends Seeder
 
 
         $permission1 = new Permission();
-        $permission1->route_names = 'navbar, edit-navbar, store-navbar, update-navbar, delete-navbar, footer, store-footer, update-footer, delete-footer, store-footer-icon, update-footer-icon, delete-footer-icon, contact-seo, update-contact-seo, service-seo, update-service-seo, post-seo, update-post-seo, update-footer-des, home-seo, update-home-seo';
+        $permission1->route_names = 'navbar, edit-navbar, store-navbar, update-navbar, delete-navbar, footer, store-footer, update-footer, delete-footer, contact-seo, update-contact-seo, service-seo, update-service-seo, post-seo, update-post-seo, update-footer-des, home-seo, update-home-seo';
         $permission1->name = 'Cài đặt trang';
         $permission1->menu_id = $menu->id;
         $permission1->save();
@@ -243,24 +243,37 @@ class AvnSettingDatabaseSeeder extends Seeder
 
         $footer_app = new Footer();
         $footer_app->name = 'Chat App';
+        $footer_app->parent_id = 0;
         $footer_app->save();
         $footer = new Footer();
         $footer->name = 'Pricing';
         $footer->link = 'service';
         $footer->parent_id = $footer_app->id;
+        $footer->save();
         $footer = new Footer();
         $footer->name = 'Blog';
         $footer->link = 'post';
         $footer->parent_id = $footer_app->id;
+        $footer->save();
         $footer = new Footer();
         $footer->name = 'Contact';
         $footer->link = 'contact';
         $footer->parent_id = $footer_app->id;
+        $footer->save();
         $setting = new GeneralSettings();
         $setting->key = $setting->key ?? 'footer_description';
         $setting->value = trim('Hyper makes it easier to build better websites with<br>
         great speed. Save hundreds of hours of design<br>
         and development by using it.');
+        $setting->save();
+
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_facebook';
+        $setting->value = trim('https://www.facebook.com/');
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'social_google';
+        $setting->value = trim('https://www.google.com/');
         $setting->save();
     }
 }

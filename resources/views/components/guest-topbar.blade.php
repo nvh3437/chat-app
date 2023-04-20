@@ -40,7 +40,14 @@
                 </div>
             </li>
             @if ($user)
-                @include('components.notification')
+
+                <li class="notification-list">
+                    <a class="nav-link end-bar-toggle" href="{{ route('chat-index') }}">
+                        <i class="uil-facebook-messenger noti-icon" style="line-height: 76px; font-size: 26px;"></i>
+                        <span class="noti-icon-badge"></span>
+                    </a>
+                </li>
+                {{-- @include('components.notification') --}}
                 @if ($user->type == 'system')
                     <li class="notification-list">
                         <a class="nav-link end-bar-toggle" href="{{ route('dashboard-manager') }}">

@@ -112,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4 justify-content-center">
+                <div class="row mt-4 justify-content-center gy-2">
                     @foreach ($posts as $item)
                         @include('avnpost::components.post-card', [$item])
                     @endforeach

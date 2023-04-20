@@ -39,24 +39,18 @@ class PageController extends Controller
     public function updateHomeSeo(Request $request)
     {
         try {
-            if ($request->home_seo_title) {
-                $setting = GeneralSettings::where('key', 'home_seo_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_seo_title';
-                $setting->value = trim($request->home_seo_title);
-                $setting->save();
-            }
-            if ($request->home_seo_description) {
-                $setting = GeneralSettings::where('key', 'home_seo_description')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_seo_description';
-                $setting->value = trim($request->home_seo_description);
-                $setting->save();
-            }
-            if ($request->home_seo_keywords) {
-                $setting = GeneralSettings::where('key', 'home_seo_keywords')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_seo_keywords';
-                $setting->value = trim($request->home_seo_keywords);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'home_seo_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_seo_title';
+            $setting->value = trim($request->home_seo_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_seo_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_seo_description';
+            $setting->value = trim($request->home_seo_description);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_seo_keywords')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_seo_keywords';
+            $setting->value = trim($request->home_seo_keywords);
+            $setting->save();
             if ($request->hasFile('home_seo_image') && $request->file('home_seo_image')->isValid()) {
                 $setting = GeneralSettings::where('key', 'home_seo_image')->first() ?? new GeneralSettings();
                 if ($setting->value != null) {
@@ -74,24 +68,18 @@ class PageController extends Controller
                 $setting->save();
             }
             // banner
-            if ($request->home_banner_title) {
-                $setting = GeneralSettings::where('key', 'home_banner_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_banner_title';
-                $setting->value = trim($request->home_banner_title);
-                $setting->save();
-            }
-            if ($request->home_banner_description) {
-                $setting = GeneralSettings::where('key', 'home_banner_description')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_banner_description';
-                $setting->value = trim($request->home_banner_description);
-                $setting->save();
-            }
-            if ($request->home_banner_link) {
-                $setting = GeneralSettings::where('key', 'home_banner_link')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_banner_link';
-                $setting->value = trim($request->home_banner_link);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'home_banner_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_banner_title';
+            $setting->value = trim($request->home_banner_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_banner_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_banner_description';
+            $setting->value = trim($request->home_banner_description);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_banner_link')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_banner_link';
+            $setting->value = trim($request->home_banner_link);
+            $setting->save();
             if ($request->hasFile('home_banner_image') && $request->file('home_banner_image')->isValid()) {
                 $setting = GeneralSettings::where('key', 'home_banner_image')->first() ?? new GeneralSettings();
                 if ($setting->value != null) {
@@ -141,36 +129,26 @@ class PageController extends Controller
                 $setting->value = $path;
                 $setting->save();
             }
-            if ($request->home_feature_title) {
-                $setting = GeneralSettings::where('key', 'home_feature_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_feature_title';
-                $setting->value = trim($request->home_feature_title);
-                $setting->save();
-            }
-            if ($request->home_feature_des) {
-                $setting = GeneralSettings::where('key', 'home_feature_des')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_feature_des';
-                $setting->value = trim($request->home_feature_des);
-                $setting->save();
-            }
-            if ($request->home_feature_sub_title) {
-                $setting = GeneralSettings::where('key', 'home_feature_sub_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_feature_sub_title';
-                $setting->value = trim($request->home_feature_sub_title);
-                $setting->save();
-            }
-            if ($request->home_feature_sub_des) {
-                $setting = GeneralSettings::where('key', 'home_feature_sub_des')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_feature_sub_des';
-                $setting->value = trim($request->home_feature_sub_des);
-                $setting->save();
-            }
-            if ($request->home_feature_link) {
-                $setting = GeneralSettings::where('key', 'home_feature_link')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'home_feature_link';
-                $setting->value = trim($request->home_feature_link);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'home_feature_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_feature_title';
+            $setting->value = trim($request->home_feature_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_feature_des')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_feature_des';
+            $setting->value = trim($request->home_feature_des);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_feature_sub_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_feature_sub_title';
+            $setting->value = trim($request->home_feature_sub_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_feature_sub_des')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_feature_sub_des';
+            $setting->value = trim($request->home_feature_sub_des);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_feature_link')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_feature_link';
+            $setting->value = trim($request->home_feature_link);
+            $setting->save();
             GeneralSettings::where('key', 'like', 'home_feature_list_item_%')->delete();
             if ($request->home_feature_list_items && count($request->home_feature_list_items) > 0) {
                 foreach ($request->home_feature_list_items as $key => $value) {
@@ -205,24 +183,18 @@ class PageController extends Controller
     public function updateContactSeo(Request $request)
     {
         try {
-            if ($request->contact_seo_title) {
-                $setting = GeneralSettings::where('key', 'contact_seo_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'contact_seo_title';
-                $setting->value = trim($request->contact_seo_title);
-                $setting->save();
-            }
-            if ($request->contact_seo_description) {
-                $setting = GeneralSettings::where('key', 'contact_seo_description')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'contact_seo_description';
-                $setting->value = trim($request->contact_seo_description);
-                $setting->save();
-            }
-            if ($request->contact_seo_keywords) {
-                $setting = GeneralSettings::where('key', 'contact_seo_keywords')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'contact_seo_keywords';
-                $setting->value = trim($request->contact_seo_keywords);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'contact_seo_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'contact_seo_title';
+            $setting->value = trim($request->contact_seo_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'contact_seo_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'contact_seo_description';
+            $setting->value = trim($request->contact_seo_description);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'contact_seo_keywords')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'contact_seo_keywords';
+            $setting->value = trim($request->contact_seo_keywords);
+            $setting->save();
             if ($request->hasFile('contact_seo_image') && $request->file('contact_seo_image')->isValid()) {
                 $setting = GeneralSettings::where('key', 'contact_seo_image')->first() ?? new GeneralSettings();
                 if ($setting->value != null) {
@@ -240,18 +212,14 @@ class PageController extends Controller
                 $setting->save();
             }
             // header
-            if ($request->contact_page_title) {
-                $setting = GeneralSettings::where('key', 'contact_page_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'contact_page_title';
-                $setting->value = trim($request->contact_page_title);
-                $setting->save();
-            }
-            if ($request->contact_page_description) {
-                $setting = GeneralSettings::where('key', 'contact_page_description')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'contact_page_description';
-                $setting->value = trim($request->contact_page_description);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'contact_page_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'contact_page_title';
+            $setting->value = trim($request->contact_page_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'contact_page_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'contact_page_description';
+            $setting->value = trim($request->contact_page_description);
+            $setting->save();
             if ($request->hasFile('contact_page_icon') && $request->file('contact_page_icon')->isValid()) {
                 $setting = GeneralSettings::where('key', 'contact_page_icon')->first() ?? new GeneralSettings();
                 if ($setting->value != null) {
@@ -292,24 +260,18 @@ class PageController extends Controller
     public function updatePostSeo(Request $request)
     {
         try {
-            if ($request->post_seo_title) {
-                $setting = GeneralSettings::where('key', 'post_seo_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'post_seo_title';
-                $setting->value = trim($request->post_seo_title);
-                $setting->save();
-            }
-            if ($request->post_seo_description) {
-                $setting = GeneralSettings::where('key', 'post_seo_description')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'post_seo_description';
-                $setting->value = trim($request->post_seo_description);
-                $setting->save();
-            }
-            if ($request->post_seo_keywords) {
-                $setting = GeneralSettings::where('key', 'post_seo_keywords')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'post_seo_keywords';
-                $setting->value = trim($request->post_seo_keywords);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'post_seo_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'post_seo_title';
+            $setting->value = trim($request->post_seo_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'post_seo_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'post_seo_description';
+            $setting->value = trim($request->post_seo_description);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'post_seo_keywords')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'post_seo_keywords';
+            $setting->value = trim($request->post_seo_keywords);
+            $setting->save();
             if ($request->hasFile('post_seo_image') && $request->file('post_seo_image')->isValid()) {
                 $setting = GeneralSettings::where('key', 'post_seo_image')->first() ?? new GeneralSettings();
                 if ($setting->value != null) {
@@ -327,18 +289,14 @@ class PageController extends Controller
                 $setting->save();
             }
             // header
-            if ($request->post_page_title) {
-                $setting = GeneralSettings::where('key', 'post_page_title')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'post_page_title';
-                $setting->value = trim($request->post_page_title);
-                $setting->save();
-            }
-            if ($request->post_page_description) {
-                $setting = GeneralSettings::where('key', 'post_page_description')->first() ?? new GeneralSettings();
-                $setting->key = $setting->key ?? 'post_page_description';
-                $setting->value = trim($request->post_page_description);
-                $setting->save();
-            }
+            $setting = GeneralSettings::where('key', 'post_page_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'post_page_title';
+            $setting->value = trim($request->post_page_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'post_page_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'post_page_description';
+            $setting->value = trim($request->post_page_description);
+            $setting->save();
             if ($request->hasFile('post_page_icon') && $request->file('post_page_icon')->isValid()) {
                 $setting = GeneralSettings::where('key', 'post_page_icon')->first() ?? new GeneralSettings();
                 if ($setting->value != null) {

@@ -1,5 +1,5 @@
 <div class="col-lg-8 mx-auto">
-    <div class="row g-3 mb-2">
+    <div class="row g-2 mb-2">
         @if ($posts->count() == '0')
             <div class="text-center">
                 <h3 class="text-muted">Chưa có bài viết</h3>

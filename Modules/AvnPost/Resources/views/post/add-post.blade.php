@@ -20,9 +20,9 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label class="form-label">
-                                        Ảnh bìa
+                                        Ảnh bìa <span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control" name="img" accept="images/*">
+                                    <input type="file" class="form-control" name="img" accept="images/*" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
