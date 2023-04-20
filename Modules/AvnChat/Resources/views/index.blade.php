@@ -564,7 +564,7 @@
                 var message = $('#message').val();
                 add_my_send_message(message)
                 $('#message').val('')
-                $('.new-message').html(message)
+                $('.chat-room[data-id=' + room_id + '] .new-message').html(message)
                 $.ajax({
                     method: 'post',
                     url: "{{ route('send-message-to-user') }}",
@@ -781,7 +781,7 @@
                 var htm = '<li class="clearfix odd">'
                 htm += '<div class="chat-avatar">'
                 htm +=
-                    '<img src="{{ asset($user->profile->img ?? 'resources/assets/images/users/avatar-1.jpg') }}" class="rounded" alt="{{ $user->name }}" />'
+                    '<img src="{{ asset($user->profile->img ?? "resources/assets/images/users/avatar-1.jpg") }}" class="rounded" alt="{{ $user->name }}" />'
                 htm += '<i>' + date.getHours() + ':' + date.getMinutes() + '</i>'
                 htm += '</div>'
                 htm += '<div class="conversation-text">'

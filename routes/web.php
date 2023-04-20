@@ -19,20 +19,13 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-})->name('home-page');
-
-Route::get('/dashboard', function () {
-    return redirect()->route('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'dashboard'])->name('home-page');
 
 Route::get('/forbidden', function () {
     return view('forbidden');
 })->name('forbidden');
 
 // Dashboard
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 Route::get('/dashboard-manager', [DashboardController::class, 'dbManager'])->middleware(['auth', 'verified'])->name('dashboard-manager');
 
 // setting
@@ -62,8 +55,5 @@ Route::get('/modules-settings-link', [ModuleController::class, 'modulesSettingsL
 Route::get('/list-backup', [FileBackupController::class, 'listBackup'])->middleware(['auth', 'verified', 'permission'])->name('list-backup');
 Route::post('/confirm-backup', [FileBackupController::class, 'confirmBackup'])->middleware(['auth', 'verified'])->name('confirm-backup');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 require __DIR__ . '/auth.php';
 require __DIR__ . '/role.php';

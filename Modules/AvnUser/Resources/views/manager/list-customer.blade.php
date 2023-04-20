@@ -41,7 +41,7 @@
                                 @foreach ($customers as $item)
                                     <tr>
                                         <td>{{ ++$i }}</td>
-                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->user->name }}</td>
                                         <td>
                                             @if($item->img == '')
                                             <img src="{{ asset('/resources/assets/images/logo.png') }}"

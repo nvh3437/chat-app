@@ -32,9 +32,8 @@ class PostCommentController extends Controller
     public function updatePostComment(Request $request, $id)
     {
         try {
-            $comment = PostComment::findOrFail($id);
+            $comment = PostComment::where('user_id', Auth::user()->id)->findOrFail($id);
             $comment->comment = $request->comment;
-            $comment->user_id = Auth::user()->id;
             $comment->post_id = $request->post_id;
             $comment->save();
             return back()->with('Success', 'Cập nhật thành công');
@@ -46,7 +45,7 @@ class PostCommentController extends Controller
     public function deletePostComment($id)
     {
         try {
-            $comment = PostComment::findOrFail($id)->delete();
+            $comment = PostComment::where('user_id', Auth::user()->id)->findOrFail($id);
             return back()->with('Success', 'Xóa thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Xóa thất bại');

@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
 
         $menu = new AvnMenu();
         $menu->label = 'Trang chủ';
-        $menu->route_name = 'dashboard';
+        $menu->route_name = 'home-page';
         $menu->icon = 'uil-tachometer-fast';
         $menu->save();
 

@@ -16,9 +16,4 @@ class Service extends Model
     {
         return \Modules\AvnService\Database\factories\ServiceFactory::new();
     }
-
-    public function service_type()
-    {
-        return $this->hasOne(ServiceType::class, 'id', 'type_id');
-    }
 }

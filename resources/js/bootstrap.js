@@ -66,6 +66,6 @@ window.Echo = new Echo({
     disableStats: true,
     encrypted: true,
     cluster:'',
-    authEndpoint: '/broadcasting/auth'
+    authEndpoint: '/japan-chat-app/broadcasting/auth'
 
 });

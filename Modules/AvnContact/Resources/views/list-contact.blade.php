@@ -29,6 +29,7 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
+                                    <th>Trạng thái</th>
                                     <th>Tiêu đề</th>
                                     <th>Tên</th>
                                     <th>Ngày gửi</th>
@@ -42,11 +43,18 @@
                                 @foreach ($contacts as $item)
                                     <tr>
                                         <td>{{ ++$i }}</td>
-                                        <td>{{ $item->title }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ date('H:i:s | d/m/Y', strtotime($item->created_at)) }}</td>
                                         <td>
-                                            <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#view-{{ $item->id }}" class="action-icon">
+                                            <span
+                                                class="badge badge-outline-{{ $item->status == 1 ? 'primary' : ($item->status == -1 ? 'danger' : 'secondary') }}">{{ $item->status == 1 ? 'Xác nhận' : ($item->status == -1 ? 'Từ chối' : 'Chưa xử lý') }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $item->title }}
+                                        </td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ date('H:i | d/m/Y', strtotime($item->created_at)) }}</td>
+                                        <td>
+                                            <a href="javascript: void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#view-{{ $item->id }}" class="action-icon">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
                                             <a href="javascript: void(0);" data-bs-toggle="modal"
@@ -56,25 +64,33 @@
                                         </td>
                                     </tr>
                                     <!----Modal Edit----->
-                                    <div class="modal fade" id="view-{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal fade" id="view-{{ $item->id }}" tabindex="-1"
+                                        aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title text-dark">Xem đơn liên hệ</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body text-dark">
                                                     <div class="mb-2">
-                                                        <label class="form-label">Tiêu đề</label>
-                                                        <input type="text" class="form-control" value="{{$item->title}}">
+                                                        <label class="form-label">Tiêu đề
+                                                            <span
+                                                                class="badge badge-outline-{{ $item->status == 1 ? 'primary' : ($item->status == -1 ? 'danger' : 'secondary') }}">{{ $item->status == 1 ? 'Xác nhận' : ($item->status == -1 ? 'Từ chối' : 'Chưa xử lý') }}</span>
+                                                        </label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{ $item->title }}">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label">Tên người gửi</label>
-                                                        <input type="text" class="form-control" value="{{$item->name}}">
+                                                        <input type="text" class="form-control"
+                                                            value="{{ $item->name }}">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label">Email </label>
-                                                        <input type="email" class="form-control" value="{{$item->email}}">
+                                                        <input type="email" class="form-control"
+                                                            value="{{ $item->email }}">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label">Nội dung </label>
@@ -82,7 +98,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>  
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                                                    </button>
+                                                    <form action="{{ route('process-contact', [$item->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('put')
+                                                        <button type="submit" name="status" value="1" class="btn btn-primary">Xác nhận</button>
+                                                        <button type="submit" name="status" value="-1" class="btn btn-danger">Từ chối</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +127,8 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
                                                     </button>
-                                                    <form action="{{ route('delete-contact', [$item->id]) }}" method="POST">
+                                                    <form action="{{ route('delete-contact', [$item->id]) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn btn-primary">Xóa</button>
@@ -122,23 +147,14 @@
     </div>
 @endsection
 @section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
 
     <!-- Datatable Init js -->
     <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript">
-        function setHeight(fieldId){
-            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
-        }
-        setHeight('textBox1');
-    </script>
 @endsection
 @section('css')
-    <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
 @endsection

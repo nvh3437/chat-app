@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('title')
-    Thêm bài dịch vụ
+    Thêm dịch vụ
 @endsection
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Thêm bài dịch vụ</h4>
+                    <h4 class="page-title">Thêm dịch vụ</h4>
                 </div>
             </div>
         </div>
@@ -33,20 +33,15 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Giá cả <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" name="price" required placeholder="100$/Hour, 1.000 VND/ Tháng,....">
+                                    <label class="form-label mt-2">Icon <span class="text-danger">*</span></label>
+                                    <input type="file" accept="image/*" class="form-control" name="img" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Loại dịch vụ <span class="text-danger">*</span>
+                                        Giá cả <span class="text-danger">*</span>
                                     </label>
-                                    <select class="form-select " name="type_id" required>
-                                        @foreach ($types as $item)
-                                            <option value="{{ $item->id }}" class="bg-white">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="price" required
+                                        placeholder="100$/Hour, 1.000 VND/ Tháng,....">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
@@ -60,7 +55,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
                             <button type="submit" class="btn btn-danger me-3">Thêm</button>
-                            <a href="{{ route('list-service') }}" class="btn btn-secondary ms-3">Quay lại</a>
+                            <a href="{{ route('service-setting') }}" class="btn btn-secondary ms-3">Quay lại</a>
                         </div>
                     </div>
                 </form>

@@ -25,6 +25,8 @@ class PostCatgoryController extends Controller
         try {
             $category = new PostCategory();
             $category->name = $request->name;
+            $category->description = $request->description;
+            $category->keywords = $request->keywords;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -51,6 +53,8 @@ class PostCatgoryController extends Controller
         try {
             $category = PostCategory::findOrFail($id);
             $category->name = $request->name;
+            $category->description = $request->description;
+            $category->keywords = $request->keywords;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($category->img != null) {
                     File::delete($category->img);

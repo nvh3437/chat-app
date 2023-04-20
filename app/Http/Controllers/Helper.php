@@ -91,7 +91,7 @@ class Helper
     }
     public static function getLogo()
     {
-        return GeneralSettings::where('key', 'logo')->first()->value ?? 'resources/assets/images/logo.png';
+        return GeneralSettings::where('key', 'logo')->first()->value ? 'storage/app/AvnGeneralSettings/' . GeneralSettings::where('key', 'logo')->first()->value : 'resources/assets/images/logo.png';
     }
     public static function countWorkCalendar($from, $to)
     {
