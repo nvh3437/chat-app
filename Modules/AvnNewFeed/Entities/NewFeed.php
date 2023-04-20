@@ -27,4 +27,9 @@ class NewFeed extends Model
     {
         return $this->hasMany(NewFeedComment::class, 'feed_id', 'id')->orderBy('updated_at', 'DESC');
     }
+
+    public function new_feed_likes()
+    {
+        return $this->hasMany(NewFeedLike::class, 'feed_id', 'id')->orderBy('updated_at', 'DESC');
+    }
 }

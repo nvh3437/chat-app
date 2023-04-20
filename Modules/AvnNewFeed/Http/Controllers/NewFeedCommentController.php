@@ -30,10 +30,12 @@ class NewFeedCommentController extends Controller
     public function updateCommentFeed(NewFeedCommentRequest $request, $id)
     {
         try {
-            $comment = NewFeedComment::findOrFail($id);
+            $comment = NewFeedComment::where([
+                'id' => $id,
+                'feed_id' => $request->feed_id,
+                'user_id' => Auth::user()->id
+            ])->first();
             $comment->comment = $request->comment;
-            $comment->feed_id = $request->feed_id;
-            $comment->user_id = Auth::user()->id;
             $comment->save();
             return back()->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
@@ -44,7 +46,10 @@ class NewFeedCommentController extends Controller
     public function deleteCommentFeed($id)
     {
         try {
-            $comment = NewFeedComment::findOrFail($id)->delete();
+            $comment = NewFeedComment::where([
+                'id' => $id,
+                'user_id' => Auth::user()->id
+            ])->first()->delete();
             return back()->with('Success', 'Xóa thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Xóa thất bại');
