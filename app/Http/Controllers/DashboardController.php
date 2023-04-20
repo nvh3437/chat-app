@@ -16,26 +16,6 @@ class DashboardController extends Controller
             'home_seo_description',
             'home_seo_keywords',
             'home_seo_image',
-
-
-            'contact_seo_title',
-            'contact_seo_description',
-            'contact_seo_keywords',
-            'contact_seo_image',
-            'service_seo_title',
-            'service_seo_description',
-            'service_seo_keywords',
-            'service_seo_image',
-            'post_seo_title',
-            'post_seo_description',
-            'post_seo_keywords',
-            'post_seo_image',
-            'phone_number',
-            'email',
-            'address',
-            'time_morning',
-            'time_afternoon',
-            'home_seo_link',
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $banner = GeneralSettings::whereIn('key', [
             'home_banner_title',

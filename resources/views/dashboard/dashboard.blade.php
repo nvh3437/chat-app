@@ -1,46 +1,22 @@
 @php
     $logo = App\Http\Controllers\Helper::getLogo();
-    
     $services = Modules\AvnService\Http\Controllers\AvnServiceController::getService();
     $posts = Modules\AvnPost\Http\Controllers\PostController::getPost();
-    
-    // SEO bài viết
-    $title_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_title'])->first();
-    $description_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_description'])->first();
-    $keyword_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_keywords'])->first();
-    $img_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_image'])->first();
-    
-    // SEO dịch vụ
-    $title_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_title'])->first();
-    $description_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_description'])->first();
-    $keyword_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_keywords'])->first();
-    $img_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_image'])->first();
-    
-    // SEO liên hệ
-    $title_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_title'])->first();
-    $description_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_description'])->first();
-    $keyword_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_keywords'])->first();
-    $img_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_image'])->first();
-    
-    // SEO trang chủ
-    $title_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_title'])->first();
-    $description_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_description'])->first();
-    $keyword_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_keywords'])->first();
-    $img_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_image'])->first();
-    $link_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_link'])->first();
-    $feature_icon = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_icon'])->first();
-    $feature_img = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_img'])->first();
-    $feature_title = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_title'])->first();
-    $feature_des = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_des'])->first();
-    $feature_title_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_title_2'])->first();
-    $feature_des_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_des_2'])->first();
-    $feature_li_1 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_1'])->first();
-    $feature_li_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_2'])->first();
-    $feature_li_3 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_3'])->first();
-    $feature_li_4 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_4'])->first();
-    $feature_button = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_button'])->first();
+    $seo_props = [];
+    if (isset($home_seo['home_seo_title'])) {
+        $seo_props['seo_title'] = $home_seo['home_seo_title']['value'] ?? '';
+    }
+    if (isset($home_seo['home_seo_description'])) {
+        $seo_props['seo_description'] = $home_seo['home_seo_description']['value'] ?? '';
+    }
+    if (isset($home_seo['home_seo_keywords'])) {
+        $seo_props['seo_keywords'] = $home_seo['home_seo_keywords']['value'] ?? '';
+    }
+    if (isset($home_seo['home_seo_image'])) {
+        $seo_props['seo_image'] = $home_seo['home_seo_image']['value'] ?? '';
+    }
 @endphp
-@extends('layouts.guest')
+@extends('layouts.guest', $seo_props)
 @section('content')
     <!-- START HERO -->
     @if (
@@ -54,8 +30,8 @@
                 <div class="row align-items-center">
                     <div class="col-md-5">
                         <div class="mt-md-4">
-                            <h2 class="text-white fw-normal mb-4 mt-3 hero-title">
-                                {{ $banner['home_banner_title']['value'] ?? '' }}</h2>
+                            <h1 class="text-white fw-normal mb-4 mt-3 hero-title">
+                                {{ $banner['home_banner_title']['value'] ?? '' }}</h1>
                             <p class="mb-4 font-16 text-white-50">{{ $banner['home_banner_description']['value'] ?? '' }}</p>
                             @if ($banner['home_banner_link']['value'])
                                 <a href="{{ $banner['home_banner_link']['value'] }}" target="_blank"
@@ -213,24 +189,4 @@
         </div>
     </section>
     <!-- END CONTACT -->
-@endsection
-@section('js')
-    {{-- <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
-
-    <!-- Datatable Init js -->
-    <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript">
-        function setHeight(fieldId){
-            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
-        }
-        setHeight('textBox1');
-    </script> --}}
-@endsection
-@section('css')
-    {{-- <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" /> --}}
 @endsection
