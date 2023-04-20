@@ -5,30 +5,108 @@ namespace Modules\AvnService\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\AvnService\Entities\ServiceType;
 use Modules\AvnService\Entities\Service;
 use App\Models\GeneralSettings;
 use Modules\AvnService\Http\Requests\ServiceRequest;
+use Illuminate\Support\Facades\File;
 
 class AvnServiceController extends Controller
 {
+    public function serviceSetting()
+    {
+        $service_seo = GeneralSettings::whereIn('key', [
+            'service_seo_title',
+            'service_seo_description',
+            'service_seo_keywords',
+            'service_seo_image',
+            'service_page_title',
+            'service_page_description',
+            'service_page_icon'
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
+        $services = Service::orderByDesc('updated_at')->get();
+        return view('avnservice::service-setting', compact('service_seo', 'services'));
+    }
+
+    public function updateServiceSetting(Request $request)
+    {
+        try {
+            if ($request->service_seo_title) {
+                $setting = GeneralSettings::where('key', 'service_seo_title')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'service_seo_title';
+                $setting->value = trim($request->service_seo_title);
+                $setting->save();
+            }
+            if ($request->service_seo_description) {
+                $setting = GeneralSettings::where('key', 'service_seo_description')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'service_seo_description';
+                $setting->value = trim($request->service_seo_description);
+                $setting->save();
+            }
+            if ($request->service_seo_keywords) {
+                $setting = GeneralSettings::where('key', 'service_seo_keywords')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'service_seo_keywords';
+                $setting->value = trim($request->service_seo_keywords);
+                $setting->save();
+            }
+            if ($request->hasFile('service_seo_image') && $request->file('service_seo_image')->isValid()) {
+                $setting = GeneralSettings::where('key', 'service_seo_image')->first() ?? new GeneralSettings();
+                if ($setting->value != null) {
+                    File::delete($setting->value);
+                }
+                $image = $request->file('service_seo_image');
+                $filename = date("Y-m-d-h-i-s-") . rand(00000000, 99999999) . '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnSetting')) {
+                    File::makeDirectory('storage/app/AvnSetting', 0777, true, true);
+                }
+                $image->storeAs('AvnSetting', $filename);
+                $path = 'storage/app/AvnSetting/' . $filename;
+                $setting->key = $setting->key ?? 'service_seo_image';
+                $setting->value = $path;
+                $setting->save();
+            }
+            if ($request->service_page_title) {
+                $setting = GeneralSettings::where('key', 'service_page_title')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'service_page_title';
+                $setting->value = trim($request->service_page_title);
+                $setting->save();
+            }
+            if ($request->service_page_description) {
+                $setting = GeneralSettings::where('key', 'service_page_description')->first() ?? new GeneralSettings();
+                $setting->key = $setting->key ?? 'service_page_description';
+                $setting->value = trim($request->service_page_description);
+                $setting->save();
+            }
+            if ($request->hasFile('service_page_icon') && $request->file('service_page_icon')->isValid()) {
+                $setting = GeneralSettings::where('key', 'service_page_icon')->first() ?? new GeneralSettings();
+                if ($setting->value != null) {
+                    File::delete($setting->value);
+                }
+                $image = $request->file('service_page_icon');
+                $filename = date("Y-m-d-h-i-s-") . rand(00000000, 99999999) . '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnSetting')) {
+                    File::makeDirectory('storage/app/AvnSetting', 0777, true, true);
+                }
+                $image->storeAs('AvnSetting', $filename);
+                $path = 'storage/app/AvnSetting/' . $filename;
+                $setting->key = $setting->key ?? 'service_page_icon';
+                $setting->value = $path;
+                $setting->save();
+            }
+            return back()->with('Success', 'Cập nhập thành công');
+        } catch (Exception $e) {
+            return back()->with('Failed', 'Cập nhập thất bại');
+        }
+    }
     //-------------------- Trang chủ --------------------//
     public static function getService()
     {
-        $services = Service::orderByDesc('recommended', 1)->limit(4)->get();
+        $services = Service::orderByDesc('created_at')->limit(3)->get();
         return $services;
     }
     //-------------------- Quản lý ----------------------//
-    public function listService()
-    {
-        $services = Service::orderByDesc('updated_at')->get();
-        return view('avnservice::service.list-service', compact('services'));
-    }
-
     public function addService()
     {
-        $types = ServiceType::get();
-        return view('avnservice::service.add-service', compact('types'));
+        return view('avnservice::service.add-service');
     }
 
     public function storeService(ServiceRequest $request)
@@ -36,12 +114,21 @@ class AvnServiceController extends Controller
         try {
             $service = new Service();
             $service->name = $request->name;
+            if ($request->hasFile('img') && $request->file('img')->isValid()) {
+                $image = $request->file('img');
+                $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnService')) {
+                    File::makeDirectory('storage/app/AvnService', 0777, true, true);
+                }
+                $image->storeAs('AvnService', $filename);
+                $path = 'storage/app/AvnService/' . $filename;
+                $service->img = $path;
+            }
             $service->price = $request->price;
             $service->description = $request->description;
             $service->recommended = $request->recommended ?? 0;
-            $service->type_id = $request->type_id;
             $service->save();
-            return redirect()->route('list-service')->with('Success', 'Thêm thành công');
+            return redirect()->route('service-setting')->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Thêm thất bại');
         }
@@ -50,8 +137,7 @@ class AvnServiceController extends Controller
     public function editService($id)
     {
         $service = Service::findOrFail($id);
-        $types = ServiceType::get();
-        return view('avnservice::service.edit-service', compact('service', 'types'));
+        return view('avnservice::service.edit-service', compact('service'));
     }
 
     public function updateService(ServiceRequest $request, $id)
@@ -59,12 +145,24 @@ class AvnServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
             $service->name = $request->name;
+            if ($request->hasFile('img') && $request->file('img')->isValid()) {
+                if ($service->img != null) {
+                    File::delete($service->img);
+                }
+                $image = $request->file('img');
+                $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnService')) {
+                    File::makeDirectory('storage/app/AvnService', 0777, true, true);
+                }
+                $image->storeAs('AvnService', $filename);
+                $path = 'storage/app/AvnService/' . $filename;
+                $service->img = $path;
+            }
             $service->price = $request->price;
             $service->description = $request->description;
             $service->recommended = $request->recommended ?? 0;
-            $service->type_id = $request->type_id;
             $service->save();
-            return redirect()->route('list-service')->with('Success', 'Cập nhật thành công');
+            return redirect()->route('service-setting')->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');
         }
@@ -72,11 +170,14 @@ class AvnServiceController extends Controller
 
     public function deleteService($id)
     {
-        try{
-            $service = Service::findOrFail($id)->delete();
+        try {
+            $service = Service::findOrFail($id);
+            if ($service->img != null) {
+                File::delete($service->img);
+            }
+            $service->delete();
             return back()->with('Success', 'Xóa thất bại');
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return back()->with('Failed', 'Xóa thất bại');
         }
     }
@@ -84,12 +185,15 @@ class AvnServiceController extends Controller
     //-------------------- Trang dịch vụ ----------------------//
     public function servicePage()
     {
-        $services = Service::orderByDesc('recommended', 1)->get();
+        $services = Service::orderByDesc('created_at')->get();
         $service_seo = GeneralSettings::whereIn('key', [
             'service_seo_title',
             'service_seo_description',
             'service_seo_keywords',
-            'service_seo_image'
+            'service_seo_image',
+            'service_page_title',
+            'service_page_description',
+            'service_page_icon'
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         return view('avnservice::service.service-page', compact('services', 'service_seo'));
     }

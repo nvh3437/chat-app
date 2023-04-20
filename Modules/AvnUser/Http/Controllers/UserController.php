@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Modules\AvnUser\Entities\Profile;
 
-class PartnerController extends Controller
+class UserController extends Controller
 {
     public function profile()
     {
         $user = Auth::user();
-        return view('avnuser::partner.profile', compact('user'));
+        return view('avnuser::profile', compact('user'));
     }
 
-    public function updatePartnerProfile(Request $request)
+    public function updateProfile(Request $request)
     {
         try {
             // Lưu bảng user 
@@ -40,25 +40,29 @@ class PartnerController extends Controller
             $user->save();
 
             // Lưu bảng partner
-            $partner = Profile::find($user->id);
-            $partner->exp = $request->exp;
-            $partner->gender = $request->gender;
-            $partner->address = $request->address;
-            $partner->description = $request->description;
-            $partner->birth = $request->birth;
-            $partner->phone = $request->phone;
-            $partner->money = 0;
-            $partner->gender_status = $request->gender_status ?? 0;
-            $partner->exp_status = $request->exp_status ?? 0;
-            $partner->address_status = $request->address_status ?? 0;
-            $partner->description_status = $request->description_status ?? 0;
-            $partner->email_status = $request->email_status ?? 0;
-            $partner->birth_status = $request->birth_status ?? 0;
-            $partner->phone_status = $request->phone_status ?? 0;
-            $partner->money_status = 0;
+            $profile = Profile::find($user->id);
+            if (!$profile) {
+                $profile = new Profile();
+            }
+            $profile->id = $user->id;
+            $profile->exp = $request->exp;
+            $profile->gender = $request->gender;
+            $profile->address = $request->address;
+            $profile->description = $request->description;
+            $profile->birth = $request->birth;
+            $profile->phone = $request->phone;
+            $profile->money = 0;
+            $profile->gender_status = $request->gender_status ?? 0;
+            $profile->exp_status = $request->exp_status ?? 0;
+            $profile->address_status = $request->address_status ?? 0;
+            $profile->description_status = $request->description_status ?? 0;
+            $profile->email_status = $request->email_status ?? 0;
+            $profile->birth_status = $request->birth_status ?? 0;
+            $profile->phone_status = $request->phone_status ?? 0;
+            $profile->money_status = 0;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
-                if ($partner->img != null) {
-                    File::delete($partner->img);
+                if ($profile->img != null) {
+                    File::delete($profile->img);
                 }
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -67,9 +71,9 @@ class PartnerController extends Controller
                 }
                 $image->storeAs('AvnUser', $filename);
                 $path = 'storage/app/AvnUser/' . $filename;
-                $partner->img = $path;
+                $profile->img = $path;
             }
-            $partner->save();
+            $profile->save();
             return back()->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');

@@ -5,7 +5,7 @@
 @endphp
 <div class="navbar-custom topnav-navbar">
     <div class="container">
-        <a href="{{ route('dashboard') }}" class="topnav-logo">
+        <a href="{{ route('home-page') }}" class="topnav-logo">
             <span class="topnav-logo-lg">
                 <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
                     alt="image" class="img-fluid" width="50">
@@ -74,17 +74,10 @@
                         <div class=" dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Chào mừng !</h6>
                         </div>
-                        @if ($user->type == 'partner')
-                            <a href="{{ route('profile') }}" class="dropdown-item notify-item">
-                                <i class="mdi mdi-account-circle me-1"></i>
-                                <span>Thông tin cá nhân</span>
-                            </a>
-                        @elseif($user->type == 'customer')
-                            <a href="{{ route('my-profile') }}" class="dropdown-item notify-item">
-                                <i class="mdi mdi-account-circle me-1"></i>
-                                <span>Thông tin cá nhân</span>
-                            </a>
-                        @endif
+                        <a href="{{ route('profile') }}" class="dropdown-item notify-item">
+                            <i class="mdi mdi-account-circle me-1"></i>
+                            <span>Thông tin cá nhân</span>
+                        </a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item notify-item">
@@ -103,13 +96,13 @@
                 </li>
             @endif
         </ul>
-        <a class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+        {{-- <a class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
             <div class="lines">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-        </a>
+        </a> --}}
     </div>
 </div>
 <div class="topnav">

@@ -43,6 +43,8 @@ class PostController extends Controller
         try {
             $post = new Post();
             $post->name = $request->name;
+            $post->keywords = $request->keywords;
+            $post->sort_description = $request->sort_description;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -80,6 +82,8 @@ class PostController extends Controller
         try {
             $post = Post::findOrFail($id);
             $post->name = $request->name;
+            $post->keywords = $request->keywords;
+            $post->sort_description = $request->sort_description;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($post->img != null) {
                     File::delete($post->img);
@@ -113,15 +117,14 @@ class PostController extends Controller
 
     public function deletePost($id)
     {
-        try{
+        try {
             $post = Post::findOrFail($id);
             if ($post->img != null) {
                 File::delete($post->img);
             }
             $post->delete();
             return back()->with('Success', 'Xóa thành công');
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return back()->with('Failed', 'Xóa thất bại');
         }
     }
@@ -129,13 +132,16 @@ class PostController extends Controller
     //------------------------------------ Trang bài viết -------------------------------//
     public function postPage()
     {
-        $posts = Post::orderByDesc('updated_at')->limit(15)->get();
+        $posts = Post::orderByDesc('updated_at')->paginate(12);
         $categories = PostCategory::get();
         $post_seo = GeneralSettings::whereIn('key', [
             'post_seo_title',
             'post_seo_description',
             'post_seo_keywords',
-            'post_seo_image'
+            'post_seo_image',
+            'post_page_title',
+            'post_page_description',
+            'post_page_icon'
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         return view('avnpost::post.post-page', compact('posts', 'categories', 'post_seo'));
     }
@@ -146,15 +152,9 @@ class PostController extends Controller
         if (!$category) {
             $category = PostCategory::findOrFail($alias);
         }
-        $posts = Post::where('category_id', $category->id)->orderByDesc('updated_at')->limit(15)->get();
+        $posts = Post::where('category_id', $category->id)->orderByDesc('updated_at')->paginate(12);
         $categories = PostCategory::get();
-        $post_seo = GeneralSettings::whereIn('key', [
-            'post_seo_title',
-            'post_seo_description',
-            'post_seo_keywords',
-            'post_seo_image'
-        ])->select('key', 'value')->get()->keyBy('key')->toArray();
-        return view('avnpost::post.post-of-category', compact('category', 'posts', 'categories', 'post_seo'));
+        return view('avnpost::post.post-of-category', compact('category', 'posts', 'categories'));
     }
 
     public function viewPost($alias)
@@ -166,7 +166,7 @@ class PostController extends Controller
         $comments = PostComment::where('post_id', $post->id)->get();
 
         // Các bài viết liên quan
-        $posts = Post::where('category_id', $post->category_id)->get();
+        $posts = Post::where('category_id', $post->category_id)->where('id', '!=', $post->id)->take(6)->get();
         return view('avnpost::post.view-post', compact('post', 'comments', 'posts'));
     }
 }

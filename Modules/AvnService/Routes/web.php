@@ -12,16 +12,11 @@ use Modules\AvnService\Http\Controllers\AvnServiceController;
 |
 */
 
-Route::prefix('service')->group(function() {
+Route::prefix('service')->group(function () {
+    // Dịch vụ
+    Route::get('/service-setting', 'AvnServiceController@serviceSetting')->middleware(['auth', 'permission'])->name('service-setting');
+    Route::put('/update-service-setting', 'AvnServiceController@updateServiceSetting')->middleware(['auth', 'permission'])->name('update-service-setting');
 
-    // Loại dịch vụ
-    Route::get('/list-type', 'AvnServiceTypeController@listType')->middleware(['auth', 'permission'])->name('list-type');
-    Route::post('/store-type', 'AvnServiceTypeController@storeType')->middleware(['auth', 'permission'])->name('store-type');
-    Route::put('/update-type/{id}', 'AvnServiceTypeController@updateType')->middleware(['auth', 'permission'])->name('update-type');
-    Route::delete('/delete-type/{id}', 'AvnServiceTypeController@deleteType')->middleware(['auth', 'permission'])->name('delete-type');
-
-    // Thêm dịch vụ
-    Route::get('/list-service', 'AvnServiceController@listService')->middleware(['auth', 'permission'])->name('list-service');
     Route::get('/add-service', 'AvnServiceController@addService')->middleware(['auth', 'permission'])->name('add-service');
     Route::get('/edit-service/{id}', 'AvnServiceController@editService')->middleware(['auth', 'permission'])->name('edit-service');
     Route::post('/store-service', 'AvnServiceController@storeService')->middleware(['auth', 'permission'])->name('store-service');
@@ -30,4 +25,4 @@ Route::prefix('service')->group(function() {
 });
 
 // Trang dịch vụ
-Route::get('/service-page', [AvnServiceController::class, 'servicePage'])->name('service-page');
+Route::get('/service', [AvnServiceController::class, 'servicePage'])->name('service-page');

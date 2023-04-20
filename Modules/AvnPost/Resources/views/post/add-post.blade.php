@@ -40,6 +40,21 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="mt-2 col-12">
+                                    <label class="form-label">Mô tả
+                                        <span class="text-danger">*</span>
+                                        <br>
+                                        <small>Được sử dụng cho SEO</small></label>
+                                    <textarea class="form-control" name="sort_description" rows="3" required></textarea>
+                                </div>
+                                <div class="mt-2 col-12">
+                                    <label class="form-label">
+                                        Keywords
+                                        <br>
+                                        <small>Phân tách bởi dấu phẩy Ex: key1, k2y, key3</small>
+                                    </label>
+                                    <textarea class="form-control" name="keywords" rows="3" required></textarea>
+                                </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Nội dung bài viết <span class="text-danger">*</span>

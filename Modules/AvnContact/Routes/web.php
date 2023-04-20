@@ -1,5 +1,6 @@
 <?php
 use Modules\AvnContact\Http\Controllers\ContactController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,13 +12,13 @@ use Modules\AvnContact\Http\Controllers\ContactController;
 |
 */
 
-//---------------------- Quản lý ----------------------//
-Route::prefix('')->group(function() {
-    Route::get('/list-contact', 'ContactController@listContact')->middleware(['auth', 'permission'])->name('list-contact');
-    Route::delete('/delete-contact/{id}', 'ContactController@deleteContact')->middleware(['auth', 'permission'])->name('delete-contact');
-});
+Route::prefix('contact')->group(function () {
 
-//----------------------- Khách -----------------------//
-Route::get('/contact-page', [ContactController::class, 'contactPage'])->name('contact-page');
-Route::get('/success-contact', [ContactController::class, 'successContact'])->name('success-contact');
-Route::post('/store-contact', [ContactController::class, 'storeContact'])->name('store-contact');
+    //---------------------- Quản lý ----------------------//
+    Route::get('/list-contact', 'ContactController@listContact')->middleware(['auth', 'permission'])->name('list-contact');
+    Route::put('/process-contact/{id}', 'ContactController@processContact')->middleware(['auth', 'permission'])->name('process-contact');
+    Route::delete('/delete-contact/{id}', 'ContactController@deleteContact')->middleware(['auth', 'permission'])->name('delete-contact');
+    //----------------------- Khách -----------------------//
+    Route::post('/store', [ContactController::class, 'storeContact'])->name('store-contact');
+    Route::get('/{success?}', [ContactController::class, 'contactPage'])->name('contact-page');
+});

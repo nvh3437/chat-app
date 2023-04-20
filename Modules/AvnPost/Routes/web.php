@@ -2,6 +2,7 @@
 use Modules\AvnPost\Http\Controllers\PostController;
 use Modules\AvnPost\Http\Controllers\PostCommentController;
 use Modules\AvnPost\Http\Controllers\PostLikeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +14,7 @@ use Modules\AvnPost\Http\Controllers\PostLikeController;
 |
 */
 // ------------------------ Quản lý ----------------------//
-Route::prefix('post')->group(function() {
+Route::prefix('post')->group(function () {
 
     // Loại danh mục
     Route::get('/list-category', 'PostCatgoryController@listCategory')->middleware(['auth', 'permission'])->name('list-category');
@@ -32,9 +33,9 @@ Route::prefix('post')->group(function() {
 });
 
 // ------------------------ Trang chủ ----------------------//
-Route::get('/post-page', [PostController::class, 'postPage'])->name('post-page');
-Route::get('/post-of-category/{alias}', [PostController::class, 'postOfCategory'])->name('post-of-category');
-Route::get('/view-post/{alias}', [PostController::class, 'viewPost'])->name('view-post');
+Route::get('/post', [PostController::class, 'postPage'])->name('post-page');
+Route::get('/post/view/{alias}', [PostController::class, 'viewPost'])->name('view-post');
+Route::get('/post/{alias}', [PostController::class, 'postOfCategory'])->name('post-of-category');
 
 // ------------------------ Bình luận ----------------------//
 Route::post('/store-post-comment', [PostCommentController::class, 'storePostComment'])->middleware(['auth'])->name('store-post-comment');

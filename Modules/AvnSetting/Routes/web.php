@@ -44,10 +44,6 @@ Route::prefix('setting')->group(function() {
     Route::get('/contact-seo', 'PageController@contactSeo')->middleware(['auth', 'permission'])->name('contact-seo');
     Route::put('/update-contact-seo', 'PageController@updateContactSeo')->middleware(['auth', 'permission'])->name('update-contact-seo');
 
-        // Dịch vụ
-    Route::get('/service-seo', 'PageController@serviceSeo')->middleware(['auth', 'permission'])->name('service-seo');
-    Route::put('/update-service-seo', 'PageController@updateServiceSeo')->middleware(['auth', 'permission'])->name('update-service-seo');
-
         // Bài viết
     Route::get('/post-seo', 'PageController@postSeo')->middleware(['auth', 'permission'])->name('post-seo');
     Route::put('/update-post-seo', 'PageController@updatePostSeo')->middleware(['auth', 'permission'])->name('update-post-seo');

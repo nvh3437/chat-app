@@ -35,7 +35,6 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Loại</th>
                                     <th>Tiêu đề</th>
                                     <th>Giá</th>
                                     <th>Chọn</th>
@@ -48,7 +47,6 @@
                                 @foreach ($services as $item)
                                     <tr>
                                         <td>{{ ++$i }}</td>
-                                        <td>{{ $item->service_type->name }}</td>                                       
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->price }}</td>
                                         <td>

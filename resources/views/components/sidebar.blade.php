@@ -5,7 +5,7 @@
         use Nwidart\Modules\Facades\Module;
         $menus = App\Http\Controllers\Controller::getMenu();
     @endphp
-    <a href="{{ route('dashboard') }}" target="_blank" class="logo text-center logo-light">
+    <a href="{{ route('home-page') }}" target="_blank" class="logo text-center logo-light">
         <span class="logo-lg">
             <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
                 alt="image" class="img-fluid" width="50">
@@ -15,7 +15,7 @@
                 alt="image" class="img-fluid" width="50">
         </span>
     </a>
-    <a href="{{ route('dashboard') }}" target="_blank" class="logo text-center logo-dark">
+    <a href="{{ route('home-page') }}" target="_blank" class="logo text-center logo-dark">
         <span class="logo-lg">
             <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
                 alt="image" class="img-fluid" width="50">
@@ -28,13 +28,13 @@
     <div class="h-100" id="leftside-menu-container" data-simplebar>
         <ul class="side-nav">
             <li class="side-nav-item no-child">
-                <a href="{{ route('dashboard') }}" target="_blank" class="side-nav-link">
+                <a href="{{ route('home-page') }}" target="_blank" class="side-nav-link">
                     <i class="uil-tachometer-fast"></i>
                         <span>Trang chủ </span>
                 </a>
             </li>
             @foreach ($menus as $menu)
-                @if (($menu->module == null || ($menu->module != null && Module::find($menu->module)->isEnabled() == 1)) && RoleController::isNotBlock($menu)  && $menu->route_name != 'dashboard')
+                @if (($menu->module == null || ($menu->module != null && Module::find($menu->module)->isEnabled() == 1)) && RoleController::isNotBlock($menu)  && $menu->route_name != 'home-page')
                     @if ($menu->parent == 0 && count($menu->childrens) > 0)
                         <li class="side-nav-item parent">
                             <a data-bs-toggle="collapse" href="#sidebar-{{ $menu->id }}"
@@ -83,7 +83,7 @@
                                 </ul>
                             </div>
                         </li>
-                    @elseif($menu->parent == 0 && $menu->route_name != 'dashboard')
+                    @elseif($menu->parent == 0 && $menu->route_name != 'home-page')
                         <li class="side-nav-item no-child">
                             <a href="{{ route($menu->route_name) }}" class="side-nav-link">
                                 <i class="{{ $menu->icon }}"></i>

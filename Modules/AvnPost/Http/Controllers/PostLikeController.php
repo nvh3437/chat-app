@@ -28,7 +28,7 @@ class PostLikeController extends Controller
     public function deletePostLike(Request $request, $id)
     {
         try {
-            $like = PostLike::findOrFail($id)->delete();
+            $like = PostLike::where('user_id', Auth::user()->id)->findOrFail($id)->delete();
             return back();
         } catch (Exception $e) {
             return back();

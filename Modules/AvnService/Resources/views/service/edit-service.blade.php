@@ -23,34 +23,29 @@
                                     <label class="form-label mt-2">
                                         Tiêu đề <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="name" required value="{{$service->name}}">
+                                    <input type="text" class="form-control" name="name" required
+                                        value="{{ $service->name }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Khuyến nghị?
                                     </label>
                                     <div class="form-check mt-2">
-                                        <input type="checkbox" name="recommended" value="1" class="form-check-input" {{ $service->recommended == 1 ? 'checked' : '' }}>
+                                        <input type="checkbox" name="recommended" value="1" class="form-check-input"
+                                            {{ $service->recommended == 1 ? 'checked' : '' }}>
                                     </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">Icon <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" name="img">
+                                    <img class="img-fluid mt-2" src="{{ asset($service->img) }}" style="max-width: 200px;" />
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Giá cả <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="price" required placeholder="100$/Hour, 1.000 VND/ Tháng,...." value="{{$service->price}}">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Loại dịch vụ <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="form-select" name="type_id" required>
-                                        @foreach ($types as $item)
-                                            <option value="{{ $item->id }}"
-                                                {{ ( $item->id == $service->type_id) ? 'selected' : '' }}>
-                                                {{ $item->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="price" required
+                                        placeholder="100$/Hour, 1.000 VND/ Tháng,...." value="{{ $service->price }}">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
@@ -64,7 +59,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
                             <button type="submit" class="btn btn-danger me-3">Sửa</button>
-                            <a href="{{ route('list-service') }}" class="btn btn-secondary ms-3">Quay lại</a>
+                            <a href="{{ route('service-setting') }}" class="btn btn-secondary ms-3">Quay lại</a>
                         </div>
                     </div>
                 </form>
@@ -73,7 +68,6 @@
     </div>
 @endsection
 @section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery-ui.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
     <script>
@@ -239,5 +233,4 @@
     </script>
 @endsection
 @section('css')
-    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
 @endsection

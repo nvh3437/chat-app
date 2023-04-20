@@ -11,7 +11,6 @@ class ServiceRequest extends FormRequest
         return [
             'name' => 'required',
             'price' => 'required',
-            'type_id' => 'required',
             'description' => 'required',
         ];
     }
@@ -21,7 +20,6 @@ class ServiceRequest extends FormRequest
         return [
             'name.required' => 'Tiêu đề không thể bỏ trống',
             'price.required' => 'Giá cả không thể bỏ trống',
-            'type_id.required' => 'Loại dịch vụ không thể bỏ trống',
             'description.required' => 'Thông tin dịch vụ không thể bỏ trống',
         ];
     }

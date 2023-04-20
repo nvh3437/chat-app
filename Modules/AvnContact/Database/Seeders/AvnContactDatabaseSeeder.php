@@ -25,7 +25,7 @@ class AvnContactDatabaseSeeder extends Seeder
         $menu->save();
 
         $permission1 = new Permission();
-        $permission1->route_names = 'list-contact, delete-contact';
+        $permission1->route_names = 'list-contact, process-contact, delete-contact';
         $permission1->name = 'Quản lý liên hệ';
         $permission1->menu_id = $menu->id;
         $permission1->save();
