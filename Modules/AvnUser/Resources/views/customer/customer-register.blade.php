@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <title>Đăng ký</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="{{ GeneralSettings::where('key', 'web_title')->first()->value ?? 'Quản trị doanh nghiệp' }}"
+    <meta content="{{ GeneralSettings::where('key', 'web_title')->first()->value ?? '' }}"
         name="description" />
     <meta content="AVNTech" name="author" />
     <!-- App favicon -->
@@ -78,7 +78,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="remember">
+                                <input type="checkbox" class="form-check-input" name="remember" value="1">
                                 <label class="form-check-label" for="remember">@lang('auth.remember')</label>
                             </div>
                         </div>
@@ -105,9 +105,8 @@
                 </div>
             </div>
         </div>
-        <div class="auth-fluid-right text-center" style="background-image: url(https://system.avntech.vn/storage/app/AvnGeneralSettings/1672023779-t-a72919ff65c8bd96e4d9.jpg);background-size: auto;background-repeat: no-repeat;background-position: center;">
+        <div class="auth-fluid-right text-center" style="background-image: url('{{asset($login_background_img ? asset('/storage/app/AvnGeneralSettings/' . $login_background_img) : asset('/resources/assets/images/bg-auth.jpg'))}}'); background-size: auto;background-repeat: no-repeat;background-position: center;">
             <div class="auth-user-testimonial">
-                <!-- <p class="lead"></p> -->
                 {!! $login_background_text !!}
             </div>
         </div>

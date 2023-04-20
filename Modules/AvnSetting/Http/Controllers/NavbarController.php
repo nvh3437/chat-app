@@ -29,7 +29,6 @@ class NavbarController extends Controller
             $nav->name = $request->name;
             $nav->link = $request->link;
             $nav->order = $request->order;
-            $nav->parent_id = $request->parent_id;
             $nav->save();
             return back()->with('Success', 'Thêm thành công');
         } catch (Exception $e) {

@@ -29,9 +29,7 @@ Route::get('/forbidden', function () {
 Route::get('/dashboard-manager', [DashboardController::class, 'dbManager'])->middleware(['auth', 'verified'])->name('dashboard-manager');
 
 // setting
-Route::get('/general-settings', [GeneralSettingsController::class, 'index'])->middleware(['auth', 'verified'])->name('general-settings');
-
-Route::get('/general-settings-edit', [GeneralSettingsController::class, 'edit'])->middleware(['auth', 'verified', 'permission'])->name('general-settings-edit');
+Route::get('/general-settings', [GeneralSettingsController::class, 'index'])->middleware(['auth', 'verified', 'permission'])->name('general-settings');
 
 Route::put('/general-settings-update', [GeneralSettingsController::class, 'update'])->middleware(['auth', 'verified', 'permission'])->name('general-settings-update');
 

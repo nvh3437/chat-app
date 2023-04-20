@@ -53,12 +53,6 @@
     </div>
 </li>
 
-<style type="text/css">
-    @media (max-width: 600px){
-    .navbar-custom .dropdown .dropdown-menu {
-        width: 270px;
-        }
-    }
-</style>
+
 
 

@@ -48,6 +48,13 @@
                         </a>
                     </li>
                 @endif
+                <a class="navbar-toggle mx-1" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
                 <li class="dropdown notification-list">
                     <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown"
                         id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -88,6 +95,13 @@
                     </div>
                 </li>
             @else
+                <a class="navbar-toggle mx-1" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
                 <li class="notification-list">
                     <a class="nav-link end-bar-toggle" href="{{ route('login') }}">
                         <i class="noti-icon"></i>
@@ -96,13 +110,6 @@
                 </li>
             @endif
         </ul>
-        {{-- <a class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
-            <div class="lines">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </a> --}}
     </div>
 </div>
 <div class="topnav">

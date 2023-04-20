@@ -11,7 +11,34 @@ class GeneralSettingsController extends Controller
 {
     public function index()
     {
-        $settings = GeneralSettings::whereIn('key', ['company_mission', 'company_goals', 'logo', 'favicon', 'admin_background', 'login_background_img', 'login_background_text', 'company_name', 'web_title', 'time_morning', 'time_afternoon', 'address', 'phone_number', 'email', 'work_calendar', 'time_morning', 'time_afternoon', 'basic_salary', 'startup_date'])->select('key', 'value')->get()->keyBy('key')->toArray();
+        $settings = GeneralSettings::whereIn('key', [
+            'company_mission',
+            'company_goals',
+            'logo',
+            'favicon',
+            'admin_background',
+            'login_background_img',
+            'login_background_text',
+            'company_name',
+            'web_title',
+            'time_morning',
+            'time_afternoon',
+            'address',
+            'phone_number',
+            'email',
+            'work_calendar',
+            'time_morning',
+            'time_afternoon',
+            'basic_salary',
+            'startup_date',
+            'social_facebook',
+            'social_google',
+            'social_instagram',
+            'social_youtube',
+            'social_twitter',
+            'social_linkedin',
+            'social_whatsapp',
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $isNotBlock = RoleController::isNotBlock(route_names: ['general-settings']);
         return view('general-settings', compact('settings', 'isNotBlock'));
     }
@@ -87,11 +114,33 @@ class GeneralSettingsController extends Controller
         }
     }
 
-    public function edit()
-    {
-        $settings = GeneralSettings::whereIn('key', ['company_mission', 'company_goals', 'startup_date', 'logo', 'favicon', 'admin_background', 'login_background_img', 'login_background_text', 'company_name', 'web_title', 'work_calendar', 'time_morning', 'time_afternoon', 'basic_salary', 'address', 'phone_number', 'email', 'type_a', 'type_b', 'type_c', 'type_d'])->select('key', 'value')->get()->keyBy('key')->toArray();
-        return view('general-settings-edit', compact('settings'));
-    }
+    // public function edit()
+    // {
+    //     $settings = GeneralSettings::whereIn('key', [
+    //         'company_mission',
+    //         'company_goals',
+    //         'startup_date',
+    //         'logo',
+    //         'favicon',
+    //         'admin_background',
+    //         'login_background_img',
+    //         'login_background_text',
+    //         'company_name',
+    //         'web_title',
+    //         'work_calendar',
+    //         'time_morning',
+    //         'time_afternoon',
+    //         'basic_salary',
+    //         'address',
+    //         'phone_number',
+    //         'email',
+    //         'type_a',
+    //         'type_b',
+    //         'type_c',
+    //         'type_d'
+    //     ])->select('key', 'value')->get()->keyBy('key')->toArray();
+    //     return view('general-settings-edit', compact('settings'));
+    // }
 
     public function update(Request $request)
     {
@@ -163,7 +212,48 @@ class GeneralSettingsController extends Controller
         $setting = GeneralSettings::where('key', 'type_d')->first();
         $setting->value = $request->type_d;
         $setting->save();
-
+        if ($request->social_facebook) {
+            $setting = GeneralSettings::where('key', 'social_facebook')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'social_facebook';
+            $setting->value = trim($request->social_facebook);
+            $setting->save();
+        }
+        if ($request->social_google) {
+            $setting = GeneralSettings::where('key', 'social_google')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'social_google';
+            $setting->value = trim($request->social_google);
+            $setting->save();
+        }
+        if ($request->social_instagram) {
+            $setting = GeneralSettings::where('key', 'social_instagram')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'social_instagram';
+            $setting->value = trim($request->social_instagram);
+            $setting->save();
+        }
+        if ($request->social_youtube) {
+            $setting = GeneralSettings::where('key', 'social_youtube')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'social_youtube';
+            $setting->value = trim($request->social_youtube);
+            $setting->save();
+        }
+        if ($request->social_twitter) {
+            $setting = GeneralSettings::where('key', 'social_twitter')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'social_twitter';
+            $setting->value = trim($request->social_twitter);
+            $setting->save();
+        }
+        if ($request->social_linkedin) {
+            $setting = GeneralSettings::where('key', 'social_linkedin')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'social_linkedin';
+            $setting->value = trim($request->social_linkedin);
+            $setting->save();
+        }
+        if ($request->social_whatsapp) {
+            $setting = GeneralSettings::where('key', 'social_whatsapp')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'social_whatsapp';
+            $setting->value = trim($request->social_whatsapp);
+            $setting->save();
+        }
         return redirect()->route('general-settings')->with('Success', 'Cập nhập thành công');
         // } catch (Exception $e) {
         //     return back()->with('Failed', 'Cập nhập thất bại');

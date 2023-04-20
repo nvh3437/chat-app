@@ -29,8 +29,8 @@ class DatabaseSeeder extends Seeder
         $user->name = 'superadmin';
         $user->email = 'admin@gmail.com';
         $user->type = 'system';
-        $user->username  = 'superadmin';
-        $user->password  = Hash::make('avntech');
+        $user->username = 'superadmin';
+        $user->password = Hash::make('avntech');
         $user->save();
 
         $menu = new AvnMenu();
@@ -61,15 +61,15 @@ class DatabaseSeeder extends Seeder
         $setting->save();
         $setting = new GeneralSettings();
         $setting->key = 'company_name';
-        $setting->value = 'Công ty';
+        $setting->value = 'Chat App';
         $setting->save();
         $setting = new GeneralSettings();
         $setting->key = 'web_title';
-        $setting->value = 'Công ty';
+        $setting->value = 'Chat Online';
         $setting->save();
         $setting = new GeneralSettings();
         $setting->key = 'address';
-        $setting->value = 'hehe';
+        $setting->value = '281 Tiên Dung, Tiên Cát, Việt Trì';
         $setting->save();
         $setting = new GeneralSettings();
         $setting->key = 'phone_number';
@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
         $noti->icon = 'mdi mdi-tooltip-edit';
         $noti->status = 0;
         $noti->save();
-        
+
         // Menu hệ thống
         $menu_system = new AvnMenu();
         $menu_system->order = '1000';
@@ -182,7 +182,7 @@ class DatabaseSeeder extends Seeder
         $menu_sett_system->parent = $menu_system->id;
         $menu_sett_system->save();
         $ss_permis2 = new Permission();
-        $ss_permis2->route_names = 'general-settings-edit, general-settings-update, general-settings-update-image';
+        $ss_permis2->route_names = 'general-settings, general-settings-edit, general-settings-update, general-settings-update-image';
         $ss_permis2->name = 'Sửa';
         $ss_permis2->menu_id = $menu_sett_system->id;
         $ss_permis2->save();
@@ -223,7 +223,7 @@ class DatabaseSeeder extends Seeder
         $bf_pr1->role_id = $role->id;
         $bf_pr1->permission_id = $bf_permis1->id;
         $bf_pr1->save();
-        
+
         // Menu Enable Module
         $menu_module = new AvnMenu();
         $menu_module->order = '997';
@@ -250,7 +250,7 @@ class DatabaseSeeder extends Seeder
         $md_pr2->role_id = $role->id;
         $md_pr2->permission_id = $modul_permis2->id;
         $md_pr2->save();
-        
+
         // Menu User
         $menu_user = new AvnMenu();
         $menu_user->label = 'Quản lý tài khoản';

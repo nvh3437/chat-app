@@ -14,7 +14,7 @@
 	    <div class="row">
 	        <div class="col-12 col-lg-4 col-xl-4">
 	            <div class="card">
-	                <div class="card-body">
+	                <div class="card-body shadow-lg">
 	                    <h4 class="header-title">Thêm menu *</h4>
 	                    <form action="{{ route('store-navbar') }}" method="POST" enctype="multipart/form-data">
 	                    @csrf
@@ -29,7 +29,7 @@
 	                            </div>
 	                            <div class="mb-2 col-12">
 	                                <label class="form-label">Thứ tự <span class="text-danger">*</span></label>
-	                                <input type="text" class="form-control" name="order" required>
+	                                <input type="number" class="form-control" name="order" required>
 	                            </div>
 	                            <div class="mb-2 col-12">
                                     <label class="form-label">Sở thuộc</label>
@@ -51,7 +51,7 @@
 	        </div>
 	        <div class="col-12 col-lg-8 col-xl-8">
 	            <div class="card">
-	                <div class="card-body">
+	                <div class="card-body shadow-lg">
 	                    <h4 class="header-title">Danh sách menu</h4>
 	                    <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
 					        <thead>
@@ -125,17 +125,15 @@
 	    </div>
 	</div>
 @endsection
-@section('css')
-    <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
-@endsection
 @section('js')
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
 
     <!-- Datatable Init js -->
     <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
+@endsection
+@section('css')
+    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
 @endsection

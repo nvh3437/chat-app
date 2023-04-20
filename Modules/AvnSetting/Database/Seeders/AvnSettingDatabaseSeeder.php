@@ -12,6 +12,8 @@ use App\Models\AvnMenu;
 use App\Models\User;
 use App\Models\GeneralSettings;
 use App\Models\ModulesSettingsLink;
+use Modules\AvnSetting\Entities\Navbar;
+use Modules\AvnSetting\Entities\Footer;
 
 class AvnSettingDatabaseSeeder extends Seeder
 {
@@ -220,5 +222,45 @@ class AvnSettingDatabaseSeeder extends Seeder
         $setting->value = 'resources/assets/images/heartCopy2.png';
         $setting->save();
 
+        $nav = new Navbar();
+        $nav->name = 'Pricing';
+        $nav->link = 'service';
+        $nav->order = 1;
+        $nav->parent_id = 0;
+        $nav->save();
+        $nav = new Navbar();
+        $nav->name = 'Blog';
+        $nav->link = 'post';
+        $nav->order = 2;
+        $nav->parent_id = 0;
+        $nav->save();
+        $nav = new Navbar();
+        $nav->name = 'Contact';
+        $nav->link = 'contact';
+        $nav->order = 3;
+        $nav->parent_id = 0;
+        $nav->save();
+
+        $footer_app = new Footer();
+        $footer_app->name = 'Chat App';
+        $footer_app->save();
+        $footer = new Footer();
+        $footer->name = 'Pricing';
+        $footer->link = 'service';
+        $footer->parent_id = $footer_app->id;
+        $footer = new Footer();
+        $footer->name = 'Blog';
+        $footer->link = 'post';
+        $footer->parent_id = $footer_app->id;
+        $footer = new Footer();
+        $footer->name = 'Contact';
+        $footer->link = 'contact';
+        $footer->parent_id = $footer_app->id;
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'footer_description';
+        $setting->value = trim('Hyper makes it easier to build better websites with<br>
+        great speed. Save hundreds of hours of design<br>
+        and development by using it.');
+        $setting->save();
     }
 }

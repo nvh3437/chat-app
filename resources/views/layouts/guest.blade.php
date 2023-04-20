@@ -59,7 +59,8 @@
             overflow: hidden;
             display: -webkit-box;
         }
-        .card-pricing-features p{
+
+        .card-pricing-features p {
             margin: 0;
             padding: 15px;
         }
@@ -69,19 +70,13 @@
 
 <body class="loading" data-layout="topnav"
     data-layout-config='{"layoutBoxed":false,"darkMode":false,"showRightSidebarOnStart": true}'>
-    <!-- Begin page -->
-    <div class="wrapper">
-        <div class="content-page">
-            <div class="content">
-                <!-- Topbar Start -->
-                @include('components.guest-topbar')
-                <!-- end Topbar -->
-                @yield('content')
-            </div>
-            <!-- Footer Start -->
-            @include('components.guest-footer')
-        </div>
-    </div>
+
+    <!-- Topbar Start -->
+    @include('components.guest-topbar')
+    <!-- end Topbar -->
+    @yield('content')
+    <!-- Footer Start -->
+    @include('components.guest-footer')
     <!-- end Footer -->
     <!-- bundle -->
     <script src="{{ asset('resources/assets/js/vendor.min.js') }}"></script>

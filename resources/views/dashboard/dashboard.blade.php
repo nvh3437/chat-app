@@ -19,12 +19,7 @@
 @extends('layouts.guest', $seo_props)
 @section('content')
     <!-- START HERO -->
-    @if (
-        $banner['home_banner_title']['value'] ||
-            $banner['home_banner_description']['value'] ||
-            $banner['home_banner_link']['value'] ||
-            $banner['home_banner_image']['value']
-    )
+    @if ($banner['home_banner_title']['value'] || $banner['home_banner_description']['value'])
         <section class="hero-section">
             <div class="container">
                 <div class="row align-items-center">
@@ -44,8 +39,7 @@
                     </div>
                     <div class="col-md-5 offset-md-2">
                         <div class="text-md-end mt-3 mt-md-0">
-                            <img src="{{ asset($banner['home_banner_image']['value'] ?? $logo) }}"
-                                style="max-height: 200px; object-fit: cover;" />
+                            <img src="{{ asset($banner['home_banner_image']['value'] ?? $logo) }}" class="img-fluid" />
                         </div>
                     </div>
                 </div>
@@ -59,9 +53,7 @@
             $feature['home_feature_sub_des']['value'] ||
             $feature['home_feature_sub_title']['value'] ||
             $feature['home_feature_des']['value'] ||
-            $feature['home_feature_title']['value'] ||
-            $feature['home_feature_img']['value'] ||
-            $feature['home_feature_icon']['value']
+            $feature['home_feature_title']['value']
     )
         <section class="py-5">
             <div class="container">

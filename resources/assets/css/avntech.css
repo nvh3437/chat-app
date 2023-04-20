@@ -44,3 +44,9 @@ table.dataTable>tbody>tr.child ul.dtr-details .dtr-data {
   transform: translate(-29.29%, -100%) rotate(-45deg);
   transform-origin: bottom right;
 }
+
+@media (max-width: 600px) {
+  .navbar-custom .dropdown .dropdown-menu {
+    width: 270px;
+  }
+}
