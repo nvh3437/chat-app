@@ -40,6 +40,7 @@
                                 <div class="mb-2 col-12">
                                     <label class="form-label">
                                         Keywords
+                                        <span class="text-danger">*</span>
                                         <br>
                                         <small>Phân tách bởi dấu phẩy Ex: key1, k2y, key3</small>
                                     </label>
@@ -131,6 +132,7 @@
                                                         <div class="col-12">
                                                             <label class="form-label">
                                                                 Keywords
+                                                                <span class="text-danger">*</span>
                                                                 <br>
                                                                 <small>Phân tách bởi dấu phẩy Ex: key1, k2y, key3</small>
                                                             </label>
