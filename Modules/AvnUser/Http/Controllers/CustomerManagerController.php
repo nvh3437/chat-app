@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnUser\Entities\Profile;
+use Modules\AvnUser\Entities\AddSubMoney;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
@@ -74,6 +75,16 @@ class CustomerManagerController extends Controller
                 $customer->img = $path;
             }
             $customer->save();
+
+            // Lưu bảng add sub user
+            if ($request->add && $request->sub) {
+                $addsub = new AddSubMoney();
+                $addsub->user_id = $user->id;
+                $addsub->add = $request->add;
+                $addsub->sub = $request->sub;
+                $addsub->save();
+            }
+
             return redirect()->route('list-customer')->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Thêm thất bại');
@@ -134,6 +145,16 @@ class CustomerManagerController extends Controller
                 $customer->img = $path;
             }
             $customer->save();
+
+            // Lưu bảng add sub user
+            if ($request->add && $request->sub) {
+                $addsub = new AddSubMoney();
+                $addsub->user_id = $user->id;
+                $addsub->add = $request->add;
+                $addsub->sub = $request->sub;
+                $addsub->save();
+            }
+
             return redirect()->route('list-customer')->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');

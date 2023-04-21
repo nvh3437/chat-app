@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserRole;
 use App\Models\Role;
 use Modules\AvnUser\Entities\Profile;
+use Modules\AvnUser\Entities\AddSubMoney;
 use Modules\AvnChat\Entities\ChatRoomUser;
 use Modules\AvnChat\Entities\ChatRoom;
 use Modules\AvnChat\Entities\ChatRoomSession;
@@ -53,6 +54,10 @@ class User extends Authenticatable
     public function profile()
     {
         return $this->hasOne(Profile::class, 'id', 'id');
+    }
+    public function addsub_money()
+    {
+        return $this->hasMany(AddSubMoney::class, 'user_id');
     }
     public function room_users()
     {

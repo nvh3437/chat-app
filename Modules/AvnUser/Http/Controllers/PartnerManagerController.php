@@ -62,12 +62,12 @@ class PartnerManagerController extends Controller
             $partner = new Profile();
             $partner->id = $user->id;
             $partner->exp = $request->exp;
+            $partner->money = $request->money;
             $partner->gender = $request->gender;
             $partner->address = $request->address;
             $partner->description = $request->description;
             $partner->birth = $request->birth;
             $partner->phone = $request->phone;
-            $partner->money = 0;
             $partner->gender_status = 0;
             $partner->exp_status = 0;
             $partner->address_status = 0;
@@ -121,12 +121,12 @@ class PartnerManagerController extends Controller
             // Lưu bảng partner
             $partner = Profile::findOrFail($id);
             $partner->exp = $request->exp;
+            $partner->money = $request->money;
             $partner->gender = $request->gender;
             $partner->address = $request->address;
             $partner->description = $request->description;
             $partner->birth = $request->birth;
             $partner->phone = $request->phone;
-            $partner->money = 0;
             $partner->gender_status = 0;
             $partner->exp_status = 0;
             $partner->address_status = 0;

@@ -50,17 +50,23 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Năm kinh nghiệm
-                                    </label>
-                                    <input type="text" class="form-control" name="exp" value="{{$partner->exp}}">
-                                </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Email <span class="text-danger">*</span>
                                     </label>
                                     <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Năm kinh nghiệm
+                                    </label>
+                                    <input type="text" class="form-control" name="exp" value="{{$partner->exp}}" required>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Giá/Giờ
+                                    </label>
+                                    <input type="text" class="form-control" name="money" value="{{$partner->money}}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">

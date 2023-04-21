@@ -58,6 +58,38 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
+                                        Cộng tiền
+                                    </label>
+                                    <input type="text" class="form-control" name="add" placeholder="{{$user->addsub_money->last()->add}}">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Trừ tiền
+                                    </label>
+                                    <input type="text" class="form-control" name="sub" placeholder="{{$user->addsub_money->last()->sub}}">
+                                </div>
+                                <div class="col-lg-12 mt-2">
+                                    <table id="basic-datatable" class="table dt-responsive nowrap w-100 table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Cộng</th>
+                                                <th>Trừ</th>
+                                                <th>Ngày</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($user->addsub_money as $index=>$item)
+                                                <tr>
+                                                    <td>{{$item->add}}</td>
+                                                    <td>{{$item->sub}}</td>
+                                                    <td>{{$item->created_at->toDateString()}}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
                                         Số điện thoại
                                     </label>
                                     <input type="number" class="form-control" name="phone" value="{{$customer->phone}}">

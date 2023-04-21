@@ -48,6 +48,18 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
+                                        Cộng tiền
+                                    </label>
+                                    <input type="text" class="form-control" name="add">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Trừ tiền
+                                    </label>
+                                    <input type="text" class="form-control" name="sub">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
                                         Số điện thoại
                                     </label>
                                     <input type="number" class="form-control" name="phone">
