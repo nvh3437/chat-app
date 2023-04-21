@@ -41,6 +41,8 @@ class CMSController extends Controller
         try {
             $cms = new CMS();
             $cms->name = $request->name;
+            $cms->keywords = $request->keywords;
+            $cms->sort_description = $request->sort_description;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -75,6 +77,8 @@ class CMSController extends Controller
         try {
             $cms = CMS::findOrFail($id);
             $cms->name = $request->name;
+            $cms->keywords = $request->keywords;
+            $cms->sort_description = $request->sort_description;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($cms->img != null) {
                     File::delete($cms->img);

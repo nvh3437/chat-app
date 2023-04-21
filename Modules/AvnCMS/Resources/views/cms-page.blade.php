@@ -1,7 +1,12 @@
-@extends('layouts.guest')
-@section('title')
-    {{$cms->name}}
-@endsection
+@php
+    $user = App\Http\Controllers\Controller::getUser();
+    $seo_props = [];
+    $seo_props['seo_title'] = $cms->name;
+    $seo_props['seo_description'] = $cms->sort_description;
+    $seo_props['seo_keywords'] = $cms->keywords;
+    $seo_props['seo_image'] = $cms->img;
+@endphp
+@extends('layouts.guest', $seo_props)
 @section('content')
     <section class="bg-light-lighten border-top border-bottom border-light">
         @if($cms->img)
