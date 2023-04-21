@@ -195,3 +195,7 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
 @endsection
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('resources/css/ckeditor.css') }}">
+@endsection

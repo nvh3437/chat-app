@@ -294,6 +294,9 @@
                 // from a local file system (file://) - load this site via HTTP server if you enable MathType
                 'MathType'
             ],
+            ckfinder: {
+                uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
+            }
         });
     </script>
 @endsection

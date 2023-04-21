@@ -76,7 +76,6 @@
     </div>
 @endsection
 @section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery-ui.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
     <script>
@@ -242,6 +241,9 @@
                 // from a local file system (file://) - load this site via HTTP server if you enable MathType
                 'MathType'
             ],
+            ckfinder: {
+                uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
+            }
         });
     </script>
 @endsection

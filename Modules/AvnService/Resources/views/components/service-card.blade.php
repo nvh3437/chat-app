@@ -10,7 +10,7 @@
                 <h2 class="card-pricing-price">{{ substr($item->price, 0, strpos($item->price, '/')) }}
                     <span>{{ substr($item->price, strpos($item->price, '/'), strlen($item->price)) }}</span>
                 </h2>
-                <div class="card-pricing-features" id="editor">
+                <div class="card-pricing-features">
                     {!! $item->description !!}
                 </div>
             </div>

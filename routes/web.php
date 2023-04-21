@@ -7,6 +7,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\FileBackupController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImageUploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,7 @@ Route::get('/modules-settings-link', [ModuleController::class, 'modulesSettingsL
 // File backup
 Route::get('/list-backup', [FileBackupController::class, 'listBackup'])->middleware(['auth', 'verified', 'permission'])->name('list-backup');
 Route::post('/confirm-backup', [FileBackupController::class, 'confirmBackup'])->middleware(['auth', 'verified'])->name('confirm-backup');
+Route::post('image-upload', [ImageUploadController::class, 'storeImage'])->name('image-upload');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/role.php';

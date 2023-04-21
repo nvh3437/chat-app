@@ -198,7 +198,7 @@
                                 </div>
                             </div>
                             <hr class="m-0" />
-                            <div class="my-3" id="editor">
+                            <div class="my-3 ck-content">
                                 {!! $item->description !!}
                             </div>
                             <hr class="m-0" />
@@ -509,6 +509,13 @@
                 // from a local file system (file://) - load this site via HTTP server if you enable MathType
                 'MathType'
             ],
+            ckfinder: {
+                uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
+            }
         });
     </script>
+@endsection
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('resources/css/ckeditor.css') }}">
 @endsection
