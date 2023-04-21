@@ -1,7 +1,8 @@
-@extends('layouts.guest')
-@section('title')
-    Thông tin cá nhân
-@endsection
+@php
+    $seo_props = [];
+    $seo_props['seo_title'] = 'Thông tin cá nhân';
+@endphp
+@extends('layouts.guest', $seo_props)
 @section('content')
     <div class="container">
         <div class="row mt-2">
@@ -9,7 +10,7 @@
                 <div class="card text-center">
                     <div class="card-body shadow-lg">
                         @if ($user->profile && $user->profile->img)
-                            <img src="{{ asset($user->profile->img) }}" class="rounded-circle avatar-lg img-thumbnail">
+                            <img src="{{ asset($user->profile->img) }}" class="rounded-circle avatar-lg img-thumbnail" style="object-fit: cover;">
                         @else
                             <img src="{{ asset(config('global.default_avatar')) }}"
                                 class="rounded-circle avatar-lg img-thumbnail">
@@ -86,225 +87,238 @@
             <div class="col-xl-8 col-lg-7">
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
-                            <li class="nav-item">
-                                <a href="#settings" data-bs-toggle="tab" aria-expanded="false"
-                                    class="nav-link rounded-0 active">
-                                    Thông tin cá nhân
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane show active" id="settings">
-                                <form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-                                    <h5 class="mb-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin cá
-                                        nhân</h5>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="mb-2">
-                                                <label class="form-label">Ảnh đại diện</label>
-                                                <input type="file" accept="image/*" class="form-control" name="img">
-                                            </div>
+                        <form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <h5 class="mb-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin cá
+                                nhân</h5>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-2">
+                                        <label class="form-label">Ảnh đại diện</label>
+                                        <input type="file" accept="image/*" class="form-control" name="img">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">Tên người dùng <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="name" required
+                                            value="{{ $user->name }}">
+                                    </div>
+                                </div>
+                                @if ($user->type == 'partner')
+                                    <div class="col-md-6">
+                                        <div class="mb-2">
+                                            <label class="form-label">Năm kinh nghiệm
+                                                <button class="btn btn-sm btn-link border-0 px-1 py-0"
+                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                    data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
+                                                <div class="dropdown-menu dropdown-menu-end p-2">
+                                                    <div class="form-check form-checkbox-warning">
+                                                        <input type="checkbox" class="form-check-input" id="exp_status"
+                                                            name="exp_status"
+                                                            {{ $user->profile && $user->profile->exp_status ? 'checked' : '' }}
+                                                            value="1">
+                                                        <label class="form-check-label" for="exp_status">Không
+                                                            hiển
+                                                            thị</label>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <input type="text" class="form-control" name="exp"
+                                                value="{{ $user->profile->exp ?? '' }}">
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Tên người dùng <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="name" required
-                                                    value="{{ $user->name }}">
-                                            </div>
-                                        </div>
-                                        @if ($user->type == 'partner')
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label class="form-label">Năm kinh nghiệm
-                                                        <button class="btn btn-sm btn-link border-0 px-1 py-0"
-                                                            data-bs-toggle="dropdown" aria-expanded="false"
-                                                            data-bs-auto-close="outside"><i
-                                                                class='mdi mdi-earth'></i></button>
-                                                        <div class="dropdown-menu dropdown-menu-end p-2">
-                                                            <div class="form-check form-checkbox-warning">
-                                                                <input type="checkbox" class="form-check-input"
-                                                                    id="exp_status" name="exp_status"
-                                                                    {{ $user->profile && $user->profile->exp_status ? 'checked' : '' }}
-                                                                    value="1">
-                                                                <label class="form-check-label" for="exp_status">Không
-                                                                    hiển
-                                                                    thị</label>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                    <input type="text" class="form-control" name="exp"
-                                                        value="{{ $user->profile->exp ?? '' }}">
+                                    </div>
+                                @endif
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">Giới tính <span class="text-danger">*</span>
+                                            <button class="btn btn-sm btn-link border-0 px-1 py-0" data-bs-toggle="dropdown"
+                                                aria-expanded="false" data-bs-auto-close="outside"><i
+                                                    class='mdi mdi-earth'></i></button>
+                                            <div class="dropdown-menu dropdown-menu-end p-2">
+                                                <div class="form-check form-checkbox-warning">
+                                                    <input type="checkbox" class="form-check-input" id="gender_status"
+                                                        name="gender_status"
+                                                        {{ $user->profile && $user->profile->gender_status ? 'checked' : '' }}
+                                                        value="1">
+                                                    <label class="form-check-label" for="gender_status">Không hiển
+                                                        thị</label>
                                                 </div>
                                             </div>
-                                        @endif
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Giới tính <span class="text-danger">*</span>
-                                                    <button class="btn btn-sm btn-link border-0 px-1 py-0"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end p-2">
-                                                        <div class="form-check form-checkbox-warning">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                id="gender_status" name="gender_status"
-                                                                {{ $user->profile && $user->profile->gender_status ? 'checked' : '' }}
-                                                                value="1">
-                                                            <label class="form-check-label" for="gender_status">Không hiển
-                                                                thị</label>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                <select class="form-select" name="gender">
-                                                    <option value="0" class="form-control"
-                                                        {{ $user->profile && $user->profile->gender == '0' ? 'selected' : '' }}>
-                                                        Nam
-                                                    </option>
-                                                    <option value="1" class="form-control"
-                                                        {{ $user->profile && $user->profile->gender == '1' ? 'selected' : '' }}>
-                                                        Nữ
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Ngày sinh
-                                                    <button class="btn btn-sm btn-link border-0 px-1 py-0"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        data-bs-auto-close="outside"><i
-                                                            class='mdi mdi-earth'></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end p-2">
-                                                        <div class="form-check form-checkbox-warning">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                id="birth_status" name="birth_status"
-                                                                {{ $user->profile && $user->profile->birth_status ? 'checked' : '' }}
-                                                                value="1">
-                                                            <label class="form-check-label" for="birth_status">Không hiển
-                                                                thị</label>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                <input type="date" class="form-control" name="birth"
-                                                    value="{{ $user->profile->birth ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Số điện thoại
-                                                    <button class="btn btn-sm btn-link border-0 px-1 py-0"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        data-bs-auto-close="outside"><i
-                                                            class='mdi mdi-earth'></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end p-2">
-                                                        <div class="form-check form-checkbox-warning">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                id="phone_status" name="phone_status"
-                                                                {{ $user->profile && $user->profile->phone_status ? 'checked' : '' }}
-                                                                value="1">
-                                                            <label class="form-check-label" for="phone_status">Không hiển
-                                                                thị</label>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                <input type="number" class="form-control" name="phone"
-                                                    value="{{ $user->profile->phone ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="mb-2">
-                                                <label class="form-label">Địa chỉ
-                                                    <button class="btn btn-sm btn-link border-0 px-1 py-0"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        data-bs-auto-close="outside"><i
-                                                            class='mdi mdi-earth'></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end p-2">
-                                                        <div class="form-check form-checkbox-warning">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                id="address_status" name="address_status"
-                                                                {{ $user->profile && $user->profile->address_status ? 'checked' : '' }}
-                                                                value="1">
-                                                            <label class="form-check-label" for="address_status">Không
-                                                                hiển
-                                                                thị</label>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                <textarea class="form-control" name="address" rows="4">{!! $user->profile->address ?? '' !!}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="mb-2">
-                                                <label class="form-label">Tiểu sử
-                                                    <button class="btn btn-sm btn-link border-0 px-1 py-0"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        data-bs-auto-close="outside"><i
-                                                            class='mdi mdi-earth'></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end p-2">
-                                                        <div class="form-check form-checkbox-warning">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                id="description_status" name="description_status"
-                                                                {{ $user->profile && $user->profile->description_status ? 'checked' : '' }}
-                                                                value="1">
-                                                            <label class="form-check-label" for="description_status">Không
-                                                                hiển
-                                                                thị</label>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                <textarea class="form-control" name="description" rows="4">{!! $user->profile->description ?? '' !!}</textarea>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Tài khoản</label>
-                                                <input type="text" class="form-control" name="username" readonly
-                                                    value="{{ $user->username }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Email <span class="text-danger">*</span>
-                                                    <button class="btn btn-sm btn-link border-0 px-1 py-0"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        data-bs-auto-close="outside"><i
-                                                            class='mdi mdi-earth'></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end p-2">
-                                                        <div class="form-check form-checkbox-warning">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                id="email_status" name="email_status"
-                                                                {{ $user->profile && $user->profile->email_status ? 'checked' : '' }}
-                                                                value="1">
-                                                            <label class="form-check-label" for="email_status">Không hiển
-                                                                thị</label>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                <input type="email" class="form-control" name="email"
-                                                    value="{{ $user->email }}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-2">
-                                                <label class="form-label">Mật khẩu mới
-                                                    <br>
-                                                    <small>Thay đổi sang mật khẩu mới (bỏ qua nếu không thay đổi)</small>
-                                                </label>
-                                                <input type="password" class="form-control" name="password">
-                                            </div>
-                                        </div>
+                                        </label>
+                                        <select class="form-select" name="gender">
+                                            <option value="0" class="form-control"
+                                                {{ $user->profile && $user->profile->gender == '0' ? 'selected' : '' }}>
+                                                Nam
+                                            </option>
+                                            <option value="1" class="form-control"
+                                                {{ $user->profile && $user->profile->gender == '1' ? 'selected' : '' }}>
+                                                Nữ
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="text-end">
-                                        <button type="submit" class="btn btn-success mt-2"><i
-                                                class="mdi mdi-content-save"></i> Lưu</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">Ngày sinh
+                                            <button class="btn btn-sm btn-link border-0 px-1 py-0"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
+                                            <div class="dropdown-menu dropdown-menu-end p-2">
+                                                <div class="form-check form-checkbox-warning">
+                                                    <input type="checkbox" class="form-check-input" id="birth_status"
+                                                        name="birth_status"
+                                                        {{ $user->profile && $user->profile->birth_status ? 'checked' : '' }}
+                                                        value="1">
+                                                    <label class="form-check-label" for="birth_status">Không hiển
+                                                        thị</label>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <input type="date" class="form-control" name="birth"
+                                            value="{{ $user->profile->birth ?? '' }}">
                                     </div>
-                                </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">Số điện thoại
+                                            <button class="btn btn-sm btn-link border-0 px-1 py-0"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
+                                            <div class="dropdown-menu dropdown-menu-end p-2">
+                                                <div class="form-check form-checkbox-warning">
+                                                    <input type="checkbox" class="form-check-input" id="phone_status"
+                                                        name="phone_status"
+                                                        {{ $user->profile && $user->profile->phone_status ? 'checked' : '' }}
+                                                        value="1">
+                                                    <label class="form-check-label" for="phone_status">Không hiển
+                                                        thị</label>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <input type="number" class="form-control" name="phone"
+                                            value="{{ $user->profile->phone ?? '' }}">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-2">
+                                        <label class="form-label">Địa chỉ
+                                            <button class="btn btn-sm btn-link border-0 px-1 py-0"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
+                                            <div class="dropdown-menu dropdown-menu-end p-2">
+                                                <div class="form-check form-checkbox-warning">
+                                                    <input type="checkbox" class="form-check-input" id="address_status"
+                                                        name="address_status"
+                                                        {{ $user->profile && $user->profile->address_status ? 'checked' : '' }}
+                                                        value="1">
+                                                    <label class="form-check-label" for="address_status">Không
+                                                        hiển
+                                                        thị</label>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <textarea class="form-control" name="address" rows="4">{!! $user->profile->address ?? '' !!}</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-2">
+                                        <label class="form-label">Tiểu sử
+                                            <button class="btn btn-sm btn-link border-0 px-1 py-0"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
+                                            <div class="dropdown-menu dropdown-menu-end p-2">
+                                                <div class="form-check form-checkbox-warning">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        id="description_status" name="description_status"
+                                                        {{ $user->profile && $user->profile->description_status ? 'checked' : '' }}
+                                                        value="1">
+                                                    <label class="form-check-label" for="description_status">Không
+                                                        hiển
+                                                        thị</label>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <textarea class="form-control" name="description" rows="4">{!! $user->profile->description ?? '' !!}</textarea>
+                                    </div>
+                                </div>
+                                <h5 class="mb-2 mt-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin
+                                    tài khoản</h5>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">Tài khoản</label>
+                                        <input type="text" class="form-control" name="username" readonly
+                                            value="{{ $user->username }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">Email <span class="text-danger">*</span>
+                                            <button class="btn btn-sm btn-link border-0 px-1 py-0"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
+                                            <div class="dropdown-menu dropdown-menu-end p-2">
+                                                <div class="form-check form-checkbox-warning">
+                                                    <input type="checkbox" class="form-check-input" id="email_status"
+                                                        name="email_status"
+                                                        {{ $user->profile && $user->profile->email_status ? 'checked' : '' }}
+                                                        value="1">
+                                                    <label class="form-check-label" for="email_status">Không hiển
+                                                        thị</label>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <input type="email" class="form-control" name="email"
+                                            value="{{ $user->email }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">Mật khẩu mới
+                                            <br>
+                                            <small>Thay đổi sang mật khẩu mới (bỏ qua nếu không thay đổi)</small>
+                                        </label>
+                                        <input type="password" class="form-control" name="password">
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success mt-2"><i class="mdi mdi-content-save"></i>
+                                    Lưu</button>
+                            </div>
+
+                        </form>
+                        @if ($user->type == 'customer')
+                            <hr>
+                            <h4 class="mt-3">Số dư hiện tại: <span
+                                    class="badge bg-primary">{{ number_format($user->customer ? $user->customer->money : 0) }}
+                                    $</span></h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="table-dark align-middle">
+                                        <tr>
+                                            <th>Ngày</th>
+                                            <th>Cộng/Trừ</th>
+                                            <th>Số dư sau xử lý</th>
+                                            <th>Ghi chú</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($user->addsub_money as $index => $item)
+                                            <tr class="{{ $item->add ? 'text-success' : 'text-danger' }}">
+                                                <td>{{ date('H:i d/m/Y', strtotime($item->created_at)) }}</td>
+                                                <td>
+                                                    <span>{{ $item->add ? '+ ' . number_format($item->add) : '- ' . number_format($item->sub) }}</span>
+                                                </td>
+                                                <td>{{ number_format($item->surplus) }}</td>
+                                                <td>{{ $item->note }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -12,7 +12,7 @@ class NavbarController extends Controller
     //------ Thanh menu -------------//
     public static function getMenu()
     {
-        $navbars = Navbar::orderBy('order')->get();
+        $navbars = Navbar::where('parent_id', 0)->orderBy('order')->get();
         return $navbars;
     }
 
@@ -29,6 +29,7 @@ class NavbarController extends Controller
             $nav->name = $request->name;
             $nav->link = $request->link;
             $nav->order = $request->order;
+            $nav->parent_id = $request->parent_id;
             $nav->save();
             return back()->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
@@ -60,11 +61,10 @@ class NavbarController extends Controller
 
     public function deleteNavbar($id)
     {
-        try{
+        try {
             $nav = Navbar::findOrFail($id)->delete();
             return back()->with('Success', 'Xóa thành công');
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return back()->with('Failed', 'Xóa thất bại');
         }
     }

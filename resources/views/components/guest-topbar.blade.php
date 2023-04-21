@@ -125,7 +125,7 @@
             <div class="collapse navbar-collapse" id="topnav-menu-content">
                 <ul class="navbar-nav">
                     @foreach ($menu as $item)
-                        @if ($item->parent_id == '0' && count($item->childrens) > 0)
+                        @if (count($item->childrens) > 0)
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="menulink{{ $item->id }}"
                                     id="topnav-dashboards" role="button" data-bs-toggle="dropdown"
@@ -138,7 +138,7 @@
                                     @endforeach
                                 </div>
                             </li>
-                        @elseif($item->parent_id == '0')
+                        @else
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="{{ $item->link }}"
                                     id="topnav-dashboards">
