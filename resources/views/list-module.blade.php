@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         {{-- <h4 class="header-title">@lang('avnrole.list_role')</h4> --}}
                         <table id="basic-datatable" class="table dt-responsive nowrap w-100 data-view">
                             <thead>

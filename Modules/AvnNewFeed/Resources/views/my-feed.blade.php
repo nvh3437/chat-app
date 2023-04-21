@@ -11,7 +11,7 @@
     <div class="container">
         <div class="row mt-2">
             <div class="col-xxl-3 col-lg-3 col-md-4 col-sm-12 order-lg-1 order-xxl-1">
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="card-body">
                         <div class="dropdown float-end">
                             <div class="dropdown-menu dropdown-menu-end">
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="card-body">
                         <div class="dropdown float-end">
                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div class="col-xxl-9 col-lg-9 col-md-8 col-sm-12 order-lg-2 order-xxl-1">
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="card-body p-0">
                         <ul class="nav nav-tabs nav-bordered">
                             <li class="nav-item">
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 @foreach ($my_feeds as $item)
-                    <div class="card">
+                    <div class="card shadow-lg">
                         <div class="card-body pb-1">
                             <div class="d-flex">
                                 @if ($item->new_feed_user->profile && $item->new_feed_user->profile->img)

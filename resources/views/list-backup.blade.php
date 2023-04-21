@@ -17,7 +17,7 @@
             @foreach ($backups as $backup)
                 <div class="col-lg-6 col-xxl-3">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body shadow-lg">
                             <form action="{{ route($backup->route_name_import) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <label for="route" class="form-label">Bảng dữ liệu</label>

@@ -46,7 +46,7 @@
                     <h6 class="text-overflow m-0">Chào mừng !</h6>
                 </div>
                 <!--- route info của quản lý -->
-                <a href="{{route('manager-profile')}}" class="dropdown-item notify-item">
+                <a href="{{route('profile')}}" class="dropdown-item notify-item">
                     <i class="mdi mdi-account-circle me-1"></i>
                     <span>Thông tin cá nhân</span>
                 </a>

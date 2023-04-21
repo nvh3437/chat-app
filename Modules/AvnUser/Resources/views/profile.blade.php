@@ -7,7 +7,7 @@
         <div class="row mt-2">
             <div class="col-xl-4 col-lg-5">
                 <div class="card text-center">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         @if ($user->profile && $user->profile->img)
                             <img src="{{ asset($user->profile->img) }}" class="rounded-circle avatar-lg img-thumbnail">
                         @else
@@ -85,7 +85,7 @@
             </div>
             <div class="col-xl-8 col-lg-7">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
                             <li class="nav-item">
                                 <a href="#settings" data-bs-toggle="tab" aria-expanded="false"

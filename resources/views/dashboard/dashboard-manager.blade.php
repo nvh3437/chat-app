@@ -3,7 +3,7 @@
     Báo cáo tổng hợp
 @endsection
 @section('content')
-     <div class="container-fluid">
+    <div class="container-fluid">
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
@@ -14,12 +14,12 @@
                     <h4 class="page-title">Báo cáo tổng hợp</h4>
                 </div>
             </div>
-        </div>     
+        </div>
         <!-- end page title -->
         <div class="row">
             <div class="col-12">
                 <div class="card widget-inline">
-                    <div class="card-body p-0">
+                    <div class="card-body shadow-lg p-0">
                         <div class="row g-0">
                             <div class="col-sm-12 col-xl-4">
                                 <div class="card shadow-none m-0">
@@ -60,9 +60,10 @@
         <div class="row">
             <div class="col-xl-4 col-lg-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
@@ -93,7 +94,8 @@
                                         <td>187</td>
                                         <td>154</td>
                                         <td class="table-action">
-                                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                            <a href="javascript: void(0);" class="action-icon"> <i
+                                                    class="mdi mdi-eye"></i></a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -104,7 +106,8 @@
                                         <td>235</td>
                                         <td>127</td>
                                         <td class="table-action">
-                                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                            <a href="javascript: void(0);" class="action-icon"> <i
+                                                    class="mdi mdi-eye"></i></a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -115,7 +118,8 @@
                                         <td>365</td>
                                         <td>148</td>
                                         <td class="table-action">
-                                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                            <a href="javascript: void(0);" class="action-icon"> <i
+                                                    class="mdi mdi-eye"></i></a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -126,7 +130,8 @@
                                         <td>753</td>
                                         <td>159</td>
                                         <td class="table-action">
-                                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                            <a href="javascript: void(0);" class="action-icon"> <i
+                                                    class="mdi mdi-eye"></i></a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -137,7 +142,8 @@
                                         <td>458</td>
                                         <td>126</td>
                                         <td class="table-action">
-                                            <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                            <a href="javascript: void(0);" class="action-icon"> <i
+                                                    class="mdi mdi-eye"></i></a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -151,9 +157,10 @@
 
             <div class="col-xl-4 col-lg-6">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
@@ -218,22 +225,23 @@
                                 <span class="font-13">austin@dayrep.com</span>
                             </div>
                         </div>
-                           
+
                     </div>
                     <!-- end card-body -->
                 </div>
                 <!-- end card-->
             </div>
-            <!-- end col -->  
-            
+            <!-- end col -->
+
             <div class="col-xl-4 col-lg-6">
                 <!-- end card-->
 
                 <!-- Todo-->
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
@@ -255,7 +263,7 @@
                 </div> <!-- end card-->
 
             </div>
-            <!-- end col -->  
+            <!-- end col -->
         </div>
         <div class="row">
             <div class="col-12">
@@ -266,13 +274,13 @@
                     <h4 class="page-title">Báo cáo tài chính</h4>
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="row">
             <div class="col-xl-5 col-lg-6">
 
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="card widget-flat">
+                        <div class="card widget-flat shadow-lg">
                             <div class="card-body">
                                 <div class="float-end">
                                     <i class="mdi mdi-account-multiple widget-icon"></i>
@@ -281,14 +289,14 @@
                                 <h3 class="mt-3 mb-3">36,254</h3>
                                 <p class="mb-0 text-muted">
                                     <span class="text-success me-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
-                                    <span class="text-nowrap">Since last month</span>  
+                                    <span class="text-nowrap">Since last month</span>
                                 </p>
                             </div> <!-- end card-body-->
                         </div> <!-- end card-->
                     </div> <!-- end col-->
 
                     <div class="col-lg-6">
-                        <div class="card widget-flat">
+                        <div class="card widget-flat shadow-lg">
                             <div class="card-body">
                                 <div class="float-end">
                                     <i class="mdi mdi-cart-plus widget-icon"></i>
@@ -306,7 +314,7 @@
 
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="card widget-flat">
+                        <div class="card widget-flat shadow-lg">
                             <div class="card-body">
                                 <div class="float-end">
                                     <i class="mdi mdi-currency-usd widget-icon"></i>
@@ -322,7 +330,7 @@
                     </div> <!-- end col-->
 
                     <div class="col-lg-6">
-                        <div class="card widget-flat">
+                        <div class="card widget-flat shadow-lg">
                             <div class="card-body">
                                 <div class="float-end">
                                     <i class="mdi mdi-pulse widget-icon"></i>
@@ -342,9 +350,10 @@
 
             <div class="col-xl-7 col-lg-6">
                 <div class="card card-h-100">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
@@ -363,16 +372,15 @@
                         <div dir="ltr">
                             <div id="high-performing-product" class="apex-charts" data-colors="#727cf5,#e3eaef"></div>
                         </div>
-                            
+
                     </div> <!-- end card-body-->
                 </div> <!-- end card-->
 
             </div> <!-- end col -->
         </div>
-     </div>
+    </div>
 @endsection
 @section('js')
-
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>

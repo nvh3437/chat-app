@@ -43,7 +43,7 @@ class AvnUserDatabaseSeeder extends Seeder
         $menu_customer->save();
 
         $permission1 = new Permission();
-        $permission1->route_names = 'list-customer, add-customer, edit-customer, store-customer, update-customer, delete-customer';
+        $permission1->route_names = 'list-customer, add-customer, edit-customer, store-customer, update-customer, delete-customer, update-money-customer';
         $permission1->name = 'Quản lý khách hàng';
         $permission1->menu_id = $menu_customer->id;
         $permission1->save();

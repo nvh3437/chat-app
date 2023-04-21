@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-12 col-lg-4 col-xl-4">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <h4 class="header-title">Thêm danh mục *</h4>
                         <form action="{{ route('store-category') }}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="col-12 col-lg-8 col-xl-8">
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="card-body">
                         <h4 class="header-title">Danh sách danh mục</h4>
                         <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">

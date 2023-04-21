@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-xl-4 col-lg-5">
                 <div class="card text-center">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <img src="{{ asset('/resources/assets/images/logo.png') }}" class="rounded-circle avatar-lg img-thumbnail">
                         <h4 class="mb-0 mt-2">{{$user->name}}</h4>
                         <div class="text-start mt-3">
@@ -28,7 +28,7 @@
             </div> 
             <div class="col-xl-8 col-lg-7">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
                             <li class="nav-item">
                                 <a href="#settings" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">

@@ -16,7 +16,7 @@
                 <form action="{{ route('store-service') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body shadow-lg">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">

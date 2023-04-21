@@ -1,18 +1,28 @@
-@extends('layouts.admin')
-@section('title')
-    Chat
-@endsection
+@php
+    // $logo = App\Http\Controllers\Helper::getLogo();
+    $seo_props = [];
+    $seo_props['seo_title'] = 'chat';
+    // if (isset($contact_seo['contact_seo_description'])) {
+    //     $seo_props['seo_description'] = $contact_seo['contact_seo_description']['value'] ?? '';
+    // }
+    // if (isset($contact_seo['contact_seo_keywords'])) {
+    //     $seo_props['seo_keywords'] = $contact_seo['contact_seo_keywords']['value'] ?? '';
+    // }
+    // if (isset($contact_seo['contact_seo_image'])) {
+    //     $seo_props['seo_image'] = $contact_seo['contact_seo_image']['value'] ?? '';
+    // }
+@endphp
+@extends('layouts.guest', $seo_props)
 @php
     use App\Http\Controllers\Helper;
 @endphp
 @section('content')
     <!-- Start Content-->
-    <div class="container-fluid">
-
+    <div class="container">
         <div class="row mt-3">
             <!-- start chat users-->
             <div class="col-xxl-3 col-xl-6 order-xl-1">
-                <div class="card h-100">
+                <div class="card shadow-lg">
                     <div class="card-body p-0">
                         <ul class="nav nav-tabs nav-bordered">
                             <li class="nav-item">
@@ -37,14 +47,10 @@
                                 @include('avnchat::components.search-chat-room')
                                 <!-- end search box -->
                                 <!-- users -->
-                                <div class="row">
-                                    <div class="col">
-                                        <div data-simplebar style="height: 550px">
-                                            @foreach ($rooms as $room)
-                                                @include('avnchat::components.chat-room', compact('room'))
-                                            @endforeach
-                                        </div> <!-- end slimscroll-->
-                                    </div> <!-- End col -->
+                                <div data-simplebar style="height: 550px">
+                                    @foreach ($rooms as $room)
+                                        @include('avnchat::components.chat-room', compact('room'))
+                                    @endforeach
                                 </div>
                                 <!-- end users -->
                             </div> <!-- end Tab Pane-->
@@ -53,22 +59,18 @@
                                 @include('avnchat::components.search-chat-room')
                                 <!-- end search box -->
                                 <!-- users -->
-                                <div class="row">
-                                    <div class="col">
-                                        <div data-simplebar style="height: 550px">
-                                            @foreach ($rooms as $room)
-                                                @php
-                                                    if (!$room->users->where('type', 'partner')->count()) {
-                                                        continue;
-                                                    }
-                                                    if ($room->users->where('type', 'customer')->count()) {
-                                                        continue;
-                                                    }
-                                                @endphp
-                                                @include('avnchat::components.chat-room', compact('room'))
-                                            @endforeach
-                                        </div> <!-- end slimscroll-->
-                                    </div> <!-- End col -->
+                                <div data-simplebar style="height: 550px">
+                                    @foreach ($rooms as $room)
+                                        @php
+                                            if (!$room->users->where('type', 'partner')->count()) {
+                                                continue;
+                                            }
+                                            if ($room->users->where('type', 'customer')->count()) {
+                                                continue;
+                                            }
+                                        @endphp
+                                        @include('avnchat::components.chat-room', compact('room'))
+                                    @endforeach
                                 </div>
                                 <!-- end users -->
                             </div> <!-- end Tab Pane-->
@@ -77,22 +79,18 @@
                                 @include('avnchat::components.search-chat-room')
                                 <!-- end search box -->
                                 <!-- users -->
-                                <div class="row">
-                                    <div class="col">
-                                        <div data-simplebar style="height: 550px">
-                                            @foreach ($rooms as $room)
-                                                @php
-                                                    if (!$room->users->where('type', 'partner')->count()) {
-                                                        continue;
-                                                    }
-                                                    if (!$room->users->where('type', 'customer')->count()) {
-                                                        continue;
-                                                    }
-                                                @endphp
-                                                @include('avnchat::components.chat-room', compact('room'))
-                                            @endforeach
-                                        </div> <!-- end slimscroll-->
-                                    </div> <!-- End col -->
+                                <div data-simplebar style="height: 550px">
+                                    @foreach ($rooms as $room)
+                                        @php
+                                            if (!$room->users->where('type', 'partner')->count()) {
+                                                continue;
+                                            }
+                                            if (!$room->users->where('type', 'customer')->count()) {
+                                                continue;
+                                            }
+                                        @endphp
+                                        @include('avnchat::components.chat-room', compact('room'))
+                                    @endforeach
                                 </div>
                                 <!-- end users -->
                             </div> <!-- end Tab Pane-->
@@ -103,7 +101,7 @@
             <!-- end chat users-->
             <!-- chat area -->
             <div class="col-xxl-6 col-xl-12 order-xl-2">
-                <div class="card chat-conatiner d-none">
+                <div class="card chat-conatiner d-none shadow-lg">
                     <div class="card-body position-relative">
                         <div class="pre-loader position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
                             style="z-index: 10">
@@ -164,7 +162,7 @@
 
             <!-- start user detail -->
             <div class="col-xxl-3 col-xl-6 order-xl-1 order-xxl-2">
-                <div class="card chat-info d-none">
+                <div class="card chat-info d-none shadow-lg">
                     <div class="card-body position-relative">
                         <div class="pre-loader position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
                             style="z-index: 10">
@@ -339,12 +337,10 @@
                 .listen('.newMessage', (e) => {
                     console.log(e);
                     if (room_id == e.room_id) {
-                        date = new Date(e.created_at)
-                        add_my_receive_message(e.name, e.img, e.message, date)
+                        add_my_receive_message(e.name, e.img, e.message, new Date(e.created_at))
                     }
-                    $(".chat-room[data-id=" + room_id + "] .new-message").html(e.message);
-
-
+                    update_new_message_in_chat_room(e.message, e.created_at)
+                    scroll_to_bottom_message_container()
                 })
 
             // add users to room
@@ -389,7 +385,7 @@
                                 'd-none')
                             $('.workspace-session .time-session').removeClass(
                                 'd-none')
-                            timer_count_up(res)
+                            timer_count_up(new Date(res))
                         }
                     }
                 });
@@ -433,6 +429,7 @@
                             set_name_image_chat_room(res.name, res.imgs)
                             update_users_in_list_users_in_room(res.join_users)
                             $('#chat-form').removeClass('d-none')
+                            $('.add-users-group').removeClass('d-none')
                             $('.alert-join-room').addClass('d-none')
                             $('button.join-room').addClass('d-none')
                         }
@@ -522,7 +519,7 @@
                                             'd-none')
                                         $('.workspace-session .time-session').removeClass(
                                             'd-none')
-                                        timer_count_up(res.session_start_on)
+                                        timer_count_up(new Date(res.session_start_on))
                                     } else {
                                         $('.workspace-session .start-session').removeClass(
                                             'd-none')
@@ -564,7 +561,8 @@
                 var message = $('#message').val();
                 add_my_send_message(message)
                 $('#message').val('')
-                $('.chat-room[data-id=' + room_id + '] .new-message').html(message)
+                update_new_message_in_chat_room(message)
+                scroll_to_bottom_message_container()
                 $.ajax({
                     method: 'post',
                     url: "{{ route('send-message-to-user') }}",
@@ -599,7 +597,7 @@
                                     'd-none')
                                 $('.workspace-session .time-session').removeClass(
                                     'd-none')
-                                timer_count_up(res.session_start_on)
+                                timer_count_up(new Date(res.session_start_on))
                             } else {
                                 $('.workspace-session .start-session').removeClass(
                                     'd-none')
@@ -609,8 +607,21 @@
                 });
             })
 
+            function update_new_message_in_chat_room(message, date) {
+                if (message) {
+                    $(".chat-room[data-id=" + room_id + "] .new-message").html(message);
+                }
+                if (date) {
+                    $(".chat-room[data-id=" + room_id + "] .last-message-time").html(time_ago(new Date(date)));
+                    $(".chat-room[data-id=" + room_id + "] .last-message-time").attr('data-time', date);
+                } else {
+                    $(".chat-room[data-id=" + room_id + "] .last-message-time").html(time_ago(new Date()));
+                    $(".chat-room[data-id=" + room_id + "] .last-message-time").attr('data-time', new Date());
+                }
+            }
+
             function timer_count_up(date) {
-                var countDownDate = new Date(date).getTime();
+                var countDownDate = date.getTime();
                 count_up = setInterval(function() {
                     var now = new Date().getTime();
                     var distance = now - countDownDate;
@@ -674,9 +685,14 @@
                     } else {
                         htm += '<span class="badge badge-success-lighten p-1 font-12">Client</span>'
                     }
-                    htm += '<span role="button" class="text-primary ms-2 font-12 remove-user" data-id="' +
-                        element.id + '">Xóa</span>'
-                    htm += '</span>'
+                    @if ($user->type == 'system')
+                        if (element.type != 'partner') {
+                            htm +=
+                                '<span role="button" class="text-primary ms-2 font-12 remove-user" data-id="' +
+                                element.id + '">Xóa</span>'
+                            htm += '</span>'
+                        }
+                    @endif
                     htm += '</div>'
                 });
                 $('.list-users-in-room .simplebar-content').html(htm)
@@ -718,7 +734,6 @@
                     $('.chat-info-imgs').addClass('d-none')
                 } else {
                     var htm = ''
-                    console.log(imgs);
                     imgs.forEach((img, index) => {
                         htm += '<img src="' + (img ??
                                 'resources/assets/images/users/avatar-1.jpg'
@@ -781,7 +796,7 @@
                 var htm = '<li class="clearfix odd">'
                 htm += '<div class="chat-avatar">'
                 htm +=
-                    '<img src="{{ asset($user->profile->img ?? "resources/assets/images/users/avatar-1.jpg") }}" class="rounded" alt="{{ $user->name }}" />'
+                    '<img src="{{ asset($user->profile->img ?? 'resources/assets/images/users/avatar-1.jpg') }}" class="rounded" alt="{{ $user->name }}" />'
                 htm += '<i>' + date.getHours() + ':' + date.getMinutes() + '</i>'
                 htm += '</div>'
                 htm += '<div class="conversation-text">'
@@ -841,15 +856,65 @@
                     $('.conversation-list .simplebar-content').prepend(htm);
                 }
             }
+
+            function time_ago(date) {
+                var now = new Date()
+                time_elapsed = Math.floor((now.getTime() - date.getTime()) / 1000)
+                var seconds = time_elapsed
+                var minutes = Math.floor(time_elapsed / 60)
+                var hours = Math.floor(time_elapsed / 3600)
+                var days = Math.floor(time_elapsed / 86400)
+                var weeks = Math.floor(time_elapsed / 604800)
+                var months = Math.floor(time_elapsed / 2600640)
+                var years = Math.floor(time_elapsed / 31207680)
+                // Seconds
+                if (seconds <= 60) {
+                    return 'Bây giờ'
+                }
+                //Minutes
+                else if (minutes <= 60) {
+                    return minutes + ' phút trước'
+                }
+                //Hours
+                else if (hours <= 24) {
+                    return hours + ' giờ trước'
+                }
+                //Days
+                else if (days <= 7) {
+                    return days + ' ngày trước'
+                }
+                //Weeks
+                else if (weeks <= 4.3) {
+                    return weeks + ' tuần trước'
+                }
+                //Months
+                else if (months <= 12) {
+                    return months + ' tháng trước'
+                }
+                //Years
+                else {
+                    return years + ' năm trước'
+                }
+            }
+            // update time ago
+            setInterval(() => {
+                $(".chat-room[data-id=" + room_id + "] .last-message-time").each(function() {
+                    if ($(this).attr('data-time')) {
+                        $(this).html(time_ago(new Date($(this).attr('data-time'))))
+                    }
+                });
+            }, 60000);
         });
     </script>
 @endsection
 @section('css')
     <style>
+        .room-name,
         .new-message {
+            overflow: hidden;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             white-space: normal;
         }

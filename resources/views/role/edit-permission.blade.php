@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <div class="row">
                             <div class="col-12">
                                 <form action="{{ route('role-update-permission', ['id' => $role->id]) }}" method="POST">
@@ -127,13 +127,9 @@
                                 </form>
                             </div> <!-- end col-->
                         </div>
-                        <!-- end row -->
-
                     </div> <!-- end card-body -->
                 </div> <!-- end card-->
             </div> <!-- end col-->
         </div>
-        <!-- end row-->
-
     </div>
 @endsection

@@ -21,8 +21,10 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->text('add')->nullable();
-            $table->text('sub')->nullable();
+            $table->string('add')->nullable();
+            $table->string('sub')->nullable();
+            $table->string('surplus')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

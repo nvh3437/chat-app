@@ -16,7 +16,7 @@
                 <form action="{{ route('store-customer') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body shadow-lg">
                             <h4 class="header-title">Thông tin cơ bản</h4>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -48,18 +48,6 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Cộng tiền
-                                    </label>
-                                    <input type="text" class="form-control" name="add">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Trừ tiền
-                                    </label>
-                                    <input type="text" class="form-control" name="sub">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
                                         Số điện thoại
                                     </label>
                                     <input type="number" class="form-control" name="phone">
@@ -86,7 +74,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body shadow-lg">
                             <h4 class="header-title">Thông tin tài khoản</h4>
                             <div class="row">
                                 <div class="col-lg-6">

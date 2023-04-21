@@ -19,7 +19,7 @@
                                 <span><img src="{{ asset('resources/assets/images/logo.png') }}" class="img-fluid"></span>
                             </a>
                         </div> -->
-                        <div class="card-body p-4">
+                        <div class="card-body shadow-lg p-4">
                             <div class="text-center">
                                 <img src="{{ asset('resources/assets/images/coming-soon.png') }}" class="img-fluid">
                                 <h4 class="text-uppercase text-danger mt-3">Tính năng này đang được chúng tôi phát triển</h4>

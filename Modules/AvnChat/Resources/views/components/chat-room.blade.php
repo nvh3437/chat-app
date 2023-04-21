@@ -25,20 +25,22 @@
         </div>
         <div class="w-100 overflow-hidden">
             <h5 class="mt-0 mb-0 font-14">
-                <span
-                    class="float-end text-muted font-12">{{ $last_message ? date('H:i', strtotime($last_message->created_at)) : '' }}</span>
+                <span class="float-end text-muted font-12 last-message-time"
+                    data-time="{{ $last_message ? $last_message->created_at : '' }}">
+                    {{ $last_message ? App\Http\Controllers\Helper::timeAgo($last_message->created_at) : '' }}
+                </span>
                 <span class="room-name">{{ $room_name }}</span>
             </h5>
             @php
                 $is_busy = $room->users->where('type', 'partner')->count() && $room->users->where('type', 'customer')->count();
             @endphp
             <p class="mt-1 mb-0 text-muted font-14">
-                <span class="w-25 float-end text-end">
+                <span class="ms-2 float-end text-end">
                     <span class="badge badge-{{ $is_busy ? 'danger' : 'success' }}-lighten">
                         <i class="uil uil-comment-alt-redo"></i>
                     </span>
                 </span>
-                <span class="w-75 new-message text-truncate">{{ $last_message ? $last_message->message : '' }}</span>
+                <span class="new-message text-truncate">{{ $last_message ? $last_message->message : '' }}</span>
             </p>
         </div>
     </div>

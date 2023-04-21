@@ -36,7 +36,7 @@
     <div class="auth-fluid">
         <div class="auth-fluid-form-box">
             <div class="align-items-center d-flex h-100">
-                <div class="card-body">
+                <div class="card-body shadow-lg">
                     <div class="auth-brand text-center text-lg-start">
                         <a href="#" class="logo-dark">
                             <span class="logo-lg">

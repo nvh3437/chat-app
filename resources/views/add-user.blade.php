@@ -14,7 +14,7 @@
             <form action="{{ route('store-user') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card">         
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <h4 class="header-title">@lang('auth.user_infor')</h4>
                         <div class="row g-2">
                             <div class="mb-3 col-md-6">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="card"> 
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <h4 class="header-title">@lang('auth.general_infor')</h4>
                         <div class="row g-2">
                             <div class="mb-3 col-md-6">

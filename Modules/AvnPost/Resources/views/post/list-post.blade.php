@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
                             <thead>
                                 <tr>

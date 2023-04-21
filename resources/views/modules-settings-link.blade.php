@@ -14,7 +14,7 @@
   <div class="row">
     <div class="col-12">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body shadow-lg">
           <div class="list-group">
             @php
               $base_url = URL::to('/');

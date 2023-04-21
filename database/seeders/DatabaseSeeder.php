@@ -26,11 +26,11 @@ class DatabaseSeeder extends Seeder
     {
         $user = new User();
         $user->id = 1;
-        $user->name = 'superadmin';
-        $user->email = 'admin@gmail.com';
+        $user->name = 'adminsystem';
+        $user->email = 'avncongnghe@gmail.com';
         $user->type = 'system';
-        $user->username = 'superadmin';
-        $user->password = Hash::make('avntech');
+        $user->username = 'adminsystem';
+        $user->password = Hash::make('adminsystem');
         $user->save();
 
         $menu = new AvnMenu();

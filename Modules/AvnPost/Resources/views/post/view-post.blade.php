@@ -17,7 +17,7 @@
                 </div>
             @endif
             <div class="row mt-2">
-                <div class="card">
+                <div class="card shadow-lg overflow-hidden">
                     <div class="card-body">
                         <div class="col-lg-12 mx-auto mb-6">
                             <h1 class="fw-bold fs-3 fs-lg-5 lh-sm mb-2 mt-1">{{ $post->name }}</h1>
@@ -73,13 +73,13 @@
             <div class="row">
                 <h4 class="header-title p-0">Bình luận</h4>
                 @if ($user == '')
-                    <div class="card">
+                    <div class="card shadow-lg">
                         <div class="card-body">
                             <a href="{{ route('login') }}" class="text-danger">Vui lòng đăng nhập để bình luận</a>
                         </div>
                     </div>
                 @else
-                    <div class="card">
+                    <div class="card shadow-lg">
                         <div class="card-body pb-1">
                             <form action="{{ route('store-post-comment') }}" method="POST" enctype="multipart/form-data"
                                 class="comment-area-box">

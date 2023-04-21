@@ -17,7 +17,7 @@
                     @csrf
                     @method('PUT')
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body shadow-lg">
                             <h4 class="header-title">Thông tin cơ bản</h4>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -25,17 +25,20 @@
                                         Ảnh đại diện
                                     </label>
                                     <input accept="image/*" type="file" class="form-control" name="img">
-                                    @if($customer->img == '')
-                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="max-width: 200px;"/>
+                                    @if ($customer->img == '')
+                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}"
+                                            style="max-width: 200px;" />
                                     @else
-                                        <img class="img-fluid mt-2" src="{{ asset($customer->img) }}" style="max-width: 200px;"/>
+                                        <img class="img-fluid mt-2" src="{{ asset($customer->img) }}"
+                                            style="max-width: 200px;" />
                                     @endif
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Tên <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="name" value="{{$customer->user->name}}" required>
+                                    <input type="text" class="form-control" name="name"
+                                        value="{{ $customer->user->name }}" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -54,55 +57,26 @@
                                     <label class="form-label mt-2">
                                         Email <span class="text-danger">*</span>
                                     </label>
-                                    <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Cộng tiền
-                                    </label>
-                                    <input type="text" class="form-control" name="add" placeholder="{{$user->addsub_money->last()->add}}">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        Trừ tiền
-                                    </label>
-                                    <input type="text" class="form-control" name="sub" placeholder="{{$user->addsub_money->last()->sub}}">
-                                </div>
-                                <div class="col-lg-12 mt-2">
-                                    <table id="basic-datatable" class="table dt-responsive nowrap w-100 table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Cộng</th>
-                                                <th>Trừ</th>
-                                                <th>Ngày</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($user->addsub_money as $index=>$item)
-                                                <tr>
-                                                    <td>{{$item->add}}</td>
-                                                    <td>{{$item->sub}}</td>
-                                                    <td>{{$item->created_at->toDateString()}}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    <input type="email" class="form-control" name="email" value="{{ $user->email }}"
+                                        required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Số điện thoại
                                     </label>
-                                    <input type="number" class="form-control" name="phone" value="{{$customer->phone}}">
+                                    <input type="number" class="form-control" name="phone"
+                                        value="{{ $customer->phone }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Ngày sinh
                                     </label>
-                                    <input type="date" class="form-control" name="birth" value="{{$customer->birth}}">
+                                    <input type="date" class="form-control" name="birth"
+                                        value="{{ $customer->birth }}">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
-                                        Địa chỉ 
+                                        Địa chỉ
                                     </label>
                                     <textarea class="form-control" name="address" rows="5">{!! $customer->address !!}</textarea>
                                 </div>
@@ -116,14 +90,15 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body shadow-lg">
                             <h4 class="header-title">Thông tin tài khoản</h4>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Tên đăng nhập <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="username" readonly value="{{$user->username}}">
+                                    <input type="text" class="form-control" name="username" readonly
+                                        value="{{ $user->username }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -134,13 +109,68 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center mt-3 mb-3">
-                            <button type="submit" class="btn btn-danger me-3">Cập nhật</button>
-                            <a href="{{ route('list-customer') }}" class="btn btn-secondary ms-3">Quay lại</a>
-                        </div>
+                    <div class="d-flex justify-content-center mt-3 mb-3">
+                        <button type="submit" class="btn btn-danger me-3">Cập nhật</button>
+                        <a href="{{ route('list-customer') }}" class="btn btn-secondary ms-3">Quay lại</a>
                     </div>
                 </form>
+                <div class="card">
+                    <div class="card-body shadow-lg">
+                        <h4 class="header-title">Thông tin số dư</h4>
+                        <form action="{{ route('update-money-customer', $customer->id) }}" method="POST">
+                            @csrf
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Cộng tiền
+                                    </label>
+                                    <input type="number" class="form-control" name="add" placeholder="EG: 1000">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Trừ tiền
+                                    </label>
+                                    <input type="number" class="form-control" name="sub" placeholder="Eg: 1000">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label mt-2">
+                                        Ghi chú
+                                    </label>
+                                    <textarea class="form-control" name="note" rows="5"></textarea>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-danger mt-3">Cập nhật</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h4 class="mt-3">Số dư hiện tại: <span
+                                class="badge bg-primary">{{ number_format($customer->money) }} $</span></h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="table-dark align-middle">
+                                    <tr>
+                                        <th>Ngày</th>
+                                        <th>Cộng/Trừ</th>
+                                        <th>Số dư sau xử lý</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($user->addsub_money as $index => $item)
+                                        <tr class="{{ $item->add ? 'text-success' : 'text-danger' }}">
+                                            <td>{{ date('H:i d/m/Y', strtotime($item->created_at)) }}</td>
+                                            <td>
+                                                <span>{{ $item->add ? '+ ' . number_format($item->add) : '- ' . number_format($item->sub) }}</span>
+                                            </td>
+                                            <td>{{ number_format($item->surplus) }}</td>
+                                            <td>{{ $item->note }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -157,6 +187,8 @@
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
 @endsection
 @section('css')
-    <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet"
+        type="text/css" />
 @endsection

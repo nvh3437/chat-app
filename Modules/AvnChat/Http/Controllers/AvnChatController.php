@@ -48,15 +48,20 @@ class AvnChatController extends Controller
     public function getMessages(Request $request)
     {
         $user = Auth::user();
+        $room_user = null;
         if ($user->type == "system") {
             $room = ChatRoom::findOrFail($request->id);
         } else {
             $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
+            $room_user = $room->room_users->where('user_id', $user->id)->first();
         }
-        $messages = Message::where('room_id', $room->id)
-            ->orderByDesc('created_at')
+        $messages = Message::where('room_id', $room->id);
+        if ($user->type != "system") {
+            $messages = $messages->where('created_at', '>=', $room_user->created_at);
+        }
+        $messages = $messages->orderByDesc('created_at')
             ->with('user:id,name', 'user.profile:id,img')
             ->paginate(10);
         return $messages;
@@ -120,6 +125,8 @@ class AvnChatController extends Controller
             $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
+            // không thể xóa partner
+            $customer_user = User::where('type', '!=', 'partner')->findOrFail($request->user_id);
             $room_user = $room->room_users->where('user_id', $request->user_id)->first();
             $session_chat = $room->session_chats->where('end_on', null)->first();
             if ($session_chat) {

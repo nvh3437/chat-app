@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Sửa bài dịch vụ</h4>
+                    <h4 class="page-title">Sửa bài viết</h4>
                 </div>
             </div>
         </div>
@@ -16,8 +16,8 @@
                 <form action="{{ route('update-post', $post->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card shadow-lg">
+                        <div class="card-body shadow-lg">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label class="form-label">

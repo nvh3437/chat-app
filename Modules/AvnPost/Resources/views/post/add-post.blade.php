@@ -15,7 +15,7 @@
             <div class="col-12">
                 <form action="{{ route('store-post') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="card">
+                    <div class="card shadow-lg">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">

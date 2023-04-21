@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
             $table->text('description')->nullable();
-            $table->text('money')->nullable();
+            $table->string('money')->nullable();
             $table->smallInteger('gender_status')->default(0);
             $table->smallInteger('exp_status')->default(0);
             $table->smallInteger('address_status')->default(0);

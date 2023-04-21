@@ -16,7 +16,7 @@
                 <form action="{{ route('store-partner') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body shadow-lg">
                             <h4 class="header-title">Thông tin cơ bản</h4>
                             <div class="row">
                                 <div class="col-lg-12">
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body shadow-lg">
                             <h4 class="header-title">Thông tin tài khoản</h4>
                             <div class="row">
                                 <div class="col-lg-6">

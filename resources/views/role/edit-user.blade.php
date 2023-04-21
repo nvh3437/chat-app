@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <div class="row">
                             <div class="col-12">
                                 <form action="{{ route('role-update-user', ['id' => $role->id]) }}" method="POST">
@@ -61,22 +61,18 @@
                                                     @endforeach
                                                 </div>
                                                 <div class="col d-flex justify-content-center">
-                                                <button type="submit" class="btn btn-primary">@lang('avnrole.update')</button>
+                                                    <button type="submit"
+                                                        class="btn btn-primary">@lang('avnrole.update')</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
-
                             </div> <!-- end col-->
                         </div>
-                        <!-- end row -->
-
                     </div> <!-- end card-body -->
                 </div> <!-- end card-->
             </div> <!-- end col-->
         </div>
-        <!-- end row-->
-
     </div>
 @endsection

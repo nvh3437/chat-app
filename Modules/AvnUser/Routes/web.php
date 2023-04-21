@@ -32,6 +32,7 @@ Route::prefix('user')->group(function() {
     Route::post('/store-customer', 'CustomerManagerController@storeCustomer')->middleware(['auth', 'permission'])->name('store-customer');
     Route::put('/update-customer/{id}', 'CustomerManagerController@updateCustomer')->middleware(['auth', 'permission'])->name('update-customer');
     Route::delete('/delete-customer/{id}', 'CustomerManagerController@deleteCustomer')->middleware(['auth', 'permission'])->name('delete-customer');
+    Route::post('/update-money-customer/{id}', 'CustomerManagerController@updateMoneyCustomer')->middleware(['auth', 'permission'])->name('update-money-customer');
 
     // Quản lý
     Route::get('/manager-profile', 'ManagerController@managerProfile')->middleware(['auth'])->name('manager-profile');

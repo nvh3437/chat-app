@@ -23,7 +23,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="card-body">
                         <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
                             <thead>
