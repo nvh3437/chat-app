@@ -71,15 +71,37 @@
                                                             href="{{ route('role-edit-permission', [$role->id]) }}">@lang('avnrole.update_permission')</a>
                                                     </li>
                                                     <li>
-                                                        <form action="{{ route('role-destroy', [$role->id]) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="submit"
-                                                                class="dropdown-item">@lang('avnrole.delete')</button>
-                                                        </form>
+                                                        <a href="javascript: void(0);" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-{{ $role->id }}" class="dropdown-item">
+                                                            @lang('avnrole.delete')
+                                                        </a>
                                                     </li>
                                                 </ul>
+                                            </div>
+                                            <!----Modal Delete----->
+                                            <div class="modal fade" id="delete-{{ $role->id }}" tabindex="-1"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-dark">
+                                                            <p>Bạn có muốn xóa không?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                                                            </button>
+                                                            <form action="{{ route('role-destroy', [$role->id]) }}" method="POST">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit" class="btn btn-primary">@lang('avnrole.delete')</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
