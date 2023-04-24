@@ -136,14 +136,22 @@
                                     </div>
                                     <form class="chat-form" name="chat-form" id="chat-form">
                                         <div class="row">
-                                            <div class="col mb-2 mb-sm-0">
+                                            <div class="col-12 files-container d-none">
+                                                <div class="card mb-1 shadow-none border p-2">
+                                                    <div class="row g-1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-2 mb-sm-0 pe-0">
                                                 <input type="text" class="form-control border-0"
                                                     placeholder="Enter your text" id="message" required="">
                                             </div>
-                                            <div class="col-sm-auto">
+                                            <div class="col-sm-auto ps-0">
                                                 <div class="btn-group">
-                                                    {{-- <a href="#" class="btn btn-light"><i
-                                                            class="uil uil-paperclip"></i></a> --}}
+                                                    <label for="files" class="btn btn-light"><i
+                                                            class="uil uil-paperclip"></i></label>
+                                                    <input type="file" accept="image/*" hidden name="files" multiple
+                                                        id="files">
                                                     {{-- <a href="#" class="btn btn-light"> <i
                                                             class='uil uil-smile'></i>
                                                     </a> --}}
@@ -263,6 +271,8 @@
             var last_page = null;
             var load_more = true;
             var count_up = null;
+            var preview_images = [];
+            var images = [];
             // listen chanel 
             window.Echo.private('chat.user.{{ $user->id }}')
                 .listen('.newMessage', (e) => {
@@ -412,7 +422,7 @@
                         update_new_message_in_chat_room_send_by_system(e.message)
                     } else {
                         if (room_id == e.message.room_id) {
-                            add_my_receive_message(e.name, e.img, e.message.message, new Date(e.message
+                            add_my_receive_message(e.name, e.img, e.message, new Date(e.message
                                 .created_at))
                         }
                         update_new_message_in_chat_room(e.message.message, e.message.created_at, e.message
@@ -420,7 +430,46 @@
                         scroll_to_bottom_message_container()
                     }
                 })
-
+            // file upload show pre upload
+            $('#files').change(function(e) {
+                e.preventDefault();
+                if (this.files) {
+                    $('.files-container').removeClass('d-none')
+                    var htm = ''
+                    var filesAmount = this.files.length;
+                    for (i = 0; i < filesAmount; i++) {
+                        file = this.files[i]
+                        images[images.length] = file
+                        var reader = new FileReader();
+                        reader.onload = function(event) {
+                            preview_images[preview_images.length] = event.target.result
+                            htm = '<div class="avatar-sm position-relative img-thumbnail mx-1">'
+                            htm += '<img src="' +
+                                event.target
+                                .result +
+                                '" class="rounded w-100 h-100" style="object-fit: cover;">'
+                            htm +=
+                                '<a class="remove-image" href="javascript: void(0);" style="display: inline;">&#215;</a>'
+                            htm += '</div>'
+                            $('.files-container .row').append(htm)
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                    $("#files").val('')
+                }
+            })
+            // remove file upload
+            $('.files-container').on('click', '.remove-image', function() {
+                var index = preview_images.indexOf($(this).parent().find('img').attr('src'));
+                if (index > -1) { // only splice array when item is found
+                    preview_images.splice(index, 1); // 2nd parameter means remove one item only
+                    images.splice(index, 1); // 2nd parameter means remove one item only
+                    $(this).parent().remove()
+                }
+                if (!preview_images.length) {
+                    $('.files-container').addClass('d-none')
+                }
+            })
             // add users to room
             $('.add-users').on('click', function() {
                 users = $('#add-users-select').val()
@@ -538,6 +587,10 @@
                         'd-none')
                     clearInterval(count_up);
                     clear_message()
+                    preview_images = []
+                    images = []
+                    $('.files-container').addClass('d-none')
+                    $('.files-container .row div').remove()
                     room_id = $(this).data('id')
                     $('.chat-room[data-id=' + room_id + '] .chat-room-badge').addClass('bg-light')
                     // load room info
@@ -615,20 +668,43 @@
             $('#chat-form').on('submit', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                var message = $('#message').val();
-                add_my_send_message(message)
+                var message = $('#message').val()
+                var form_data = new FormData()
+                form_data.append("id", room_id);
+                form_data.append("message", message);
+                random_message_id = Math.floor(Math.random() * 100000000000000)
+                form_data.append("random_message_id", random_message_id);
+                images.forEach(img => {
+                    form_data.append("images[]", img);
+                });
+                add_my_send_message(message, new Date(), true, random_message_id)
                 $('#message').val('')
                 update_new_message_in_chat_room(message)
                 scroll_to_bottom_message_container()
+                preview_images = []
+                images = []
+                $('.files-container').addClass('d-none')
+                $('.files-container .row div').remove()
                 $.ajax({
                     method: 'post',
                     url: "{{ route('send-message-to-user') }}",
                     dataType: "json",
-                    data: {
-                        id: room_id,
-                        message: message
-                    },
-                    success: function(res) {}
+                    processData: false,
+                    contentType: false,
+                    data: form_data,
+                    success: function(res) {
+                        if (res) {
+                            $('div[data-random_message_id=' + res.random_message_id + ']').each(
+                                function(index) {
+                                    htm = '<a href="' +
+                                        res.message_files[index].file + '" target="_blank">'
+                                    htm += '<img src="' + res.message_files[index].file +
+                                        '" class="rounded w-100 h-100 p-0" style="object-fit: cover;">'
+                                    htm += '</a>'
+                                    $(this).html(htm)
+                                })
+                        }
+                    }
                 });
 
             })
@@ -899,7 +975,7 @@
             // ajax response json to messages
             function message_ajax_to_element(res) {
                 var now = new Date()
-                res.data.forEach(message => {
+                res.forEach(message => {
                     date = new Date(message.created_at)
                     var htm = ''
                     if (date.getFullYear() != now.getFullYear() || date.getMonth() != now.getMonth() ||
@@ -915,7 +991,7 @@
                     if (!message.user_id) {
                         add_message_send_by_system(message, false)
                     } else if (message.user_id == {{ $user->id }}) {
-                        add_my_send_message(message.message, date, false)
+                        add_my_send_message(message, date, false)
                     } else {
                         var avatar = 'resources/assets/images/users/avatar-1.jpg'
                         if (message.user.profile && message.user.profile.img) {
@@ -924,7 +1000,7 @@
                         add_my_receive_message(
                             message.user.name,
                             avatar,
-                            message.message,
+                            message,
                             date,
                             false)
                     }
@@ -988,10 +1064,10 @@
                     scrollTop: $(
                             '.conversation-list .simplebar-content-wrapper .simplebar-content')
                         .height()
-                }, 1500);
+                }, 1);
             }
 
-            function add_my_send_message(message, date = new Date(), append = true) {
+            function add_my_send_message(message, date = new Date(), append = true, random_message_id = null) {
                 var htm = '<li class="clearfix odd">'
                 htm += '<div class="chat-avatar">'
                 htm +=
@@ -1002,19 +1078,49 @@
                 htm += '<div class="ctext-wrap">'
                 htm += '<i>{{ $user->name }}</i>'
                 htm += '<p>'
-                htm += message
+                htm += message.message ?? message
                 htm += '</p>'
+                if (message.files && message.files.length) {
+                    htm += '<div class="card mb-1 shadow-none border p-2">'
+                    htm += '<div class="row g-1">'
+                    message.files.forEach(file => {
+                        htm += '<a href="' +
+                            file.file + '" target="_blank">'
+                        htm += '<img src="' + file.file +
+                            '" class="rounded w-100 h-100 p-0" style="object-fit: cover;">'
+                        htm += '</a>'
+                    });
+                    htm += '</div>'
+                    htm += '</div>'
+                } else if (preview_images.length) {
+                    htm += '<div class="card mb-1 shadow-none border p-2">'
+                    htm += '<div class="row g-1">'
+                    preview_images.forEach(preview_image => {
+                        htm +=
+                            '<div class="col-12 position-relative m-0 p-0" data-random_message_id="' +
+                            random_message_id + '">'
+                        htm += '<div class="spinner-border" role="status">'
+                        htm += '<span class="visually-hidden">Loading...</span>'
+                        htm += '</div>'
+                        htm += '</div>'
+                    });
+                    htm += '</div>'
+                    htm += '</div>'
+                }
                 htm += '</div>'
                 htm += '</div>'
-                htm += '<div class="conversation-actions dropdown">'
-                htm +=
-                    '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil-ellipsis-v "></i></button>'
-                htm += '<div class="dropdown-menu">'
-                htm += '<a class="dropdown-item" href="#">Copy Message</a>'
-                htm += '<a class="dropdown-item" href="#">Edit</a>'
-                htm += '<a class="dropdown-item" href="#">Delete</a>'
-                htm += '</div>'
-                htm += '</div>'
+                // if (message.files && message.files.length) {
+
+                //     htm += '<div class="conversation-actions dropdown">'
+                //     htm +=
+                //         '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil-ellipsis-v "></i></button>'
+                //     htm += '<div class="dropdown-menu">'
+                //     htm += '<a class="dropdown-item" href="#">Download</a>'
+                //     // htm += '<a class="dropdown-item" href="#">Edit</a>'
+                //     // htm += '<a class="dropdown-item" href="#">Delete</a>'
+                //     htm += '</div>'
+                //     htm += '</div>'
+                // }
                 htm += '</li>'
                 // $(htm).insertAfter('li.clearfix:last-child');
                 if (append) {
@@ -1035,19 +1141,37 @@
                 htm += '<div class="ctext-wrap">'
                 htm += '<i>' + name + '</i>'
                 htm += '<p>'
-                htm += message
+                htm += message.message
                 htm += '</p>'
+                if (message.files && message.files.length) {
+                    htm +=
+                        '<div class="card mb-1 shadow-none border p-2">'
+                    htm += '<div class="row g-1">'
+                    message.files.forEach(file => {
+                        htm += '<a href="' +
+                            file.file + '" target="_blank">'
+                        htm += '<img src="' + file.file +
+                            '" class="rounded w-100 h-100 p-0" style="object-fit: cover;">'
+                        htm += '</a>'
+                    });
+                    htm += '</div>'
+                    htm += '</div>'
+
+
+                }
                 htm += '</div>'
                 htm += '</div>'
-                htm += '<div class="conversation-actions dropdown">'
-                htm +=
-                    '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil-ellipsis-v"></i></button>'
-                htm += '<div class="dropdown-menu dropdown-menu-end">'
-                htm += '<a class="dropdown-item" href="#">Copy Message</a>'
-                htm += '<a class="dropdown-item" href="#">Edit</a>'
-                htm += '<a class="dropdown-item" href="#">Delete</a>'
-                htm += '</div>'
-                htm += '</div>'
+                // if (message.files && message.files.length) {
+                //     htm += '<div class="conversation-actions dropdown">'
+                //     htm +=
+                //         '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil-ellipsis-v"></i></button>'
+                //     htm += '<div class="dropdown-menu dropdown-menu-end">'
+                //     htm += '<a class="dropdown-item" href="#">Download</a>'
+                //     // htm += '<a class="dropdown-item" href="#">Edit</a>'
+                //     // htm += '<a class="dropdown-item" href="#">Delete</a>'
+                //     htm += '</div>'
+                //     htm += '</div>'
+                // }
                 htm += '</li>'
                 if (append) {
                     $('.conversation-list .simplebar-content').append(htm);
@@ -1127,6 +1251,39 @@
         .select2-selection__choice__remove {
             margin-left: 5px;
             margin-right: 0px;
+        }
+
+        .chat-avatar img {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            border-radius: 100%;
+            padding: 1px 4px 2px;
+            font: 700 13px/13px sans-serif;
+            background: #555;
+            border: 2px solid #fff;
+            color: #FFF;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            -webkit-transition: background 0.5s;
+            transition: background 0.5s;
+        }
+
+        .remove-image:hover {
+            background: #E54E4E;
+            top: -11px;
+            right: -11px;
+        }
+
+        .conversation-list .odd .conversation-text,
+        .conversation-list .conversation-text {
+            width: 100% !important;
         }
     </style>
 @endsection

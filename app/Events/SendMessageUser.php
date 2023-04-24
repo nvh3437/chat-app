@@ -41,7 +41,7 @@ class SendMessageUser implements ShouldBroadcast
         $res = [
             'name' => $this->user_send->name ?? '',
             'img' => asset($this->user_send->profile->img ?? '/resources/assets/images/users/avatar-1.jpg'),
-            'message' => $this->message,
+            'message' => $this->message->load('files'),
             'load_room' => $this->load_room,
             'is_system' => $this->is_system,
         ];

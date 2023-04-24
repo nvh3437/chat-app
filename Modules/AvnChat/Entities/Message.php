@@ -26,4 +26,8 @@ class Message extends Model
     {
         return $this->hasOne(ChatRoom::class, 'id', 'room_id');
     }
+    public function files()
+    {
+        return $this->hasMany(MessageFile::class, 'message_id', 'id');
+    }
 }

@@ -12,21 +12,16 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('avn_chat_messages', function (Blueprint $table) {
+        Schema::create('avn_chat_message_files', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('room_id');
-            $table->foreign('room_id')
+            $table->unsignedBigInteger('message_id');
+            $table->foreign('message_id')
                 ->references('id')
-                ->on('avn_chat_rooms')
+                ->on('avn_chat_messages')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->text('message');
+            $table->text('file');
+            $table->text('name');
             $table->timestamps();
         });
     }
@@ -38,6 +33,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('avn_chat_messages');
+        Schema::dropIfExists('avn_chat_message_files');
     }
 };

@@ -15,7 +15,10 @@ use Modules\AvnChat\Entities\ChatRoom;
 use Modules\AvnChat\Entities\ChatRoomSession;
 use Modules\AvnChat\Entities\ChatRoomSessionUser;
 use Modules\AvnChat\Entities\ChatRoomUser;
+use Modules\AvnChat\Entities\MessageFile;
 use Illuminate\Database\Eloquent\Builder;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\File;
 
 class AvnChatController extends Controller
 {
@@ -41,11 +44,31 @@ class AvnChatController extends Controller
         $message->room_id = $room->id;
         $message->message = $request->message;
         $message->save();
+        $message_files = [];
+        if ($request->hasFile('images')) {
+            if (!file_exists('storage/app/AvnChat')) {
+                File::makeDirectory('storage/app/AvnChat', 0777, true, true);
+            }
+            foreach ($request->file('images') as $image) {
+                $message_file = new MessageFile();
+                $message_file->message_id = $message->id;
+                // save image quality 70
+                $filename = 'r' . $room->id . '-u' . $user_send->id . '-d' . date("Y-m-d-h-i-s-") . rand(00000000, 99999999) . '.' . $image->getClientOriginalExtension();
+                $image_resize = Image::make($image->getRealPath());
+                $path = "storage/app/AvnChat/" . $filename;
+                $image_resize->save($path, 90);
+                $message_file->file = $path;
+                $message_file->name = $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension();
+                // end save thumb
+                $message_file->save();
+                $message_files[] = $message_file;
+            }
+        }
         $user_receives = $room->users->where('id', '!=', $user_send->id);
         foreach ($user_receives as $user_receive) {
             broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, message: $message));
         }
-        return true;
+        return ['message_files' => $message_files, 'random_message_id' => $request->random_message_id];
     }
     public function getMessages(Request $request)
     {
@@ -65,7 +88,7 @@ class AvnChatController extends Controller
         }
         $messages = $messages->orderByDesc('created_at')
             ->with('user:id,name', 'user.profile:id,img')
-            ->paginate(10);
+            ->paginate(10)->load('files');
         return $messages;
     }
     public function getRoomInfo(Request $request)
