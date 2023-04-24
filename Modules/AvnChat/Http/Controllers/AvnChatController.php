@@ -8,6 +8,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Events\SendMessageUser;
+use App\Events\AddUser;
+use App\Events\SendMessageSystem;
 use Modules\AvnChat\Entities\Message;
 use Modules\AvnChat\Entities\ChatRoom;
 use Modules\AvnChat\Entities\ChatRoomSession;
@@ -41,7 +43,7 @@ class AvnChatController extends Controller
         $message->save();
         $user_receives = $room->users->where('id', '!=', $user_send->id);
         foreach ($user_receives as $user_receive) {
-            broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, room_id: $room->id, message: $message));
+            broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, message: $message));
         }
         return true;
     }
@@ -72,9 +74,10 @@ class AvnChatController extends Controller
         if ($user->type == "system") {
             $room = ChatRoom::findOrFail($request->id);
         } else {
-            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
-                $query->where('user_id', $user->id);
-            })->findOrFail($request->id);
+            $room = ChatRoom::findOrFail($request->id);
+            if (!$room->room_users->where('user_id', $user->id)->first()) {
+                return 'false';
+            }
         }
         return AvnChatHelper::roomInfo($user, $room);
     }
@@ -88,11 +91,21 @@ class AvnChatController extends Controller
                 $chat_room_user->user_id = $user->id;
                 $chat_room_user->room_id = $room->id;
                 $chat_room_user->save();
+
+                $message = new Message();
+                $message->room_id = $room->id;
+                $message->message = 'add-user ' . $user->name;
+                $message->save();
             }
             $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
-            return AvnChatHelper::roomInfo($user, $room);
+            if (isset($message)) {
+                foreach ($room->users as $user_in) {
+                    broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -103,18 +116,35 @@ class AvnChatController extends Controller
             $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
+            $messages = collect();
             foreach ($request->users as $user_id) {
                 if (!$room->room_users->where('user_id', $user_id)->count()) {
-                    $chat_room_user = new ChatRoomUser();
-                    $chat_room_user->user_id = $user_id;
-                    $chat_room_user->room_id = $room->id;
-                    $chat_room_user->save();
+                    $user_in = User::find($user_id);
+                    if ($user_in) {
+                        $chat_room_user = new ChatRoomUser();
+                        $chat_room_user->user_id = $user_id;
+                        $chat_room_user->room_id = $room->id;
+                        $chat_room_user->save();
+
+                        $message = new Message();
+                        $message->room_id = $room->id;
+                        $message->message = 'add-user ' . $user_in->name;
+                        $message->save();
+                        $messages->push($message);
+                    }
                 }
             }
             $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
-            return AvnChatHelper::roomInfo($user, $room);
+            if (count($messages)) {
+                foreach ($room->users as $user_in) {
+                    foreach ($messages as $message) {
+                        broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
+                    }
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -126,7 +156,7 @@ class AvnChatController extends Controller
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
             // không thể xóa partner
-            $customer_user = User::where('type', '!=', 'partner')->findOrFail($request->user_id);
+            $user_not_partner = User::where('type', '!=', 'partner')->findOrFail($request->user_id);
             $room_user = $room->room_users->where('user_id', $request->user_id)->first();
             $session_chat = $room->session_chats->where('end_on', null)->first();
             if ($session_chat) {
@@ -143,11 +173,26 @@ class AvnChatController extends Controller
                         $session_user->end_on = date('Y-m-d H:i:s');
                         $session_user->save();
                     }
+
+                    $message = new Message();
+                    $message->room_id = $room->id;
+                    $message->message = 'end-session';
+                    $message->save();
+                    foreach ($room->users as $user_in) {
+                        broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
+                    }
                 }
             }
             $room_user->delete();
-            $room = ChatRoom::findOrFail($request->id);
-            return AvnChatHelper::roomInfo($user, $room);
+            $message = new Message();
+            $message->room_id = $room->id;
+            $message->message = 'kick-user ' . $user_not_partner->name;
+            $message->save();
+            foreach ($room->users as $user_in) {
+                broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
+            }
+            broadcast(new SendMessageUser(user_receive: $user_not_partner, user_send: null, message: $message, is_system: true, load_room: true));
+            return true;
         }
         return false;
     }
@@ -174,7 +219,14 @@ class AvnChatController extends Controller
                 $session_user->user_id = $value->id;
                 $session_user->save();
             }
-            return $session_chat->created_at;
+            $message = new Message();
+            $message->room_id = $room->id;
+            $message->message = 'start-session';
+            $message->save();
+            foreach ($room->users as $user_in) {
+                broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
+            }
+            return AvnChatHelper::roomInfo($user, $room);
         }
         return false;
     }
@@ -199,7 +251,36 @@ class AvnChatController extends Controller
                 $session_user->end_on = date('Y-m-d H:i:s');
                 $session_user->save();
             }
-            return true;
+            $message = new Message();
+            $message->room_id = $room->id;
+            $message->message = 'end-session';
+            $message->save();
+            foreach ($room->users as $user_in) {
+                broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
+            }
+            return AvnChatHelper::roomInfo($user, $room);
+        }
+        return false;
+    }
+    public function getCustomers(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == 'system') {
+            $users = User::where('username', '!=', 'superadmin')
+                ->where('type', 'customer')
+                ->whereDoesntHave('room_users', function (Builder $query) use ($request) {
+                    $query->where('room_id', $request->room_id);
+                })
+                ->select('id', 'name', 'username')
+                ->with('profile:id,img');
+            if ($request->search) {
+                $search = $request->search;
+                $users->where(function ($query) use ($search) {
+                    $query->where('username', 'like', '%' . $search . '%');
+                    $query->orWhere('name', 'like', '%' . $search . '%');
+                });
+            }
+            return $users->get();
         }
         return false;
     }

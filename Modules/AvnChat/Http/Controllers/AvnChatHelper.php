@@ -17,7 +17,7 @@ class AvnChatHelper
 {
     public static function roomInfo($user, $room)
     {
-        $join_room = $room->room_users->where('user_id', $user->id)->count();
+        $joined_room = $room->room_users->where('user_id', $user->id)->count();
         $imgs = $room->img ? [$room->img] : $room->users->pluck('profile.img')->take(3);
         $room_name = $room->name ? $room->name : implode(', ', $room->users->pluck('name')->all());
         if (strlen($room_name) > 100) {
@@ -30,12 +30,12 @@ class AvnChatHelper
             $has_session = $room->session_chats->where('end_on', null)->count();
             $session_start_on = $room->session_chats->where('end_on', null)->first()->created_at;
         } else {
-
             $has_session = false;
             $session_start_on = false;
         }
         return [
-            'join_room' => $join_room,
+            'joined_room' => $joined_room,
+            'room_id' => $room->id,
             'name' => $room_name,
             'imgs' => $imgs,
             'join_users' => $join_users,

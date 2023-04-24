@@ -60,7 +60,7 @@
                                     <label class="form-label mt-2">
                                         Năm kinh nghiệm
                                     </label>
-                                    <input type="text" class="form-control" name="exp" value="{{$partner->exp}}" required>
+                                    <input type="text" class="form-control" name="exp" value="{{$partner->exp}}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">

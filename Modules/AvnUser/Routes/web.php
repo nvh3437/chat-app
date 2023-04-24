@@ -15,8 +15,6 @@ use Modules\AvnUser\Http\Controllers\SocialController;
 
 //-------------------------- Quản lý ---------------------//
 Route::prefix('user')->group(function() {
-
-    Route::get('/get-users', 'ManagerController@getUsers')->middleware(['auth'])->name('get-users');
     // Chuyên gia
     Route::get('/list-partner', 'PartnerManagerController@listPartner')->middleware(['auth', 'permission'])->name('list-partner');
     Route::get('/add-partner', 'PartnerManagerController@addPartner')->middleware(['auth', 'permission'])->name('add-partner');

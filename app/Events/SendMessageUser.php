@@ -16,13 +16,15 @@ class SendMessageUser implements ShouldBroadcast
     public $message;
     public $user_receive;
     public $user_send;
-    public $room_id;
-    public function __construct($user_receive, $user_send, $room_id, $message)
+    public $load_room;
+    public $is_system;
+    public function __construct($user_receive, $user_send = null, $message, $load_room = false, $is_system = false)
     {
         $this->user_receive = $user_receive;
         $this->user_send = $user_send;
-        $this->room_id = $room_id;
         $this->message = $message;
+        $this->load_room = $load_room;
+        $this->is_system = $is_system;
     }
     public function broadcastOn()
     {
@@ -36,6 +38,13 @@ class SendMessageUser implements ShouldBroadcast
     }
     public function broadcastWith()
     {
-        return ['room_id' => $this->room_id, 'name' => $this->user_send->name, 'img' => asset($this->user_send->profile->img ?? '/resources/assets/images/users/avatar-1.jpg'), 'message' => $this->message->message, 'created_at' => $this->message->created_at];
+        $res = [
+            'name' => $this->user_send->name ?? '',
+            'img' => asset($this->user_send->profile->img ?? '/resources/assets/images/users/avatar-1.jpg'),
+            'message' => $this->message,
+            'load_room' => $this->load_room,
+            'is_system' => $this->is_system,
+        ];
+        return $res;
     }
 }

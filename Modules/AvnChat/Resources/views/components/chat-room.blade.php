@@ -33,14 +33,22 @@
             </h5>
             @php
                 $is_busy = $room->users->where('type', 'partner')->count() && $room->users->where('type', 'customer')->count();
+                $working_now = $room->session_chats->where('end_on', '==', null)->count();
             @endphp
             <p class="mt-1 mb-0 text-muted font-14">
-                <span class="ms-2 float-end text-end">
-                    <span class="badge badge-{{ $is_busy ? 'danger' : 'success' }}-lighten">
+                <span class="ms-2 float-end text-end {{ !$room->is_workspace ? 'd-none' : '' }}">
+                    <span
+                        class="badge badge-{{ $working_now ? 'danger' : ($is_busy ? 'warning' : 'success') }}-lighten room-status">
                         <i class="uil uil-comment-alt-redo"></i>
                     </span>
                 </span>
-                <span class="new-message text-truncate">{{ $last_message ? $last_message->message : '' }}</span>
+                <span class="new-message text-truncate">
+                    @if ($last_message && $last_message->user_id)
+                        {{ $last_message->message }}
+                    @elseif ($last_message && strpos($last_message->message, 'add-user') === 0)
+                        {{ 'Đã thêm' . substr($last_message->message, strpos($last_message->message, ' '), strlen($last_message->message)) }}
+                    @endif
+                </span>
             </p>
         </div>
     </div>

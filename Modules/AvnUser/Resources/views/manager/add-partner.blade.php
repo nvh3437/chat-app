@@ -50,7 +50,7 @@
                                     <label class="form-label mt-2">
                                         Năm kinh nghiệm <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="exp" required>
+                                    <input type="text" class="form-control" name="exp">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">

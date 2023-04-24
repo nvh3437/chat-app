@@ -33,11 +33,7 @@ class DatabaseSeeder extends Seeder
         $user->password = Hash::make('adminsystem');
         $user->save();
 
-        $menu = new AvnMenu();
-        $menu->label = 'Trang chủ';
-        $menu->route_name = 'home-page';
-        $menu->icon = 'uil-tachometer-fast';
-        $menu->save();
+        
 
         $setting = new GeneralSettings();
         $setting->key = 'logo';
@@ -126,6 +122,21 @@ class DatabaseSeeder extends Seeder
         $user_roles->user_id = $user->id;
         $user_roles->role_id = $role->id;
         $user_roles->save();
+
+        $menu = new AvnMenu();
+        $menu->label = 'Trang chủ';
+        $menu->route_name = 'dashboard-manager';
+        $menu->icon = 'uil-tachometer-fast';
+        $menu->save();
+        $ss_permis2 = new Permission();
+        $ss_permis2->route_names = 'dashboard-manager';
+        $ss_permis2->name = 'Xem báo cáo';
+        $ss_permis2->menu_id = $menu->id;
+        $ss_permis2->save();
+        $ss_pr2 = new PermissionRole();
+        $ss_pr2->role_id = $role->id;
+        $ss_pr2->permission_id = $ss_permis2->id;
+        $ss_pr2->save();
 
         // Menu Role
         $menu_role = new AvnMenu();

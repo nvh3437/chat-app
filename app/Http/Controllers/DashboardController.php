@@ -6,6 +6,16 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Routing\Controller;
 use App\Models\GeneralSettings;
+use Modules\AvnChat\Entities\Message;
+use Modules\AvnChat\Entities\ChatRoom;
+use Modules\AvnChat\Entities\ChatRoomSession;
+use Modules\AvnChat\Entities\ChatRoomSessionUser;
+use Modules\AvnChat\Entities\ChatRoomUser;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\User;
+use Carbon\Carbon;
+use Modules\AvnUser\Entities\AddSubMoney;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -58,6 +68,83 @@ class DashboardController extends Controller
 
     public function dbManager()
     {
-        return view('dashboard.dashboard-manager');
+        $partners = User::where('type', 'partner')->count();
+        $customers = User::where('type', 'customer')->count();
+        $chat_room_sessions = ChatRoomSession::count();
+
+        $top_customers = User::select()
+            ->addSelect(
+                [
+                    DB::raw('(select sum(`sub`) from `avn_addsubmoney_user` where `user_id` = `users`.`id` and `created_at` >= "' . Carbon::now()->startOfMonth()->startOfDay() . '") as `sub_money`'),
+                    DB::raw('(select count(`id`) from `avn_chat_room_session_users` where `user_id` = `users`.`id` and `created_at` >= "' . Carbon::now()->startOfMonth()->startOfDay() . '") as `count_sessions`')
+                ]
+            )
+            ->where('type', 'customer')
+            ->orderByDesc('sub_money')
+            ->orderByDesc('count_sessions')
+            ->get()->take(5);
+
+        $top_partners = User::select()
+            ->addSelect(
+                [
+                    DB::raw('(select sum(`sub`) from `avn_addsubmoney_user` where `user_id` = `users`.`id` and `created_at` >= "' . Carbon::now()->startOfMonth()->startOfDay() . '") as `sub_money`'),
+                    DB::raw('(select count(`id`) from `avn_chat_room_session_users` where `user_id` = `users`.`id` and `created_at` >= "' . Carbon::now()->startOfMonth()->startOfDay() . '") as `count_sessions`')
+                ]
+            )
+            ->where('type', 'partner')
+            ->orderByDesc('sub_money')
+            ->orderByDesc('count_sessions')
+            ->get()->take(5);
+
+        $new_customers = User::
+            where('type', 'customer')
+            ->where('created_at', '>=', Carbon::now()->startOfMonth()->startOfDay())
+            ->count();
+
+        $new_customers_last_month = User::where('type', 'customer')
+            ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth()->startOfDay())
+            ->where('created_at', '<=', Carbon::now()->subMonth()->endOfMonth()->endOfDay())
+            ->count();
+
+        $new_partners = User::
+            where('type', 'partner')
+            ->where('created_at', '>=', Carbon::now()->startOfMonth()->startOfDay())
+            ->count();
+
+        $new_partners_last_month = User::where('type', 'partner')
+            ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth()->startOfDay())
+            ->where('created_at', '<=', Carbon::now()->subMonth()->endOfMonth()->endOfDay())
+            ->count();
+
+        $new_chat_room_sessions = ChatRoomSession::
+            where('created_at', '>=', Carbon::now()->startOfMonth()->startOfDay())
+            ->count();
+
+        $new_chat_room_sessions_last_month = ChatRoomSession::
+            where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth()->startOfDay())
+            ->where('created_at', '<=', Carbon::now()->subMonth()->endOfMonth()->endOfDay())
+            ->count();
+
+        $new_revernue = AddSubMoney::
+            where('created_at', '>=', Carbon::now()->startOfMonth()->startOfDay())
+            ->sum('sub');
+
+        $new_revernue_last_month = AddSubMoney::
+            where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth()->startOfDay())
+            ->where('created_at', '<=', Carbon::now()->subMonth()->endOfMonth()->endOfDay())
+            ->sum('sub');
+
+        $date = Carbon::now()->startOfYear();
+        $total_revernue = [];
+        for ($i = 0; $i < 12; $i++) {
+            if ($i > 0) {
+                $date = $date->addMonth();
+            }
+            $total_revernue[] = AddSubMoney::
+                where('created_at', '>=', $date->copy()->startOfMonth()->startOfDay())
+                ->where('created_at', '<=', $date->copy()->endOfMonth()->endOfDay())
+                ->sum('sub');
+        }
+        return view('dashboard.dashboard-manager', compact('partners', 'customers', 'chat_room_sessions', 'top_customers', 'top_partners', 'new_customers', 'new_customers_last_month', 'new_partners', 'new_partners_last_month', 'new_chat_room_sessions', 'new_chat_room_sessions_last_month', 'new_revernue', 'new_revernue_last_month', 'total_revernue'));
     }
 }

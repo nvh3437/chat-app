@@ -14,7 +14,8 @@
 Route::prefix('chat')->group(function () {
     Route::get('/', 'AvnChatController@index')->middleware(['auth', 'lastactivity'])->name('chat-index');
     Route::get('/get-messages', 'AvnChatController@getMessages')->middleware(['auth', 'lastactivity'])->name('get-messages');
-    Route::get('/get-room-info', 'AvnChatController@getRoomInfo')->middleware(['auth', 'lastactivity'])->name('get-room-info');
+    Route::get('/get-room-info', 'AvnChatController@getRoomInfo')->middleware(['auth'])->name('get-room-info');
+    Route::get('/get-customers', 'AvnChatController@getCustomers')->middleware(['auth'])->name('get-customers');
     Route::post('/send-message', 'AvnChatController@sendMessage')->middleware('auth', 'lastactivity')->name('send-message-to-user');
     Route::post('/join-room', 'AvnChatController@joinRoom')->middleware('auth', 'lastactivity')->name('join-room-chat');
     Route::post('/add-users', 'AvnChatController@addUsers')->middleware('auth', 'lastactivity')->name('add-users-chat');
