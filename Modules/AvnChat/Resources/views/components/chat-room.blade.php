@@ -6,7 +6,12 @@
             if (strlen($room_name) > 100) {
                 $room_name = substr($room_name, 0, 100);
             }
-            $last_message = $room->messages->last();
+            $room_user = $room->room_users->where('user_id', $user->id)->first();
+            $last_message = Modules\AvnChat\Entities\Message::where('room_id', $room->id);
+            if ($room_user && $user->type != 'system') {
+                $last_message = $last_message->where('created_at', '>=', $room_user->created_at);
+            }
+            $last_message = $last_message->orderByDesc('created_at')->first();
         @endphp
         <div class="me-2 flex-shrink-0 chat-room-img">
             @if (count($imgs) == 1)
