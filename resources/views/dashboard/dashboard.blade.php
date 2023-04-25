@@ -54,32 +54,35 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($contact_header['contact_page_icon']['value'] ?? $logo) }}" class="rounded"
+                        <img src="{{ asset($partner['home_partner_image']['value'] ?? $logo) }}" class="rounded"
                             style="height: 80px; width: 80px; object-fit: cover;" />
-                        @if ($contact_header['contact_page_title']['value'])
-                            <h3><span class="text-primary">{{ $contact_header['contact_page_title']['value'] }}</span>
+                        @if (isset($partner['home_partner_title']) && $partner['home_partner_title']['value'])
+                            <h3><span class="text-primary">{{ $partner['home_partner_title']['value'] }}</span>
                             </h3>
                         @endif
-                        @if ($contact_header['contact_page_description']['value'])
-                            <p class="text-muted mt-2">{{ $contact_header['contact_page_description']['value'] }}</p>
+                        @if (isset($partner['home_partner_description']) && $partner['home_partner_description']['value'])
+                            <p class="text-muted mt-2">{{ $partner['home_partner_description']['value'] }}</p>
                         @endif
                     </div>
                 </div>
             </div>
-            <div class="row g-3 mt-3">
-                @foreach ($partners as $partner)
-                    <div class="col-md-3 text-center">
-                        <div class="card shadow-lg">
-                            <div class="card-body">
-                                <img src="{{ asset($partner->profile->img ?? '/resources/assets/images/users/avatar-1.jpg') }}"
-                                    alt="user-image" class="rounded-circle border border-3 border-success"
-                                    style="object-fit: cover;height: 10.5rem;width: 10.5rem;">
-                                <h4 class="mt-2 mb-0 text-capitalize ">{{ $partner->name }}</h4>
-                                <button class="btn btn-primary mt-2">Đặt lịch</button>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="customers-testimonials" class="owl-carousel">
+                        @foreach ($top_partners as $partner)
+                            <div class="item">
+                                <div class="shadow-effect">
+                                    <img src="{{ asset($partner->profile->img ?? '/resources/assets/images/users/avatar-1.jpg') }}"
+                                        alt="user-image" class=""
+                                        style="object-fit: cover;height: 10.5rem;width: 10.5rem;">
+                                    <h4 class="mt-2 mb-0 text-capitalize ">{{ $partner->name }}</h4>
+                                </div>
+                                <div class="testimonial-name">Đặt lịch</div>
                             </div>
-                        </div>
+                        @endforeach
+
                     </div>
-                @endforeach
+                </div>
             </div>
         </div>
     </section>
@@ -217,4 +220,118 @@
         </div>
     </section>
     <!-- END CONTACT -->
+@endsection
+@section('css')
+    <style>
+        .shadow-effect {
+            background: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            text-align: center;
+            border: 1px solid #ECECEC;
+            box-shadow: 0 19px 38px rgba(0, 0, 0, 0.10), 0 15px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        #customers-testimonials .shadow-effect p {
+            font-family: inherit;
+            font-size: 17px;
+            line-height: 1.5;
+            margin: 0 0 17px 0;
+            font-weight: 300;
+        }
+
+        .testimonial-name {
+            margin: -17px auto 0;
+            display: table;
+            width: auto;
+            background: var(--bs-primary);
+            padding: 9px 35px;
+            border-radius: 12px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 9px 18px rgba(0, 0, 0, 0.12), 0 5px 7px rgba(0, 0, 0, 0.05);
+        }
+
+        #customers-testimonials .item {
+            text-align: center;
+            padding: 50px;
+            margin-bottom: 80px;
+            opacity: .2;
+            -webkit-transform: scale3d(0.8, 0.8, 1);
+            transform: scale3d(0.8, 0.8, 1);
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #customers-testimonials .owl-item.active.center .item {
+            opacity: 1;
+            -webkit-transform: scale3d(1.0, 1.0, 1);
+            transform: scale3d(1.0, 1.0, 1);
+        }
+
+        .owl-carousel .owl-item img {
+            transform-style: preserve-3d;
+            margin: 0 auto 17px;
+        }
+
+        #customers-testimonials.owl-carousel .owl-dots .owl-dot.active span,
+        #customers-testimonials.owl-carousel .owl-dots .owl-dot:hover span {
+            background: var(--bs-primary);
+            transform: translate3d(0px, -50%, 0px) scale(0.7);
+        }
+
+        #customers-testimonials.owl-carousel .owl-dots {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+
+        #customers-testimonials.owl-carousel .owl-dots .owl-dot {
+            display: inline-block;
+        }
+
+        #customers-testimonials.owl-carousel .owl-dots .owl-dot span {
+            background: var(--bs-primary);
+            display: inline-block;
+            height: 20px;
+            margin: 0 2px 5px;
+            transform: translate3d(0px, -50%, 0px) scale(0.3);
+            transform-origin: 50% 50% 0;
+            transition: all 250ms ease-out 0s;
+            width: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('resources/assets/owl/assets/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('resources/assets/owl/assets/owl.theme.default.min.css') }}">
+@endsection
+@section('js')
+    <script src="{{ asset('resources/assets/owl/owl.carousel.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            "use strict";
+            //  TESTIMONIALS CAROUSEL HOOK
+            $('#customers-testimonials').owlCarousel({
+                loop: true,
+                center: true,
+                items: 3,
+                margin: 0,
+                autoplay: true,
+                dots: true,
+                autoplayTimeout: 8500,
+                smartSpeed: 450,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    768: {
+                        items: 2
+                    },
+                    1170: {
+                        items: 3
+                    }
+                }
+            });
+        });
+    </script>
 @endsection
