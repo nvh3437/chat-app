@@ -84,7 +84,7 @@ class RoleController extends Controller
             $role = Role::findOrFail($id);
             $role->name = $request->name;
             $role->save();
-            $super = User::where('username', 'superadmin')->first();
+            $super = User::where('username', 'adminsystem')->first();
             UserRole::where('role_id', $role->id)->where('user_id', '!=', $super->id)
                 ->delete();
             if ($request->users != null) {

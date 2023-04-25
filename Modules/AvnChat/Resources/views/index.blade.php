@@ -882,7 +882,14 @@
 
             function update_new_message_in_chat_room(message, date, room = null) {
                 if (message) {
-                    $(".chat-room[data-id=" + (room ?? room_id) + "] .new-message").html(message);
+                    var html = message;
+                    html = html.replaceAll("<div>", " ")
+                    html = html.replaceAll("</div>", " ")
+                    html = html.replaceAll("<br>", " ")
+                    var div = document.createElement("div");
+                    div.innerHTML = html;
+                    var text = div.textContent || div.innerText || "";
+                    $(".chat-room[data-id=" + (room ?? room_id) + "] .new-message").html(text);
                 }
                 if (date) {
                     $(".chat-room[data-id=" + (room ?? room_id) + "] .last-message-time").html(time_ago(new Date(

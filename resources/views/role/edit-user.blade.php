@@ -46,7 +46,7 @@
                                                 </div>
                                                 <div class="mb-3 row">
                                                     @foreach ($users as $user)
-                                                        @if ($user->username != 'superadmin' && $user->type == 'system')
+                                                        @if ($user->username != 'adminsystem' && $user->type == 'system')
                                                             <div class="col-6 form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     value="{{ $user->id }}"

@@ -27,14 +27,11 @@
     </a>
     <div class="h-100" id="leftside-menu-container" data-simplebar>
         <ul class="side-nav">
-            <li class="side-nav-item no-child">
-                <a href="{{ route('home-page') }}" target="_blank" class="side-nav-link">
-                    <i class="uil-tachometer-fast"></i>
-                        <span>Trang chủ </span>
-                </a>
-            </li>
             @foreach ($menus as $menu)
-                @if (($menu->module == null || ($menu->module != null && Module::find($menu->module)->isEnabled() == 1)) && RoleController::isNotBlock($menu)  && $menu->route_name != 'home-page')
+                @if (
+                    ($menu->module == null || ($menu->module != null && Module::find($menu->module)->isEnabled() == 1)) &&
+                        RoleController::isNotBlock($menu) &&
+                        $menu->route_name != 'home-page')
                     @if ($menu->parent == 0 && count($menu->childrens) > 0)
                         <li class="side-nav-item parent">
                             <a data-bs-toggle="collapse" href="#sidebar-{{ $menu->id }}"
@@ -46,9 +43,9 @@
                             <div class="collapse" id="sidebar-{{ $menu->id }}" style="">
                                 <ul class="side-nav-second-level">
                                     @foreach ($menu->childrens as $children)
-                                        @if (($children->menu == null ||
-                                            ($children->menu != null && Module::find($children->module)->isEnabled() == 1)) &&
-                                            RoleController::isNotBlock($children))
+                                        @if (
+                                            ($children->menu == null || ($children->menu != null && Module::find($children->module)->isEnabled() == 1)) &&
+                                                RoleController::isNotBlock($children))
                                             @if (count($children->childrens) <= 0)
                                                 <li class="children">
                                                     <a
@@ -65,9 +62,10 @@
                                                     <div class="collapse" id="siber-third-{{ $children->id }}">
                                                         <ul class="side-nav-third-level">
                                                             @foreach ($children->childrens as $children1)
-                                                                @if (($children1->module == null ||
-                                                                    ($children1->module != null && Module::find($children1->module)->isEnabled() == 1)) &&
-                                                                    RoleController::isNotBlock($children1))
+                                                                @if (
+                                                                    ($children1->module == null ||
+                                                                        ($children1->module != null && Module::find($children1->module)->isEnabled() == 1)) &&
+                                                                        RoleController::isNotBlock($children1))
                                                                     <li class="children-1">
                                                                         <a
                                                                             href="{{ route($children1->route_name) }}">{{ $children1->label }}</a>
@@ -97,4 +95,3 @@
         <div class="clearfix"></div>
     </div>
 </div>
-

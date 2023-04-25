@@ -44,7 +44,7 @@
                 </span>
                 <span class="new-message text-truncate">
                     @if ($last_message && $last_message->user_id)
-                        {{ $last_message->message }}
+                        {{ str_replace('<br>', ' ', str_replace('</div>', ' ', str_replace('<div>', ' ', $last_message->message))) }}
                     @elseif ($last_message && strpos($last_message->message, 'add-user') === 0)
                         {{ 'Đã thêm' . substr($last_message->message, strpos($last_message->message, ' '), strlen($last_message->message)) }}
                     @endif
