@@ -165,8 +165,11 @@
                                                 </div>
                                             </div>
                                             <div class="col mb-2 mb-sm-0 pe-0">
-                                                <p contenteditable="true" name="message" id="message"
-                                                    class="form-control border-0 mb-0"></p>
+                                                {{-- <p contenteditable="true" name="message" id="message"
+                                                    class="form-control border-0 mb-0"></p> --}}
+                                                <input type="text" class="form-control border-0"
+                                                    placeholder="Enter your text" id="message" required="">
+
                                             </div>
                                             <div class="col-sm-auto ps-0">
                                                 <div class="btn-group">
@@ -718,7 +721,7 @@
             $('#chat-form').on('submit', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                var message = $('#message').html()
+                var message = $('#message').val()
                 var form_data = new FormData()
                 form_data.append("id", room_id);
                 form_data.append("message", message);
@@ -728,7 +731,7 @@
                     form_data.append("images[]", img);
                 });
                 add_my_send_message(message, new Date(), true, random_message_id)
-                $('#message').html('')
+                $('#message').val('')
                 update_new_message_in_chat_room(message)
                 scroll_to_bottom_message_container()
                 preview_images = []
