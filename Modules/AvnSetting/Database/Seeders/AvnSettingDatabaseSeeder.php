@@ -117,6 +117,20 @@ class AvnSettingDatabaseSeeder extends Seeder
         $setting->value = 'resources/assets/images/startupxx.svg';
         $setting->save();
 
+
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'home_partner_title';
+        $setting->value = 'Chuyên gia';
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'home_partner_description';
+        $setting->value = 'Những chuyên gia với dày dặn kinh nghiệm và tận tâm với công việc.';
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'home_partner_image';
+        $setting->value = 'resources/assets/images/heartCopy3.png';
+        $setting->save();
+
         $setting = new GeneralSettings();
         $setting->key = $setting->key ?? 'home_feature_icon';
         $setting->value = 'resources/assets/images/heart.png';

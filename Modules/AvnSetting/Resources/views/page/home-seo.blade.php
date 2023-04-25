@@ -54,6 +54,35 @@
                             </div>
                         </div>
                     </div>
+                    <h4 class="header-title">Chuyên gia</h4>
+                    <div class="card">
+                        <div class="card-body shadow-lg">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label class="form-label">
+                                        Ảnh partner
+                                    </label>
+                                    <input accept="image/*" class="form-control" type="file" name="home_partner_image">
+                                    @if (isset($home_seo['home_partner_image']))
+                                        <img src="{{ asset($home_seo['home_partner_image']['value']) }}" width="200"
+                                            class="mt-2" alt="">
+                                    @endif
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Tiêu đề partner
+                                    </label>
+                                    <textarea class="form-control" name="home_partner_title" rows="3"> {{ isset($home_seo['home_partner_title']) ? $home_seo['home_partner_title']['value'] : '' }}</textarea>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Mô tả partner
+                                    </label>
+                                    <textarea class="form-control" name="home_partner_description" rows="3"> {{ isset($home_seo['home_partner_description']) ? $home_seo['home_partner_description']['value'] : '' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <h4 class="header-title">Banner</h4>
                     <div class="card">
                         <div class="card-body shadow-lg">
@@ -98,7 +127,8 @@
                                     <label class="form-label">
                                         Icon giới thiệu
                                     </label>
-                                    <input accept="image/*" class="form-control" type="file" name="home_feature_icon">
+                                    <input accept="image/*" class="form-control" type="file"
+                                        name="home_feature_icon">
                                     @if (isset($home_seo['home_feature_icon']))
                                         <img src="{{ asset($home_seo['home_feature_icon']['value']) }}" width="200"
                                             class="mt-2" alt="">

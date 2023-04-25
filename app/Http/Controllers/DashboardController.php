@@ -27,6 +27,11 @@ class DashboardController extends Controller
             'home_seo_keywords',
             'home_seo_image',
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
+        $partner = GeneralSettings::whereIn('key', [
+            'home_partner_title',
+            'home_partner_description',
+            'home_partner_image',
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $banner = GeneralSettings::whereIn('key', [
             'home_banner_title',
             'home_banner_description',
@@ -64,7 +69,7 @@ class DashboardController extends Controller
             'email',
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
 
-        $partners = User::where('type', 'partner')
+        $top_partners = User::where('type', 'partner')
             ->withCount([
                 'session_users as has_session_users_count' => function ($q) {
                     $q->whereNull('avn_chat_room_session_users.end_on');
@@ -74,8 +79,8 @@ class DashboardController extends Controller
             ->orderBy('has_session_users_count')
             ->orderByDesc('session_users_count')
             ->get()
-            ->take(4);
-        return view('dashboard.dashboard', compact('home_seo', 'banner', 'feature', 'feature_list_items', 'post_header', 'service_header', 'contact_header', 'company_info', 'partners'));
+            ->take(8);
+        return view('dashboard.dashboard', compact('home_seo', 'banner', 'feature', 'feature_list_items', 'post_header', 'service_header', 'contact_header', 'company_info', 'partner', 'top_partners'));
     }
 
     public function dbManager()

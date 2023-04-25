@@ -24,6 +24,10 @@ class PageController extends Controller
             'home_banner_link',
             'home_banner_image',
 
+            'home_partner_title',
+            'home_partner_description',
+            'home_partner_image',
+
             'home_feature_icon',
             'home_feature_img',
             'home_feature_title',
@@ -64,6 +68,31 @@ class PageController extends Controller
                 $image->storeAs('AvnSetting', $filename);
                 $path = 'storage/app/AvnSetting/' . $filename;
                 $setting->key = $setting->key ?? 'home_seo_image';
+                $setting->value = $path;
+                $setting->save();
+            }
+            // partner
+            $setting = GeneralSettings::where('key', 'home_partner_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_partner_title';
+            $setting->value = trim($request->home_partner_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'home_partner_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'home_partner_description';
+            $setting->value = trim($request->home_partner_description);
+            $setting->save();
+            if ($request->hasFile('home_partner_image') && $request->file('home_partner_image')->isValid()) {
+                $setting = GeneralSettings::where('key', 'home_partner_image')->first() ?? new GeneralSettings();
+                if ($setting->value != null) {
+                    File::delete($setting->value);
+                }
+                $image = $request->file('home_partner_image');
+                $filename = date("Y-m-d-h-i-s-") . rand(00000000, 99999999) . '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnSetting')) {
+                    File::makeDirectory('storage/app/AvnSetting', 0777, true, true);
+                }
+                $image->storeAs('AvnSetting', $filename);
+                $path = 'storage/app/AvnSetting/' . $filename;
+                $setting->key = $setting->key ?? 'home_partner_image';
                 $setting->value = $path;
                 $setting->save();
             }
