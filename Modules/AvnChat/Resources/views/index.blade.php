@@ -21,7 +21,7 @@
     <div class="container">
         <div class="row mt-3">
             <!-- start chat users-->
-            <div class="col-xxl-3 col-xl-6 order-xl-1">
+            <div class="col-xl-3 room-col">
                 <div class="card shadow-lg">
                     <div class="card-body p-0">
                         <ul class="nav nav-tabs nav-bordered">
@@ -100,7 +100,29 @@
             </div>
             <!-- end chat users-->
             <!-- chat area -->
-            <div class="col-xxl-6 col-xl-12 order-xl-2">
+            <div class="col-xl-6 chat-col d-none ">
+                <div class="card shadow-lg mb-0 d-lg-none chat-navigation">
+                    <div class="card-body d-flex align-items-center py-1">
+                        <a href="javascript:void(0);" class="back-to-room-col">
+                            <i class="dripicons-arrow-thin-left fw-bold fs-1 text-primary"></i>
+                        </a>
+                        <div class="d-flex align-items-center chat-room-badge flex-grow-1 p-1">
+                            <div class="me-2 flex-shrink-0 position-relative chat-room-img">
+                                <img src="http://localhost:8080/japan-chat-app/storage/app/AvnUser/21.png"
+                                    class="rounded-circle img-thumbnail p-0"
+                                    style="object-fit: cover; height:48px; width:48px;" alt="partner21">
+                            </div>
+                            <div class="w-100 overflow-hidden">
+                                <h4 class="mt-0 mb-0 room-name">
+                                    partner21
+                                </h4>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0);" class="show-room-info">
+                            <i class="dripicons-align-right  fw-bold fs-1 text-primary"></i>
+                        </a>
+                    </div>
+                </div>
                 <div class="card chat-conatiner d-none shadow-lg">
                     <div class="card-body position-relative">
                         <div class="pre-loader position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
@@ -143,8 +165,8 @@
                                                 </div>
                                             </div>
                                             <div class="col mb-2 mb-sm-0 pe-0">
-                                                <input type="text" class="form-control border-0"
-                                                    placeholder="Enter your text" id="message" required="">
+                                                <p contenteditable="true" name="message" id="message"
+                                                    class="form-control border-0 mb-0"></p>
                                             </div>
                                             <div class="col-sm-auto ps-0">
                                                 <div class="btn-group">
@@ -173,7 +195,7 @@
             <!-- end chat area-->
 
             <!-- start user detail -->
-            <div class="col-xxl-3 col-xl-6 order-xl-1 order-xxl-2">
+            <div class="col-xl-3 info-col">
                 <div class="card chat-info d-none shadow-lg">
                     <div class="card-body position-relative">
                         <div class="pre-loader position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
@@ -194,7 +216,10 @@
                                 Có lỗi xảy ra hãy thông báo với quản trị viên...
                             </div>
                         </div>
-                        <div class="dropdown float-end">
+                        <a href="javascript:void(0);" class="back-to-chat-col position-absolute d-lg-none">
+                            <i class="dripicons-arrow-thin-left fw-bold fs-1 text-primary"></i>
+                        </a>
+                        {{-- <div class="dropdown float-end">
                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="mdi mdi-dots-horizontal"></i>
@@ -207,7 +232,7 @@
                                 <!-- item-->
                                 <a href="javascript:void(0);" class="dropdown-item">Remove</a>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="mt-3 text-center">
                             <img src="#" alt=""
@@ -430,6 +455,24 @@
                         scroll_to_bottom_message_container()
                     }
                 })
+            // back to room lists
+            $('.back-to-room-col').on('click', function() {
+                $('.room-col').removeClass('d-none')
+                $('.chat-col').addClass('d-none')
+                $('.info-col').addClass('d-none')
+            })
+            // show room-info
+            $('.show-room-info').on('click', function() {
+                $('.room-col').addClass('d-none')
+                $('.chat-col').addClass('d-none')
+                $('.info-col').removeClass('d-none')
+            })
+            // back to chat-col
+            $('.back-to-chat-col').on('click', function() {
+                $('.room-col').addClass('d-none')
+                $('.chat-col').removeClass('d-none')
+                $('.info-col').addClass('d-none')
+            })
             // file upload show pre upload
             $('#files').change(function(e) {
                 e.preventDefault();
@@ -575,6 +618,11 @@
             $('.chat-rooms-conatiner').on('click', '.chat-room', function() {
                 $('.chat-conatiner').removeClass('d-none')
                 $('.chat-info').removeClass('d-none')
+                if ($(window).width() <= 992) {
+                    $('.room-col').addClass('d-none')
+                    $('.info-col').addClass('d-none')
+                }
+                $('.chat-col').removeClass('d-none')
                 if (room_id != $(this).data('id')) {
                     $('.chat-room .chat-room-badge.bg-light').removeClass('bg-light')
                     $('.chat-conatiner .pre-loader').removeClass('d-none')
@@ -585,6 +633,8 @@
                     $('.add-users-group').addClass('d-none')
                     $('.workspace-session .time-session').addClass(
                         'd-none')
+                    $('.chat-navigation .room-name').html($(this).find('.room-name').html());
+                    $('.chat-navigation .chat-room-img').html($(this).find('.chat-room-img').html());
                     clearInterval(count_up);
                     clear_message()
                     preview_images = []
@@ -668,7 +718,7 @@
             $('#chat-form').on('submit', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                var message = $('#message').val()
+                var message = $('#message').html()
                 var form_data = new FormData()
                 form_data.append("id", room_id);
                 form_data.append("message", message);
@@ -678,7 +728,7 @@
                     form_data.append("images[]", img);
                 });
                 add_my_send_message(message, new Date(), true, random_message_id)
-                $('#message').val('')
+                $('#message').html('')
                 update_new_message_in_chat_room(message)
                 scroll_to_bottom_message_container()
                 preview_images = []
