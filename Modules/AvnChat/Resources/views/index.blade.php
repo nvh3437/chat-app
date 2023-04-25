@@ -101,7 +101,7 @@
             <!-- end chat users-->
             <!-- chat area -->
             <div class="col-xl-6 chat-col d-none ">
-                <div class="card shadow-lg mb-0 d-lg-none chat-navigation">
+                <div class="card shadow-lg mb-0 d-lg-none chat-navigation shadow-lg rounded-0" style="background: rgba(var(--bs-primary-rgb),0.5);">
                     <div class="card-body d-flex align-items-center py-1">
                         <a href="javascript:void(0);" class="back-to-room-col">
                             <i class="dripicons-arrow-thin-left fw-bold fs-1 text-primary"></i>
