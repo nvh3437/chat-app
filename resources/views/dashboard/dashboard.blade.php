@@ -73,8 +73,8 @@
                             <div class="item">
                                 <div class="shadow-effect">
                                     <img src="{{ asset($partner->profile->img ?? '/resources/assets/images/users/avatar-1.jpg') }}"
-                                        alt="user-image" class=""
-                                        style="object-fit: cover;height: 10.5rem;width: 10.5rem;">
+                                        alt="user-image" class="w-100"
+                                        style="object-fit: cover;height: 10.5rem;">
                                     <h4 class="mt-2 mb-0 text-capitalize ">{{ $partner->name }}</h4>
                                 </div>
                                 <div class="testimonial-name">Đặt lịch</div>
@@ -225,7 +225,7 @@
     <style>
         .shadow-effect {
             background: #fff;
-            padding: 20px;
+            padding: 0 0 20px 0;
             border-radius: 4px;
             text-align: center;
             border: 1px solid #ECECEC;
