@@ -27,7 +27,7 @@ class AvnChatController extends Controller
         // setcookie('Authorization', '' . Auth::user()->createToken('avnchat')->plainTextToken);
         $user = Auth::user();
         if ($user->type == "system") {
-            $rooms = ChatRoom::get();
+            $rooms = ChatRoom::whereHas('users')->get();
         } else {
             $rooms = $user->rooms;
         }
