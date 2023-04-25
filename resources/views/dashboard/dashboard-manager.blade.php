@@ -213,7 +213,6 @@
         </div>
         <div class="row">
             <div class="col-xl-5 col-lg-6">
-
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card widget-flat shadow-lg">

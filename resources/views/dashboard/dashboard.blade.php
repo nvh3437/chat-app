@@ -47,6 +47,43 @@
         </section>
     @endif
     <!-- END HERO -->
+
+    <!-- START TOP PARTNER -->
+    <section class="py-5 border-bottom border-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center">
+                        <img src="{{ asset($contact_header['contact_page_icon']['value'] ?? $logo) }}" class="rounded"
+                            style="height: 80px; width: 80px; object-fit: cover;" />
+                        @if ($contact_header['contact_page_title']['value'])
+                            <h3><span class="text-primary">{{ $contact_header['contact_page_title']['value'] }}</span>
+                            </h3>
+                        @endif
+                        @if ($contact_header['contact_page_description']['value'])
+                            <p class="text-muted mt-2">{{ $contact_header['contact_page_description']['value'] }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mt-3">
+                @foreach ($partners as $partner)
+                    <div class="col-md-3 text-center">
+                        <div class="card shadow-lg">
+                            <div class="card-body">
+                                <img src="{{ asset($partner->profile->img ?? '/resources/assets/images/users/avatar-1.jpg') }}"
+                                    alt="user-image" class="rounded-circle border border-3 border-success"
+                                    style="object-fit: cover;height: 10.5rem;width: 10.5rem;">
+                                <h4 class="mt-2 mb-0 text-capitalize ">{{ $partner->name }}</h4>
+                                <button class="btn btn-primary mt-2">Đặt lịch</button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    <!-- END TOP PARTNER -->
     <!-- START FEATURES 2 -->
     @if (
         $feature['home_feature_link']['value'] ||
@@ -158,7 +195,6 @@
         </section>
     @endif
     <!-- END PRICING -->
-
     <!-- START CONTACT -->
     <section class="py-5 bg-light-lighten border-top border-bottom border-light">
         <div class="container">

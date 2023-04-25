@@ -63,7 +63,19 @@ class DashboardController extends Controller
             'phone_number',
             'email',
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
-        return view('dashboard.dashboard', compact('home_seo', 'banner', 'feature', 'feature_list_items', 'post_header', 'service_header', 'contact_header', 'company_info'));
+
+        $partners = User::where('type', 'partner')
+            ->withCount([
+                'session_users as has_session_users_count' => function ($q) {
+                    $q->whereNull('avn_chat_room_session_users.end_on');
+                },
+                'session_users'
+            ])
+            ->orderBy('has_session_users_count')
+            ->orderByDesc('session_users_count')
+            ->get()
+            ->take(4);
+        return view('dashboard.dashboard', compact('home_seo', 'banner', 'feature', 'feature_list_items', 'post_header', 'service_header', 'contact_header', 'company_info', 'partners'));
     }
 
     public function dbManager()
