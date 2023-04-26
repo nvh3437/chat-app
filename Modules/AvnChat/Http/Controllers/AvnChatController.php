@@ -65,9 +65,7 @@ class AvnChatController extends Controller
             }
         }
         $user_receives = $room->users->where('id', '!=', $user_send->id);
-        foreach ($user_receives as $user_receive) {
-            broadcast(new SendMessageUser(user_receive: $user_receive, user_send: $user_send, message: $message));
-        }
+        broadcast(new SendMessageUser(user_send: $user_send, message: $message));
         return ['message_files' => $message_files, 'random_message_id' => $request->random_message_id];
     }
     public function getMessages(Request $request)
@@ -124,9 +122,7 @@ class AvnChatController extends Controller
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
             if (isset($message)) {
-                foreach ($room->users as $user_in) {
-                    broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
-                }
+                broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true, load_room: true));
             }
             return true;
         }
@@ -161,10 +157,8 @@ class AvnChatController extends Controller
                 $query->where('user_id', $user->id);
             })->findOrFail($request->id);
             if (count($messages)) {
-                foreach ($room->users as $user_in) {
-                    foreach ($messages as $message) {
-                        broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
-                    }
+                foreach ($messages as $message) {
+                    broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true, load_room: true));
                 }
             }
             return true;
@@ -201,9 +195,7 @@ class AvnChatController extends Controller
                     $message->room_id = $room->id;
                     $message->message = 'end-session';
                     $message->save();
-                    foreach ($room->users as $user_in) {
-                        broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
-                    }
+                    broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true, load_room: true));
                 }
             }
             $room_user->delete();
@@ -211,10 +203,7 @@ class AvnChatController extends Controller
             $message->room_id = $room->id;
             $message->message = 'kick-user ' . $user_not_partner->name;
             $message->save();
-            foreach ($room->users as $user_in) {
-                broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
-            }
-            broadcast(new SendMessageUser(user_receive: $user_not_partner, user_send: null, message: $message, is_system: true, load_room: true));
+            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true, load_room: true));
             return true;
         }
         return false;
@@ -246,9 +235,7 @@ class AvnChatController extends Controller
             $message->room_id = $room->id;
             $message->message = 'start-session';
             $message->save();
-            foreach ($room->users as $user_in) {
-                broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
-            }
+            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true, load_room: true));
             return AvnChatHelper::roomInfo($user, $room);
         }
         return false;
@@ -278,9 +265,7 @@ class AvnChatController extends Controller
             $message->room_id = $room->id;
             $message->message = 'end-session';
             $message->save();
-            foreach ($room->users as $user_in) {
-                broadcast(new SendMessageUser(user_receive: $user_in, user_send: null, message: $message, is_system: true, load_room: true));
-            }
+            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true, load_room: true));
             return AvnChatHelper::roomInfo($user, $room);
         }
         return false;

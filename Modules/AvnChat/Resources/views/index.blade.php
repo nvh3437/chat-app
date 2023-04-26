@@ -101,7 +101,8 @@
             <!-- end chat users-->
             <!-- chat area -->
             <div class="col-xl-6 chat-col d-none ">
-                <div class="card shadow-lg mb-0 d-lg-none chat-navigation shadow-lg rounded-0" style="background: rgba(var(--bs-primary-rgb),0.5);">
+                <div class="card shadow-lg mb-0 d-lg-none chat-navigation shadow-lg rounded-0"
+                    style="background: rgba(var(--bs-primary-rgb),0.5);">
                     <div class="card-body d-flex align-items-center py-1">
                         <a href="javascript:void(0);" class="back-to-room-col">
                             <i class="dripicons-arrow-thin-left fw-bold fs-1 text-primary"></i>
@@ -302,95 +303,67 @@
             var preview_images = [];
             var images = [];
             // listen chanel 
-            window.Echo.private('chat.user.{{ $user->id }}')
-                .listen('.newMessage', (e) => {
-                    if (e.is_system) {
-                        var system_message = ''
-                        if (e.message.message.indexOf("add-user") == 0) {
-                            $.ajax({
-                                method: 'get',
-                                url: "{{ route('get-room-info') }}",
-                                dataType: "json",
-                                data: {
-                                    id: e.message.room_id,
-                                },
-                                success: function(res) {
-                                    if (!$('.chat-room[data-id=' + res.room_id + ']').length) {
-                                        var htm =
-                                            '<a href="javascript:void(0);" class="text-body chat-room" data-id="' +
-                                            res.room_id + '">'
-                                        htm +=
-                                            '<div class="d-flex align-items-start mt-1 p-2 chat-room-badge">'
-                                        htm += '<div class="me-2 flex-shrink-0 chat-room-img">'
-                                        if (res.imgs.length == 1)
-                                            htm += '<img src="' + (res.imgs[0] ??
-                                                'resources/assets/images/users/avatar-1.jpg') +
-                                            '" class="rounded-circle img-thumbnail p-0" style="object-fit: cover; height:48px; width:48px;" alt="' +
-                                            res.name + '" />'
-                                        else
+            @foreach ($rooms as $room)
+                window.Echo.private('chat.room.{{ $room->id }}')
+                    .listen('.newMessage', (e) => {
+                        if (e.is_system) {
+                            var system_message = ''
+                            if (e.message.message.indexOf("add-user") == 0) {
+                                $.ajax({
+                                    method: 'get',
+                                    url: "{{ route('get-room-info') }}",
+                                    dataType: "json",
+                                    data: {
+                                        id: e.message.room_id,
+                                    },
+                                    success: function(res) {
+                                        if (!$('.chat-room[data-id=' + res.room_id + ']').length) {
+                                            var htm =
+                                                '<a href="javascript:void(0);" class="text-body chat-room" data-id="' +
+                                                res.room_id + '">'
                                             htm +=
-                                            '<div class="position-relative" style="width: 48px; height: 48px;">'
-                                        res.imgs.forEach((img, index) => {
-                                            htm += '<img src="' + (img ??
-                                                    'resources/assets/images/users/avatar-1.jpg'
-                                                ) +
-                                                '" class="rounded-circle img-thumbnail position-absolute p-0 ' +
-                                                (
-                                                    index % 2 == 0 ? 'top-0 start-0' :
-                                                    'bottom-0 end-0') +
-                                                '" style="object-fit: cover; height:36px; width:36px;" alt="' +
-                                                res.name +
-                                                '" />'
-                                        });
-                                        htm += '</div>'
-                                        htm += '</div>'
-                                        htm += '<div class="w-100 overflow-hidden">'
-                                        htm += '<h5 class="mt-0 mb-0 font-14">'
-                                        htm +=
-                                            '<span class="float-end text-muted font-12 last-message-time" data-time=""></span>'
-                                        htm += '<span class="room-name">' + res.name + '</span>'
-                                        htm += '</h5>'
-                                        htm += '<p class="mt-1 mb-0 text-muted font-14">'
-                                        htm += '<span class="ms-2 float-end text-end d-none">'
-                                        htm += '<span class="badge badge-danger room-status">'
-                                        htm += '<i class="uil uil-comment-alt-redo"></i>'
-                                        htm += '</span>'
-                                        htm += '</span>'
-                                        htm += '<span class="new-message text-truncate"></span>'
-                                        htm += '</p>'
-                                        htm += '</div>'
-                                        htm += '</div>'
-                                        htm += '</a>'
-                                        $('#allChat .simplebar-content').append(htm);
-                                    }
-                                    set_name_image_chat_room(res.name, res.imgs, res.room_id)
-                                    if (res.room_id == room_id) {
-                                        set_name_image_chat_info(res.name, res.imgs)
-                                        update_users_in_list_users_in_room(res.join_users)
-                                        scroll_to_bottom_message_container()
-                                    }
-                                    update_room_status(res.is_workspace, res.has_session, res
-                                        .join_users, res.room_id)
-                                },
-                            });
-                        } else if (e.message.message.indexOf("kick-user") == 0) {
-                            $.ajax({
-                                method: 'get',
-                                url: "{{ route('get-room-info') }}",
-                                dataType: "json",
-                                data: {
-                                    id: e.message.room_id,
-                                },
-                                success: function(res) {
-                                    if (!res) {
-                                        $('.alert-join-room').removeClass('d-none')
-                                        $('#chat-form').addClass('d-none')
-                                    } else {
-                                        if (!res.joined_room) {
-                                            $('.add-users-group').addClass('d-none')
-                                            $('.join-room').removeClass('d-none')
-                                            $('.alert-join-room').removeClass('d-none')
-                                            $('#chat-form').addClass('d-none')
+                                                '<div class="d-flex align-items-start mt-1 p-2 chat-room-badge">'
+                                            htm += '<div class="me-2 flex-shrink-0 chat-room-img">'
+                                            if (res.imgs.length == 1)
+                                                htm += '<img src="' + (res.imgs[0] ??
+                                                    'resources/assets/images/users/avatar-1.jpg') +
+                                                '" class="rounded-circle img-thumbnail p-0" style="object-fit: cover; height:48px; width:48px;" alt="' +
+                                                res.name + '" />'
+                                            else
+                                                htm +=
+                                                '<div class="position-relative" style="width: 48px; height: 48px;">'
+                                            res.imgs.forEach((img, index) => {
+                                                htm += '<img src="' + (img ??
+                                                        'resources/assets/images/users/avatar-1.jpg'
+                                                    ) +
+                                                    '" class="rounded-circle img-thumbnail position-absolute p-0 ' +
+                                                    (
+                                                        index % 2 == 0 ? 'top-0 start-0' :
+                                                        'bottom-0 end-0') +
+                                                    '" style="object-fit: cover; height:36px; width:36px;" alt="' +
+                                                    res.name +
+                                                    '" />'
+                                            });
+                                            htm += '</div>'
+                                            htm += '</div>'
+                                            htm += '<div class="w-100 overflow-hidden">'
+                                            htm += '<h5 class="mt-0 mb-0 font-14">'
+                                            htm +=
+                                                '<span class="float-end text-muted font-12 last-message-time" data-time=""></span>'
+                                            htm += '<span class="room-name">' + res.name + '</span>'
+                                            htm += '</h5>'
+                                            htm += '<p class="mt-1 mb-0 text-muted font-14">'
+                                            htm += '<span class="ms-2 float-end text-end d-none">'
+                                            htm += '<span class="badge badge-danger room-status">'
+                                            htm += '<i class="uil uil-comment-alt-redo"></i>'
+                                            htm += '</span>'
+                                            htm += '</span>'
+                                            htm += '<span class="new-message text-truncate"></span>'
+                                            htm += '</p>'
+                                            htm += '</div>'
+                                            htm += '</div>'
+                                            htm += '</a>'
+                                            $('#allChat .simplebar-content').append(htm);
                                         }
                                         set_name_image_chat_room(res.name, res.imgs, res.room_id)
                                         if (res.room_id == room_id) {
@@ -400,64 +373,96 @@
                                         }
                                         update_room_status(res.is_workspace, res.has_session, res
                                             .join_users, res.room_id)
-                                    }
-                                },
-                            });
-                        } else if (e.message.message.indexOf("start-session") == 0) {
-                            $('.add-users-group').addClass('d-none')
-                            @if ($user->type == 'system')
-                                $('.workspace-session .start-session').addClass(
+                                    },
+                                });
+                            } else if (e.message.message.indexOf("kick-user") == 0) {
+                                $.ajax({
+                                    method: 'get',
+                                    url: "{{ route('get-room-info') }}",
+                                    dataType: "json",
+                                    data: {
+                                        id: e.message.room_id,
+                                    },
+                                    success: function(res) {
+                                        if (!res) {
+                                            $('.alert-join-room').removeClass('d-none')
+                                            $('#chat-form').addClass('d-none')
+                                        } else {
+                                            if (!res.joined_room) {
+                                                $('.add-users-group').addClass('d-none')
+                                                $('.join-room').removeClass('d-none')
+                                                $('.alert-join-room').removeClass('d-none')
+                                                $('#chat-form').addClass('d-none')
+                                            }
+                                            set_name_image_chat_room(res.name, res.imgs, res
+                                                .room_id)
+                                            if (res.room_id == room_id) {
+                                                set_name_image_chat_info(res.name, res.imgs)
+                                                update_users_in_list_users_in_room(res.join_users)
+                                                scroll_to_bottom_message_container()
+                                            }
+                                            update_room_status(res.is_workspace, res.has_session,
+                                                res
+                                                .join_users, res.room_id)
+                                        }
+                                    },
+                                });
+                            } else if (e.message.message.indexOf("start-session") == 0) {
+                                $('.add-users-group').addClass('d-none')
+                                @if ($user->type == 'system')
+                                    $('.workspace-session .start-session').addClass(
+                                        'd-none')
+                                    $('.workspace-session .end-session').removeClass(
+                                        'd-none')
+                                @endif
+                                $('.workspace-session .time-session').removeClass(
                                     'd-none')
-                                $('.workspace-session .end-session').removeClass(
+                                timer_count_up(new Date(e.message.created_at))
+                                update_room_status(true, true, null, e.message.room_id)
+                            } else if (e.message.message.indexOf("end-session") == 0) {
+                                @if ($user->type == 'system')
+                                    $('.add-users-group').removeClass('d-none')
+                                    $('.workspace-session .start-session').removeClass(
+                                        'd-none')
+                                    $('.workspace-session .end-session').addClass(
+                                        'd-none')
+                                @endif
+                                $('.workspace-session .time-session').addClass(
                                     'd-none')
-                            @endif
-                            $('.workspace-session .time-session').removeClass(
-                                'd-none')
-                            timer_count_up(new Date(e.message.created_at))
-                            update_room_status(true, true, null, e.message.room_id)
-                        } else if (e.message.message.indexOf("end-session") == 0) {
-                            @if ($user->type == 'system')
-                                $('.add-users-group').removeClass('d-none')
-                                $('.workspace-session .start-session').removeClass(
-                                    'd-none')
-                                $('.workspace-session .end-session').addClass(
-                                    'd-none')
-                            @endif
-                            $('.workspace-session .time-session').addClass(
-                                'd-none')
-                            @if ($user->type != 'system')
-                                $('.workspace-session').addClass('d-none')
-                            @endif
-                            clearInterval(count_up);
-                            $.ajax({
-                                async: false,
-                                method: 'get',
-                                url: "{{ route('get-room-info') }}",
-                                dataType: "json",
-                                data: {
-                                    id: e.message.room_id,
-                                },
-                                success: function(res) {
-                                    update_room_status(res.is_workspace, res.has_session, res
-                                        .join_users, res.room_id)
-                                },
-                            });
-                        }
+                                @if ($user->type != 'system')
+                                    $('.workspace-session').addClass('d-none')
+                                @endif
+                                clearInterval(count_up);
+                                $.ajax({
+                                    async: false,
+                                    method: 'get',
+                                    url: "{{ route('get-room-info') }}",
+                                    dataType: "json",
+                                    data: {
+                                        id: e.message.room_id,
+                                    },
+                                    success: function(res) {
+                                        update_room_status(res.is_workspace, res.has_session, res
+                                            .join_users, res.room_id)
+                                    },
+                                });
+                            }
 
-                        if (e.message.room_id == room_id) {
-                            add_message_send_by_system(e.message)
+                            if (e.message.room_id == room_id) {
+                                add_message_send_by_system(e.message)
+                            }
+                            update_new_message_in_chat_room_send_by_system(e.message)
+                        } else {
+                            if (room_id == e.message.room_id) {
+                                add_my_receive_message(e.name, e.img, e.message, new Date(e.message
+                                    .created_at))
+                            }
+                            update_new_message_in_chat_room(e.message.message, e.message.created_at, e.message
+                                .room_id)
+                            scroll_to_bottom_message_container()
                         }
-                        update_new_message_in_chat_room_send_by_system(e.message)
-                    } else {
-                        if (room_id == e.message.room_id) {
-                            add_my_receive_message(e.name, e.img, e.message, new Date(e.message
-                                .created_at))
-                        }
-                        update_new_message_in_chat_room(e.message.message, e.message.created_at, e.message
-                            .room_id)
-                        scroll_to_bottom_message_container()
-                    }
-                })
+                    })
+            @endforeach
             // back to room lists
             $('.back-to-room-col').on('click', function() {
                 $('.room-col').removeClass('d-none')

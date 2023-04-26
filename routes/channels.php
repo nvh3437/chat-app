@@ -20,6 +20,9 @@ use App\Models\User;
 Broadcast::channel('chat', function () {
     return true;
 });
-Broadcast::channel('chat.user.{userId}', function ($user, $userId) {
-    return $user->id == $userId;
+Broadcast::channel('chat.room.{room_id}', function ($user, $room_id) {
+    if ($user->type == 'system') {
+        return $user;
+    }
+    return $user->room_users->where('room_id', $room_id)->first();
 });
