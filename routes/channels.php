@@ -26,3 +26,9 @@ Broadcast::channel('chat.room.{room_id}', function ($user, $room_id) {
     }
     return $user->room_users->where('room_id', $room_id)->first();
 });
+Broadcast::channel('joined.user.{room_id}', function ($user, $user_id) {
+    if ($user->id == $user_id) {
+        return $user;
+    }
+    return false;
+});

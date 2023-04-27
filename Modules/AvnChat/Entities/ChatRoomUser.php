@@ -26,4 +26,12 @@ class ChatRoomUser extends Model
     {
         return $this->hasOne(ChatRoom::class, 'id', 'room_id');
     }
+    public function last_received()
+    {
+        return $this->hasOne(Message::class, 'id', 'last_received_id');
+    }
+    public function last_seen()
+    {
+        return $this->hasOne(Message::class, 'id', 'last_seen_id');
+    }
 }
