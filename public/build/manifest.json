@@ -1,22 +1,22 @@
 {
   "resources/js/app.js": {
-    "file": "../public/build/assets/app.f6b3e1dc.js",
+    "file": "../public/build/assets/app.d5df19a7.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_bootstrap.97762981.js"
+      "_bootstrap.3aeef380.js"
     ]
   },
   "Modules/AvnChat/resources/assets/js/chat.js": {
-    "file": "../public/build/assets/chat.74b28e3f.js",
+    "file": "../public/build/assets/chat.f7abb4b0.js",
     "src": "Modules/AvnChat/resources/assets/js/chat.js",
     "isEntry": true,
     "imports": [
-      "_bootstrap.97762981.js"
+      "_bootstrap.3aeef380.js"
     ]
   },
-  "_bootstrap.97762981.js": {
-    "file": "../public/build/assets/bootstrap.97762981.js"
+  "_bootstrap.3aeef380.js": {
+    "file": "../public/build/assets/bootstrap.3aeef380.js"
   },
   "resources/css/app.css": {
     "file": "../public/build/assets/app.a35a35e6.css",

@@ -25,7 +25,7 @@ class AvnUserDatabaseSeeder extends Seeder
         $menu_partner->save();
 
         $permission1 = new Permission();
-        $permission1->route_names = 'list-partner, add-partner, edit-partner, store-partner, update-partner, delete-partner';
+        $permission1->route_names = 'list-partner, add-partner, edit-partner, store-partner, update-partner, delete-partner, update-money-partner';
         $permission1->name = 'Quản lý chuyên gia';
         $permission1->menu_id = $menu_partner->id;
         $permission1->save();
@@ -34,7 +34,7 @@ class AvnUserDatabaseSeeder extends Seeder
         $pr1->role_id = 1;
         $pr1->permission_id = $permission1->id;
         $pr1->save();
-        
+
         $menu_customer = new AvnMenu();
         $menu_customer->label = 'Khách hàng';
         $menu_customer->route_name = 'list-customer';

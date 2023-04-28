@@ -22,6 +22,7 @@ Route::prefix('user')->group(function() {
     Route::post('/store-partner', 'PartnerManagerController@storePartner')->middleware(['auth', 'permission'])->name('store-partner');
     Route::put('/update-partner/{id}', 'PartnerManagerController@updatePartner')->middleware(['auth', 'permission'])->name('update-partner');
     Route::delete('/delete-partner/{id}', 'PartnerManagerController@deletePartner')->middleware(['auth', 'permission'])->name('delete-partner');
+    Route::post('/update-money-partner/{id}', 'PartnerManagerController@updateMoneyPartner')->middleware(['auth', 'permission'])->name('update-money-partner');
 
     // Khách
     Route::get('/list-customer', 'CustomerManagerController@listCustomer')->middleware(['auth', 'permission'])->name('list-customer');

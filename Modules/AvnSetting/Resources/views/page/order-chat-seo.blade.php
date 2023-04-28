@@ -1,22 +1,22 @@
 @extends('layouts.admin')
 @section('title')
-    Cài đặt trang liên hệ
+    Cài đặt trang đặt lịch chuyên gia
 @endsection
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Cài đặt trang liên hệ</h4>
+                    <h4 class="page-title">Cài đặt trang đặt lịch chuyên gia</h4>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('update-contact-seo') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('update-order-chat-seo') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('put')
-                    <h4 class="header-title">SEO Trang liên hệ</h4>
+                    <h4 class="header-title">SEO Trang đặt lịch chuyên gia</h4>
                     <div class="card">
                         <div class="card-body shadow-lg">
                             <div class="row">
@@ -24,14 +24,14 @@
                                     <label class="form-label">
                                         Tiêu đề trang
                                     </label>
-                                    <input class="form-control" type="text" name="contact_seo_title"
-                                        value="{{ isset($contact_seo['contact_seo_title']) ? $contact_seo['contact_seo_title']['value'] : '' }}">
+                                    <input class="form-control" type="text" name="order_chat_seo_title"
+                                        value="{{ isset($order_chat_seo['order_chat_seo_title']) ? $order_chat_seo['order_chat_seo_title']['value'] : '' }}">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Mô tả SEO
                                     </label>
-                                    <textarea class="form-control" name="contact_seo_description" rows="3"> {{ isset($contact_seo['contact_seo_description']) ? $contact_seo['contact_seo_description']['value'] : '' }}</textarea>
+                                    <textarea class="form-control" name="order_chat_seo_description" rows="3"> {{ isset($order_chat_seo['order_chat_seo_description']) ? $order_chat_seo['order_chat_seo_description']['value'] : '' }}</textarea>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
@@ -39,22 +39,22 @@
                                         <br>
                                         <small>Phân tách bởi dấu phẩy Ex: key1, k2y, key3</small>
                                     </label>
-                                    <textarea class="form-control" name="contact_seo_keywords" rows="3"> {{ isset($contact_seo['contact_seo_keywords']) ? $contact_seo['contact_seo_keywords']['value'] : '' }}</textarea>
+                                    <textarea class="form-control" name="order_chat_seo_keywords" rows="3"> {{ isset($order_chat_seo['order_chat_seo_keywords']) ? $order_chat_seo['order_chat_seo_keywords']['value'] : '' }}</textarea>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Ảnh SEO
                                     </label>
-                                    <input accept="image/*" class="form-control" type="file" name="contact_seo_image">
-                                    @if (isset($contact_seo['contact_seo_image']))
-                                        <img src="{{ asset($contact_seo['contact_seo_image']['value']) }}" width="200"
-                                            class="mt-2" alt="">
+                                    <input accept="image/*" class="form-control" type="file" name="order_chat_seo_image">
+                                    @if (isset($order_chat_seo['order_chat_seo_image']))
+                                        <img src="{{ asset($order_chat_seo['order_chat_seo_image']['value']) }}"
+                                            width="200" class="mt-2" alt="">
                                     @endif
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h4 class="header-title">Header trang liên hệ</h4>
+                    <h4 class="header-title">Header trang đặt lịch chuyên gia</h4>
                     <div class="card">
                         <div class="card-body shadow-lg">
                             <div class="row">
@@ -62,23 +62,23 @@
                                     <label class="form-label mt-2">
                                         Icon
                                     </label>
-                                    <input accept="image/*" class="form-control" type="file" name="contact_page_icon">
-                                    @if (isset($contact_seo['contact_page_icon']))
-                                        <img src="{{ asset($contact_seo['contact_page_icon']['value']) }}" width="200"
-                                            class="mt-2" alt="">
+                                    <input accept="image/*" class="form-control" type="file" name="order_chat_page_icon">
+                                    @if (isset($order_chat_seo['order_chat_page_icon']))
+                                        <img src="{{ asset($order_chat_seo['order_chat_page_icon']['value']) }}"
+                                            width="200" class="mt-2" alt="">
                                     @endif
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Tiêu đề
                                     </label>
-                                    <textarea class="form-control" name="contact_page_title" rows="3"> {{ isset($contact_seo['contact_page_title']) ? $contact_seo['contact_page_title']['value'] : '' }}</textarea>
+                                    <textarea class="form-control" name="order_chat_page_title" rows="3"> {{ isset($order_chat_seo['order_chat_page_title']) ? $order_chat_seo['order_chat_page_title']['value'] : '' }}</textarea>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
                                         Mô tả
                                     </label>
-                                    <textarea class="form-control" name="contact_page_description" rows="3"> {{ isset($contact_seo['contact_page_description']) ? $contact_seo['contact_page_description']['value'] : '' }}</textarea>
+                                    <textarea class="form-control" name="order_chat_page_description" rows="3"> {{ isset($order_chat_seo['order_chat_page_description']) ? $order_chat_seo['order_chat_page_description']['value'] : '' }}</textarea>
                                 </div>
                             </div>
                         </div>

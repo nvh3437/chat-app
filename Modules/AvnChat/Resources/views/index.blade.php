@@ -250,18 +250,52 @@
 
                             </div>
                             <h4 class="chat-info-name"></h4>
-                            <button class="btn btn-primary btn-sm mt-1 join-room"><i class='uil uil-plus me-1'></i>Tham
-                                gia</button>
-                            <div class="group text-center mt-1 add-users-group d-none">
-                                <label class="form-label">Thêm thành viên</label>
-                                <!-- Multiple Select -->
-                                <select class="form-control" multiple="multiple" data-placeholder="Choose ..."
-                                    id="add-users-select">
-                                </select>
-                                <button class="btn btn-primary btn-sm mt-1 add-users"><i
-                                        class='uil uil-plus me-1'></i>Thêm
-                                    thành viên</button>
-                            </div>
+                            @if ($user->type == 'system')
+                                <button class="btn btn-primary btn-sm mt-1 join-room"><i
+                                        class='uil uil-plus me-1'></i>Tham
+                                    gia</button>
+                                <div class="group text-center mt-1 add-users-group d-none">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="card-header border-0 pb-0" id="headingOne">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title d-block pt-2 pb-2 text-primary"
+                                                    data-bs-toggle="collapse" href="#change-info" aria-expanded="true"
+                                                    aria-controls="change-info">
+                                                    <i class="mdi mdi-information-outline"></i>
+                                                    Thông tin đoạn chat
+                                                    <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                                </a>
+                                            </h5>
+                                        </div>
+
+                                        <div id="change-info" class="collapse text-center" aria-labelledby="headingOne"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="card-body pt-0">
+                                                <hr>
+                                                <label class="form-label">Tên đoạn chat</label>
+                                                <input type="text" name="room_chat_name" id="room_chat_name"
+                                                    class="form-control">
+                                                <label class="form-label mt-1">Thay đổi ảnh</label>
+                                                <input type="file" name="room_chat_image" id="room_chat_image"
+                                                    class="form-control">
+                                                <button class="btn btn-primary btn-sm mt-1 update-chat-room">
+                                                    <i class='dripicons-checkmark'></i>
+                                                    Cập nhật</button>
+                                                <hr>
+                                                <label class="form-label">Thêm thành viên</label>
+                                                <!-- Multiple Select -->
+                                                <select class="form-control" multiple="multiple"
+                                                    data-placeholder="Choose ..." id="add-users-select">
+                                                </select>
+                                                <button class="btn btn-primary btn-sm mt-1 add-users">
+                                                    <i class='uil uil-plus me-1'></i>
+                                                    Thêm thành viên
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="mt-2 workspace-session d-none">
                                 <hr class="" />
                                 <button class="btn btn-success btn-sm mt-1 start-session d-none"><i
@@ -314,6 +348,10 @@
                 Echo_listen('chat.room.{{ $room->id }}')
             @endforeach
 
+            // reconnect broadcast
+            window.Echo.connector.pusher.connection.bind('unavailable', (payload) => {
+                window.Echo.connector.pusher.connect();
+            });
             /**
              * @param {String} chanel_name
              */
@@ -466,6 +504,17 @@
                     })
 
             }
+
+            // check file upload 
+            $('label[for=files]').on('click', function(e) {
+                if (images.length >= 4) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $.NotificationApp.send("Thất bại", "Tối đa 4 tệp", "bottom-right",
+                        "rgba(0,0,0,0.2)", "error")
+                }
+            })
+
             // file upload show pre upload
             $('#files').change(function(e) {
                 e.preventDefault();
@@ -474,6 +523,11 @@
                     var htm = ''
                     var filesAmount = this.files.length;
                     for (i = 0; i < filesAmount; i++) {
+                        if (images.length >= 4) {
+                            $.NotificationApp.send("Thất bại", "Tối đa 4 tệp", "bottom-right",
+                                "rgba(0,0,0,0.2)", "error")
+                            break
+                        }
                         file = this.files[i]
                         images[images.length] = file
                         var reader = new FileReader();
@@ -666,6 +720,8 @@
                         success: function(res) {
                             set_name_image_chat_info(res.name, res.imgs)
                             update_users_in_list_users_in_room(res.join_users)
+                            $('#room_chat_name').val('')
+                            $('#room_chat_image').val('')
                             if (!res.joined_room) {
                                 $('#chat-form').addClass('d-none')
                                 $('.alert-join-room').removeClass('d-none')
@@ -733,6 +789,42 @@
                 }
             })
 
+            // update room info
+            $(".update-chat-room").on('click', function(param) {
+                var form_data = new FormData()
+                form_data.append("id", room_id);
+                if ($('#room_chat_name').val()) {
+                    form_data.append("room_name", $('#room_chat_name').val());
+                }
+                if ($('#room_chat_image')[0].files.length) {
+                    form_data.append("image", $('#room_chat_image')[0].files[0]);
+                }
+                $.ajax({
+                    method: 'post',
+                    url: "{{ route('update-room-chat') }}",
+                    dataType: "json",
+                    processData: false,
+                    contentType: false,
+                    data: form_data,
+                    success: function(res) {
+                        console.log(res);
+                        set_name_image_chat_room(res.name, [res.img], res.id)
+                        if (res.id == room_id) {
+                            set_name_image_chat_info(res.name, [res.img])
+                        }
+                        $('#room_chat_image').val('')
+                    },
+                    error: function(e) {
+                        if (!navigator.onLine) {
+                            var request = this
+                            setTimeout(function() {
+                                $.ajax(request);
+                            }, 3000);
+                        }
+                    }
+                });
+            })
+
             // send message
             $('#chat-form').on('submit', function(e) {
                 e.preventDefault();
@@ -780,7 +872,7 @@
                                     htm = '<a href="' +
                                         res.message_files[index].file + '" target="_blank">'
                                     htm += '<img src="' + res.message_files[index].file +
-                                        '" class="rounded w-100 h-100 p-0" style="object-fit: cover;">'
+                                        '" class="rounded w-100 h-100 p-0 mt-2" style="object-fit: cover;">'
                                     htm += '</a>'
                                     $(this).html(htm)
                                 }
@@ -798,9 +890,7 @@
                 });
 
             })
-            window.Echo.connector.pusher.connection.bind('unavailable', (payload) => {
-                window.Echo.connector.pusher.connect();
-            });
+
             // remove user
             $('.list-users-in-room').on('click', '.remove-user', function() {
                 var user_id = $(this).attr('data-id');
@@ -1131,7 +1221,6 @@
                 } else {
                     $('.conversation-list .simplebar-content').prepend(htm);
                 }
-                scroll_to_bottom_message_container()
             }
 
             /**
@@ -1300,7 +1389,7 @@
                     htm += '<div class="row g-1">'
                     files.forEach(file => {
                         htm += '<a href="' +
-                            file.file + '" target="_blank">'
+                            file.file + '" target="_blank" class="mt-2">'
                         htm += '<img src="' + file.file +
                             '" class="rounded w-100 h-100 p-0" style="object-fit: cover;">'
                         htm += '</a>'

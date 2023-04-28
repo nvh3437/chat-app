@@ -58,6 +58,14 @@ class AvnSettingDatabaseSeeder extends Seeder
         $menu_contact->parent = $menu->id;
         $menu_contact->save();
 
+        $menu_contact = new AvnMenu();
+        $menu_contact->label = 'Đặt lịch';
+        $menu_contact->route_name = 'order-chat-seo';
+        $menu_contact->icon = 'uil-rss';
+        $menu_contact->module = "AvnSetting";
+        $menu_contact->parent = $menu->id;
+        $menu_contact->save();
+
 
 
         $menu_post = new AvnMenu();
@@ -70,7 +78,7 @@ class AvnSettingDatabaseSeeder extends Seeder
 
 
         $permission1 = new Permission();
-        $permission1->route_names = 'navbar, edit-navbar, store-navbar, update-navbar, delete-navbar, footer, store-footer, update-footer, delete-footer, contact-seo, update-contact-seo, service-seo, update-service-seo, post-seo, update-post-seo, update-footer-des, home-seo, update-home-seo';
+        $permission1->route_names = 'navbar, edit-navbar, store-navbar, update-navbar, delete-navbar, footer, store-footer, update-footer, delete-footer, contact-seo, update-contact-seo, service-seo, update-service-seo, post-seo, update-post-seo, update-footer-des, home-seo, update-home-seo, order-chat-seo, update-order-chat-seo';
         $permission1->name = 'Cài đặt trang';
         $permission1->menu_id = $menu->id;
         $permission1->save();
@@ -233,6 +241,35 @@ class AvnSettingDatabaseSeeder extends Seeder
         $setting->save();
         $setting = new GeneralSettings();
         $setting->key = $setting->key ?? 'contact_page_icon';
+        $setting->value = 'resources/assets/images/heartCopy2.png';
+        $setting->save();
+
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'order_chat_seo_title';
+        $setting->value = 'Order Chat us';
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'order_chat_seo_description';
+        $setting->value = 'Please fill out the following form and we will get back to you shortly. For more information please order chat us.';
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'order_chat_seo_keywords';
+        $setting->value = 'Order Chat us, Get In Touch';
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'order_chat_seo_image';
+        $setting->value = 'resources/assets/images/logo5.png';
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'order_chat_page_title';
+        $setting->value = 'Get In Touch';
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'order_chat_page_description';
+        $setting->value = 'Please fill out the following form and we will get back to you shortly. For more information please order chat us.';
+        $setting->save();
+        $setting = new GeneralSettings();
+        $setting->key = $setting->key ?? 'order_chat_page_icon';
         $setting->value = 'resources/assets/images/heartCopy2.png';
         $setting->save();
 

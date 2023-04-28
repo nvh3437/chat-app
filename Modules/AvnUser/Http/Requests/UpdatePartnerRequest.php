@@ -10,7 +10,6 @@ class UpdatePartnerRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'exp' => 'required',
             'gender' => 'required',
             // 'email' => 'unique:users',
         ];
@@ -20,7 +19,6 @@ class UpdatePartnerRequest extends FormRequest
     {
         return [
             'name.required' => 'Tên chuyên gia không thể bỏ trống',
-            'exp.required' => 'Năm kinh nghiệm không thể bỏ trống',
             'gender.required' => 'Giới tính không thể bỏ trống',
             // 'email.unique' => 'Đã có email này',
         ];

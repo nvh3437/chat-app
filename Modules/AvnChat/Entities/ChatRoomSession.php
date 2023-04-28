@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
 
 class ChatRoomSession extends Model
 {
@@ -21,6 +22,18 @@ class ChatRoomSession extends Model
     public function session_users()
     {
         return $this->hasMany(ChatRoomSessionUser::class, 'session_id', 'id');
+    }
+    public function session_partners()
+    {
+        return $this->hasMany(ChatRoomSessionUser::class, 'session_id', 'id')->whereHas('user', function (Builder $query) {
+            $query->where('type', 'partner');
+        });
+    }
+    public function session_customers()
+    {
+        return $this->hasMany(ChatRoomSessionUser::class, 'session_id', 'id')->whereHas('user', function (Builder $query) {
+            $query->where('type', 'customer');
+        });
     }
     public function users()
     {

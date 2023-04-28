@@ -81,6 +81,33 @@ class AvnChatController extends Controller
             ->first();
         return view('avnchat::index', compact('rooms', 'user', 'lasted_message'));
     }
+    public function updateRoomChat(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->type == 'system') {
+            $room = ChatRoom::findOrFail($request->id);
+            if ($request->room_name) {
+                $room->name = $request->room_name;
+                $room->save();
+            }
+            if ($request->hasFile('image')) {
+                if (!file_exists('storage/app/AvnChat')) {
+                    File::makeDirectory('storage/app/AvnChat', 0777, true, true);
+                }
+                $image = $request->file('image');
+                // save image quality 70
+                $filename = 'r' . $room->id . '-d' . date("Y-m-d-h-i-s-") . rand(00000000, 99999999) . '.' . $image->getClientOriginalExtension();
+                $image_resize = Image::make($image->getRealPath());
+                $path = "storage/app/AvnChat/" . $filename;
+                $image_resize->save($path, 90);
+                $room->img = $path;
+                // end save thumb
+                $room->save();
+            }
+            return $room;
+        }
+        return false;
+    }
     public function sendMessage(Request $request)
     {
         $user_send = Auth::user();
