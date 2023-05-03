@@ -70,7 +70,7 @@
                                     <label class="form-label mt-2">
                                         Giá/Giờ
                                     </label>
-                                    <input type="text" class="form-control" name="money" value="{{ $partner->money }}">
+                                    <input type="text" class="form-control" name="price" value="{{ $partner->price }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">

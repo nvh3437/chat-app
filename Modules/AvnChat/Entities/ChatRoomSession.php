@@ -14,6 +14,7 @@ class ChatRoomSession extends Model
 
     protected $fillable = [];
     protected $table = 'avn_chat_room_sessions';
+    public $name_status = [0 => 'no process', 1 => 'accept', -1 => 'cancel'];
 
     protected static function newFactory()
     {
@@ -33,6 +34,12 @@ class ChatRoomSession extends Model
     {
         return $this->hasMany(ChatRoomSessionUser::class, 'session_id', 'id')->whereHas('user', function (Builder $query) {
             $query->where('type', 'customer');
+        });
+    }
+    public function session_system_users()
+    {
+        return $this->hasMany(ChatRoomSessionUser::class, 'session_id', 'id')->whereHas('user', function (Builder $query) {
+            $query->where('type', 'system');
         });
     }
     public function users()

@@ -581,7 +581,7 @@ class AvnChatDatabaseSeeder extends Seeder
         $menu->save();
 
         $permission1 = new Permission();
-        $permission1->route_names = 'list-session, process-session, delete-session';
+        $permission1->route_names = 'list-session, process-session';
         $permission1->name = 'Quản lý phiên';
         $permission1->menu_id = $menu->id;
         $permission1->save();
