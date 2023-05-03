@@ -3,7 +3,7 @@
         <p class="text-muted text-capitalize"><span class="fw-bold">Số điện thoại:</span><br> <span
                 class="d-block mt-1">{{ $company_info['phone_number']['value'] ?? '' }}</span></p>
         <p class="text-muted text-capitalize mt-4"><span class="fw-bold">Email :</span><br> <span
-                class="d-block mt-1">{{ $company_info['email']['value'] ?? '' }}</span></p>
+                class="d-block mt-1 text-lowercase  ">{{ $company_info['email']['value'] ?? '' }}</span></p>
         <p class="text-muted text-capitalize mt-4"><span class="fw-bold">Địa chỉ :</span><br> <span
                 class="d-block mt-1">{{ $company_info['address']['value'] ?? '' }}</span></p>
     </div>
@@ -16,14 +16,14 @@
                         <label for="fullname" class="form-label text-capitalize">Tên bạn <span
                                 class="text-danger">*</span></label>
                         <input class="form-control form-control-light text-capitalize" type="text" name="name"
-                            placeholder="Nhập tên..." required>
+                            placeholder="Nhập tên..." required value="{{Request()->user()->name ?? ''}}">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="mb-2">
                         <label for="emailaddress" class="form-label text-capitalize">Địa chỉ email</label>
                         <input class="form-control form-control-light" type="email" name="email"
-                            placeholder="Nhập Email...">
+                            placeholder="Nhập Email..." value="{{Request()->user()->email ?? ''}}">
                     </div>
                 </div>
             </div>

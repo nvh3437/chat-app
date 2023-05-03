@@ -11,7 +11,7 @@ class Contact extends Model
 
     protected $fillable = [];
     protected $table = 'avn_contacts';
-
+    public $name_status = [0 => 'no process', 1 => 'accept', -1 => 'cancel'];
     protected static function newFactory()
     {
         return \Modules\AvnContact\Database\factories\ContactFactory::new();

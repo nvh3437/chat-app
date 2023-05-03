@@ -16,6 +16,7 @@ use Modules\AvnUser\Http\Requests\UpdatePartnerRequest;
 use Modules\AvnChat\Entities\ChatRoomUser;
 use Modules\AvnChat\Entities\ChatRoom;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\AvnUser\Entities\AddSubMoney;
 
 class PartnerManagerController extends Controller
 {
@@ -62,7 +63,8 @@ class PartnerManagerController extends Controller
             $partner = new Profile();
             $partner->id = $user->id;
             $partner->exp = $request->exp;
-            $partner->money = $request->money;
+            $partner->money = 0;
+            $partner->price = $request->price;
             $partner->gender = $request->gender;
             $partner->address = $request->address;
             $partner->description = $request->description;
@@ -121,7 +123,7 @@ class PartnerManagerController extends Controller
             // Lưu bảng partner
             $partner = Profile::findOrFail($id);
             $partner->exp = $request->exp;
-            $partner->money = $request->money;
+            $partner->price = $request->price;
             $partner->gender = $request->gender;
             $partner->address = $request->address;
             $partner->description = $request->description;
@@ -154,7 +156,29 @@ class PartnerManagerController extends Controller
             return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
+    public function updateMoneyPartner(Request $request, $id)
+    {
+        try {
+            $partner = Profile::findOrFail($id);
+            if ($request->add) {
+                $partner->money += $request->add;
+            } else {
+                $partner->money -= $request->sub;
+            }
+            $partner->save();
+            $addsub = new AddSubMoney();
+            $addsub->user_id = $partner->id;
+            $addsub->add = $request->add;
+            $addsub->sub = $request->sub;
+            $addsub->note = $request->note;
+            $addsub->surplus = $partner->money;
+            $addsub->save();
 
+            return back()->with('Success', 'Cập nhật thành công');
+        } catch (Exception $e) {
+            return back()->with('Failed', 'Cập nhật thất bại');
+        }
+    }
     public function deletePartner($id)
     {
         try {

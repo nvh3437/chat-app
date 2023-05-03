@@ -10,7 +10,6 @@ class StorePartnerRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'exp' => 'required',
             'gender' => 'required',
             'username' => 'required|unique:users',
             'email' => 'unique:users',
@@ -21,7 +20,6 @@ class StorePartnerRequest extends FormRequest
     {
         return [
             'name.required' => 'Tên chuyên gia không thể bỏ trống',
-            'exp.required' => 'Năm kinh nghiệm không thể bỏ trống',
             'gender.required' => 'Giới tính không thể bỏ trống',
             'username.required' => 'Tên đăng nhập không thể bỏ trống',
             'username.unique' => 'Đã có tên đăng nhập này',

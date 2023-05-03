@@ -25,17 +25,20 @@
                                         Ảnh đại diện
                                     </label>
                                     <input accept="image/*" type="file" class="form-control" name="img">
-                                    @if($partner->img == '')
-                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}" style="max-width: 200px;"/>
+                                    @if ($partner->img == '')
+                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}"
+                                            style="max-width: 200px;" />
                                     @else
-                                        <img class="img-fluid mt-2" src="{{ asset($partner->img) }}" style="max-width: 200px;"/>
+                                        <img class="img-fluid mt-2" src="{{ asset($partner->img) }}"
+                                            style="max-width: 200px;" />
                                     @endif
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Tên <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="name" value="{{$partner->user->name}}" required>
+                                    <input type="text" class="form-control" name="name"
+                                        value="{{ $partner->user->name }}" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -54,35 +57,37 @@
                                     <label class="form-label mt-2">
                                         Email <span class="text-danger">*</span>
                                     </label>
-                                    <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
+                                    <input type="email" class="form-control" name="email" value="{{ $user->email }}"
+                                        required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Năm kinh nghiệm
                                     </label>
-                                    <input type="text" class="form-control" name="exp" value="{{$partner->exp}}">
+                                    <input type="text" class="form-control" name="exp" value="{{ $partner->exp }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Giá/Giờ
                                     </label>
-                                    <input type="text" class="form-control" name="money" value="{{$partner->money}}">
+                                    <input type="text" class="form-control" name="money" value="{{ $partner->money }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Số điện thoại
                                     </label>
-                                    <input type="number" class="form-control" name="phone" value="{{$partner->phone}}">
+                                    <input type="number" class="form-control" name="phone" value="{{ $partner->phone }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Ngày sinh
                                     </label>
-                                    <input type="date" class="form-control" name="birth" value="{{$partner->birth}}">
+                                    <input type="date" class="form-control" name="birth"
+                                        value="{{ $partner->birth }}">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
-                                        Địa chỉ 
+                                        Địa chỉ
                                     </label>
                                     <textarea class="form-control" name="address" rows="5">{!! $partner->address !!}</textarea>
                                 </div>
@@ -103,7 +108,8 @@
                                     <label class="form-label mt-2">
                                         Tên đăng nhập <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="username" value="{{$user->username}}" required readonly>
+                                    <input type="text" class="form-control" name="username"
+                                        value="{{ $user->username }}" required readonly>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -121,6 +127,63 @@
                         </div>
                     </div>
                 </form>
+                <div class="card">
+                    <div class="card-body shadow-lg">
+                        <h4 class="header-title">Thông tin số dư</h4>
+                        <form action="{{ route('update-money-partner', $partner->id) }}" method="POST">
+                            @csrf
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Cộng tiền
+                                    </label>
+                                    <input type="number" class="form-control" name="add" placeholder="EG: 1000">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        Trừ tiền
+                                    </label>
+                                    <input type="number" class="form-control" name="sub" placeholder="Eg: 1000">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label mt-2">
+                                        Ghi chú
+                                    </label>
+                                    <textarea class="form-control" name="note" rows="5"></textarea>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-danger mt-3">Cập nhật</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h4 class="mt-3">Số dư hiện tại: <span
+                                class="badge bg-primary">{{ number_format($partner->money) }} $</span></h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="table-dark align-middle">
+                                    <tr>
+                                        <th>Ngày</th>
+                                        <th>Cộng/Trừ</th>
+                                        <th>Số dư sau xử lý</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($user->addsub_money as $index => $item)
+                                        <tr class="{{ $item->add ? 'text-success' : 'text-danger' }}">
+                                            <td>{{ date('H:i d/m/Y', strtotime($item->created_at)) }}</td>
+                                            <td>
+                                                <span>{{ $item->add ? '+ ' . number_format($item->add) : '- ' . number_format($item->sub) }}</span>
+                                            </td>
+                                            <td>{{ number_format($item->surplus) }}</td>
+                                            <td>{{ $item->note }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -137,6 +200,8 @@
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
 @endsection
 @section('css')
-    <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet"
+        type="text/css" />
 @endsection

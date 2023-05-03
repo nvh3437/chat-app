@@ -347,4 +347,80 @@ class PageController extends Controller
             return back()->with('Failed', 'Cập nhập thất bại');
         }
     }
+
+    public function orderChatSeo()
+    {
+        $order_chat_seo = GeneralSettings::whereIn('key', [
+            'order_chat_seo_title',
+            'order_chat_seo_description',
+            'order_chat_seo_keywords',
+            'order_chat_seo_image',
+            'order_chat_page_title',
+            'order_chat_page_description',
+            'order_chat_page_icon'
+        ])->select('key', 'value')->get()->keyBy('key')->toArray();
+        return view('avnsetting::page.order-chat-seo', compact('order_chat_seo'));
+    }
+
+    public function updateOrderChatSeo(Request $request)
+    {
+        try {
+            $setting = GeneralSettings::where('key', 'order_chat_seo_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'order_chat_seo_title';
+            $setting->value = trim($request->order_chat_seo_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'order_chat_seo_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'order_chat_seo_description';
+            $setting->value = trim($request->order_chat_seo_description);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'order_chat_seo_keywords')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'order_chat_seo_keywords';
+            $setting->value = trim($request->order_chat_seo_keywords);
+            $setting->save();
+            if ($request->hasFile('order_chat_seo_image') && $request->file('order_chat_seo_image')->isValid()) {
+                $setting = GeneralSettings::where('key', 'order_chat_seo_image')->first() ?? new GeneralSettings();
+                if ($setting->value != null) {
+                    File::delete($setting->value);
+                }
+                $image = $request->file('order_chat_seo_image');
+                $filename = date("Y-m-d-h-i-s-") . rand(00000000, 99999999) . '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnSetting')) {
+                    File::makeDirectory('storage/app/AvnSetting', 0777, true, true);
+                }
+                $image->storeAs('AvnSetting', $filename);
+                $path = 'storage/app/AvnSetting/' . $filename;
+                $setting->key = $setting->key ?? 'order_chat_seo_image';
+                $setting->value = $path;
+                $setting->save();
+            }
+            // header
+            $setting = GeneralSettings::where('key', 'order_chat_page_title')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'order_chat_page_title';
+            $setting->value = trim($request->order_chat_page_title);
+            $setting->save();
+            $setting = GeneralSettings::where('key', 'order_chat_page_description')->first() ?? new GeneralSettings();
+            $setting->key = $setting->key ?? 'order_chat_page_description';
+            $setting->value = trim($request->order_chat_page_description);
+            $setting->save();
+            if ($request->hasFile('order_chat_page_icon') && $request->file('order_chat_page_icon')->isValid()) {
+                $setting = GeneralSettings::where('key', 'order_chat_page_icon')->first() ?? new GeneralSettings();
+                if ($setting->value != null) {
+                    File::delete($setting->value);
+                }
+                $image = $request->file('order_chat_page_icon');
+                $filename = date("Y-m-d-h-i-s-") . rand(00000000, 99999999) . '.' . $image->getClientOriginalExtension();
+                if (!file_exists('storage/app/AvnSetting')) {
+                    File::makeDirectory('storage/app/AvnSetting', 0777, true, true);
+                }
+                $image->storeAs('AvnSetting', $filename);
+                $path = 'storage/app/AvnSetting/' . $filename;
+                $setting->key = $setting->key ?? 'order_chat_page_icon';
+                $setting->value = $path;
+                $setting->save();
+            }
+            return back()->with('Success', 'Cập nhập thành công');
+        } catch (Exception $e) {
+            return back()->with('Failed', 'Cập nhập thất bại');
+        }
+    }
 }

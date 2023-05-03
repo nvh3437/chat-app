@@ -33,6 +33,13 @@ class AvnChatHelper
             $has_session = false;
             $session_start_on = false;
         }
+
+        $last_message = Message::where('room_id', $room->id);
+        if ($user && $user->type != 'system') {
+            $last_message = $last_message->where('created_at', '>=', $user->created_at);
+        }
+        $last_message = $last_message->orderByDesc('created_at')->first();
+
         return [
             'joined_room' => $joined_room,
             'room_id' => $room->id,
@@ -42,6 +49,7 @@ class AvnChatHelper
             'is_workspace' => $room->is_workspace,
             'has_session' => $has_session,
             'session_start_on' => $session_start_on,
+            'last_message' => $last_message,
         ];
     }
 }

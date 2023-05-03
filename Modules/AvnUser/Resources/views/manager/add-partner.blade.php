@@ -56,7 +56,7 @@
                                     <label class="form-label mt-2">
                                         Giá/Giờ
                                     </label>
-                                    <input type="text" class="form-control" name="money">
+                                    <input type="text" class="form-control" name="price">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">

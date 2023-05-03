@@ -37,7 +37,7 @@ class AvnChatDatabaseSeeder extends Seeder
         $global_room_user->user_id = 1;
         $global_room_user->save();
 
-        
+
         $user = new User();
         $user->name = 'customer1';
         $user->email = 'customer1@gmail.com';
@@ -553,5 +553,42 @@ class AvnChatDatabaseSeeder extends Seeder
         $partner_chat_room_user->user_id = $user->id;
         $partner_chat_room_user->room_id = $partner_chat_room->id;
         $partner_chat_room_user->save();
+
+
+        $menu = new AvnMenu();
+        $menu->label = 'Đặt lịch';
+        $menu->route_name = 'list-order';
+        $menu->icon = 'mdi mdi-calendar-sync';
+        $menu->module = "AvnChat";
+        $menu->save();
+
+        $permission1 = new Permission();
+        $permission1->route_names = 'list-order, process-order, delete-order';
+        $permission1->name = 'Quản lý đặt lịch';
+        $permission1->menu_id = $menu->id;
+        $permission1->save();
+
+        $pr1 = new PermissionRole();
+        $pr1->role_id = 1;
+        $pr1->permission_id = $permission1->id;
+        $pr1->save();
+        $menu = new AvnMenu();
+
+        $menu->label = 'Phiên làm việc';
+        $menu->route_name = 'list-session';
+        $menu->icon = 'mdi mdi-format-list-checks';
+        $menu->module = "AvnChat";
+        $menu->save();
+
+        $permission1 = new Permission();
+        $permission1->route_names = 'list-session, process-session, delete-session';
+        $permission1->name = 'Quản lý phiên';
+        $permission1->menu_id = $menu->id;
+        $permission1->save();
+
+        $pr1 = new PermissionRole();
+        $pr1->role_id = 1;
+        $pr1->permission_id = $permission1->id;
+        $pr1->save();
     }
 }
