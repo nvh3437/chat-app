@@ -10,6 +10,10 @@ export default defineConfig({
                 'Modules/AvnChat/resources/assets/js/chat.js',
             ],
             refresh: true,
+
         }),
     ],
+    server: {
+        host: '192.168.20.84'
+    },
 });

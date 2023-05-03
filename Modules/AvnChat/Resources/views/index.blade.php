@@ -250,6 +250,9 @@
 
                             </div>
                             <h4 class="chat-info-name"></h4>
+                            <button class="btn btn-primary">
+                                <i class="mdi mdi-phone"></i> Thực hiện cuộc gọi
+                            </button>
                             @if ($user->type == 'system')
                                 <button class="btn btn-primary btn-sm mt-1 join-room"><i
                                         class='uil uil-plus me-1'></i>Tham
@@ -501,6 +504,10 @@
                             $room_chat.parent().prepend($room_chat.clone())
                             $room_chat.remove()
                         });
+                    })
+                    .listen('.newCall', (e) => {
+                        console.log('new call');
+                        console.log(e);
                     })
 
             }
@@ -1700,6 +1707,8 @@
                 $('.chat-col').removeClass('d-none')
                 $('.info-col').addClass('d-none')
             })
+
+
         });
     </script>
 @endsection

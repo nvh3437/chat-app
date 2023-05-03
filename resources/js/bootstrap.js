@@ -54,7 +54,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // window.Ably = Ably;
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
- 
+
 window.Pusher = Pusher;
  
 // Create new echo client instance using ably-js client driver.
@@ -66,6 +66,6 @@ window.Echo = new Echo({
     disableStats: true,
     encrypted: true,
     cluster:'',
-    // authEndpoint: '/japan-chat-app/broadcasting/auth'
+    authEndpoint: '/japan-chat-app/broadcasting/auth'
 
 });

@@ -27,6 +27,11 @@ Route::prefix('chat')->group(function () {
     Route::post('/start-session', 'AvnChatController@startSession')->middleware(['auth', 'lastactivity'])->name('start-session-chat');
     Route::post('/end-session', 'AvnChatController@endSession')->middleware(['auth', 'lastactivity'])->name('end-session-chat');
 
+    Route::post('/video/call', 'VideoChatController@call');
+    Route::post('/video/accept-call', 'VideoChatController@acceptCall');
+
+
+
     Route::get('/order', 'AvnChatOrderController@orderChat')->name('order-chat');
     Route::post('/store-order', 'AvnChatOrderController@storeOrderChat')->name('store-order-chat');
     Route::get('/list-order', 'AvnChatOrderController@listOrder')->middleware(['auth', 'permission'])->name('list-order');
