@@ -9,17 +9,20 @@
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
         "axios": "^1.3.5",
+        "events": "^3.3.0",
+        "global": "^4.4.0",
         "laravel-echo": "^1.15.1",
         "laravel-vite-plugin": "^0.6.0",
         "lodash": "^4.17.19",
         "postcss": "^8.4.6",
+        "process": "^0.11.10",
         "pusher-js": "^8.0.2",
+        "randombytes": "^2.1.0",
+        "simple-peer": "^9.11.1",
         "tailwindcss": "^3.1.0",
-        "vite": "^3.0.0"
+        "vite": "^3.0.0",
+        "vite-compatible-readable-stream": "^3.6.1"
     },
     "dependencies": {
-        "@ably/laravel-echo": "^1.0.2",
-        "ably": "^1.2.38",
-        "simple-peer": "^9.11.1"
     }
 }

@@ -1,24 +1,19 @@
+import { data } from 'autoprefixer';
 import '../../../../../resources/js/bootstrap';
 
-var data = {
-    isFocusMyself: true,
-    callPlaced: false,
-    callPartner: null,
-    mutedAudio: false,
-    mutedVideo: false,
-    videoCallParams: {
-        users: [],
-        stream: null,
-        receivingCall: false,
-        caller: null,
-        callerSignal: null,
-        callAccepted: false,
-        channel: null,
-        peer1: null,
-        peer2: null,
-    },
+import Peer from "simple-peer";
+
+window.props = {
+    turn_url: 'turn:13.215.254.198:3478',
+    turn_username: 'adminsystem',
+    turn_credential: 'adminsystem',
 }
 
+window.data = {
+    my_stream: null,
+    my_peer: null,
+    peer_partner: [],
+}
 
 function getPermissions() {
     if (navigator.mediaDevices === undefined) {
@@ -66,19 +61,109 @@ function getPermissions() {
     });
 }
 
-
-
 function getMediaPermission() {
     return getPermissions()
         .then((stream) => {
-            data.videoCallParams.stream = stream;
-            // if (this.$refs.userVideo) {
-            //     this.$refs.userVideo.srcObject = stream;
-            // }
+            window.data.my_stream = stream;
+            document.querySelector('#my-stream').srcObject = stream;
         })
         .catch((error) => {
             console.log(error);
         });
 }
+window.placeVideoCall = async function () {
 
-getMediaPermission()
+    await getMediaPermission();
+    window.data.my_peer = new Peer({
+        initiator: true,
+        trickle: false,
+        stream: window.data.my_stream,
+        config: {
+            iceServers: [
+                {
+                    urls: props.turn_url,
+                    username: props.turn_username,
+                    credential: props.turn_credential,
+                },
+            ],
+        },
+    });
+    window.data.my_peer.on("signal", (data) => {
+        console.log('my_peer_signal');
+        $.ajax({
+            method: 'post',
+            url: "chat/video/call",
+            dataType: "json",
+            data: {
+                room_id: window.room_id,
+                signal: data,
+            },
+            success: function (res) { }
+        });
+    });
+
+    window.data.my_peer.on("stream", (stream) => {
+        console.log("my peer stream");
+        document.querySelector('#partner-stream-1').srcObject = stream;
+    });
+
+    window.data.my_peer.on("connect", () => {
+        console.log("my peer connected");
+    });
+
+    window.data.my_peer.on("error", (err) => {
+        console.log(err);
+    });
+
+    window.data.my_peer.on("close", () => {
+        console.log("call closed caller");
+    });
+}
+
+window.acceptCall = async function () {
+    await getMediaPermission();
+    window.data.my_peer = new Peer({
+        initiator: false,
+        trickle: false,
+        stream: window.data.my_stream,
+        config: {
+            iceServers: [
+                {
+                    urls: props.turn_url,
+                    username: props.turn_username,
+                    credential: props.turn_credential,
+                },
+            ],
+        },
+    });
+    window.data.my_peer.on("signal", (data) => {
+        $.ajax({
+            method: 'post',
+            url: "chat/video/accept-call",
+            dataType: "json",
+            data: {
+                room_id: call_room_id,
+                signal: data,
+            },
+            success: function (res) { }
+        });
+    });
+
+    window.data.my_peer.on("stream", (stream) => {
+        console.log("my peer stream acceptCall");
+        document.querySelector('#partner-stream-1').srcObject = stream;
+    });
+
+    window.data.my_peer.on("connect", () => {
+        console.log("peer connected acceptCall");
+    });
+
+    window.data.my_peer.on("error", (err) => {
+        console.log(err);
+    });
+
+    window.data.my_peer.on("close", () => {
+        console.log("call closed accepter acceptCall");
+    });
+    window.data.my_peer.signal(window.incoming_call_signal);
+}

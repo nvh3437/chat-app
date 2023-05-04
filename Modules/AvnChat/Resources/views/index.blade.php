@@ -250,7 +250,9 @@
 
                             </div>
                             <h4 class="chat-info-name"></h4>
-                            <button class="btn btn-primary">
+                            <button class="btn btn-primary video-call" data-bs-toggle="modal"
+                                data-bs-target="#start-video-chat" data-id="{{ $user->id }}"
+                                onclick="placeVideoCall()">
                                 <i class="mdi mdi-phone"></i> Thực hiện cuộc gọi
                             </button>
                             @if ($user->type == 'system')
@@ -324,6 +326,48 @@
             <!-- end user detail -->
         </div> <!-- end row-->
     </div> <!-- container -->
+    <div class="modal" tabindex="-1" id="start-video-chat">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <video playsinline autoplay muted id="my-stream" class="img-fluid"></video>
+                    <div class="row">
+                        <video playsinline autoplay muted id="partner-stream-1" class="img-thumbnail col-3"></video>
+                        <video playsinline autoplay muted id="partner-stream-2" class="img-thumbnail col-3"></video>
+                        <video playsinline autoplay muted id="partner-stream-3" class="img-thumbnail col-3"></video>
+                        <video playsinline autoplay muted id="partner-stream-4" class="img-thumbnail col-3"></video>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" id="incoming-call">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cuộc gọi đến</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Cuộc gọi sẽ bắt đầu ngay khi bạn chấp nhận
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary decline-call" data-bs-dismiss="modal">Từ
+                        Chối</button>
+                    <button type="button" class="btn btn-success accept-call" data-bs-dismiss="modal"
+                        onclick="acceptCall()">Chấp nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('js')
     @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
@@ -336,12 +380,15 @@
             }
         });
         $(document).ready(function() {
-            var room_id = null;
-            var last_load = null;
-            var load_more = true;
-            var count_up = null;
-            var preview_images = [];
-            var images = [];
+            room_id = null;
+            call_room_id = null;
+            last_load = null;
+            load_more = true;
+            count_up = null;
+            preview_images = [];
+            images = [];
+            incoming_call_signal = null;
+            var incoming_modal = new bootstrap.Modal(document.getElementById('incoming-call'))
             // listen chanel 
             window.Echo.private('joined.user.{{ $user->id }}')
                 .listen('.newRoom', (e) => {
@@ -506,8 +553,28 @@
                         });
                     })
                     .listen('.newCall', (e) => {
-                        console.log('new call');
-                        console.log(e);
+                        if (e.type === "incomingCall" && e.from != {{ $user->id }}) {
+                            call_room_id = e.room
+                            incoming_modal.show()
+                            console.log('incomingCall');
+                            incoming_call_signal = {
+                                ...e.signal,
+                                sdp: `${e.signal.sdp}\n`,
+                            };
+                        }
+                        if (e.type === "callAccepted" && e.from != {{ $user->id }}) {
+                            console.log('callAccepted');
+                            console.log(e);
+                            if (e.signal.sdp) {
+                                var updatedSignal = {
+                                    ...e.signal,
+                                    sdp: `${e.signal.sdp}\n`,
+                                };
+                            }
+                            console.log(updatedSignal);
+                            window.data.my_peer.signal(updatedSignal);
+
+                        }
                     })
 
             }
@@ -794,6 +861,7 @@
                         }
                     });
                 }
+                $('.video-call').attr('room_id', room_id)
             })
 
             // update room info

@@ -10,36 +10,31 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMessageUser implements ShouldBroadcast
+class VideoCall implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $message;
     public $user_send;
-    public $is_system;
-    public function __construct($user_send = null, $message, $is_system = false)
+    public $room;
+    public $data;
+    public function __construct($user_send = null, $room, $data = null)
     {
         $this->user_send = $user_send;
-        $this->message = $message;
-        $this->is_system = $is_system;
+        $this->room = $room;
+        $this->data = $data;
     }
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.room.' . $this->message->room_id); //private
+        return new PrivateChannel('chat.room.' . $this->room->id); //private
         // return new Channel('chat'); //public
     }
 
     public function broadcastAs()
     {
-        return 'newMessage';
+        return 'newCall';
     }
     public function broadcastWith()
     {
-        $res = [
-            'name' => $this->user_send->name ?? '',
-            'img' => $this->user_send->profile->img ?? 'resources/assets/images/users/avatar-1.jpg',
-            'message' => $this->message->load('files'),
-            'is_system' => $this->is_system,
-        ];
+        $res = $this->data;
         return $res;
     }
 }

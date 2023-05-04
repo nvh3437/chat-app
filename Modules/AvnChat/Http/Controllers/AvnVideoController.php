@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Events\SendMessageUser;
+use App\Events\VideoCall;
 use App\Events\UserJoinedRoom;
 use Modules\AvnChat\Entities\Message;
 use Modules\AvnChat\Entities\ChatRoom;
@@ -25,20 +25,22 @@ class AvnVideoController extends Controller
     public function call(Request $request)
     {
         $user_send = Auth::user();
-        $message = Message::first();
-        $data['userToCall'] = $request->user_to_call;
-        $data['signalData'] = $request->signal_data;
+        $room = ChatRoom::findOrFail($request->room_id);
+        $data['room'] = $request->room_id;
+        $data['signal'] = $request->signal;
         $data['from'] = Auth::id();
         $data['type'] = 'incomingCall';
-        broadcast(new SendMessageUser(user_send: $user_send, message: $message, data: $data))->toOthers();
+        broadcast(new VideoCall(user_send: $user_send, room: $room, data: $data));
+        return $request;
     }
     public function acceptCall(Request $request)
     {
         $user_send = Auth::user();
-        $message = Message::first();
+        $room = ChatRoom::findOrFail($request->room_id);
+        $data['room'] = $request->room_id;
         $data['signal'] = $request->signal;
-        $data['to'] = $request->to;
+        $data['from'] = Auth::id();
         $data['type'] = 'callAccepted';
-        broadcast(new SendMessageUser(user_send: $user_send, message: $message, data: $data))->toOthers();
+        broadcast(new VideoCall(user_send: $user_send, room: $room, data: $data));
     }
 }
