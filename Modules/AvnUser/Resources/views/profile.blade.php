@@ -10,7 +10,8 @@
                 <div class="card text-center">
                     <div class="card-body shadow-lg">
                         @if ($user->profile && $user->profile->img)
-                            <img src="{{ asset($user->profile->img) }}" class="rounded-circle avatar-lg img-thumbnail" style="object-fit: cover;">
+                            <img src="{{ asset($user->profile->img) }}" class="rounded-circle avatar-lg img-thumbnail"
+                                style="object-fit: cover;">
                         @else
                             <img src="{{ asset(config('global.default_avatar')) }}"
                                 class="rounded-circle avatar-lg img-thumbnail">
@@ -289,36 +290,34 @@
                             </div>
 
                         </form>
-                        @if ($user->type == 'customer')
-                            <hr>
-                            <h4 class="mt-3">Số dư hiện tại: <span
-                                    class="badge bg-primary">{{ number_format($user->customer ? $user->customer->money : 0) }}
-                                    $</span></h4>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead class="table-dark align-middle">
-                                        <tr>
-                                            <th>Ngày</th>
-                                            <th>Cộng/Trừ</th>
-                                            <th>Số dư sau xử lý</th>
-                                            <th>Ghi chú</th>
+                        <hr>
+                        <h4 class="mt-3">Số dư hiện tại: <span
+                                class="badge bg-primary">{{ number_format($user->profile->money ?? 0, 2) }}
+                                $</span></h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="table-dark align-middle">
+                                    <tr>
+                                        <th>Ngày</th>
+                                        <th>Cộng/Trừ</th>
+                                        <th>Số dư sau xử lý</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($user->addsub_money as $index => $item)
+                                        <tr class="{{ $item->add ? 'text-success' : 'text-danger' }}">
+                                            <td>{{ date('H:i d/m/Y', strtotime($item->created_at)) }}</td>
+                                            <td>
+                                                <span>{{ $item->add ? '+ ' . number_format($item->add, 2) : '- ' . number_format($item->sub, 2) }}</span>
+                                            </td>
+                                            <td>{{ number_format($item->surplus, 2) }}</td>
+                                            <td>{{ $item->note }}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($user->addsub_money as $index => $item)
-                                            <tr class="{{ $item->add ? 'text-success' : 'text-danger' }}">
-                                                <td>{{ date('H:i d/m/Y', strtotime($item->created_at)) }}</td>
-                                                <td>
-                                                    <span>{{ $item->add ? '+ ' . number_format($item->add) : '- ' . number_format($item->sub) }}</span>
-                                                </td>
-                                                <td>{{ number_format($item->surplus) }}</td>
-                                                <td>{{ $item->note }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

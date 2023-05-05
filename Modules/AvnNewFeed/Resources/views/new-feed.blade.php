@@ -667,6 +667,7 @@
             ckfinder: {
                 uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
             }
+            image: { styles: ['alignCenter']}
         });
     </script>
     <script type="text/javascript">

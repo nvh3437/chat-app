@@ -96,24 +96,35 @@
                                         <td class="fw-bold">
                                             @if ($item->end_on)
                                                 @php
-                                                    if ($item->session_customers->sum('money') && $item->status == 1) {
-                                                        $money = $item->session_customers->sum('money');
+                                                    $time_end = Carbon::createFromFormat('Y-m-d H:i:s', $item->end_on);
+                                                    $created = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at);
+                                                    $seconds = $time_end->diffInSeconds($created);
+                                                    if ($item->status == 1) {
+                                                        $money_partners = $item->session_partners->sum('money');
                                                     } else {
-                                                        $time_end = Carbon::createFromFormat('Y-m-d H:i:s', $item->end_on);
-                                                        $created = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at);
-                                                        $seconds = $time_end->diffInSeconds($created);
                                                         $price = 0;
                                                         foreach ($item->session_partners as $key => $partner) {
                                                             $price += $partner->user->profile->price ?? 0;
                                                         }
                                                         if ($price) {
-                                                            $money = ($price / 3600) * $seconds;
+                                                            $money_partners = ($price / 3600) * $seconds;
+                                                        } else {
+                                                            $money_partners = 0;
                                                         }
                                                     }
-                                                    
+                                                    if ($item->status == 1) {
+                                                        $money_customers = $item->session_customers->sum('money');
+                                                    } else {
+                                                        $money_customers = $money_partners;
+                                                    }
                                                 @endphp
+                                                <span>Chuyên gia: </span>
                                                 <span
-                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money) }}$</span>
+                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_partners, 2) }}$</span>
+                                                <br>
+                                                <span>Khách hàng: </span>
+                                                <span
+                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_customers, 2) }}$</span>
                                             @else
                                                 ...
                                             @endif
@@ -228,25 +239,13 @@
                                                                 toán</label>
                                                             <br>
                                                             @if ($item->end_on)
-                                                                @php
-                                                                    if ($item->session_customers->sum('money') && $item->status == 1) {
-                                                                        $money = $item->session_customers->sum('money');
-                                                                    } else {
-                                                                        $time_end = Carbon::createFromFormat('Y-m-d H:i:s', $item->end_on);
-                                                                        $created = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at);
-                                                                        $seconds = $time_end->diffInSeconds($created);
-                                                                        $price = 0;
-                                                                        foreach ($item->session_partners as $key => $partner) {
-                                                                            $price += $partner->user->profile->price ?? 0;
-                                                                        }
-                                                                        if ($price) {
-                                                                            $money = ($price / 3600) * $seconds;
-                                                                        }
-                                                                    }
-                                                                    
-                                                                @endphp
+                                                                <span>Chuyên gia: </span>
                                                                 <span
-                                                                    class="fw-bold text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money) }}$</span>
+                                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_partners, 2) }}$</span>
+                                                                <br>
+                                                                <span>Khách hàng: </span>
+                                                                <span
+                                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_customers, 2) }}$</span>
                                                             @else
                                                                 ...
                                                             @endif
@@ -278,10 +277,21 @@
                                                                     <div class="input-group mb-2">
                                                                         <label class="input-group-text text-success">Nhận
                                                                             tiền</label>
-                                                                        <input type="number"
+                                                                        @php
+                                                                            $price = $partner->user->profile->price ?? 0;
+                                                                            if ($price) {
+                                                                                $money_partner = ($price / 3600) * $seconds;
+                                                                            } else {
+                                                                                $money_partner = 0;
+                                                                            }
+                                                                        @endphp
+                                                                        <input type="text"
                                                                             class="form-control fw-bold text-success"
+                                                                            data-toggle="input-mask"
+                                                                            data-mask-format="#,##0.00"
+                                                                            data-reverse="true"
                                                                             name="moneys[{{ $partner->id }}]" multiple
-                                                                            value="{{ $partner->status == 1 ? $partner->money : $money }}">
+                                                                            value="{{ number_format($partner->status == 1 ? $partner->money : $money_partner, 2) }}">
                                                                     </div>
                                                                 @endif
                                                             @endforeach
@@ -299,13 +309,23 @@
                                                                     {{ $customer->user->email }}
                                                                 </p>
                                                                 @if ($item->end_on)
+                                                                    @php
+                                                                        if ($money_partners) {
+                                                                            $customer_money = $money_partners / $item->session_customers->count();
+                                                                        } else {
+                                                                            $customer_money = 0;
+                                                                        }
+                                                                    @endphp
                                                                     <div class="input-group mb-2">
                                                                         <label class="input-group-text text-danger">Thanh
                                                                             toán</label>
-                                                                        <input type="number"
+                                                                        <input type="text"
                                                                             class="form-control fw-bold text-success"
+                                                                            data-toggle="input-mask"
+                                                                            data-mask-format="#,##0.00"
+                                                                            data-reverse="true"
                                                                             name="moneys[{{ $customer->id }}]" multiple
-                                                                            value="{{ $customer->status == 1 ? $customer->money : $money }}">
+                                                                            value="{{ number_format($customer->status == 1 ? $customer->money : $customer_money, 2) }}">
                                                                     </div>
                                                                 @endif
                                                             @endforeach

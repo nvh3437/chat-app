@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::table('avn_chat_room_session_users', function (Blueprint $table) {
             $table->tinyInteger('status')->default(0);
-            $table->string('money');
+            $table->string('money')->nullable();
         });
     }
 

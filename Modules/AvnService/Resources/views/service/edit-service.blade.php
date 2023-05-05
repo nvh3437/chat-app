@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">Icon <span class="text-danger">*</span></label>
-                                    <input type="file" class="form-control" name="img">
+                                    <input type="file" class="form-control" name="img" accept="image/*">
                                     <img class="img-fluid mt-2" src="{{ asset($service->img) }}" style="max-width: 200px;" />
                                 </div>
                                 <div class="col-lg-6">
@@ -232,6 +232,7 @@
             ckfinder: {
                 uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
             }
+            image: { styles: ['alignCenter']}
         });
     </script>
 @endsection

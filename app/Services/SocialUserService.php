@@ -40,7 +40,7 @@ class SocialUserService
                     'type' => 'customer',
                 ]);
             }
-            $customer = $user->customer_id;
+            $customer = Profile::find($user->id);
 
             if (!$customer) {
                 $customer = Profile::create([

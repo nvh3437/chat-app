@@ -161,15 +161,15 @@ class PartnerManagerController extends Controller
         try {
             $partner = Profile::findOrFail($id);
             if ($request->add) {
-                $partner->money += $request->add;
+                $partner->money = floatval($partner->money) + floatval(str_replace(",", "", $request->add));
             } else {
-                $partner->money -= $request->sub;
+                $partner->money = floatval($partner->money) + floatval(str_replace(",", "", $request->sub));
             }
             $partner->save();
             $addsub = new AddSubMoney();
             $addsub->user_id = $partner->id;
-            $addsub->add = $request->add;
-            $addsub->sub = $request->sub;
+            $addsub->add = floatval(str_replace(",", "", $request->add));
+            $addsub->sub = floatval(str_replace(",", "", $request->sub));
             $addsub->note = $request->note;
             $addsub->surplus = $partner->money;
             $addsub->save();

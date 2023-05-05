@@ -276,8 +276,8 @@
                                                 <input type="text" name="room_chat_name" id="room_chat_name"
                                                     class="form-control">
                                                 <label class="form-label mt-1">Thay đổi ảnh</label>
-                                                <input type="file" name="room_chat_image" id="room_chat_image"
-                                                    class="form-control">
+                                                <input type="file"accept="image/*" name="room_chat_image"
+                                                    id="room_chat_image" class="form-control">
                                                 <button class="btn btn-primary btn-sm mt-1 update-chat-room">
                                                     <i class='dripicons-checkmark'></i>
                                                     Cập nhật</button>

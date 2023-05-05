@@ -145,15 +145,15 @@ class CustomerManagerController extends Controller
         try {
             $customer = Profile::findOrFail($id);
             if ($request->add) {
-                $customer->money += $request->add;
+                $customer->money = floatval($customer->money) + floatval(str_replace(",", "", $request->add));
             } else {
-                $customer->money -= $request->sub;
+                $customer->money = floatval($customer->money) - floatval(str_replace(",", "", $request->sub));
             }
             $customer->save();
             $addsub = new AddSubMoney();
             $addsub->user_id = $customer->id;
-            $addsub->add = $request->add;
-            $addsub->sub = $request->sub;
+            $addsub->add = floatval(str_replace(",", "", $request->add));
+            $addsub->sub = floatval(str_replace(",", "", $request->sub));
             $addsub->note = $request->note;
             $addsub->surplus = $customer->money;
             $addsub->save();

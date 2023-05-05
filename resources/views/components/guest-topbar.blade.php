@@ -79,7 +79,8 @@
                             @endphp
                             @if ($user)
                                 <span class="account-user-name">{{ $user->name }}</span>
-                                <span class="account-position">0 $</span>
+                                <span class="account-position">{{ number_format($user->profile->money ?? 0, 2) }}
+                                    $</span>
                             @endif
                         </span>
                     </a>

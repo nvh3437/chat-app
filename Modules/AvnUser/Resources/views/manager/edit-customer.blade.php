@@ -124,13 +124,17 @@
                                     <label class="form-label mt-2">
                                         Cộng tiền
                                     </label>
-                                    <input type="number" class="form-control" name="add" placeholder="EG: 1000">
+                                    <input type="text" class="form-control" data-toggle="input-mask"
+                                        data-mask-format="#,##0.00" data-reverse="true" name="add"
+                                        placeholder="EG: 1000.00">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         Trừ tiền
                                     </label>
-                                    <input type="number" class="form-control" name="sub" placeholder="Eg: 1000">
+                                    <input type="text" class="form-control" data-toggle="input-mask"
+                                        data-mask-format="#,##0.00" data-reverse="true" name="sub"
+                                        placeholder="EG: 1000.00">
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label mt-2">
@@ -144,7 +148,7 @@
                             </div>
                         </form>
                         <h4 class="mt-3">Số dư hiện tại: <span
-                                class="badge bg-primary">{{ number_format($customer->money) }} $</span></h4>
+                                class="badge bg-primary">{{ number_format($customer->money, 2) }} $</span></h4>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="table-dark align-middle">
@@ -160,9 +164,9 @@
                                         <tr class="{{ $item->add ? 'text-success' : 'text-danger' }}">
                                             <td>{{ date('H:i d/m/Y', strtotime($item->created_at)) }}</td>
                                             <td>
-                                                <span>{{ $item->add ? '+ ' . number_format($item->add) : '- ' . number_format($item->sub) }}</span>
+                                                <span>{{ $item->add ? '+ ' . number_format($item->add, 2) : '- ' . number_format($item->sub, 2) }}</span>
                                             </td>
-                                            <td>{{ number_format($item->surplus) }}</td>
+                                            <td>{{ number_format($item->surplus, 2) }}</td>
                                             <td>{{ $item->note }}</td>
                                         </tr>
                                     @endforeach

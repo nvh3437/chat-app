@@ -29,7 +29,7 @@ class AvnChatSessionController extends Controller
         foreach ($session->session_users as $key => $session_user) {
             $session_user->status = $request->status;
             if ($session_user->user->profile && $session_user->user->type != 'system' && $request->status == 1) {
-                $session_user->money = (float) $request->moneys[$session_user->id] ?? 0;
+                $session_user->money = floatval(str_replace(",", "", $request->moneys[$session_user->id] ?? '0'));
             } else {
                 $session_user->money = 0;
             }
@@ -37,9 +37,9 @@ class AvnChatSessionController extends Controller
             if ($session_user->user->profile && $session_user->user->type != 'system' && $request->status == 1) {
                 $profile = $session_user->user->profile;
                 if ($session_user->user->type == 'customer') {
-                    $profile->money -= $session_user->money;
+                    $profile->money = floatval($profile->money) - floatval($session_user->money);
                 } else {
-                    $profile->money += $session_user->money;
+                    $profile->money = floatval($profile->money) + floatval($session_user->money);
                 }
                 $profile->save();
                 $addsub = new AddSubMoney();

@@ -22,7 +22,7 @@
                                     <label class="form-label">
                                         Ảnh bìa
                                     </label>
-                                    <input type="file" class="form-control" name="img" accept="images/*">
+                                    <input type="file" class="form-control" name="img" accept="image/*">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -245,6 +245,7 @@
             ckfinder: {
                 uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
             }
+            image: { styles: ['alignCenter']}
         });
     </script>
 @endsection
