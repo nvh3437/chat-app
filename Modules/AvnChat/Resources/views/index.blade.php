@@ -1364,7 +1364,7 @@
                     htm += '<div class="row g-1">'
                     preview_images.forEach(preview_image => {
                         htm +=
-                            '<div class="col-12 position-relative m-0 p-0 img-container">'
+                            '<div class="col-12 position-relative m-0 p-0 img-container mt-2">'
                         htm += '<div class="spinner-border" role="status">'
                         htm += '<span class="visually-hidden">Loading...</span>'
                         htm += '</div>'

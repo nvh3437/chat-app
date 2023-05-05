@@ -23,7 +23,7 @@ return new class extends Migration {
                 ->onUpdate('cascade');
             $table->date('start_date');
             $table->time('start_time');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });

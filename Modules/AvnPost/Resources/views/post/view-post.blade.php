@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            @if (count($posts) > 1)
+            @if (count($posts) > 0)
                 <div class="row g-2 mb-2">
                     <h4 class="header-title p-0">Bài viết liên quan</h4>
                     @foreach ($posts as $item)
@@ -86,7 +86,7 @@
                                 @csrf
                                 <input type="hidden" name="post_id" value="{{ $post->id }}">
                                 <textarea rows="4" class="form-control resize-none" placeholder="Nhập bình luận...." name="comment"></textarea>
-                                <div class="text-end mt-2">
+                                <div class="text-end my-2">
                                     <button type="submit" class="btn btn-sm btn-success"><i
                                             class='uil uil-message me-1'></i>Gửi</button>
                                 </div>

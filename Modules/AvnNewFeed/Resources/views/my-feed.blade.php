@@ -42,12 +42,13 @@
                             </div>
                         </div>
                         <div class="list-group list-group-flush mt-2">
-                            <a href="{{ route('new-feed') }}" class="list-group-item list-group-item-action border-0"><i
+                            <a href="{{ route('new-feed') }}"
+                                class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'new-feed' ? 'text-primary' : '' }} border-0"><i
                                     class='uil uil-images me-1'></i> Bản tin</a>
                             <a href="{{ route('my-feed') }}"
-                                class="list-group-item list-group-item-action text-primary border-0"><i
+                                class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'my-feed' ? 'text-primary' : '' }} border-0"><i
                                     class='uil uil-images me-1'></i> Tin của tôi</a>
-                            <a href="javascript:void(0);" class="list-group-item list-group-item-action border-0"><i
+                            <a href="{{ route('chat-index') }}" class="list-group-item list-group-item-action border-0"><i
                                     class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
                         </div>
                     </div>
@@ -340,12 +341,6 @@
 @section('js')
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
-    <script type="text/javascript">
-        function setHeight(fieldId) {
-            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight + 'px';
-        }
-        setHeight('textBox1');
-    </script>
     <script>
         CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
             toolbar: {
@@ -511,7 +506,7 @@
             ],
             ckfinder: {
                 uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
-            }
+            },
             image: { styles: ['alignCenter']}
         });
     </script>

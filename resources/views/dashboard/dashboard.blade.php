@@ -75,8 +75,12 @@
                                     <img src="{{ asset($partner->profile->img ?? '/resources/assets/images/users/avatar-1.jpg') }}"
                                         alt="user-image" class="w-100" style="object-fit: cover;height: 10.5rem;">
                                     <h4 class="mt-2 mb-0 text-capitalize ">{{ $partner->name }}</h4>
+                                    @if ($partner->profile && $partner->profile->description && !$partner->description_status)
+                                        <p class="text-center p-2">{{ $partner->profile->description }}</p>
+                                    @endif
                                 </div>
-                                <a href="{{ route('order-chat', ['partner' => $partner->id]) }}" class="testimonial-name">Đặt
+                                <a href="{{ route('order-chat', ['partner' => $partner->id]) }}"
+                                    class="testimonial-name">Đặt
                                     lịch</a>
                             </div>
                         @endforeach

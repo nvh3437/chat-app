@@ -48,7 +48,7 @@
                             <a href="{{ route('my-feed') }}"
                                 class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'my-feed' ? 'text-primary' : '' }} border-0"><i
                                     class='uil uil-images me-1'></i> Tin của tôi</a>
-                            <a href="javascript:void(0);" class="list-group-item list-group-item-action border-0"><i
+                            <a href="{{ route('chat-index') }}" class="list-group-item list-group-item-action border-0"><i
                                     class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
                         </div>
                     </div>
@@ -666,7 +666,7 @@
             ],
             ckfinder: {
                 uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
-            }
+            },
             image: { styles: ['alignCenter']}
         });
     </script>

@@ -207,12 +207,6 @@
     <!-- Datatable Init js -->
     <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript">
-        function setHeight(fieldId){
-            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
-        }
-        setHeight('textBox1');
-    </script>
 @endsection
 @section('css')
     <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
