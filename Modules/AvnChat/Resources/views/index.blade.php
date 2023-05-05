@@ -363,7 +363,7 @@
                     <button type="button" class="btn btn-secondary decline-call" data-bs-dismiss="modal">Từ
                         Chối</button>
                     <button type="button" class="btn btn-success accept-call" data-bs-dismiss="modal"
-                        onclick="">Chấp nhận</button>
+                        onclick="acceptCall()">Chấp nhận</button>
                 </div>
             </div>
         </div>
@@ -561,7 +561,6 @@
                                 ...e.signal,
                                 sdp: `${e.signal.sdp}\n`,
                             };
-                            createPeer(incoming_call_signal)
                         }
                         if (e.type === "callAccepted" && e.from != {{ $user->id }}) {
                             console.log('callAccepted');

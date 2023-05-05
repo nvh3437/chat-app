@@ -8,7 +8,7 @@
     ]
   },
   "Modules/AvnChat/resources/assets/js/chat.js": {
-    "file": "../public/build/assets/chat.1c957db1.js",
+    "file": "../public/build/assets/chat.2e658e91.js",
     "src": "Modules/AvnChat/resources/assets/js/chat.js",
     "isEntry": true,
     "imports": [

@@ -167,30 +167,3 @@ window.acceptCall = async function () {
     });
     window.data.my_peer.signal(window.incoming_call_signal);
 }
-
-window.createPeer = async function (signal) {
-    peer = new Peer({
-        initiator: false,
-        trickle: false,
-    });
-    peer.on("signal", (data) => {
-        console.log('new signal');
-    });
-
-    peer.on("stream", (stream) => {
-        console.log("new stream");
-    });
-
-    peer.on("connect", () => {
-        console.log("new connected");
-    });
-
-    peer.on("error", (err) => {
-        console.log(err);
-    });
-
-    peer.on("close", () => {
-        console.log("new closed");
-    });
-    peer.signal(signal);
-}
