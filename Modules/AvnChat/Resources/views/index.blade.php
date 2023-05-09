@@ -250,6 +250,8 @@
 
                             </div>
                             <h4 class="chat-info-name"></h4>
+                            <button class="btn btn-primary btn-sm mt-1 start-call" id="start-call"><i
+                                    class='mdi mdi-phone me-1'></i>Gọi nhóm</button>
                             @if ($user->type == 'system')
                                 <button class="btn btn-primary btn-sm mt-1 join-room"><i
                                         class='uil uil-plus me-1'></i>Tham
@@ -267,7 +269,6 @@
                                                 </a>
                                             </h5>
                                         </div>
-
                                         <div id="change-info" class="collapse text-center" aria-labelledby="headingOne"
                                             data-bs-parent="#accordionExample">
                                             <div class="card-body pt-0">
@@ -323,8 +324,12 @@
     </div> <!-- container -->
 @endsection
 @section('js')
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.2.2/adapter.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
     @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
-    {{-- <script src="{{ asset('Modules/AvnChat/resources/assets/js/index.js') }}"></script> --}}
+    <script src="{{ asset('resources/js/janus.js') }}"></script>
+    <script src="{{ asset('Modules/AvnChat/resources/assets/js/audio.js') }}"></script>
     <script type="text/javascript">
         // add csrf
         $.ajaxSetup({
