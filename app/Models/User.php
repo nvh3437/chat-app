@@ -12,6 +12,7 @@ use App\Models\Role;
 use Modules\AvnUser\Entities\Profile;
 use Modules\AvnUser\Entities\AddSubMoney;
 use Modules\AvnChat\Entities\ChatRoomUser;
+use Modules\AvnChat\Entities\ChatRoomCallUser;
 use Modules\AvnChat\Entities\ChatRoom;
 use Modules\AvnChat\Entities\ChatRoomSession;
 use Modules\AvnChat\Entities\ChatRoomSessionUser;
@@ -66,6 +67,15 @@ class User extends Authenticatable
     public function rooms()
     {
         return $this->belongsToMany(ChatRoom::class, 'avn_chat_room_users', 'user_id', 'room_id');
+    }
+
+    public function room_call_users()
+    {
+        return $this->hasMany(ChatRoomCallUser::class, 'user_id', 'id');
+    }
+    public function call_rooms()
+    {
+        return $this->belongsToMany(ChatRoom::class, 'avn_chat_room_join_call_users', 'user_id', 'room_id');
     }
     public function messages()
     {

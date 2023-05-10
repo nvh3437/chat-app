@@ -109,18 +109,50 @@ apt-get install automake -y
     make configs
     #./configure  --disable-rabbitmq
     #./configure --enable-docs
-    #config stun nat====================================================================================
+    #config====================================================================================
         nano /opt/janus/etc/janus/janus.jcfg
-            thêm: nat: {
-                stun_server = "stun.stunprotocol.org"
-                stun_port = 3478
+            thêm: 
+            media: {
+                rtp_port_range = "10000-20000"
+            }
+
+            nat: {
+                stun_server = "stun.l.google.com"
+                stun_port = 19302
                 nice_debug = false
+                full_trickle = true
+                nat_1_1_mapping = "public ip"
+                keep_private_host = true
             }   
+            events: {
+                broadcast = true
+            }
+
     #config admin api (secret = janusoverlord)=================================================================================
         nano /opt/janus/etc/janus/janus.transport.http.jcfg
-        set: admin: {
-        admin_http = true  
+        set: 
+        admin: {
+            admin_http = true  
         }
+
+    #config even handler================================================================================
+        nano /opt/janus/etc/janus/janus.eventhandler.sampleevh.jcfg
+        set: [general]
+            enabled = true
+            events = all
+            grouping = true
+            backend = http://localhost:8080
+            backend_user = myuser
+            backend_pwd = mypwd
+            
+        bỏ qua csrf_token cho các route nhận thông báo từ janus
+            file App\Http\Middleware\VerifyCsrfToken 
+            thêm path(uri) vào $except:
+                protected $except = [
+                    'chat/ngu',
+                    'chat/*',
+                ];
+
     #config nginx======================================================================================
         sudo nano /etc/nginx/sites-enabled/default
         
@@ -136,7 +168,7 @@ apt-get install automake -y
     /opt/janus/bin/janus
 
     #sudo service apache2 start
-
+64 joined left created
     
 
 

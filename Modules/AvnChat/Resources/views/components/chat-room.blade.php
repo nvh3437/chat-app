@@ -63,6 +63,10 @@
                         {{ 'Bắt đầu phiên làm việc' }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'end-session') === 0)
                         {{ 'Kết thúc phiên làm việc' }}
+                    @elseif ($room->last_message && strpos($room->last_message->message, 'start-call') === 0)
+                        {{ 'Bắt đầu cuộc gọi' }}
+                    @elseif ($room->last_message && strpos($room->last_message->message, 'end-call') === 0)
+                        {{ 'Kết thúc cuộc gọi' }}
                     @endif
                 </span>
             </p>

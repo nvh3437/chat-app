@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CallUser implements ShouldBroadcast
+class JoinedCall implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $room;
@@ -28,14 +28,20 @@ class CallUser implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'newCall';
+        return 'joinedCall';
     }
     public function broadcastWith()
     {
+        $room_name = $this->room->name ? $this->room->name : implode(', ', $this->room->users->pluck('name')->all());
+        if (strlen($room_name) > 100) {
+            $room_name = substr($room_name, 0, 100);
+        }
+        $imgs = $this->room->img ? [$this->room->img] : $this->room->users->pluck('profile.img')->take(3);
         $res = [
-            'name' => $this->user_send->name ?? '',
-            'img' => $this->user_send->profile->img ?? 'resources/assets/images/users/avatar-1.jpg',
-            'room' => $this->room,
+            'user_send' => $this->user_send->id,
+            'name' => $room_name,
+            'imgs' => $imgs,
+            'room_id' => $this->room->id,
         ];
         return $res;
     }
