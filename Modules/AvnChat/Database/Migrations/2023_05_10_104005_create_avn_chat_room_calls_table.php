@@ -20,6 +20,8 @@ return new class extends Migration {
                 ->on('avn_chat_rooms')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
+            $table->string('pin');
+            $table->string('secret');
             $table->dateTime('end_on')->nullable();
             $table->timestamps();
         });

@@ -39,6 +39,8 @@ Route::prefix('chat')->group(function () {
     // call
     Route::post('/start-call', 'AvnCallController@startCall')->middleware(['auth', 'lastactivity'])->name('start-call');
     Route::post('/accept-call', 'AvnCallController@acceptCall')->middleware(['auth', 'lastactivity'])->name('accept-call');
+    Route::post('/stop-call', 'AvnCallController@stopCall')->middleware(['auth', 'lastactivity'])->name('stop-call');
+    Route::post('/janus-event', 'AvnCallController@janusEvent')->name('janus-event');
     Route::post('/ngu', 'AvnCallController@ngu');
     Route::get('/ngu', 'AvnCallController@ngu');
 

@@ -395,16 +395,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
     @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
     <script src="{{ asset('resources/js/janus.js') }}"></script>
-    <script src="{{ asset('Modules/AvnChat/Resources/assets/js/audio.js') }}"></script>
     <script type="text/javascript">
         window.room_id = null;
         window.user_id = {{ $user->id }};
         window.room_calling_id = null;
+        window.call_id = null;
+        window.call_pin = null;
+        window.call_secret = null;
         window.is_calling = false;
         window.is_incall = false;
         window.last_load = null;
         window.load_more = true;
         window.count_up = null;
+        window.start_call_timeout
         window.preview_images = [];
         window.images = [];
         window.incoming_call_modal = new bootstrap.Modal(document.getElementById('incoming-call-modal'), {
@@ -588,7 +591,9 @@
                     .listen('.newCall', (e) => {
                         if (e.user_send != {{ $user->id }} && !is_calling && !is_incall) {
                             window.incoming_call_modal.hide()
-                            room_calling_id = e.room_id
+                            call_id = e.call_id
+                            call_pin = e.pin
+                            call_secret = e.secret
                             $('#incoming-call-modal .chat-info-name').html(e.name)
                             $('#in-call-modal .chat-info-name').html(e.name)
                             if (e.imgs.length == 1) {
@@ -620,9 +625,11 @@
                         }
                     })
                     .listen('.joinedCall', (e) => {
-                        if (room_calling_id == e.room_id && is_calling) {
+                        if (call_id == e.call_id && is_calling) {
                             is_calling = false
                             is_incall = true
+                            clearTimeout(start_call_timeout);
+                            start_connect_call()
                             $('#in-call-modal .chat-info-name').html(e.name)
                             $('#in-call-modal .status').html('Đã kết nối...')
                             if (e.imgs.length == 1) {
@@ -1874,17 +1881,53 @@
                 room_calling_id = room_id
                 is_calling = true
                 $('#start-call-modal .modal-body .status').html('Đang kết nối...')
-                start_connect_call()
+                $.ajax({
+                    method: 'post',
+                    url: "chat/start-call",
+                    dataType: "json",
+                    data: {
+                        id: room_calling_id,
+                    },
+                    success: function(res) {
+                        call_id = res.id
+                        call_pin = res.pin
+                        call_secret = res.secret
+                        $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
+                        window.start_call_timeout = setTimeout(cancel_calling, 60000)
+                    }
+                })
 
             })
             $('#accept-call').on('click', function() {
                 is_incall = true
                 start_call_modal.hide()
                 in_call_modal.show()
+                $.ajax({
+                    method: 'post',
+                    url: "chat/accept-call",
+                    dataType: "json",
+                    data: {
+                        id: call_id,
+                    },
+                    success: function(res) {}
+                })
                 start_connect_call()
             })
+
+            function cancel_calling() {
+                $.ajax({
+                    method: 'post',
+                    url: "chat/stop-calling",
+                    dataType: "json",
+                    data: {
+                        id: call_id,
+                    },
+                    success: function(res) {}
+                })
+            }
         })
     </script>
+    <script src="{{ asset('Modules/AvnChat/Resources/assets/js/audio.js') }}"></script>
 @endsection
 @section('css')
     <style>

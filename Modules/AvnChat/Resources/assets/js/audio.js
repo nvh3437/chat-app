@@ -1,10 +1,11 @@
-window.opaqueId = "user-" + window.user_id;
-window.mixertest = null;
-window.webrtcUp = false;
-window.stereo = false;
-window.remoteStream = null;
+
 
 $(document).ready(function () {
+    window.opaqueId = "user-" + window.user_id;
+    window.mixertest = null;
+    window.webrtcUp = false;
+    window.stereo = false;
+    window.remoteStream = null;
     // Initialize the library (all console debuggers enabled)
     Janus.init({
         debug: "all", callback: function () {
@@ -33,7 +34,7 @@ $(document).ready(function () {
                                     opaqueId: opaqueId,
                                     success: function (pluginHandle) {
                                         mixertest = pluginHandle;
-                                        check_audio_room_exists();
+                                        join_audio_room();
                                         Janus.log("Plugin attached! (" + mixertest.getPlugin() + ", id=" + mixertest.getId() + ")");
                                         // Prepare the username registration
                                     },
@@ -221,7 +222,7 @@ $(document).ready(function () {
                                                     // } else {
                                                     bootbox.alert(msg["error"]);
                                                     // }
-                                                    return;
+                                                    // return;
                                                 }
                                                 // Any new feed to attach to?
                                                 if (msg["leaving"]) {
@@ -320,60 +321,16 @@ $(document).ready(function () {
             }
         }
     });
+
+    // create audio room
+    function join_audio_room() {
+        var join_audio_bridge = { request: "join", room: call_id, id: user_id, pin: call_pin.toString() };
+        mixertest.send({
+            message: join_audio_bridge, success: function () {
+                $('#in-call-modal .modal-body .status').html('Đã kết nối...')
+            }
+        });
+    }
 });
-function check_audio_room_exists() {
-    var exists_audio_bridge = { request: "exists", room: room_calling_id };
-    mixertest.send({
-        message: exists_audio_bridge, success: function (res) {
-            console.log('=========================exists room' + room_calling_id + ' is ' + res.exists + '=========================');
-            if (res.exists) {
-                join_audio_room()
-            } else {
-                create_audio_room()
-            }
-        }
-    });
-}
-// create audio room
-function create_audio_room() {
-    console.log('=========================create room' + room_calling_id + '=========================');
-    var create_audio_bridge = { request: "create", room: room_calling_id };
-    mixertest.send({
-        message: create_audio_bridge, success: join_audio_room()
-    });
-}
-// create audio room
-function join_audio_room() {
-    console.log('=========================join room' + room_calling_id + '=========================');
-    var join_audio_bridge = { request: "join", room: room_calling_id };
-    mixertest.send({
-        message: join_audio_bridge, success: function () {
-            if (is_calling) {
-                $.ajax({
-                    method: 'post',
-                    url: "chat/start-call",
-                    dataType: "json",
-                    data: {
-                        id: room_calling_id,
-                    },
-                    success: function (res) {
-                        $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
-                    }
-                })
-            } else {
-                $.ajax({
-                    method: 'post',
-                    url: "chat/accept-call",
-                    dataType: "json",
-                    data: {
-                        id: room_calling_id,
-                    },
-                    success: function (res) {
-                        $('#in-call-modal .modal-body .status').html('Đã kết nối...')
-                    }
-                })
-            }
-        }
-    });
-}
+
 

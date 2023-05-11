@@ -13,16 +13,16 @@ use Illuminate\Queue\SerializesModels;
 class NewCall implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $room;
+    public $call;
     public $user_send;
-    public function __construct($user_send = null, $room)
+    public function __construct($user_send = null, $call)
     {
         $this->user_send = $user_send;
-        $this->room = $room;
+        $this->call = $call;
     }
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.room.' . $this->room->id); //private
+        return new PrivateChannel('chat.room.' . $this->call->room_id); //private
         // return new Channel('chat'); //public
     }
 
@@ -32,16 +32,19 @@ class NewCall implements ShouldBroadcast
     }
     public function broadcastWith()
     {
-        $room_name = $this->room->name ? $this->room->name : implode(', ', $this->room->users->pluck('name')->all());
+        $room_name = $this->call->room->name ? $this->call->room->name : implode(', ', $this->call->room->users->pluck('name')->all());
         if (strlen($room_name) > 100) {
             $room_name = substr($room_name, 0, 100);
         }
-        $imgs = $this->room->img ? [$this->room->img] : $this->room->users->pluck('profile.img')->take(3);
+        $imgs = $this->call->room->img ? [$this->call->room->img] : $this->call->room->users->pluck('profile.img')->take(3);
         $res = [
             'user_send' => $this->user_send->id,
             'name' => $room_name,
             'imgs' => $imgs,
-            'room_id' => $this->room->id,
+            'room_id' => $this->call->room_id,
+            'call_id' => $this->call->id,
+            'pin' => $this->call->pin,
+            'secret' => $this->call->secret,
         ];
         return $res;
     }
