@@ -12,6 +12,8 @@ php artisan module:seed AvnChat
 php artisan module:seed AvnNewFeed
 php artisan module:seed AvnCMS
 
+/opt/alt/php81/usr/bin/php /usr/local/bin/composer2 update 
+
 
 composer require ably/ably-php
 

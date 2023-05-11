@@ -395,7 +395,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
     @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
     <script src="{{ asset('resources/js/janus.js') }}"></script>
-    <script src="{{ asset('Modules/AvnChat/resources/assets/js/audio.js') }}"></script>
+    <script src="{{ asset('Modules/AvnChat/Resources/assets/js/audio.js') }}"></script>
     <script type="text/javascript">
         window.room_id = null;
         window.user_id = {{ $user->id }};
