@@ -355,11 +355,33 @@
                     <div class="position-relative chat-info-imgs" style="height: 3rem;">
                     </div>
                     <h4 class="chat-info-name"></h4>
-                    <h5 class="text-muted">Cuộc gọi sẽ bắt đầu ngay khi bấm chấp nhận</h5>
+                    <h5 class="text-muted status">Cuộc gọi sẽ bắt đầu ngay khi bấm chấp nhận</h5>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-success p-0 rounded-circle avatar-sm fs-3 mx-1"
-                        data-bs-dismiss="modal"><i class="mdi mdi-phone"></i></button>
+                        data-bs-dismiss="modal" id="accept-call"><i class="mdi mdi-phone"></i></button>
+                    <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
+                        data-bs-dismiss="modal"><i class="mdi mdi-phone-hangup"></i></button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div id="in-call-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body py-5 text-center">
+                    <img src="#" alt=""
+                        class="img-thumbnail avatar-lg rounded-circle chat-info-img d-none" style="object-fit: cover" />
+                    <div class="position-relative chat-info-imgs" style="height: 3rem;">
+                    </div>
+                    <h4 class="chat-info-name"></h4>
+                    <h5 class="text-muted status">Đang kết nối...</h5>
+                    <div id="mixedaudio"></div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1"
+                        data-bs-dismiss="modal" id="accept-call"><i class="mdi mdi-microphone"></i></button>
                     <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
                         data-bs-dismiss="modal"><i class="mdi mdi-phone-hangup"></i></button>
                 </div>
@@ -376,12 +398,22 @@
     <script src="{{ asset('Modules/AvnChat/resources/assets/js/audio.js') }}"></script>
     <script type="text/javascript">
         window.room_id = null;
+        window.user_id = {{ $user->id }};
+        window.room_calling_id = null;
+        window.is_calling = false;
+        window.is_incall = false;
         window.last_load = null;
         window.load_more = true;
         window.count_up = null;
         window.preview_images = [];
         window.images = [];
         window.incoming_call_modal = new bootstrap.Modal(document.getElementById('incoming-call-modal'), {
+            keyboard: false
+        })
+        window.start_call_modal = new bootstrap.Modal(document.getElementById('start-call-modal'), {
+            keyboard: false
+        })
+        window.in_call_modal = new bootstrap.Modal(document.getElementById('in-call-modal'), {
             keyboard: false
         })
         // add csrf
@@ -554,13 +586,21 @@
                         });
                     })
                     .listen('.newCall', (e) => {
-                        if (e.user_send != {{ $user->id }}) {
+                        if (e.user_send != {{ $user->id }} && !is_calling && !is_incall) {
+                            window.incoming_call_modal.hide()
+                            room_calling_id = e.room_id
                             $('#incoming-call-modal .chat-info-name').html(e.name)
+                            $('#in-call-modal .chat-info-name').html(e.name)
                             if (e.imgs.length == 1) {
                                 $('#incoming-call-modal .chat-info-img').attr('src', e.imgs[0] ??
                                     'resources/assets/images/users/avatar-1.jpg')
                                 $('#incoming-call-modal .chat-info-img').removeClass('d-none')
                                 $('#incoming-call-modal .chat-info-imgs').addClass('d-none')
+
+                                $('#in-call-modal .chat-info-img').attr('src', e.imgs[0] ??
+                                    'resources/assets/images/users/avatar-1.jpg')
+                                $('#in-call-modal .chat-info-img').removeClass('d-none')
+                                $('#in-call-modal .chat-info-imgs').addClass('d-none')
                             } else {
                                 var htm = ''
                                 e.imgs.forEach((img, index) => {
@@ -571,11 +611,40 @@
                                 $('#incoming-call-modal .chat-info-imgs').html(htm)
                                 $('#incoming-call-modal .chat-info-imgs').removeClass('d-none')
                                 $('#incoming-call-modal .chat-info-img').addClass('d-none')
+
+                                $('#in-call-modal .chat-info-imgs').html(htm)
+                                $('#in-call-modal .chat-info-imgs').removeClass('d-none')
+                                $('#in-call-modal .chat-info-img').addClass('d-none')
                             }
                             window.incoming_call_modal.show()
                         }
                     })
-
+                    .listen('.joinedCall', (e) => {
+                        if (room_calling_id == e.room_id && is_calling) {
+                            is_calling = false
+                            is_incall = true
+                            $('#in-call-modal .chat-info-name').html(e.name)
+                            $('#in-call-modal .status').html('Đã kết nối...')
+                            if (e.imgs.length == 1) {
+                                $('#in-call-modal .chat-info-img').attr('src', e.imgs[0] ??
+                                    'resources/assets/images/users/avatar-1.jpg')
+                                $('#in-call-modal .chat-info-img').removeClass('d-none')
+                                $('#in-call-modal .chat-info-imgs').addClass('d-none')
+                            } else {
+                                var htm = ''
+                                e.imgs.forEach((img, index) => {
+                                    htm += '<img src="' +
+                                        (img ?? 'resources/assets/images/users/avatar-1.jpg') +
+                                        '" class="rounded-circle img-thumbnail avatar-sm" style="object-fit: cover;"/>'
+                                });
+                                $('#in-call-modal .chat-info-imgs').html(htm)
+                                $('#in-call-modal .chat-info-imgs').removeClass('d-none')
+                                $('#in-call-modal .chat-info-img').addClass('d-none')
+                            }
+                            window.start_call_modal.hide()
+                            window.in_call_modal.show()
+                        }
+                    })
             }
 
             // check file upload 
@@ -1802,17 +1871,17 @@
     <script>
         $(document).ready(function() {
             $('#start-call').on('click', function() {
-                $.ajax({
-                    method: 'post',
-                    url: "{{ route('start-call') }}",
-                    dataType: "json",
-                    data: {
-                        id: room_id,
-                    },
-                    success: function(res) {
-                        $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
-                    }
-                })
+                room_calling_id = room_id
+                is_calling = true
+                $('#start-call-modal .modal-body .status').html('Đang kết nối...')
+                start_connect_call()
+
+            })
+            $('#accept-call').on('click', function() {
+                is_incall = true
+                start_call_modal.hide()
+                in_call_modal.show()
+                start_connect_call()
             })
         })
     </script>

@@ -164,6 +164,7 @@ apt-get install automake -y
         }
 
         sudo systemctl restart nginx
+        sudo systemctl restart nginx
     #run====================================================================================
     /opt/janus/bin/janus
 

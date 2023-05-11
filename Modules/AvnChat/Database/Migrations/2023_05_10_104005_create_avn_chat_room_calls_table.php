@@ -12,20 +12,15 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('avn_chat_room_join_call_users', function (Blueprint $table) {
+        Schema::create('avn_chat_room_calls', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('room_id');
+            $table->unsignedBigInteger('room_id')->nullable();
             $table->foreign('room_id')
                 ->references('id')
                 ->on('avn_chat_rooms')
-                ->onDelete('cascade')
+                ->onDelete('set null')
                 ->onUpdate('cascade');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->dateTime('end_on')->nullable();
             $table->timestamps();
         });
     }
@@ -37,6 +32,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('avn_chat_room_join_call_users');
+        Schema::dropIfExists('avn_chat_room_calls');
     }
 };

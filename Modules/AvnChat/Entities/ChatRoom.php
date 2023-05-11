@@ -26,14 +26,6 @@ class ChatRoom extends Model
     {
         return $this->belongsToMany(User::class, 'avn_chat_room_users', 'room_id', 'user_id');
     }
-    public function room_call_users()
-    {
-        return $this->hasMany(ChatRoomCallUser::class, 'room_id', 'id');
-    }
-    public function call_users()
-    {
-        return $this->belongsToMany(User::class, 'avn_chat_room_join_call_users', 'room_id', 'user_id');
-    }
     public function messages()
     {
         return $this->hasMany(Message::class, 'room_id', 'id');
@@ -41,5 +33,9 @@ class ChatRoom extends Model
     public function session_chats()
     {
         return $this->hasMany(ChatRoomSession::class, 'room_id', 'id');
+    }
+    public function call_chats()
+    {
+        return $this->hasMany(ChatRoomCall::class, 'room_id', 'id');
     }
 }
