@@ -69,7 +69,7 @@
                         {{ 'tham gia cuộc gọi' }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'left-call') === 0)
                         {{ 'rời khỏi cuộc gọi' }}
-                    @elseif ($room->last_message && strpos($room->last_message->message, 'end-call') === 0)
+                    @elseif ($room->last_message && strpos($room->last_message->message, 'stop-call') === 0)
                         {{ 'Kết thúc cuộc gọi' }}
                     @endif
                 </span>

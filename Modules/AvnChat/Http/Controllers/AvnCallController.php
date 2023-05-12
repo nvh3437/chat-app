@@ -195,7 +195,7 @@ class AvnCallController extends Controller
 
             broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
 
-            if ($call->call_users->where('end_on', '!=', null)->count() < 1) {
+            if ($call->call_users->where('end_on', null)->count() < 1) {
                 $call->end_on = $date;
                 $call->save();
                 $message = new Message();

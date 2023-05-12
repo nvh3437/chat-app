@@ -382,9 +382,13 @@
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1"
-                        data-bs-dismiss="modal" id="accept-call"><i class="mdi mdi-microphone"></i></button>
+                        data-bs-dismiss="modal" id="accept-call">
+                        <i class="mdi mdi-microphone"></i>
+                    </button>
                     <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1 stop-call"
-                        data-bs-dismiss="modal" disabled><i class="mdi mdi-phone-hangup"></i></button>
+                        data-bs-dismiss="modal">
+                        <i class="mdi mdi-phone-hangup"></i>
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -1403,7 +1407,7 @@
                     system_message = message.message.substring(11) + ' tham gia cuộc gọi'
                 } else if (message.message.indexOf("left-call") == 0) {
                     system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
-                } else if (message.message.indexOf("end-call") == 0) {
+                } else if (message.message.indexOf("stop-call") == 0) {
                     system_message = 'Kết thúc cuộc gọi'
                 }
                 htm = '<li class = "text-center date-message">'
@@ -1437,7 +1441,7 @@
                     system_message = message.message.substring(11) + ' tham gia cuộc gọi'
                 } else if (message.message.indexOf("left-call") == 0) {
                     system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
-                } else if (message.message.indexOf("end-call") == 0) {
+                } else if (message.message.indexOf("stop-call") == 0) {
                     system_message = 'Kết thúc cuộc gọi'
                 }
 
@@ -1923,7 +1927,7 @@
                         call_secret = res.secret
                         start_connect_call()
                         $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
-                        // start_connect_call()
+                        $('#start-call-modal .stop-call').removeAttr('disabled')
                         window.start_call_timeout = setTimeout(cancel_calling, 60000)
                     }
                 })
@@ -1945,7 +1949,9 @@
                     }
                 })
             })
-
+            $('.stop-call').on('click', function () {
+                leave_audio_room()
+            });
             function cancel_calling() {
                 $.ajax({
                     method: 'post',

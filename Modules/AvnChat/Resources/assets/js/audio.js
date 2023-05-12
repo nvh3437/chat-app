@@ -303,11 +303,14 @@ $(document).ready(function () {
         var leave_audio_bridge = { request: "leave" };
         mixertest.send({
             message: leave_audio_bridge, success: function () {
+                mixertest.hangup()
                 window.in_call_modal.hide()
                 window.is_calling = false
                 window.is_incall = false
             }
         });
+
+
     }
 });
 
