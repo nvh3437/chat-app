@@ -267,8 +267,9 @@
                                                 class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1"
                                                 data-bs-dismiss="modal"><i class="mdi mdi-microphone"></i></button>
                                             <button type="button"
-                                                class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
-                                                data-bs-dismiss="modal"><i class="mdi mdi-phone-hangup"></i></button>
+                                                class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1 stop-call"
+                                                disabled data-bs-dismiss="modal"><i
+                                                    class="mdi mdi-phone-hangup"></i></button>
                                         </div>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
@@ -382,8 +383,8 @@
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1"
                         data-bs-dismiss="modal" id="accept-call"><i class="mdi mdi-microphone"></i></button>
-                    <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
-                        data-bs-dismiss="modal"><i class="mdi mdi-phone-hangup"></i></button>
+                    <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1 stop-call"
+                        data-bs-dismiss="modal" disabled><i class="mdi mdi-phone-hangup"></i></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -1652,7 +1653,7 @@
                     if ($(this).attr('data-time')) {
                         $(this).html(time_ago(new Date($(this).attr('data-time'))))
                     }
-                });
+                })
             }, 60000);
 
             // check internet conection
