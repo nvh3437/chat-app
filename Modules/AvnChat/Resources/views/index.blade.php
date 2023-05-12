@@ -591,11 +591,12 @@
                         });
                     })
                     .listen('.newCall', (e) => {
-                        if (e.user_send != {{ $user->id }} && !is_calling && !is_incall) {
+                        if (!is_calling && !is_incall) {
                             window.incoming_call_modal.hide()
                             call_id = e.call_id
                             call_pin = e.pin
                             call_secret = e.secret
+                            // incoming-call-modal
                             $('#incoming-call-modal .chat-info-name').html(e.name)
                             $('#in-call-modal .chat-info-name').html(e.name)
                             if (e.imgs.length == 1) {
@@ -623,15 +624,7 @@
                                 $('#in-call-modal .chat-info-imgs').removeClass('d-none')
                                 $('#in-call-modal .chat-info-img').addClass('d-none')
                             }
-                            window.incoming_call_modal.show()
-                        }
-                    })
-                    .listen('.acceptedCall', (e) => {
-                        if (call_id == e.call_id && is_calling) {
-                            is_calling = false
-                            is_incall = true
-                            clearTimeout(start_call_timeout);
-                            start_connect_call()
+                            // in-call-modal
                             $('#in-call-modal .chat-info-name').html(e.name)
                             $('#in-call-modal .status').html('Đã kết nối...')
                             if (e.imgs.length == 1) {
@@ -650,9 +643,37 @@
                                 $('#in-call-modal .chat-info-imgs').removeClass('d-none')
                                 $('#in-call-modal .chat-info-img').addClass('d-none')
                             }
-                            window.start_call_modal.hide()
-                            window.in_call_modal.show()
+                            window.incoming_call_modal.show()
                         }
+                    })
+                    .listen('.acceptedCall', (e) => {
+                        console.log('acceptedCall');
+                        // if (call_id == e.call_id && is_calling) {
+                        //     console.log('acceptedCall2');
+                        //     is_calling = false
+                        //     is_incall = true
+                        //     clearTimeout(start_call_timeout);
+                        //     $('#in-call-modal .chat-info-name').html(e.name)
+                        //     $('#in-call-modal .status').html('Đã kết nối...')
+                        //     if (e.imgs.length == 1) {
+                        //         $('#in-call-modal .chat-info-img').attr('src', e.imgs[0] ??
+                        //             'resources/assets/images/users/avatar-1.jpg')
+                        //         $('#in-call-modal .chat-info-img').removeClass('d-none')
+                        //         $('#in-call-modal .chat-info-imgs').addClass('d-none')
+                        //     } else {
+                        //         var htm = ''
+                        //         e.imgs.forEach((img, index) => {
+                        //             htm += '<img src="' +
+                        //                 (img ?? 'resources/assets/images/users/avatar-1.jpg') +
+                        //                 '" class="rounded-circle img-thumbnail avatar-sm" style="object-fit: cover;"/>'
+                        //         });
+                        //         $('#in-call-modal .chat-info-imgs').html(htm)
+                        //         $('#in-call-modal .chat-info-imgs').removeClass('d-none')
+                        //         $('#in-call-modal .chat-info-img').addClass('d-none')
+                        //     }
+                        //     window.start_call_modal.hide()
+                        //     window.in_call_modal.show()
+                        // }
                     })
             }
 
@@ -699,7 +720,7 @@
                     $("#files").val('')
                 }
             })
-            
+
             // remove file upload
             $('.files-container').on('click', '.remove-image', function() {
                 var index = preview_images.indexOf($(this).parent().find('img').attr('src'));
@@ -1376,9 +1397,11 @@
                 } else if (message.message.indexOf("end-session") == 0) {
                     system_message = 'Kết thúc phiên làm việc'
                 } else if (message.message.indexOf("start-call") == 0) {
-                    system_message = message.message.substring(11) + ' bắt đầu cuộc gọi'
+                    system_message = 'Bắt đầu cuộc gọi'
                 } else if (message.message.indexOf("joined-call") == 0) {
                     system_message = message.message.substring(11) + ' tham gia cuộc gọi'
+                } else if (message.message.indexOf("left-call") == 0) {
+                    system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
                 } else if (message.message.indexOf("end-call") == 0) {
                     system_message = 'Kết thúc cuộc gọi'
                 }
@@ -1408,9 +1431,11 @@
                 } else if (message.message.indexOf("end-session") == 0) {
                     system_message = 'Kết thúc phiên làm việc'
                 } else if (message.message.indexOf("start-call") == 0) {
-                    system_message = message.message.substring(11) + ' bắt đầu cuộc gọi'
+                    system_message = 'Bắt đầu cuộc gọi'
                 } else if (message.message.indexOf("joined-call") == 0) {
-                    system_message = message.message.substring(12) + ' tham gia cuộc gọi'
+                    system_message = message.message.substring(11) + ' tham gia cuộc gọi'
+                } else if (message.message.indexOf("left-call") == 0) {
+                    system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
                 } else if (message.message.indexOf("end-call") == 0) {
                     system_message = 'Kết thúc cuộc gọi'
                 }
@@ -1895,6 +1920,7 @@
                         call_id = res.id
                         call_pin = res.pin
                         call_secret = res.secret
+                        start_connect_call()
                         $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
                         // start_connect_call()
                         window.start_call_timeout = setTimeout(cancel_calling, 60000)
@@ -1906,8 +1932,17 @@
                 is_incall = true
                 start_call_modal.hide()
                 in_call_modal.show()
-                // is_accept_call = true
-                start_connect_call()
+                $.ajax({
+                    method: 'post',
+                    url: "chat/accept-call",
+                    dataType: "json",
+                    data: {
+                        id: call_id,
+                    },
+                    success: function(res) {
+                        start_connect_call()
+                    }
+                })
             })
 
             function cancel_calling() {

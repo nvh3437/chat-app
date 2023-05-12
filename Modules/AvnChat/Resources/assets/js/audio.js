@@ -34,7 +34,12 @@ $(document).ready(function () {
                                     opaqueId: opaqueId,
                                     success: function (pluginHandle) {
                                         mixertest = pluginHandle;
-                                        join_audio_room();
+                                        var join_audio_bridge = { request: "join", room: call_id, id: user_id, pin: call_pin.toString() };
+                                        mixertest.send({
+                                            message: join_audio_bridge, success: function () {
+                                                $('#in-call-modal .modal-body .status').html('Đã kết nối...')
+                                            }
+                                        });
                                         Janus.log("Plugin attached! (" + mixertest.getPlugin() + ", id=" + mixertest.getId() + ")");
                                         // Prepare the username registration
                                     },
@@ -125,7 +130,6 @@ $(document).ready(function () {
                                                 // The user switched to a different room
                                                 myid = msg["id"];
                                                 Janus.log("Moved to room " + msg["room"] + ", new ID: " + myid);
-                                                console.log(myid);
                                                 console.log(msg["participants"]);
                                                 // Any room participant?
                                                 // if(msg["participants"]) {
@@ -174,45 +178,17 @@ $(document).ready(function () {
                                                     window.location.reload();
                                                 });
                                             } else if (event === "event") {
-                                                console.log('======= ngu event ======');
-                                                console.log(msg["participants"]);
+                                                console.log(msg);
+                                                console.log(jsep);
                                                 if (msg["participants"]) {
-                                                    let list = msg["participants"];
-                                                    Janus.debug("Got a list of participants:", list);
-                                                    // for(let f in list) {
-                                                    // 	let id = list[f]["id"];
-                                                    // 	let display = escapeXmlTags(list[f]["display"]);
-                                                    // 	let setup = list[f]["setup"];
-                                                    // 	let muted = list[f]["muted"];
-                                                    // 	let spatial = list[f]["spatial_position"];
-                                                    // 	Janus.debug("  >> [" + id + "] " + display + " (setup=" + setup + ", muted=" + muted + ")");
-                                                    // 	if($('#rp' + id).length === 0) {
-                                                    // 		// Add to the participants list
-                                                    // 		let slider = '';
-                                                    // 		if(spatial !== null && spatial !== undefined)
-                                                    // 			slider = '<span>[L <input id="sp' + id + '" type="text" style="width: 10%;"/> R] </span>';
-                                                    // 		$('#list').append('<li id="rp' + id +'" class="list-group-item">' +
-                                                    // 			slider +
-                                                    // 			display +
-                                                    // 			' <i class="absetup fa fa-chain-broken"></i>' +
-                                                    // 			' <i class="abmuted fa fa-microphone-slash"></i></li>');
-                                                    // 		if(spatial !== null && spatial !== undefined) {
-                                                    // 			$('#sp' + id).slider({ min: 0, max: 100, step: 1, value: 50, handle: 'triangle', enabled: false });
-                                                    // 			$('#position').removeClass('hide').show();
-                                                    // 		}
-                                                    // 		$('#rp' + id + ' > i').hide();
-                                                    // 	}
-                                                    // 	if(muted === true || muted === "true")
-                                                    // 		$('#rp' + id + ' > i.abmuted').removeClass('hide').show();
-                                                    // 	else
-                                                    // 		$('#rp' + id + ' > i.abmuted').hide();
-                                                    // 	if(setup === true || setup === "true")
-                                                    // 		$('#rp' + id + ' > i.absetup').hide();
-                                                    // 	else
-                                                    // 		$('#rp' + id + ' > i.absetup').removeClass('hide').show();
-                                                    // 	if(spatial !== null && spatial !== undefined)
-                                                    // 		$('#sp' + id).slider('setValue', spatial);
-                                                    // }
+                                                    var participants = msg["participants"];
+                                                    if (call_id == msg["room"] && is_calling) {
+                                                        is_calling = false
+                                                        is_incall = true
+                                                        clearTimeout(start_call_timeout);
+                                                        window.start_call_modal.hide()
+                                                        window.in_call_modal.show()
+                                                    }
                                                 } else if (msg["error"]) {
                                                     // if (msg["error_code"] === 485) {
                                                     //     // This is a "no such room" error: give a more meaningful description
@@ -323,11 +299,13 @@ $(document).ready(function () {
     });
 
     // create audio room
-    function join_audio_room() {
-        var join_audio_bridge = { request: "join", room: call_id, id: user_id, pin: call_pin.toString() };
+    window.leave_audio_room = function () {
+        var leave_audio_bridge = { request: "leave" };
         mixertest.send({
-            message: join_audio_bridge, success: function () {
-                    $('#in-call-modal .modal-body .status').html('Đã kết nối...')
+            message: leave_audio_bridge, success: function () {
+                window.in_call_modal.hide()
+                window.is_calling = false
+                window.is_incall = false
             }
         });
     }

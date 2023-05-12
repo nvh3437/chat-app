@@ -14,7 +14,6 @@ class ChatRoomCall extends Model
 
     protected $fillable = [];
     protected $table = 'avn_chat_room_calls';
-    public $name_status = [0 => 'no process', 1 => 'accept', -1 => 'cancel'];
 
     protected static function newFactory()
     {

@@ -65,6 +65,10 @@
                         {{ 'Kết thúc phiên làm việc' }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'start-call') === 0)
                         {{ 'Bắt đầu cuộc gọi' }}
+                    @elseif ($room->last_message && strpos($room->last_message->message, 'joined-call') === 0)
+                        {{ 'tham gia cuộc gọi' }}
+                    @elseif ($room->last_message && strpos($room->last_message->message, 'left-call') === 0)
+                        {{ 'rời khỏi cuộc gọi' }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'end-call') === 0)
                         {{ 'Kết thúc cuộc gọi' }}
                     @endif

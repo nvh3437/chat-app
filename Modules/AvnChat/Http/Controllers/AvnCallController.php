@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Events\NewCall;
-use App\Events\JoinedCall;
+use App\Events\acceptedCall;
 use App\Events\SendMessageUser;
 use Modules\AvnChat\Entities\Message;
 use Modules\AvnChat\Entities\ChatRoom;
@@ -67,7 +67,6 @@ class AvnCallController extends Controller
         // $message->message = 'start-call ' . $user->name;
         // $message->save();
         // broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
-        broadcast(new NewCall(user_send: $user, call: $call));
         return $call;
         // ProcessVoiceCall::dispatch($room);
         // ProcessVoiceCall::dispatch($room)
@@ -92,7 +91,7 @@ class AvnCallController extends Controller
             // $message->message = 'joined-call ' . $user->name;
             // $message->save();
             // broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
-            broadcast(new JoinedCall(user_send: $user, call: $call));
+            // broadcast(new acceptedCall(user_send: $user, call: $call));
             return $call;
             // ProcessVoiceCall::dispatch($room);
             // ProcessVoiceCall::dispatch($room)
@@ -120,7 +119,7 @@ class AvnCallController extends Controller
             $message->message = 'stop-call ' . $user->name;
             $message->save();
             broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
-            broadcast(new JoinedCall(user_send: $user, call: $call));
+            broadcast(new acceptedCall(user_send: $user, call: $call));
             return $call;
             // ProcessVoiceCall::dispatch($room);
             // ProcessVoiceCall::dispatch($room)
@@ -131,34 +130,81 @@ class AvnCallController extends Controller
     {
         $janus_event = $request->all()[0];
 
-        $ngu = new \Modules\AvnChat\Entities\Ngu();
-        $ngu->value = json_encode($janus_event);
-        $ngu->save();
+        // $ngu = new \Modules\AvnChat\Entities\Ngu();
+        // $ngu->value = json_encode($janus_event);
+        // $ngu->save();
 
+        // create audio bridge
+        $create_audio_bridge = $janus_event['type'] == 64 &&
+            ($janus_event['event']['data']['event'] ?? '') == 'created';
+        if ($create_audio_bridge) {
+            $call_id = $janus_event['event']['data']['room'];
+            $call = ChatRoomCall::find($call_id);
+            broadcast(new NewCall(call: $call));
+
+            $message = new Message();
+            $message->room_id = $call->room_id;
+            $message->message = 'start-call';
+            $message->save();
+            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+        }
+
+        // joined audio bridge
+        $joined_audio_bridge = $janus_event['type'] == 64 &&
+            ($janus_event['event']['data']['event'] ?? '') == 'joined';
+        if ($joined_audio_bridge) {
+            $user_id = $janus_event['event']['data']['id'];
+            $user = User::find($user_id);
+
+            $call_id = $janus_event['event']['data']['room'];
+            $call = ChatRoomCall::find($call_id);
+
+            $call_user = new ChatRoomCallUser();
+            $call_user->call_id = $call->id;
+            $call_user->user_id = $user->id;
+            $call_user->save();
+
+
+            $message = new Message();
+            $message->room_id = $call->room_id;
+            $message->message = 'joined-call ' . $user->name;
+            $message->save();
+            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+        }
+
+        // left audio bridge
         $user_left = $janus_event['type'] == 64 &&
-            $janus_event['event']['data']['event'] == 'left';
+            ($janus_event['event']['data']['event'] ?? '') == 'left';
         if ($user_left) {
 
-            //     $call_id = $janus_event['event']['data']['room'];
-            //     $user_id = $janus_event['event']['data']['id'];
-            //     $date = date('Y-m-d H:i:s');
-            //     $call = ChatRoomCall::find($call_id);
-            //     if ($call) {
-            //         $call_user = $call->call_users->where('user_id', $user_id)->first();
-            //         if ($call_user) {
-            //             $call_user->end_on = $date;
-            //             $call_user->save();
-            //         }
-            //         if ($call->call_users->where('end_on', '!=', null)->count() < 1) {
-            //             $call->end_on = $date;
-            //             $call->save();
-            //             $message = new Message();
-            //             $message->room_id = $call->room_id;
-            //             $message->message = 'stop-call';
-            //             $message->save();
-            //             broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
-            //         }
-            //     }
+            $call_id = $janus_event['event']['data']['room'];
+            $user_id = $janus_event['event']['data']['id'];
+            $user = User::find($user_id);
+            $date = date('Y-m-d H:i:s');
+
+            $call = ChatRoomCall::find($call_id);
+
+            $call_user = $call->call_users->where('user_id', $user_id)->first();
+            $call_user->end_on = $date;
+            $call_user->save();
+
+            $message = new Message();
+            $message->room_id = $call->room_id;
+            $message->message = 'left-call ' . $user->name;
+            $message->save();
+
+            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+
+            if ($call->call_users->where('end_on', '!=', null)->count() < 1) {
+                $call->end_on = $date;
+                $call->save();
+                $message = new Message();
+                $message->room_id = $call->room_id;
+                $message->message = 'stop-call';
+                $message->save();
+                broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+            }
+
         }
     }
 }

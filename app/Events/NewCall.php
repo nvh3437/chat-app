@@ -14,10 +14,8 @@ class NewCall implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $call;
-    public $user_send;
-    public function __construct($user_send = null, $call)
+    public function __construct($call)
     {
-        $this->user_send = $user_send;
         $this->call = $call;
     }
     public function broadcastOn()
@@ -38,7 +36,6 @@ class NewCall implements ShouldBroadcast
         }
         $imgs = $this->call->room->img ? [$this->call->room->img] : $this->call->room->users->pluck('profile.img')->take(3);
         $res = [
-            'user_send' => $this->user_send->id,
             'name' => $room_name,
             'imgs' => $imgs,
             'room_id' => $this->call->room_id,
