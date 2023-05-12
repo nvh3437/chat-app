@@ -41,10 +41,10 @@ class AvnCallController extends Controller
         $call->secret = rand();
         $call->save();
 
-        $call_user = new ChatRoomCallUser();
-        $call_user->call_id = $call->id;
-        $call_user->user_id = $user->id;
-        $call_user->save();
+        // $call_user = new ChatRoomCallUser();
+        // $call_user->call_id = $call->id;
+        // $call_user->user_id = $user->id;
+        // $call_user->save();
 
         $response = Http::accept('application/json')->post(env('JANUS_ADMIN_URL'), [
             "janus" => "message_plugin",
@@ -53,6 +53,7 @@ class AvnCallController extends Controller
             "plugin" => "janus.plugin.audiobridge",
             "request" => [
                 'request' => "create",
+                "admin_key" => env('JANUS_AUDIO_BRIDGE_ADMIN_KEY'),
                 'room' => $call->id,
                 'record' => true,
                 'record_file' => 'record-' . $call->id . '.wav',
@@ -61,11 +62,11 @@ class AvnCallController extends Controller
                 'secret' => $call->secret . '',
             ]
         ])->json();
-        $message = new Message();
-        $message->room_id = $room->id;
-        $message->message = 'start-call ' . $user->name;
-        $message->save();
-        broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+        // $message = new Message();
+        // $message->room_id = $room->id;
+        // $message->message = 'start-call ' . $user->name;
+        // $message->save();
+        // broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
         broadcast(new NewCall(user_send: $user, call: $call));
         return $call;
         // ProcessVoiceCall::dispatch($room);
@@ -81,16 +82,16 @@ class AvnCallController extends Controller
         })->findOrFail($request->id);
         if (!$call->end_on) {
 
-            $call_user = new ChatRoomCallUser();
-            $call_user->call_id = $call->id;
-            $call_user->user_id = $user->id;
-            $call_user->save();
+            // $call_user = new ChatRoomCallUser();
+            // $call_user->call_id = $call->id;
+            // $call_user->user_id = $user->id;
+            // $call_user->save();
 
-            $message = new Message();
-            $message->room_id = $call->room_id;
-            $message->message = 'joined-call ' . $user->name;
-            $message->save();
-            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+            // $message = new Message();
+            // $message->room_id = $call->room_id;
+            // $message->message = 'joined-call ' . $user->name;
+            // $message->save();
+            // broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
             broadcast(new JoinedCall(user_send: $user, call: $call));
             return $call;
             // ProcessVoiceCall::dispatch($room);
@@ -129,29 +130,35 @@ class AvnCallController extends Controller
     public function janusEvent(Request $request)
     {
         $janus_event = $request->all()[0];
+
+        $ngu = new \Modules\AvnChat\Entities\Ngu();
+        $ngu->value = json_encode($janus_event);
+        $ngu->save();
+
         $user_left = $janus_event['type'] == 64 &&
-            $janus_event['event']->data->event == 'left';
+            $janus_event['event']['data']['event'] == 'left';
         if ($user_left) {
-            $call_id = $janus_event['event']['data']['room'];
-            $user_id = $janus_event['event']['data']['id'];
-            $date = date('Y-m-d H:i:s');
-            $call = ChatRoomCall::find($call_id);
-            if ($call) {
-                $call_user = $call->call_users->where('user_id', $user_id)->first();
-                if ($call_user) {
-                    $call_user->end_on = $date;
-                    $call_user->save();
-                }
-                if ($call->call_users->where('end_on', '!=', null)->count() < 1) {
-                    $call->end_on = $date;
-                    $call->save();
-                    $message = new Message();
-                    $message->room_id = $call->room_id;
-                    $message->message = 'stop-call';
-                    $message->save();
-                    broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
-                }
-            }
+
+            //     $call_id = $janus_event['event']['data']['room'];
+            //     $user_id = $janus_event['event']['data']['id'];
+            //     $date = date('Y-m-d H:i:s');
+            //     $call = ChatRoomCall::find($call_id);
+            //     if ($call) {
+            //         $call_user = $call->call_users->where('user_id', $user_id)->first();
+            //         if ($call_user) {
+            //             $call_user->end_on = $date;
+            //             $call_user->save();
+            //         }
+            //         if ($call->call_users->where('end_on', '!=', null)->count() < 1) {
+            //             $call->end_on = $date;
+            //             $call->save();
+            //             $message = new Message();
+            //             $message->room_id = $call->room_id;
+            //             $message->message = 'stop-call';
+            //             $message->save();
+            //             broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+            //         }
+            //     }
         }
     }
 }

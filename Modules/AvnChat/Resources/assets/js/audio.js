@@ -327,7 +327,7 @@ $(document).ready(function () {
         var join_audio_bridge = { request: "join", room: call_id, id: user_id, pin: call_pin.toString() };
         mixertest.send({
             message: join_audio_bridge, success: function () {
-                $('#in-call-modal .modal-body .status').html('Đã kết nối...')
+                    $('#in-call-modal .modal-body .status').html('Đã kết nối...')
             }
         });
     }

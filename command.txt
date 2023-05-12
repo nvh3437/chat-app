@@ -129,7 +129,10 @@ apt-get install automake -y
             events: {
                 broadcast = true
             }
-
+    #config plugins =========================================================================================
+        nano /opt/janus/etc/janus/janus.plugin.audiobridge.jcfg
+        set admin_key = {string}
+        cập nhật admin key vào env
     #config admin api (secret = janusoverlord)=================================================================================
         nano /opt/janus/etc/janus/janus.transport.http.jcfg
         set: 

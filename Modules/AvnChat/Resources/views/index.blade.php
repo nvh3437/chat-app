@@ -398,12 +398,14 @@
     <script type="text/javascript">
         window.room_id = null;
         window.user_id = {{ $user->id }};
+
         window.room_calling_id = null;
         window.call_id = null;
         window.call_pin = null;
         window.call_secret = null;
         window.is_calling = false;
         window.is_incall = false;
+
         window.last_load = null;
         window.load_more = true;
         window.count_up = null;
@@ -624,7 +626,7 @@
                             window.incoming_call_modal.show()
                         }
                     })
-                    .listen('.joinedCall', (e) => {
+                    .listen('.acceptedCall', (e) => {
                         if (call_id == e.call_id && is_calling) {
                             is_calling = false
                             is_incall = true
@@ -697,6 +699,7 @@
                     $("#files").val('')
                 }
             })
+            
             // remove file upload
             $('.files-container').on('click', '.remove-image', function() {
                 var index = preview_images.indexOf($(this).parent().find('img').attr('src'));
@@ -1893,6 +1896,7 @@
                         call_pin = res.pin
                         call_secret = res.secret
                         $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
+                        // start_connect_call()
                         window.start_call_timeout = setTimeout(cancel_calling, 60000)
                     }
                 })
@@ -1902,15 +1906,7 @@
                 is_incall = true
                 start_call_modal.hide()
                 in_call_modal.show()
-                $.ajax({
-                    method: 'post',
-                    url: "chat/accept-call",
-                    dataType: "json",
-                    data: {
-                        id: call_id,
-                    },
-                    success: function(res) {}
-                })
+                // is_accept_call = true
                 start_connect_call()
             })
 

@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class JoinedCall implements ShouldBroadcast
+class AcceptedCall implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $call;
@@ -28,7 +28,7 @@ class JoinedCall implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'joinedCall';
+        return 'acceptedCall';
     }
     public function broadcastWith()
     {
