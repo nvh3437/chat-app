@@ -26,7 +26,7 @@
 
 // List of sessions
 Janus.sessions = {};
-const server = "http://janus.avntech.vn/janus";
+const server = "https://janus.avntech.vn/janus";
 const iceServers = [{urls: "stun:stun.l.google.com:19302"}]
 Janus.isExtensionEnabled = function() {
 	if(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
