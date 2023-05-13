@@ -33,7 +33,7 @@ $(document).ready(function () {
                                     opaqueId: opaqueId,
                                     success: function (pluginHandle) {
                                         mixertest = pluginHandle;
-                                        var join_audio_bridge = { request: "join", room: call_id, id: user_id, pin: call_pin.toString() };
+                                        var join_audio_bridge = { request: "join", room: call_id, id: user_id, quality: 10, pin: call_pin.toString() };
                                         mixertest.send({ message: join_audio_bridge });
                                         // Prepare the username registration
                                     },
@@ -121,9 +121,9 @@ $(document).ready(function () {
                                                                 });
                                                                 $('#in-call-modal .joined-users').append(htm)
                                                                 $('#in-call-modal .modal-body .status').html('Đã kết nối...')
-                                                                $('.microphone').removeAttr('disabled')
                                                             }
                                                         });
+                                                        $('.microphone').removeAttr('disabled')
                                                     }
                                                 }
                                             } else if (event === "roomchanged") {
