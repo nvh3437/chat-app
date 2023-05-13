@@ -2,6 +2,7 @@
 use Modules\AvnUser\Http\Controllers\CustomerController;
 use Modules\AvnUser\Http\Controllers\UserController;
 use Modules\AvnUser\Http\Controllers\SocialController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +15,10 @@ use Modules\AvnUser\Http\Controllers\SocialController;
 */
 
 //-------------------------- Quản lý ---------------------//
-Route::prefix('user')->group(function() {
+Route::prefix('user')->group(function () {
+
+    Route::post('/get-users', 'UserController@getUsers');
+
     // Chuyên gia
     Route::get('/list-partner', 'PartnerManagerController@listPartner')->middleware(['auth', 'permission'])->name('list-partner');
     Route::get('/add-partner', 'PartnerManagerController@addPartner')->middleware(['auth', 'permission'])->name('add-partner');
@@ -49,7 +53,7 @@ Route::get('/forgot-password', [CustomerController::class, 'forgotPassword'])->n
 Route::get('login/{social}', [SocialController::class, 'redirectToProvider'])->name('login-social');
 Route::get('login/{social}/callback', [SocialController::class, 'handleProviderCallback'])->name('login-social-callback');
 
-    // Template reset password: resources\views\auth\reset-password.blade.php
+// Template reset password: resources\views\auth\reset-password.blade.php
 // Route::get('/reset-password/{token}', [CustomerController::class, 'resetPassword'])->name('reset-password');
 
 // Thông tin cá nhân

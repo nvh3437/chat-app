@@ -1,11 +1,10 @@
-
-
 $(document).ready(function () {
     window.opaqueId = "user-" + window.user_id;
     window.mixertest = null;
     window.webrtcUp = false;
     window.stereo = false;
     window.remoteStream = null;
+    window.audio_enabled = true;
     // Initialize the library (all console debuggers enabled)
     Janus.init({
         debug: "all", callback: function () {
@@ -35,12 +34,7 @@ $(document).ready(function () {
                                     success: function (pluginHandle) {
                                         mixertest = pluginHandle;
                                         var join_audio_bridge = { request: "join", room: call_id, id: user_id, pin: call_pin.toString() };
-                                        mixertest.send({
-                                            message: join_audio_bridge, success: function () {
-                                                $('#in-call-modal .modal-body .status').html('Đã kết nối...')
-                                            }
-                                        });
-                                        Janus.log("Plugin attached! (" + mixertest.getPlugin() + ", id=" + mixertest.getId() + ")");
+                                        mixertest.send({ message: join_audio_bridge });
                                         // Prepare the username registration
                                     },
                                     error: function (error) {
@@ -87,44 +81,50 @@ $(document).ready(function () {
                                                 }
                                                 // Any room participant?
                                                 if (msg["participants"]) {
-                                                    console.log('======= ngu participants ======');
-                                                    console.log(msg["participants"]);
-                                                    let list = msg["participants"];
-                                                    Janus.debug("Got a list of participants:", list);
-                                                    // for(let f in list) {
-                                                    // 	let id = list[f]["id"];
-                                                    // 	let display = escapeXmlTags(list[f]["display"]);
-                                                    // 	let setup = list[f]["setup"];
-                                                    // 	let muted = list[f]["muted"];
-                                                    // 	let spatial = list[f]["spatial_position"];
-                                                    // 	Janus.debug("  >> [" + id + "] " + display + " (setup=" + setup + ", muted=" + muted + ")");
-                                                    // 	if($('#rp' + id).length === 0) {
-                                                    // 		// Add to the participants list
-                                                    // 		let slider = '';
-                                                    // 		if(spatial !== null && spatial !== undefined)
-                                                    // 			slider = '<span>[L <input id="sp' + id + '" type="text" style="width: 10%;"/> R] </span>';
-                                                    // 		$('#list').append('<li id="rp' + id +'" class="list-group-item">' +
-                                                    // 			slider +
-                                                    // 			display +
-                                                    // 			' <i class="absetup fa fa-chain-broken"></i>' +
-                                                    // 			' <i class="abmuted fa fa-microphone-slash"></i></li>');
-                                                    // 		if(spatial !== null && spatial !== undefined) {
-                                                    // 			$('#sp' + id).slider({ min: 0, max: 100, step: 1, value: 50, handle: 'triangle', enabled: false });
-                                                    // 			$('#position').removeClass('hide').show();
-                                                    // 		}
-                                                    // 		$('#rp' + id + ' > i').hide();
-                                                    // 	}
-                                                    // 	if(muted === true || muted === "true")
-                                                    // 		$('#rp' + id + ' > i.abmuted').removeClass('hide').show();
-                                                    // 	else
-                                                    // 		$('#rp' + id + ' > i.abmuted').hide();
-                                                    // 	if(setup === true || setup === "true")
-                                                    // 		$('#rp' + id + ' > i.absetup').hide();
-                                                    // 	else
-                                                    // 		$('#rp' + id + ' > i.absetup').removeClass('hide').show();
-                                                    // 	if(spatial !== null && spatial !== undefined)
-                                                    // 		$('#sp' + id).slider('setValue', spatial);
-                                                    // }
+                                                    let list_users = msg["participants"];
+                                                    var id_users = [];
+                                                    var mutes = [];
+                                                    list_users.forEach(user => {
+                                                        if ($('#joined-user-' + user['id']).length === 0) {
+                                                            id_users.push(user['id'])
+                                                            mutes.push(user['muted'])
+                                                        } else {
+                                                            if (user['muted']) {
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone').addClass('mdi-microphone-off')
+                                                            } else {
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone-off').addClass('mdi-microphone')
+                                                            }
+                                                        }
+                                                    });
+                                                    if (id_users.length) {
+                                                        $.ajax({
+                                                            method: 'post',
+                                                            url: "user/get-users",
+                                                            dataType: "json",
+                                                            data: {
+                                                                users: id_users,
+                                                            },
+                                                            success: function (response) {
+                                                                var htm = ''
+                                                                response.forEach((user, index) => {
+                                                                    htm += '<div class="avatar-lg m-1 position-relative" id="joined-user-' + user['id'] + '">'
+                                                                    htm += '<img src="' + user['avatar'] + '" alt="" class="img-thumbnail avatar-lg rounded-circle disable" style="object-fit: cover">'
+                                                                    htm += '<div class="position-absolute bottom-0 text-center text-nowrap w-100 text-truncate bg-secondary text-white">'
+                                                                    if (mutes[index]) {
+                                                                        htm += '<i class="micro-status mdi mdi-microphone-off"></i> '
+                                                                    } else {
+                                                                        htm += '<i class="micro-status mdi mdi-microphone"></i> '
+                                                                    }
+                                                                    htm += user['name']
+                                                                    htm += '</div>'
+                                                                    htm += '</div>'
+                                                                });
+                                                                $('#in-call-modal .joined-users').append(htm)
+                                                                $('#in-call-modal .modal-body .status').html('Đã kết nối...')
+                                                                $('.microphone').removeAttr('disabled')
+                                                            }
+                                                        });
+                                                    }
                                                 }
                                             } else if (event === "roomchanged") {
                                                 // The user switched to a different room
@@ -178,10 +178,7 @@ $(document).ready(function () {
                                                     window.location.reload();
                                                 });
                                             } else if (event === "event") {
-                                                console.log(msg);
-                                                console.log(jsep);
                                                 if (msg["participants"]) {
-                                                    var participants = msg["participants"];
                                                     if (call_id == msg["room"] && is_calling) {
                                                         is_calling = false
                                                         is_incall = true
@@ -189,6 +186,16 @@ $(document).ready(function () {
                                                         window.start_call_modal.hide()
                                                         window.in_call_modal.show()
                                                     }
+                                                    let list_users = msg["participants"];
+                                                    list_users.forEach(user => {
+                                                        if ($('#joined-user-' + user['id']).length !== 0) {
+                                                            if (user['muted']) {
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone-off').addClass('mdi-microphone')
+                                                            } else {
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone').addClass('mdi-microphone-off')
+                                                            }
+                                                        }
+                                                    });
                                                 } else if (msg["error"]) {
                                                     // if (msg["error_code"] === 485) {
                                                     //     // This is a "no such room" error: give a more meaningful description
@@ -196,7 +203,7 @@ $(document).ready(function () {
                                                     //         "Có lỗi xảy ra hãy báo với quản trị viên"
                                                     //     );
                                                     // } else {
-                                                    bootbox.alert(msg["error"]);
+                                                    // bootbox.alert(msg["error"]);
                                                     // }
                                                     // return;
                                                 }
@@ -205,7 +212,7 @@ $(document).ready(function () {
                                                     // One of the participants has gone away?
                                                     let leaving = msg["leaving"];
                                                     Janus.log("Participant left: " + leaving + " (we have " + $('#rp' + leaving).length + " elements with ID #rp" + leaving + ")");
-                                                    // $('#rp'+leaving).remove();
+                                                    $('#joined-user-' + leaving).remove();
                                                 }
                                             }
                                         }
@@ -304,13 +311,23 @@ $(document).ready(function () {
         mixertest.send({
             message: leave_audio_bridge, success: function () {
                 mixertest.hangup()
-                window.in_call_modal.hide()
-                window.is_calling = false
-                window.is_incall = false
             }
         });
+    }
 
-
+    // create audio room
+    window.muted_audio = function () {
+        audio_enabled = !audio_enabled
+        var configure_audio_bridge = {
+            request: "configure",
+            muted: audio_enabled,
+        };
+        if (audio_enabled) {
+            $('.microphone').html('<i class="mdi mdi-microphone"></i>')
+        } else {
+            $('.microphone').html('<i class="mdi mdi-microphone-off"></i>')
+        }
+        mixertest.send({ message: configure_audio_bridge });
     }
 });
 

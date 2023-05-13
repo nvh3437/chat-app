@@ -10,14 +10,12 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AcceptedCall implements ShouldBroadcast
+class StopCall implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $call;
-    public $user_send;
-    public function __construct($user_send = null, $call)
+    public function __construct($call)
     {
-        $this->user_send = $user_send;
         $this->call = $call;
     }
     public function broadcastOn()
@@ -28,7 +26,7 @@ class AcceptedCall implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'acceptedCall';
+        return 'stopCall';
     }
     public function broadcastWith()
     {
@@ -38,13 +36,9 @@ class AcceptedCall implements ShouldBroadcast
         }
         $imgs = $this->call->room->img ? [$this->call->room->img] : $this->call->room->users->pluck('profile.img')->take(3);
         $res = [
-            'user_send' => $this->user_send->id,
             'name' => $room_name,
             'imgs' => $imgs,
-            'room_id' => $this->call->room_id,
             'call_id' => $this->call->id,
-            'pin' => $this->call->pin,
-            'secret' => $this->call->secret,
         ];
         return $res;
     }

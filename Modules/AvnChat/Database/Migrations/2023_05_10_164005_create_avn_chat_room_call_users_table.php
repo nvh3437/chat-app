@@ -26,6 +26,7 @@ return new class extends Migration {
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->string('status');
             $table->dateTime('end_on')->nullable();
             $table->timestamps();
         });

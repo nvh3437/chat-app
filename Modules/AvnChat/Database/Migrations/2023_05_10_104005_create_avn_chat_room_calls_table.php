@@ -21,8 +21,6 @@ return new class extends Migration {
                 ->onDelete('set null')
                 ->onUpdate('cascade');
             $table->string('pin');
-            $table->string('secret');
-            $table->dateTime('end_on')->nullable();
             $table->timestamps();
         });
     }

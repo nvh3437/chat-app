@@ -23,6 +23,14 @@ class ChatRoomCall extends Model
     {
         return $this->hasMany(ChatRoomCallUser::class, 'call_id', 'id');
     }
+    public function left_call_users()
+    {
+        return $this->hasMany(ChatRoomCallUser::class, 'call_id', 'id')->where('status', 'left');
+    }
+    public function joined_call_users()
+    {
+        return $this->hasMany(ChatRoomCallUser::class, 'call_id', 'id')->where('status', 'joined');
+    }
     public function call_partners()
     {
         return $this->hasMany(ChatRoomCallUser::class, 'call_id', 'id')->whereHas('user', function (Builder $query) {

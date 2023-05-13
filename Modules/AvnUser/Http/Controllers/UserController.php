@@ -79,4 +79,15 @@ class UserController extends Controller
             return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
+    public function getUsers(Request $request)
+    {
+        $res = [];
+        if ($request->users) {
+            $users = User::find($request->users);
+            foreach ($users as $user) {
+                array_push($res, ['id' => $user->id, 'name' => $user->name, 'avatar' => $user->profile->img ?? 'resources/assets/images/users/avatar-1.jpg']);
+            }
+        }
+        return $res;
+    }
 }
