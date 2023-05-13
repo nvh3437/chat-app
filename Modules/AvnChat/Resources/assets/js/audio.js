@@ -48,6 +48,7 @@ $(document).ready(function () {
                                         Janus.debug("Event: " + event);
                                         if (event) {
                                             if (event === "joined") {
+                                                $('.microphone').removeAttr('disabled')
                                                 // Successfully joined, negotiate WebRTC now
                                                 if (msg["id"]) {
                                                     myid = msg["id"];
@@ -123,7 +124,6 @@ $(document).ready(function () {
                                                                 $('#in-call-modal .modal-body .status').html('Đã kết nối...')
                                                             }
                                                         });
-                                                        $('.microphone').removeAttr('disabled')
                                                     }
                                                 }
                                             } else if (event === "roomchanged") {
