@@ -54,6 +54,7 @@ class AvnCallController extends Controller
                 'record_file' => 'record-' . $call->id . '.wav',
                 'record_dir' => "/var/www/html",
                 'pin' => $call->pin . '',
+                "sampling_rate"=>24000
             ]
         ])->json();
         return $call;

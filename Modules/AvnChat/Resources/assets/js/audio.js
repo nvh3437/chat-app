@@ -323,9 +323,9 @@ $(document).ready(function () {
             muted: audio_enabled,
         };
         if (audio_enabled) {
-            $('.microphone').html('<i class="mdi mdi-microphone"></i>')
-        } else {
             $('.microphone').html('<i class="mdi mdi-microphone-off"></i>')
+        } else {
+            $('.microphone').html('<i class="mdi mdi-microphone"></i>')
         }
         mixertest.send({ message: configure_audio_bridge });
     }
