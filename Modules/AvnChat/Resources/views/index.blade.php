@@ -243,13 +243,38 @@
                         </div> --}}
 
                         <div class="mt-3 text-center">
+                            <!--avatar-->
                             <img src="#" alt=""
                                 class="img-thumbnail avatar-lg rounded-circle chat-info-img d-none"
                                 style="object-fit: cover" />
-                            <div class="position-relative chat-info-imgs d-none" style="height: 3rem;">
-
-                            </div>
+                            <!--avatars-->
+                            <div class="position-relative chat-info-imgs d-none" style="height: 3rem;"></div>
+                            <!--room name-->
                             <h4 class="chat-info-name"></h4>
+                            <!--start call button-->
+                            <button class="btn btn-success btn-sm mt-1 start-call" id="start-call" data-bs-toggle="modal"
+                                data-bs-target="#start-call-modal"><i class='mdi mdi-phone me-1'></i>Gọi nhóm</button>
+                            <!--start call modal-->
+                            <div id="start-call-modal" class="modal fade" tabindex="-1" role="dialog"
+                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body py-5">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <button type="button"
+                                                class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1 microphone"
+                                                disabled><i class="mdi mdi-microphone"></i></button>
+                                            <button type="button"
+                                                class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1 stop-call"
+                                                disabled data-bs-dismiss="modal"><i
+                                                    class="mdi mdi-phone-hangup"></i></button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+
                             @if ($user->type == 'system')
                                 <button class="btn btn-primary btn-sm mt-1 join-room"><i
                                         class='uil uil-plus me-1'></i>Tham
@@ -267,7 +292,6 @@
                                                 </a>
                                             </h5>
                                         </div>
-
                                         <div id="change-info" class="collapse text-center" aria-labelledby="headingOne"
                                             data-bs-parent="#accordionExample">
                                             <div class="card-body pt-0">
@@ -321,11 +345,112 @@
             <!-- end user detail -->
         </div> <!-- end row-->
     </div> <!-- container -->
+    <!--incoming call-->
+    <div id="incoming-call-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body py-5 text-center">
+                    <img src="#" alt=""
+                        class="img-thumbnail avatar-lg rounded-circle chat-info-img d-none" style="object-fit: cover" />
+                    <div class="position-relative chat-info-imgs" style="height: 3rem;">
+                    </div>
+                    <h4 class="chat-info-name"></h4>
+                    <h5 class="text-muted status">Cuộc gọi sẽ bắt đầu ngay khi bấm chấp nhận</h5>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success p-0 rounded-circle avatar-sm fs-3 mx-1"
+                        data-bs-dismiss="modal" id="accept-call"><i class="mdi mdi-phone"></i></button>
+                    <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
+                        data-bs-dismiss="modal" id="cancel-call"><i class="mdi mdi-phone-hangup"></i></button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div id="in-call-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body py-4 text-center">
+                    <img src="#" alt=""
+                        class="img-thumbnail avatar-lg rounded-circle chat-info-img d-none" style="object-fit: cover" />
+                    <div class="position-relative chat-info-imgs" style="height: 3rem;">
+                    </div>
+                    <h4 class="chat-info-name"></h4>
+                    <h5 class="text-muted status">Đang kết nối...</h5>
+                    <div id="mixedaudio"></div>
+                    <div class="d-flex joined-users flex-wrap justify-content-center mt-3">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1 microphone"
+                        disabled>
+                        <i class="mdi mdi-microphone"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1 stop-call"
+                        data-bs-dismiss="modal">
+                        <i class="mdi mdi-phone-hangup"></i>
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--stop call-->
+    <div id="stop-call-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body py-5 text-center">
+                    <img src="#" alt=""
+                        class="img-thumbnail avatar-lg rounded-circle chat-info-img d-none" style="object-fit: cover" />
+                    <div class="position-relative chat-info-imgs" style="height: 3rem;">
+                    </div>
+                    <h4 class="chat-info-name"></h4>
+                    <h4 class="text-muted status">Cuộc gọi đã kết thúc</h4>
+                </div>
+                <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
+                            data-bs-dismiss="modal"><i class="mdi mdi-close"></i></button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 @section('js')
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.2.2/adapter.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
     @vite(['Modules/AvnChat/resources/assets/js/chat.js'])
-    {{-- <script src="{{ asset('Modules/AvnChat/resources/assets/js/index.js') }}"></script> --}}
+    <script src="{{ asset('resources/js/janus.js') }}"></script>
     <script type="text/javascript">
+        window.room_id = null;
+        window.user_id = {{ $user->id }};
+
+        window.room_calling_id = null;
+        window.call_id = null;
+        window.call_pin = null;
+        window.is_calling = false;
+        window.is_ringing = false;
+        window.is_incall = false;
+
+        window.last_load = null;
+        window.load_more = true;
+        window.count_up = null;
+        window.start_call_timeout
+        window.preview_images = [];
+        window.images = [];
+        window.incoming_call_modal = new bootstrap.Modal(document.getElementById('incoming-call-modal'), {
+            keyboard: false
+        })
+        window.start_call_modal = new bootstrap.Modal(document.getElementById('start-call-modal'), {
+            keyboard: false
+        })
+        window.in_call_modal = new bootstrap.Modal(document.getElementById('in-call-modal'), {
+            keyboard: false
+        })
+        window.stop_call_modal = new bootstrap.Modal(document.getElementById('stop-call-modal'), {
+            keyboard: false
+        })
         // add csrf
         $.ajaxSetup({
             headers: {
@@ -333,12 +458,6 @@
             }
         });
         $(document).ready(function() {
-            var room_id = null;
-            var last_load = null;
-            var load_more = true;
-            var count_up = null;
-            var preview_images = [];
-            var images = [];
             // listen chanel 
             window.Echo.private('joined.user.{{ $user->id }}')
                 .listen('.newRoom', (e) => {
@@ -369,7 +488,6 @@
                             },
                             success: function(res) {},
                         });
-
                         if (e.message.room_id != room_id && !$('.chat-room[data-id=' + e.message.room_id +
                                 '] .text-primary').length) {
                             var $new_message_span = $('.chat-room[data-id=' + e.message.room_id +
@@ -481,11 +599,11 @@
                                     },
                                 });
                             }
-
                             if (e.message.room_id == room_id) {
                                 add_message_send_by_system(e.message)
                             }
                             update_new_message_in_chat_room_send_by_system(e.message)
+                            scroll_to_bottom_message_container()
                         } else if (e.message.user_id != {{ $user->id }}) {
                             if (room_id == e.message.room_id) {
                                 add_my_receive_message(e.name, e.img, e.message, new Date(e.message
@@ -502,7 +620,82 @@
                             $room_chat.remove()
                         });
                     })
+                    .listen('.newCall', (e) => {
+                        if (!is_calling && !is_incall && !is_ringing) {
+                            is_ringing = true
+                            window.incoming_call_modal.hide()
+                            call_id = e.call_id
+                            call_pin = e.pin
+                            // incoming-call-modal
+                            $('#incoming-call-modal .chat-info-name').html(e.name)
+                            if (e.imgs.length == 1) {
+                                $('#incoming-call-modal .chat-info-img').attr('src', e.imgs[0] ??
+                                    'resources/assets/images/users/avatar-1.jpg')
+                                $('#incoming-call-modal .chat-info-img').removeClass('d-none')
+                                $('#incoming-call-modal .chat-info-imgs').addClass('d-none')
+                            } else {
+                                var htm = ''
+                                e.imgs.forEach((img, index) => {
+                                    htm += '<img src="' +
+                                        (img ?? 'resources/assets/images/users/avatar-1.jpg') +
+                                        '" class="rounded-circle img-thumbnail avatar-sm" style="object-fit: cover;"/>'
+                                });
+                                $('#incoming-call-modal .chat-info-imgs').html(htm)
+                                $('#incoming-call-modal .chat-info-imgs').removeClass('d-none')
+                                $('#incoming-call-modal .chat-info-img').addClass('d-none')
+                            }
+                            // in-call-modal
+                            $('#in-call-modal .chat-info-name').html(e.name)
+                            $('#in-call-modal .status').html('Đã kết nối...')
+                            if (e.imgs.length == 1) {
+                                $('#in-call-modal .chat-info-img').attr('src', e.imgs[0] ??
+                                    'resources/assets/images/users/avatar-1.jpg')
+                                $('#in-call-modal .chat-info-img').removeClass('d-none')
+                                $('#in-call-modal .chat-info-imgs').addClass('d-none')
+                            } else {
+                                var htm = ''
+                                e.imgs.forEach((img, index) => {
+                                    htm += '<img src="' +
+                                        (img ?? 'resources/assets/images/users/avatar-1.jpg') +
+                                        '" class="rounded-circle img-thumbnail avatar-sm" style="object-fit: cover;"/>'
+                                });
+                                $('#in-call-modal .chat-info-imgs').html(htm)
+                                $('#in-call-modal .chat-info-imgs').removeClass('d-none')
+                                $('#in-call-modal .chat-info-img').addClass('d-none')
+                            }
+                            window.incoming_call_modal.show()
+                        }
+                    })
+                    .listen('.stopCall', (e) => {
+                        if ((is_calling || is_incall || is_ringing) && call_id == e.call_id) {
+                            window.incoming_call_modal.hide()
+                            window.start_call_modal.hide()
+                            window.in_call_modal.hide()
 
+                            $('#stop-call-modal .chat-info-name').html(e.name)
+                            if (e.imgs.length == 1) {
+                                $('#stop-call-modal .chat-info-img').attr('src', e.imgs[0] ??
+                                    'resources/assets/images/users/avatar-1.jpg')
+                                $('#stop-call-modal .chat-info-img').removeClass('d-none')
+                                $('#stop-call-modal .chat-info-imgs').addClass('d-none')
+                            } else {
+                                var htm = ''
+                                e.imgs.forEach((img, index) => {
+                                    htm += '<img src="' +
+                                        (img ?? 'resources/assets/images/users/avatar-1.jpg') +
+                                        '" class="rounded-circle img-thumbnail avatar-sm" style="object-fit: cover;"/>'
+                                });
+                                $('#stop-call-modal .chat-info-imgs').html(htm)
+                                $('#stop-call-modal .chat-info-imgs').removeClass('d-none')
+                                $('#stop-call-modal .chat-info-img').addClass('d-none')
+                            }
+                            window.stop_call_modal.show()
+                            window.is_calling = false
+                            window.is_incall = false
+                            window.is_ringing = false
+                            leave_audio_room()
+                        }
+                    })
             }
 
             // check file upload 
@@ -548,6 +741,7 @@
                     $("#files").val('')
                 }
             })
+
             // remove file upload
             $('.files-container').on('click', '.remove-image', function() {
                 var index = preview_images.indexOf($(this).parent().find('img').attr('src'));
@@ -680,10 +874,21 @@
                     $('.info-col').addClass('d-none')
                 }
                 $('.chat-col').removeClass('d-none')
-
                 $(this).find('i.text-primary').remove()
                 $(this).find('.text-primary').removeClass('text-primary')
                 if (room_id != $(this).data('id')) {
+                    console.log($('.chat-info-img').html() + $('.chat-info-name').html());
+                    if ($('.chat-info-imgs').hasClass('d-none')) {
+                        $('#start-call-modal .modal-body').html(
+                            $('.chat-info-imgs')[0].outerHTML + $('.chat-info-name')[0].outerHTML +
+                            "<h5 class='text-muted status'>Đang kết nối...</h5>"
+                        );
+                    } else {
+                        $('#start-call-modal .modal-body').html(
+                            $('.chat-info-img')[0].outerHTML + $('.chat-info-name')[0].outerHTML +
+                            "<h5 class='text-muted'>Đang gọi...</h5>"
+                        );
+                    }
                     $('.chat-room .chat-room-badge.bg-light').removeClass('bg-light')
                     $('.chat-conatiner .pre-loader').removeClass('d-none')
                     $('.chat-info .pre-loader').removeClass('d-none')
@@ -1212,6 +1417,14 @@
                     system_message = 'Bắt đầu phiên làm việc'
                 } else if (message.message.indexOf("end-session") == 0) {
                     system_message = 'Kết thúc phiên làm việc'
+                } else if (message.message.indexOf("start-call") == 0) {
+                    system_message = 'Bắt đầu cuộc gọi'
+                } else if (message.message.indexOf("joined-call") == 0) {
+                    system_message = message.message.substring(11) + ' tham gia cuộc gọi'
+                } else if (message.message.indexOf("left-call") == 0) {
+                    system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
+                } else if (message.message.indexOf("stop-call") == 0) {
+                    system_message = 'Kết thúc cuộc gọi'
                 }
                 htm = '<li class = "text-center date-message">'
                 htm += '<span class="badge badge-secondary-lighten">' + system_message + '</span>'
@@ -1238,6 +1451,14 @@
                     system_message = 'Bắt đầu phiên làm việc'
                 } else if (message.message.indexOf("end-session") == 0) {
                     system_message = 'Kết thúc phiên làm việc'
+                } else if (message.message.indexOf("start-call") == 0) {
+                    system_message = 'Bắt đầu cuộc gọi'
+                } else if (message.message.indexOf("joined-call") == 0) {
+                    system_message = message.message.substring(11) + ' tham gia cuộc gọi'
+                } else if (message.message.indexOf("left-call") == 0) {
+                    system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
+                } else if (message.message.indexOf("stop-call") == 0) {
+                    system_message = 'Kết thúc cuộc gọi'
                 }
 
                 $(".chat-room[data-id=" + (message.room_id) + "] .new-message").html(system_message);
@@ -1452,7 +1673,7 @@
                     if ($(this).attr('data-time')) {
                         $(this).html(time_ago(new Date($(this).attr('data-time'))))
                     }
-                });
+                })
             }, 60000);
 
             // check internet conection
@@ -1702,6 +1923,67 @@
             })
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#start-call').on('click', function() {
+                room_calling_id = room_id
+                window.is_ringing = false
+                is_calling = true
+                $('#start-call-modal .modal-body .status').html('Đang kết nối...')
+                $('#in-call-modal .joined-users').html('')
+                $.ajax({
+                    method: 'post',
+                    url: "chat/start-call",
+                    dataType: "json",
+                    data: {
+                        id: room_calling_id,
+                    },
+                    success: function(res) {
+                        call_id = res.id
+                        call_pin = res.pin
+                        start_connect_call()
+                        $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
+                        $('#start-call-modal .stop-call').removeAttr('disabled')
+                        window.start_call_timeout = setTimeout(cancel_calling, 60000)
+                    }
+                })
+
+            })
+            $('#accept-call').on('click', function() {
+                is_incall = true
+                window.is_ringing = false
+                start_call_modal.hide()
+                in_call_modal.show()
+                $('#in-call-modal .joined-users').html('')
+                start_connect_call()
+            })
+            $('.microphone').on('click', function() {
+                muted_audio()
+            });
+            $('.stop-call').on('click', function() {
+                window.is_calling = false
+                window.is_ringing = false
+                window.is_incall = false
+                leave_audio_room()
+            });
+            $('#cancel-call').on('click', function() {
+                window.is_calling = false
+                window.is_ringing = false
+                window.is_incall = false
+            });
+
+            function cancel_calling() {
+                window.start_call_modal.hide()
+                window.in_call_modal.hide()
+                window.is_calling = false
+                window.is_ringing = false
+                window.is_incall = false
+                leave_audio_room()
+            }
+        })
+    </script>
+    <script src="{{ asset('Modules/AvnChat/Resources/assets/js/audio.js') }}"></script>
 @endsection
 @section('css')
     <style>

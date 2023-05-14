@@ -34,4 +34,8 @@ class ChatRoom extends Model
     {
         return $this->hasMany(ChatRoomSession::class, 'room_id', 'id');
     }
+    public function call_chats()
+    {
+        return $this->hasMany(ChatRoomCall::class, 'room_id', 'id');
+    }
 }
