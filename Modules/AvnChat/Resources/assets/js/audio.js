@@ -190,9 +190,9 @@ $(document).ready(function () {
                                                     list_users.forEach(user => {
                                                         if ($('#joined-user-' + user['id']).length !== 0) {
                                                             if (user['muted']) {
-                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone-off').addClass('mdi-microphone')
-                                                            } else {
                                                                 $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone').addClass('mdi-microphone-off')
+                                                            } else {
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone-off').addClass('mdi-microphone')
                                                             }
                                                         }
                                                     });
