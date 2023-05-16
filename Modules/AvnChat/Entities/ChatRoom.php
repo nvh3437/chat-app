@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
 
 class ChatRoom extends Model
 {
@@ -37,5 +38,30 @@ class ChatRoom extends Model
     public function call_chats()
     {
         return $this->hasMany(ChatRoomCall::class, 'room_id', 'id');
+    }
+    public function callings()
+    {
+        return $this->hasMany(ChatRoomCall::class, 'room_id', 'id')->whereDoesntHave('end_call');
+    }
+    public function session_calls($session)
+    {
+        if ($session->end_on) {
+            return $this->hasMany(ChatRoomCall::class, 'room_id', 'id')
+                ->where('created_at', '<=', $session->end_on)
+                ->where(function (Builder $query) use ($session) {
+                    return $query->whereHas('end_call', function (Builder $query_sub) use ($session) {
+                        $query_sub->where('end_on', '>=', $session->created_at);
+                    })->orWhere('end_on', null);
+                });
+        } else {
+            return $this->hasMany(ChatRoomCall::class, 'room_id', 'id')->
+                where(function (Builder $query) use ($session) {
+                    return $query->whereHas('end_call', function (Builder $query_sub) use ($session) {
+                        $query_sub->where('end_on', '>=', $session->created_at);
+                    })->orWhere('end_on', null);
+                });
+            ;
+        }
+
     }
 }

@@ -1,13 +1,16 @@
+@php
+    $imgs = $room->img ? [$room->img] : $room->users->pluck('profile.img')->take(2);
+    
+    $room_name = $room->name ? $room->name : implode(', ', $room->users->pluck('name')->all());
+    if (strlen($room_name) > 100) {
+        $room_name = substr($room_name, 0, 100);
+    }
+
+    $room_user = $room->room_user;
+@endphp
 <a href="javascript:void(0);" class="text-body chat-room" data-id="{{ $room->id }}">
     <div class="d-flex align-items-start mt-1 p-2 chat-room-badge">
-        @php
-            $imgs = $room->img ? [$room->img] : $room->users->pluck('profile.img')->take(2);
-            $room_name = $room->name ? $room->name : implode(', ', $room->users->pluck('name')->all());
-            if (strlen($room_name) > 100) {
-                $room_name = substr($room_name, 0, 100);
-            }
-            $room_user = $room->room_user;
-        @endphp
+
         <div class="me-2 flex-shrink-0 chat-room-img">
             @if (count($imgs) == 1)
                 <img src="{{ asset($imgs[0] ?? 'resources/assets/images/users/avatar-1.jpg') }}"

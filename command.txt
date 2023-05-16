@@ -170,6 +170,7 @@ apt-get install automake -y
         location /admin {
                  proxy_pass http://127.0.0.1:7088/admin;
         }
+        cập nhật lại url janus trong file reesources/js/janus.js
 
         sudo systemctl restart nginx
         sudo systemctl restart nginx
@@ -181,10 +182,8 @@ apt-get install automake -y
     
 
 
-https://03b3-2a09-bac1-7ac0-e88-00-19b-194.ngrok-free.app/japan-chat-app/chat/janus-event
+https://7a5e-2a09-bac5-d456-18be-00-277-32.ngrok-free.app/japan-chat-app/chat/janus-event
 
 chrome://flags
 search: Insecure origins treated as secure
 enable và nhập ip vào (http://52.221.199.143/) để bỏ qua bảo mật đối với các trang không có tên miền hoặc http//:
-
-bcxhbvxc

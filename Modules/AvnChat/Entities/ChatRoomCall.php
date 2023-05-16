@@ -57,4 +57,8 @@ class ChatRoomCall extends Model
     {
         return $this->hasOne(ChatRoom::class, 'id', 'room_id');
     }
+    public function end_call()
+    {
+        return $this->hasOne(ChatRoomCall::class, 'call_id', 'id');
+    }
 }

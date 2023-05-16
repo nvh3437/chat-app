@@ -24,38 +24,36 @@ class AvnChatController extends Controller
 {
     public function index(Request $request)
     {
-        // setcookie('Authorization', '' . Auth::user()->createToken('avnchat')->plainTextToken);
         $user = Auth::user();
+
+        // get room
         if ($user->type == "system") {
-            $rooms = ChatRoom::whereHas('room_users')
-                ->select()
-                ->addSelect(
-                    [
-                        DB::raw('(select `created_at` from `avn_chat_messages` where `room_id` = `avn_chat_rooms`.`id` order by `created_at` desc limit 1) as `last_message_date`'),
-                    ]
-                )
-                ->orderByDesc('last_message_date')
-                ->get();
+            $rooms = ChatRoom::whereHas('room_users');
         } else {
             $rooms = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
                 $query->where('user_id', $user->id);
-            })
-                ->select()
-                ->addSelect(
-                    [
-                        DB::raw('(select `created_at` from `avn_chat_messages` where `room_id` = `avn_chat_rooms`.`id` order by `created_at` desc limit 1) as `last_message_date`'),
-                    ]
-                )
-                ->orderByDesc('last_message_date')
-                ->get();
+            });
         }
+        $rooms = $rooms->select()
+            ->addSelect(
+                [
+                    DB::raw('(select `created_at` from `avn_chat_messages` where `room_id` = `avn_chat_rooms`.`id` order by `created_at` desc limit 1) as `last_message_date`'),
+                ]
+            )
+            ->orderByDesc('last_message_date')
+            ->get();
+        // end get room
+
         foreach ($rooms as $key => $room) {
 
+            // check current user in room
             $room_user = $room->room_users->where('user_id', $user->id)->first();
             if ($room_user) {
                 $room->room_user = $room_user;
             }
+            // end get current user in room
 
+            // get last message
             $last_message = Message::where('room_id', $room->id);
             if ($room_user && $user->type != 'system') {
                 $last_message = $last_message->where('created_at', '>=', $room_user->created_at);
@@ -64,22 +62,15 @@ class AvnChatController extends Controller
             if ($last_message) {
                 $room->last_message = $last_message;
             }
+            // end get last message
 
+            // set user receive last message in room
             if ($room_user && $last_message && $room_user->last_received_id < $last_message->id) {
                 $room_user->last_received_id = $last_message->id;
                 $room_user->save();
             }
-
-
         }
-        $lasted_message = Message::whereHas('room', function (Builder $query) use ($user) {
-            $query->whereHas('room_users', function (Builder $query) use ($user) {
-                $query->where('user_id', $user->id);
-            });
-        })
-            ->orderByDesc('created_at')
-            ->first();
-        return view('avnchat::index', compact('rooms', 'user', 'lasted_message'));
+        return view('avnchat::index', compact('rooms', 'user'));
     }
     public function updateRoomChat(Request $request)
     {

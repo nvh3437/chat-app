@@ -39,6 +39,7 @@ class StopCall implements ShouldBroadcast
             'name' => $room_name,
             'imgs' => $imgs,
             'call_id' => $this->call->id,
+            'room_id' => $this->call->room_id,
         ];
         return $res;
     }

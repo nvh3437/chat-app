@@ -40,7 +40,7 @@ class NewCall implements ShouldBroadcast
             'imgs' => $imgs,
             'room_id' => $this->call->room_id,
             'call_id' => $this->call->id,
-            'pin' => $this->call->pin,
+            'call_pin' => $this->call->pin,
         ];
         return $res;
     }
