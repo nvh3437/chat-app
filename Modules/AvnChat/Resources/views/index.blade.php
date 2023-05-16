@@ -589,6 +589,8 @@
                     })
                     .listen('.newCall', (e) => {
                         if (!is_calling && !is_incall && !is_ringing) {
+                            $('.microphone').removeAttr('disabled')
+                            $('.stop-call').removeAttr('disabled')
                             is_ringing = true
                             window.incoming_call_modal.hide()
                             call_id = e.call_id
