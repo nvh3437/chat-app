@@ -5,7 +5,7 @@
     if (strlen($room_name) > 100) {
         $room_name = substr($room_name, 0, 100);
     }
-
+    
     $room_user = $room->room_user;
 @endphp
 <a href="javascript:void(0);" class="text-body chat-room" data-id="{{ $room->id }}">
@@ -69,9 +69,9 @@
                     @elseif ($room->last_message && strpos($room->last_message->message, 'start-call') === 0)
                         {{ 'Bắt đầu cuộc gọi' }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'joined-call') === 0)
-                        {{ 'tham gia cuộc gọi' }}
+                        {{ substr($room->last_message->message, 12) . ' tham gia cuộc gọi' }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'left-call') === 0)
-                        {{ 'rời khỏi cuộc gọi' }}
+                        {{ substr($room->last_message->message, 10) . ' rời khỏi cuộc gọi' }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'stop-call') === 0)
                         {{ 'Kết thúc cuộc gọi' }}
                     @endif

@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('avn_profiles', function (Blueprint $table) {
@@ -18,6 +17,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->text('description')->nullable();
             $table->string('money')->nullable();
+            $table->string('price')->nullable();
             $table->smallInteger('gender_status')->default(0);
             $table->smallInteger('exp_status')->default(0);
             $table->smallInteger('address_status')->default(0);

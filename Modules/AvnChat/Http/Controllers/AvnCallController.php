@@ -33,10 +33,9 @@ class AvnCallController extends Controller
             $query->where('user_id', $user->id);
         })->findOrFail($request->id);
 
-        // if (!$room->call_chats->where('end_on', null)->count() && !$user->call_users->where('end_on', null)->count()) {
         $call_now = $room->callings->last();
         if ($call_now) {
-            $response = Http::accept('application/json')->post(env('JANUS_URL')."/admin", [
+            $response = Http::accept('application/json')->post(env('JANUS_URL') . "/admin", [
                 "janus" => "message_plugin",
                 "transaction" => "P6xvDuukeWPV",
                 "admin_secret" => env('JANUS_ADMIN_SECRET'),
@@ -57,7 +56,7 @@ class AvnCallController extends Controller
         $call->room_id = $room->id;
         $call->pin = rand();
         $call->save();
-        $response = Http::accept('application/json')->post(env('JANUS_URL')."/admin", [
+        $response = Http::accept('application/json')->post(env('JANUS_URL') . "/admin", [
             "janus" => "message_plugin",
             "transaction" => "P6xvDuukeWPV",
             "admin_secret" => env('JANUS_ADMIN_SECRET'),
@@ -180,7 +179,7 @@ class AvnCallController extends Controller
     }
     public function janusStopCall($call)
     {
-        $response = Http::accept('application/json')->post(env('JANUS_URL')."/admin", [
+        $response = Http::accept('application/json')->post(env('JANUS_URL') . "/admin", [
             "janus" => "message_plugin",
             "transaction" => "P6xvDuukeWPV",
             "admin_secret" => env('JANUS_ADMIN_SECRET'),
@@ -194,7 +193,7 @@ class AvnCallController extends Controller
     }
     public function janusRoomParticipants($call)
     {
-        $response = Http::accept('application/json')->post(env('JANUS_URL')."/admin", [
+        $response = Http::accept('application/json')->post(env('JANUS_URL') . "/admin", [
             "janus" => "message_plugin",
             "transaction" => "P6xvDuukeWPV",
             "admin_secret" => env('JANUS_ADMIN_SECRET'),
