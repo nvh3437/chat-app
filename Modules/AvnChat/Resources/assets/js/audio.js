@@ -55,6 +55,7 @@ $(document).ready(function () {
                                         if (event) {
                                             if (event === "joined") {
                                                 $('.microphone').removeAttr('disabled')
+                                                $('.stop-call').removeAttr('disabled')
                                                 // Successfully joined, negotiate WebRTC now
                                                 if (msg["id"]) {
                                                     myid = msg["id"];
@@ -97,9 +98,11 @@ $(document).ready(function () {
                                                             mutes.push(user['muted'])
                                                         } else {
                                                             if (user['muted']) {
-                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone').addClass('mdi-microphone-off')
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone')
+                                                                    .addClass('mdi-microphone-off')
                                                             } else {
-                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone-off').addClass('mdi-microphone')
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone-off')
+                                                                    .addClass('mdi-microphone')
                                                             }
                                                         }
                                                     });
@@ -182,9 +185,9 @@ $(document).ready(function () {
                                                 // The room has been destroyed
                                                 console.log('======= ngu destroyed ======');
                                                 Janus.warn("The room has been destroyed!");
-                                                bootbox.alert("The room has been destroyed", function () {
-                                                    window.location.reload();
-                                                });
+                                                // bootbox.alert("The room has been destroyed", function () {
+                                                //     window.location.reload();
+                                                // });
                                             } else if (event === "event") {
                                                 if (msg["participants"]) {
                                                     if (call_id == msg["room"] && is_calling) {
@@ -199,9 +202,11 @@ $(document).ready(function () {
                                                     list_users.forEach(user => {
                                                         if ($('#joined-user-' + user['id']).length !== 0) {
                                                             if (user['muted']) {
-                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone').addClass('mdi-microphone-off')
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone')
+                                                                    .addClass('mdi-microphone-off')
                                                             } else {
-                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone-off').addClass('mdi-microphone')
+                                                                $('#joined-user-' + user['id'] + ' .micro-status').removeClass('mdi-microphone-off')
+                                                                    .addClass('mdi-microphone')
                                                             }
                                                         }
                                                     });
