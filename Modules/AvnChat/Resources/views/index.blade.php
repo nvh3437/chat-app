@@ -254,30 +254,15 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <div id="mini-start-call" class="d-none position-fixed bottom-0 end-0 bg-light p-1 me-1 mb-1 d-flex">
-        <button type="button" class="d-md-none btn bg-light bg-transparent p-0 rounded-circle avatar-xs fs-5 mx-1"
+        <button type="button" class="btn bg-light bg-transparent p-0 rounded-circle avatar-sm fs-5 mx-1"
             data-bs-toggle="modal" data-bs-target="#start-call-modal">
             <i class="dripicons-duplicate"></i>
         </button>
-        <button type="button" class="d-md-none btn btn-secondary p-0 rounded-circle avatar-xs fs-5 mx-1 microphone"
+        <button type="button" class="btn btn-secondary p-0 rounded-circle avatar-sm fs-5 mx-1 microphone"
             disabled="">
             <i class="mdi mdi-microphone"></i>
         </button>
-        <button type="button" class="d-md-none btn btn-danger p-0 rounded-circle avatar-xs fs-5 mx-1 stop-call"
-            disabled="">
-            <i class="mdi mdi-phone-hangup"></i>
-        </button>
-
-        <button type="button"
-            class="d-none d-md-block btn bg-light bg-transparent p-0 rounded-circle avatar-sm fs-5 mx-1"
-            data-bs-toggle="modal" data-bs-target="#start-call-modal">
-            <i class="dripicons-duplicate"></i>
-        </button>
-        <button type="button"
-            class="d-none d-md-block btn btn-secondary p-0 rounded-circle avatar-sm fs-5 mx-1 microphone" disabled="">
-            <i class="mdi mdi-microphone"></i>
-        </button>
-        <button type="button" class="d-none d-md-block btn btn-danger p-0 rounded-circle avatar-sm fs-5 mx-1 stop-call"
-            disabled="">
+        <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-5 mx-1 stop-call" disabled="">
             <i class="mdi mdi-phone-hangup"></i>
         </button>
     </div>
@@ -335,30 +320,15 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <div id="mini-in-call" class="d-none position-fixed bottom-0 end-0 bg-light p-1 me-1 mb-1 d-flex">
-        <button type="button" class="d-md-none btn bg-light bg-transparent p-0 rounded-circle avatar-xs fs-5 mx-1"
+        <button type="button" class="btn bg-light bg-transparent p-0 rounded-circle avatar-sm fs-5 mx-1"
             data-bs-toggle="modal" data-bs-target="#in-call-modal">
             <i class="dripicons-duplicate"></i>
         </button>
-        <button type="button" class="d-md-none btn btn-secondary p-0 rounded-circle avatar-xs fs-5 mx-1 microphone"
+        <button type="button" class="btn btn-secondary p-0 rounded-circle avatar-sm fs-5 mx-1 microphone"
             disabled="">
             <i class="mdi mdi-microphone"></i>
         </button>
-        <button type="button" class="d-md-none btn btn-danger p-0 rounded-circle avatar-xs fs-5 mx-1 stop-call"
-            disabled="">
-            <i class="mdi mdi-phone-hangup"></i>
-        </button>
-
-        <button type="button"
-            class="d-none d-md-block btn bg-light bg-transparent p-0 rounded-circle avatar-sm fs-5 mx-1"
-            data-bs-toggle="modal" data-bs-target="#in-call-modal">
-            <i class="dripicons-duplicate"></i>
-        </button>
-        <button type="button"
-            class="d-none d-md-block btn btn-secondary p-0 rounded-circle avatar-sm fs-5 mx-1 microphone" disabled="">
-            <i class="mdi mdi-microphone"></i>
-        </button>
-        <button type="button" class="d-none d-md-block btn btn-danger p-0 rounded-circle avatar-sm fs-5 mx-1 stop-call"
-            disabled="">
+        <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-5 mx-1 stop-call" disabled="">
             <i class="mdi mdi-phone-hangup"></i>
         </button>
     </div>
