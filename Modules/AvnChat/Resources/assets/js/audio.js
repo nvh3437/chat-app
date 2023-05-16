@@ -184,7 +184,7 @@ $(document).ready(function () {
                                             } else if (event === "destroyed") {
                                                 // The room has been destroyed
                                                 console.log('======= ngu destroyed ======');
-                                                Janus.warn("The room has been destroyed!");
+                                                // Janus.warn("The room has been destroyed!");
                                                 // bootbox.alert("The room has been destroyed", function () {
                                                 //     window.location.reload();
                                                 // });
