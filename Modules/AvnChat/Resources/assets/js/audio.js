@@ -192,6 +192,7 @@ $(document).ready(function () {
                                                         is_incall = true
                                                         clearTimeout(start_call_timeout);
                                                         window.start_call_modal.hide()
+                                                        $('#mini-start-call').addClass('d-none')
                                                         window.in_call_modal.show()
                                                     }
                                                     let list_users = msg["participants"];

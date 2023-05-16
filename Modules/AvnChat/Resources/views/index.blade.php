@@ -24,14 +24,11 @@
                         </a>
                         <div class="d-flex align-items-center chat-room-badge flex-grow-1 p-1">
                             <div class="me-2 flex-shrink-0 position-relative chat-room-img">
-                                <img src="#"
-                                    class="rounded-circle img-thumbnail p-0"
-                                    style="object-fit: cover; height:48px; width:48px;" alt="partner21">
+                                <img src="#" class="rounded-circle img-thumbnail p-0"
+                                    style="object-fit: cover; height:48px; width:48px;">
                             </div>
                             <div class="w-100 overflow-hidden">
-                                <h4 class="mt-0 mb-0 room-name">
-                                    partner21
-                                </h4>
+                                <h4 class="mt-0 mb-0 room-name"></h4>
                             </div>
                         </div>
                         <a href="javascript:void(0);" class="show-room-info">
@@ -169,25 +166,6 @@
                             <button class="btn btn-danger btn-sm mt-1 admin-stop-call d-none" id="admin-stop-call">
                                 <i class='mdi mdi-phone-hangup me-1'></i>Kết thúc
                             </button>
-                            <div id="start-call-modal" class="modal fade" tabindex="-1" role="dialog"
-                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-body py-5">
-                                            ...
-                                        </div>
-                                        <div class="modal-footer justify-content-center">
-                                            <button type="button"
-                                                class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1 microphone"
-                                                disabled><i class="mdi mdi-microphone"></i></button>
-                                            <button type="button"
-                                                class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1 stop-call"
-                                                disabled data-bs-dismiss="modal"><i
-                                                    class="mdi mdi-phone-hangup"></i></button>
-                                        </div>
-                                    </div><!-- /.modal-content -->
-                                </div><!-- /.modal-dialog -->
-                            </div><!-- /.modal -->
                             <div class="mt-2 workspace-session d-none">
                                 <hr class="" />
                                 <button class="btn btn-success btn-sm mt-1 start-session d-none"><i
@@ -258,6 +236,51 @@
             <!-- end user detail -->
         </div> <!-- end row-->
     </div> <!-- container -->
+    <!--start call modal-->
+    <div id="start-call-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body py-5 position-relative text-center">
+                    ...
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1 microphone"
+                        disabled><i class="mdi mdi-microphone"></i></button>
+                    <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1 stop-call"
+                        disabled data-bs-dismiss="modal"><i class="mdi mdi-phone-hangup"></i></button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div id="mini-start-call" class="d-none position-fixed bottom-0 end-0 bg-light p-1 me-1 mb-1 d-flex">
+        <button type="button" class="d-md-none btn bg-light bg-transparent p-0 rounded-circle avatar-xs fs-5 mx-1"
+            data-bs-toggle="modal" data-bs-target="#start-call-modal">
+            <i class="dripicons-duplicate"></i>
+        </button>
+        <button type="button" class="d-md-none btn btn-secondary p-0 rounded-circle avatar-xs fs-5 mx-1 microphone"
+            disabled="">
+            <i class="mdi mdi-microphone"></i>
+        </button>
+        <button type="button" class="d-md-none btn btn-danger p-0 rounded-circle avatar-xs fs-5 mx-1 stop-call"
+            disabled="">
+            <i class="mdi mdi-phone-hangup"></i>
+        </button>
+
+        <button type="button"
+            class="d-none d-md-block btn bg-light bg-transparent p-0 rounded-circle avatar-sm fs-5 mx-1"
+            data-bs-toggle="modal" data-bs-target="#start-call-modal">
+            <i class="dripicons-duplicate"></i>
+        </button>
+        <button type="button"
+            class="d-none d-md-block btn btn-secondary p-0 rounded-circle avatar-sm fs-5 mx-1 microphone" disabled="">
+            <i class="mdi mdi-microphone"></i>
+        </button>
+        <button type="button" class="d-none d-md-block btn btn-danger p-0 rounded-circle avatar-sm fs-5 mx-1 stop-call"
+            disabled="">
+            <i class="mdi mdi-phone-hangup"></i>
+        </button>
+    </div>
     <!--incoming call-->
     <div id="incoming-call-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
@@ -280,11 +303,12 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!--in call modal-->
     <div id="in-call-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body py-4 text-center">
+                <div class="modal-body py-4 text-center position-relative">
                     <img src="#" alt=""
                         class="img-thumbnail avatar-lg rounded-circle chat-info-img d-none" style="object-fit: cover" />
                     <div class="position-relative chat-info-imgs" style="height: 3rem;">
@@ -294,6 +318,8 @@
                     <div id="mixedaudio"></div>
                     <div class="d-flex joined-users flex-wrap justify-content-center mt-3">
                     </div>
+                    <button class="btn bg-light position-absolute top-0 end-0 bg-transparent" data-bs-dismiss="modal"><i
+                            class="mdi mdi-window-minimize"></i></button>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary p-0 rounded-circle avatar-sm fs-3 mx-1 microphone"
@@ -308,6 +334,34 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <div id="mini-in-call" class="d-none position-fixed bottom-0 end-0 bg-light p-1 me-1 mb-1 d-flex">
+        <button type="button" class="d-md-none btn bg-light bg-transparent p-0 rounded-circle avatar-xs fs-5 mx-1"
+            data-bs-toggle="modal" data-bs-target="#in-call-modal">
+            <i class="dripicons-duplicate"></i>
+        </button>
+        <button type="button" class="d-md-none btn btn-secondary p-0 rounded-circle avatar-xs fs-5 mx-1 microphone"
+            disabled="">
+            <i class="mdi mdi-microphone"></i>
+        </button>
+        <button type="button" class="d-md-none btn btn-danger p-0 rounded-circle avatar-xs fs-5 mx-1 stop-call"
+            disabled="">
+            <i class="mdi mdi-phone-hangup"></i>
+        </button>
+
+        <button type="button"
+            class="d-none d-md-block btn bg-light bg-transparent p-0 rounded-circle avatar-sm fs-5 mx-1"
+            data-bs-toggle="modal" data-bs-target="#in-call-modal">
+            <i class="dripicons-duplicate"></i>
+        </button>
+        <button type="button"
+            class="d-none d-md-block btn btn-secondary p-0 rounded-circle avatar-sm fs-5 mx-1 microphone" disabled="">
+            <i class="mdi mdi-microphone"></i>
+        </button>
+        <button type="button" class="d-none d-md-block btn btn-danger p-0 rounded-circle avatar-sm fs-5 mx-1 stop-call"
+            disabled="">
+            <i class="mdi mdi-phone-hangup"></i>
+        </button>
+    </div>
     <!--stop call-->
     <div id="stop-call-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
@@ -538,7 +592,7 @@
                             is_ringing = true
                             window.incoming_call_modal.hide()
                             call_id = e.call_id
-                            call_pin = e.pin
+                            call_pin = e.call_pin
                             // incoming-call-modal
                             $('#incoming-call-modal .chat-info-name').html(e.name)
                             if (e.imgs.length == 1) {
@@ -600,7 +654,9 @@
                         if ((is_calling || is_incall || is_ringing) && call_id == e.call_id) {
                             window.incoming_call_modal.hide()
                             window.start_call_modal.hide()
+                            $('#mini-start-call').addClass('d-none')
                             window.in_call_modal.hide()
+                            $('#mini-in-call').addClass('d-none')
 
                             $('#stop-call-modal .chat-info-name').html(e.name)
                             if (e.imgs.length == 1) {
@@ -858,13 +914,15 @@
                                 $('#start-call-modal .modal-body').html(
                                     $('.chat-info-img')[0].outerHTML +
                                     $('.chat-info-name')[0].outerHTML +
-                                    "<h5 class='text-muted status'>Đang kết nối...</h5>"
+                                    "<h5 class='text-muted status'>Đang kết nối...</h5>" +
+                                    '<button class="btn bg-light position-absolute top-0 end-0 bg-transparent" data-bs-dismiss="modal"><i class="mdi mdi-window-minimize"></i></button>'
                                 );
                             } else {
                                 $('#start-call-modal .modal-body').html(
                                     $('.chat-info-imgs')[0].outerHTML +
                                     $('.chat-info-name')[0].outerHTML +
-                                    "<h5 class='text-muted status'>Đang kết nối...</h5>"
+                                    "<h5 class='text-muted status'>Đang kết nối...</h5>" +
+                                    '<button class="btn bg-light position-absolute top-0 end-0 bg-transparent" data-bs-dismiss="modal"><i class="mdi mdi-window-minimize"></i></button>'
                                 );
                             }
                             console.log(res);
@@ -1880,6 +1938,30 @@
                 $('.chat-col').removeClass('d-none')
                 $('.info-col').addClass('d-none')
             })
+            // event modal start call hide
+            document.getElementById('start-call-modal').addEventListener('hidden.bs.modal', function(event) {
+                if (is_calling) {
+                    $('#mini-start-call').removeClass('d-none')
+                } else {
+                    $('#mini-start-call').addClass('d-none')
+                }
+            })
+            // event modal start call show
+            document.getElementById('start-call-modal').addEventListener('show.bs.modal', function(event) {
+                $('#mini-start-call').addClass('d-none')
+            })
+            // event modal in call hide
+            document.getElementById('in-call-modal').addEventListener('hidden.bs.modal', function(event) {
+                if (is_incall) {
+                    $('#mini-in-call').removeClass('d-none')
+                } else {
+                    $('#mini-in-call').addClass('d-none')
+                }
+            })
+            // event modal in call show
+            document.getElementById('in-call-modal').addEventListener('show.bs.modal', function(event) {
+                $('#mini-in-call').addClass('d-none')
+            })
         });
     </script>
 
@@ -1908,7 +1990,7 @@
                         call_pin = res.pin
                         start_connect_call()
                         $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
-                        $('#start-call-modal .stop-call').removeAttr('disabled')
+                        $('.stop-call').removeAttr('disabled')
                         window.start_call_timeout = setTimeout(cancel_calling, 60000)
                     }
                 })
@@ -1927,7 +2009,7 @@
                         call_pin = res.pin
                         start_connect_call()
                         $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
-                        $('#start-call-modal .stop-call').removeAttr('disabled')
+                        $('.stop-call').removeAttr('disabled')
                         window.start_call_timeout = setTimeout(cancel_calling, 60000)
                     }
                 })
@@ -1944,6 +2026,7 @@
                 is_incall = true
                 window.is_ringing = false
                 start_call_modal.hide()
+                $('#mini-start-call').addClass('d-none')
                 in_call_modal.show()
                 $('#in-call-modal .joined-users').html('')
                 start_connect_call()
@@ -1965,7 +2048,9 @@
 
             function cancel_calling() {
                 window.start_call_modal.hide()
+                $('#mini-start-call').addClass('d-none')
                 window.in_call_modal.hide()
+                $('#mini-in-call').addClass('d-none')
                 window.is_calling = false
                 window.is_ringing = false
                 window.is_incall = false

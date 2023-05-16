@@ -27,6 +27,8 @@ return new class extends Migration {
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->dateTime('end_on')->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->string('money')->nullable();
             $table->timestamps();
         });
     }

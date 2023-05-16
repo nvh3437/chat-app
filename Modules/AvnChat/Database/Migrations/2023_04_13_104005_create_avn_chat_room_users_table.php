@@ -26,6 +26,18 @@ return new class extends Migration {
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->unsignedBigInteger('last_seen_id')->nullable();
+            $table->foreign('last_seen_id')
+                ->references('id')
+                ->on('avn_chat_messages')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->unsignedBigInteger('last_received_id')->nullable();
+            $table->foreign('last_received_id')
+                ->references('id')
+                ->on('avn_chat_messages')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

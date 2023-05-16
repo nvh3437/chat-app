@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('avn_cms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('keywords')->nullable();
+            $table->text('sort_description')->nullable();
             $table->text('img')->nullable();
             $table->longText('description');
             $table->text('alias')->nullable();
