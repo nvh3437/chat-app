@@ -14,11 +14,11 @@ return new class extends Migration {
     {
         Schema::create('avn_chat_room_sessions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('room_id')->nullable();
+            $table->unsignedBigInteger('room_id');
             $table->foreign('room_id')
                 ->references('id')
                 ->on('avn_chat_rooms')
-                ->onDelete('set null')
+                ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->dateTime('end_on')->nullable();
             $table->timestamps();

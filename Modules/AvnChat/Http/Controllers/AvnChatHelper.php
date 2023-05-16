@@ -40,6 +40,15 @@ class AvnChatHelper
         }
         $last_message = $last_message->orderByDesc('created_at')->first();
 
+        $call_now = $room->callings->last();
+        if ($call_now) {
+            $call_id = $call_now->id;
+            $call_pin = $call_now->pin;
+        } else {
+            $call_id = null;
+            $call_pin = null;
+        }
+
         return [
             'joined_room' => $joined_room,
             'room_id' => $room->id,
@@ -50,6 +59,8 @@ class AvnChatHelper
             'has_session' => $has_session,
             'session_start_on' => $session_start_on,
             'last_message' => $last_message,
+            'call_id' => $call_id,
+            'call_pin' => $call_pin,
         ];
     }
 }

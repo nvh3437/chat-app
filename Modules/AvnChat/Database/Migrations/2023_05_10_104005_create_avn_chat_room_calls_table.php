@@ -18,10 +18,17 @@ return new class extends Migration {
             $table->foreign('room_id')
                 ->references('id')
                 ->on('avn_chat_rooms')
-                ->onDelete('set null')
+                ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->string('pin');
+            $table->unsignedBigInteger('call_id')->nullable();
+            $table->foreign('call_id')
+                ->references('id')
+                ->on('avn_chat_room_calls')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->string('pin')->nullable();
             $table->timestamps();
+            $table->dateTime('end_on')->nullable();
         });
     }
 

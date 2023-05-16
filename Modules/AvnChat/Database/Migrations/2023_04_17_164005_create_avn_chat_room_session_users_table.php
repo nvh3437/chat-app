@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('avn_chat_room_session_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('session_id')->nullable();
+            $table->unsignedBigInteger('session_id');
             $table->foreign('session_id')
                 ->references('id')
                 ->on('avn_chat_room_sessions')

@@ -4,7 +4,7 @@ $(document).ready(function () {
     window.webrtcUp = false;
     window.stereo = false;
     window.remoteStream = null;
-    window.audio_enabled = true;
+    window.audio_muted = false;
     // Initialize the library (all console debuggers enabled)
     Janus.init({
         debug: "all", callback: function () {
@@ -33,7 +33,13 @@ $(document).ready(function () {
                                     opaqueId: opaqueId,
                                     success: function (pluginHandle) {
                                         mixertest = pluginHandle;
-                                        var join_audio_bridge = { request: "join", room: call_id, id: user_id, quality: 10, pin: call_pin.toString() };
+                                        var join_audio_bridge = {
+                                            request: "join",
+                                            room: call_id,
+                                            id: user_id,
+                                            quality: 10,
+                                            pin: (typeof call_pin == 'string') ? call_pin : call_pin.toString()
+                                        };
                                         mixertest.send({ message: join_audio_bridge });
                                         // Prepare the username registration
                                     },
@@ -125,6 +131,8 @@ $(document).ready(function () {
                                                             }
                                                         });
                                                     }
+                                                    // window.start_call_modal.hide()
+                                                    // window.in_call_modal.show()
                                                 }
                                             } else if (event === "roomchanged") {
                                                 // The user switched to a different room
@@ -317,12 +325,12 @@ $(document).ready(function () {
 
     // create audio room
     window.muted_audio = function () {
-        audio_enabled = !audio_enabled
+        audio_muted = !audio_muted
         var configure_audio_bridge = {
             request: "configure",
-            muted: audio_enabled,
+            muted: audio_muted,
         };
-        if (audio_enabled) {
+        if (audio_muted) {
             $('.microphone').html('<i class="mdi mdi-microphone-off"></i>')
         } else {
             $('.microphone').html('<i class="mdi mdi-microphone"></i>')

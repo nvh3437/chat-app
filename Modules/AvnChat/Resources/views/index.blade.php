@@ -1,106 +1,17 @@
 @php
-    // $logo = App\Http\Controllers\Helper::getLogo();
     $seo_props = [];
     $seo_props['seo_title'] = 'Chat';
-    // if (isset($contact_seo['contact_seo_description'])) {
-    //     $seo_props['seo_description'] = $contact_seo['contact_seo_description']['value'] ?? '';
-    // }
-    // if (isset($contact_seo['contact_seo_keywords'])) {
-    //     $seo_props['seo_keywords'] = $contact_seo['contact_seo_keywords']['value'] ?? '';
-    // }
-    // if (isset($contact_seo['contact_seo_image'])) {
-    //     $seo_props['seo_image'] = $contact_seo['contact_seo_image']['value'] ?? '';
-    // }
 @endphp
 @extends('layouts.guest', $seo_props)
 @php
     use App\Http\Controllers\Helper;
 @endphp
 @section('content')
-    <!-- Start Content-->
     <div class="container">
         <div class="row mt-3">
             <!-- start chat users-->
             <div class="col-xl-3 room-col">
-                <div class="card shadow-lg">
-                    <div class="card-body p-0">
-                        <ul class="nav nav-tabs nav-bordered">
-                            <li class="nav-item">
-                                <a href="#allChat" data-bs-toggle="tab" aria-expanded="false" class="nav-link active py-2">
-                                    Tất cả
-                                </a>
-                            </li>
-                            @if ($user->type == 'system')
-                                <li class="nav-item">
-                                    <a href="#partnerFree" data-bs-toggle="tab" aria-expanded="true" class="nav-link py-2">
-                                        Đang rảnh
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#partnerBusy" data-bs-toggle="tab" aria-expanded="true" class="nav-link py-2">
-                                        Đang bận
-                                    </a>
-                                </li>
-                            @endif
-                        </ul> <!-- end nav-->
-                        <div class="tab-content chat-rooms-conatiner">
-                            <div class="tab-pane show active p-3" id="allChat">
-                                <!-- start search box -->
-                                @include('avnchat::components.search-chat-room')
-                                <!-- end search box -->
-                                <!-- users -->
-                                <div data-simplebar style="height: 550px">
-                                    @foreach ($rooms as $room)
-                                        @include('avnchat::components.chat-room', compact('room'))
-                                    @endforeach
-                                </div>
-                                <!-- end users -->
-                            </div> <!-- end Tab Pane-->
-                            @if ($user->type == 'system')
-                                <div class="tab-pane p-3" id="partnerFree">
-                                    <!-- start search box -->
-                                    @include('avnchat::components.search-chat-room')
-                                    <!-- end search box -->
-                                    <!-- users -->
-                                    <div data-simplebar style="height: 550px">
-                                        @foreach ($rooms as $room)
-                                            @php
-                                                if (!$room->users->where('type', 'partner')->count()) {
-                                                    continue;
-                                                }
-                                                if ($room->users->where('type', 'customer')->count()) {
-                                                    continue;
-                                                }
-                                            @endphp
-                                            @include('avnchat::components.chat-room', compact('room'))
-                                        @endforeach
-                                    </div>
-                                    <!-- end users -->
-                                </div> <!-- end Tab Pane-->
-                                <div class="tab-pane p-3" id="partnerBusy">
-                                    <!-- start search box -->
-                                    @include('avnchat::components.search-chat-room')
-                                    <!-- end search box -->
-                                    <!-- users -->
-                                    <div data-simplebar style="height: 550px">
-                                        @foreach ($rooms as $room)
-                                            @php
-                                                if (!$room->users->where('type', 'partner')->count()) {
-                                                    continue;
-                                                }
-                                                if (!$room->users->where('type', 'customer')->count()) {
-                                                    continue;
-                                                }
-                                            @endphp
-                                            @include('avnchat::components.chat-room', compact('room'))
-                                        @endforeach
-                                    </div>
-                                    <!-- end users -->
-                                </div> <!-- end Tab Pane-->
-                            @endif
-                        </div> <!-- end tab content-->
-                    </div> <!-- end card-body-->
-                </div> <!-- end card-->
+                @include('avnchat::components.chat-users', [$user, $rooms])
             </div>
             <!-- end chat users-->
             <!-- chat area -->
@@ -113,7 +24,7 @@
                         </a>
                         <div class="d-flex align-items-center chat-room-badge flex-grow-1 p-1">
                             <div class="me-2 flex-shrink-0 position-relative chat-room-img">
-                                <img src="http://localhost:8080/japan-chat-app/storage/app/AvnUser/21.png"
+                                <img src="#"
                                     class="rounded-circle img-thumbnail p-0"
                                     style="object-fit: cover; height:48px; width:48px;" alt="partner21">
                             </div>
@@ -251,10 +162,13 @@
                             <div class="position-relative chat-info-imgs d-none" style="height: 3rem;"></div>
                             <!--room name-->
                             <h4 class="chat-info-name"></h4>
-                            <!--start call button-->
-                            <button class="btn btn-success btn-sm mt-1 start-call" id="start-call" data-bs-toggle="modal"
-                                data-bs-target="#start-call-modal"><i class='mdi mdi-phone me-1'></i>Gọi nhóm</button>
-                            <!--start call modal-->
+                            <button class="btn btn-success btn-sm mt-1 start-call d-none" id="start-call"
+                                data-bs-toggle="modal" data-bs-target="#start-call-modal">
+                                <i class='mdi mdi-phone me-1'></i>Gọi nhóm
+                            </button>
+                            <button class="btn btn-danger btn-sm mt-1 admin-stop-call d-none" id="admin-stop-call">
+                                <i class='mdi mdi-phone-hangup me-1'></i>Kết thúc
+                            </button>
                             <div id="start-call-modal" class="modal fade" tabindex="-1" role="dialog"
                                 aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -274,7 +188,21 @@
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
-
+                            <div class="mt-2 workspace-session d-none">
+                                <hr class="" />
+                                <button class="btn btn-success btn-sm mt-1 start-session d-none"><i
+                                        class='mdi mdi-connection me-1'></i>Bắt đầu phiên làm việc</button>
+                                <button class="btn btn-danger btn-sm mt-1 end-session d-none"><i
+                                        class='mdi mdi-clock-check-outline me-1'></i>Kết thúc phiên làm việc</button>
+                                <p class="text-muted mt-2 font-14 time-session d-none">Thời gian hoạt động: <br>
+                                    <span class="text-success">
+                                        <strong class="day d-none">10days : </strong>
+                                        <strong class="hour d-none">10hours : </strong>
+                                        <strong class="minute d-none">10mins : </strong>
+                                        <strong class="second d-none">10secs</strong>
+                                    </span>
+                                </p>
+                            </div>
                             @if ($user->type == 'system')
                                 <button class="btn btn-primary btn-sm mt-1 join-room"><i
                                         class='uil uil-plus me-1'></i>Tham
@@ -320,21 +248,6 @@
                                     </div>
                                 </div>
                             @endif
-                            <div class="mt-2 workspace-session d-none">
-                                <hr class="" />
-                                <button class="btn btn-success btn-sm mt-1 start-session d-none"><i
-                                        class='mdi mdi-connection me-1'></i>Bắt đầu phiên làm việc</button>
-                                <button class="btn btn-danger btn-sm mt-1 end-session d-none"><i
-                                        class='mdi mdi-clock-check-outline me-1'></i>Kết thúc phiên làm việc</button>
-                                <p class="text-muted mt-2 font-14 time-session d-none">Thời gian hoạt động: <br>
-                                    <span class="text-success">
-                                        <strong class="day d-none">10days : </strong>
-                                        <strong class="hour d-none">10hours : </strong>
-                                        <strong class="minute d-none">10mins : </strong>
-                                        <strong class="second d-none">10secs</strong>
-                                    </span>
-                                </p>
-                            </div>
                         </div>
                         <hr class="" />
                         <div class="mt-3 list-users-in-room" data-simplebar style="height: 350px">
@@ -409,8 +322,8 @@
                     <h4 class="text-muted status">Cuộc gọi đã kết thúc</h4>
                 </div>
                 <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
-                            data-bs-dismiss="modal"><i class="mdi mdi-close"></i></button>
+                    <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
+                        data-bs-dismiss="modal"><i class="mdi mdi-close"></i></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -665,8 +578,25 @@
                             }
                             window.incoming_call_modal.show()
                         }
+                        if (e.room_id == room_id && !$('.clearfix[data-call-id="' + e.call_id + '"]').length) {
+                            console.log(e);
+                            add_join_call_button(e.call_id, e.call_pin)
+                        }
+                        if (e.room_id == room_id) {
+                            $('#start-call').addClass('d-none')
+                            @if ($user->type == 'system')
+                                $('#admin-stop-call').removeClass('d-none')
+                            @endif
+                        }
                     })
                     .listen('.stopCall', (e) => {
+                        $('.clearfix[data-call-id=' + e.call_id + ']').remove()
+                        if (e.room_id == room_id) {
+                            @if ($user->type == 'system')
+                                $('#admin-stop-call').addClass('d-none')
+                            @endif
+                            $('#start-call').removeClass('d-none')
+                        }
                         if ((is_calling || is_incall || is_ringing) && call_id == e.call_id) {
                             window.incoming_call_modal.hide()
                             window.start_call_modal.hide()
@@ -877,18 +807,6 @@
                 $(this).find('i.text-primary').remove()
                 $(this).find('.text-primary').removeClass('text-primary')
                 if (room_id != $(this).data('id')) {
-                    console.log($('.chat-info-img').html() + $('.chat-info-name').html());
-                    if ($('.chat-info-imgs').hasClass('d-none')) {
-                        $('#start-call-modal .modal-body').html(
-                            $('.chat-info-imgs')[0].outerHTML + $('.chat-info-name')[0].outerHTML +
-                            "<h5 class='text-muted status'>Đang kết nối...</h5>"
-                        );
-                    } else {
-                        $('#start-call-modal .modal-body').html(
-                            $('.chat-info-img')[0].outerHTML + $('.chat-info-name')[0].outerHTML +
-                            "<h5 class='text-muted'>Đang gọi...</h5>"
-                        );
-                    }
                     $('.chat-room .chat-room-badge.bg-light').removeClass('bg-light')
                     $('.chat-conatiner .pre-loader').removeClass('d-none')
                     $('.chat-info .pre-loader').removeClass('d-none')
@@ -925,6 +843,34 @@
                         success: function(res) {
                             set_name_image_chat_info(res.name, res.imgs)
                             update_users_in_list_users_in_room(res.join_users)
+                            if (res.call_id) {
+                                @if ($user->type == 'system')
+                                    $('#admin-stop-call').removeClass('d-none')
+                                @endif
+                                $('#start-call').addClass('d-none')
+                            } else {
+                                @if ($user->type == 'system')
+                                    $('#admin-stop-call').addClass('d-none')
+                                @endif
+                                $('#start-call').removeClass('d-none')
+                            }
+                            if ($('.chat-info-imgs').hasClass('d-none')) {
+                                $('#start-call-modal .modal-body').html(
+                                    $('.chat-info-img')[0].outerHTML +
+                                    $('.chat-info-name')[0].outerHTML +
+                                    "<h5 class='text-muted status'>Đang kết nối...</h5>"
+                                );
+                            } else {
+                                $('#start-call-modal .modal-body').html(
+                                    $('.chat-info-imgs')[0].outerHTML +
+                                    $('.chat-info-name')[0].outerHTML +
+                                    "<h5 class='text-muted status'>Đang kết nối...</h5>"
+                                );
+                            }
+                            console.log(res);
+                            if (res.call_id) {
+                                add_join_call_button(res.call_id, res.call_pin)
+                            }
                             $('#room_chat_name').val('')
                             $('#room_chat_image').val('')
                             if (!res.joined_room) {
@@ -1400,6 +1346,18 @@
                 });
             }
 
+            /**
+             * @param {Int} call_id
+             * @param {String} call_pin
+             */
+            function add_join_call_button(call_id, call_pin) {
+                htm = '<li class="clearfix text-center" data-call-id="' + call_id + '" data-pin="' + call_pin + '">'
+                htm += '<button class="btn btn-success" id="join-call-now">'
+                htm += '<i class="mdi mdi-phone"></i> Tham gia cuộc gọi'
+                htm += '</button>'
+                htm += '</li>'
+                $('.conversation-list .simplebar-content').append(htm);
+            }
 
             /**
              * @param {JSON} message
@@ -1877,6 +1835,7 @@
                 return $select_option;
             }
 
+
             // init select users add to chat
             $('#add-users-select').select2({
                 ajax: {
@@ -1932,6 +1891,11 @@
                 is_calling = true
                 $('#start-call-modal .modal-body .status').html('Đang kết nối...')
                 $('#in-call-modal .joined-users').html('')
+                $('#start-call').addClass('d-none')
+                @if ($user->type == 'system')
+                    $('#admin-stop-call').removeClass('d-none')
+                @endif
+
                 $.ajax({
                     method: 'post',
                     url: "chat/start-call",
@@ -1949,6 +1913,32 @@
                     }
                 })
 
+            })
+            $('#admin-stop-call').on('click', function() {
+                $.ajax({
+                    method: 'post',
+                    url: "chat/end-call",
+                    dataType: "json",
+                    data: {
+                        id: room_id,
+                    },
+                    success: function(res) {
+                        call_id = res.id
+                        call_pin = res.pin
+                        start_connect_call()
+                        $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
+                        $('#start-call-modal .stop-call').removeAttr('disabled')
+                        window.start_call_timeout = setTimeout(cancel_calling, 60000)
+                    }
+                })
+            })
+            $('.conversation-list').on('click', '#join-call-now', function() {
+                is_incall = true
+                window.call_id = parseInt($(this).parent().attr('data-call-id'))
+                window.call_pin = $(this).parent().attr('data-pin')
+                in_call_modal.show()
+                $('#in-call-modal .joined-users').html('')
+                start_connect_call()
             })
             $('#accept-call').on('click', function() {
                 is_incall = true

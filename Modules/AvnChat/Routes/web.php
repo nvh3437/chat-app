@@ -38,6 +38,7 @@ Route::prefix('chat')->group(function () {
     Route::put('/process-session/{id}', 'AvnChatSessionController@processSession')->middleware(['auth', 'permission'])->name('process-session');
     // call
     Route::post('/start-call', 'AvnCallController@startCall')->middleware(['auth', 'lastactivity'])->name('start-call');
+    Route::post('/end-call', 'AvnCallController@endCall')->middleware(['auth', 'lastactivity'])->name('end-call');
     Route::post('/janus-event', 'AvnCallController@janusEvent')->name('janus-event');
 
 

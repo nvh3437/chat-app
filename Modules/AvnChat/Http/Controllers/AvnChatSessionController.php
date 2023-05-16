@@ -11,12 +11,22 @@ use Modules\AvnChat\Entities\ChatRoomSession;
 use Modules\AvnChat\Entities\ChatRoomSessionUser;
 use App\Models\GeneralSettings;
 use Modules\AvnUser\Entities\AddSubMoney;
+use Illuminate\Support\Facades\DB;
 
 class AvnChatSessionController extends Controller
 {
     public function listSession()
     {
         $sessions = ChatRoomSession::orderByDesc('created_at')->get();
+        // $item = $sessions->last();
+        // // return \Modules\AvnChat\Entities\ChatRoomCall::where('room_id', 2)->get();
+        // $query_raw = '(exists (select * from `avn_chat_room_calls` as `end_call` where `avn_chat_room_calls`.`id` = `end_call`.`call_id` and `end_call`.`end_on` >= "' . $item->created_at . '") ';
+        // $query_raw .= ' or not exists (select * from `avn_chat_room_calls` as `end_call` where `avn_chat_room_calls`.`id` = `end_call`.`call_id`))';
+        // $calls = \Modules\AvnChat\Entities\ChatRoomCall::where('room_id', $item->room_id)
+        //     ->where('created_at', '<=', $item->end_on)
+        //     ->whereRaw(DB::raw($query_raw))
+        //     ->toSql();
+        //     return $calls;
         return view('avnchat::sessions.list-sessions', compact('sessions'));
     }
 

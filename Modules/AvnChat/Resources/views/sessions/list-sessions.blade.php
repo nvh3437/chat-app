@@ -1,4 +1,6 @@
 @php
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Support\Facades\DB;
     use Carbon\Carbon;
 @endphp
 @extends('layouts.admin')
@@ -10,17 +12,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <div class="page-title-right d-none d-sm-block">
-                        <a href="{{ route('order-chat') }}" class="btn btn-success">
-                            Trang Phiên làm việc
-                        </a>
-                    </div>
                     <h4 class="page-title">Danh sách Phiên làm việc</h4>
-                    <div class="d-sm-none mb-2">
-                        <a href="{{ route('order-chat') }}" class="btn btn-success">
-                            Trang Phiên làm việc
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -31,10 +23,10 @@
                         <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>STT</th>
+                                    <th>#</th>
                                     <th>Trạng thái</th>
                                     <th>Thanh toán</th>
-                                    <th>Chuyên gia</th>
+                                    {{-- <th>Chuyên gia</th> --}}
                                     <th>Khách hàng</th>
                                     <th>Chọn</th>
                                 </tr>
@@ -48,16 +40,16 @@
                                         <td>{{ ++$i }}</td>
                                         <td>
                                             @if ($item->end_on)
+                                                @php
+                                                    $time_end = Carbon::createFromFormat('Y-m-d H:i:s', $item->end_on);
+                                                    $created = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at);
+                                                    $days = $time_end->diffInDays($created);
+                                                    $hours = $time_end->diffInHours($created->addDays($days));
+                                                    $minutes = $time_end->diffInMinutes($created->addHours($hours));
+                                                    $seconds = $time_end->diffInSeconds($created->addMinutes($minutes));
+                                                @endphp
                                                 <span
                                                     class="fw-bold text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }} }}">
-                                                    @php
-                                                        $time_end = Carbon::createFromFormat('Y-m-d H:i:s', $item->end_on);
-                                                        $created = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at);
-                                                        $days = $time_end->diffInDays($created);
-                                                        $hours = $time_end->diffInHours($created->addDays($days));
-                                                        $minutes = $time_end->diffInMinutes($created->addHours($hours));
-                                                        $seconds = $time_end->diffInSeconds($created->addMinutes($minutes));
-                                                    @endphp
                                                     <strong class="{{ !$days ? 'd-none' : '' }}"><span
                                                             class="day">{{ $days }}</span>d
                                                         : </strong>
@@ -71,7 +63,7 @@
                                                             class="second">{{ $seconds }}</span>s</strong>
                                                 </span>
                                             @else
-                                                <span class="fw-bold date-count-up text-danger"
+                                                <span class="fw-bold text-danger date-count-up"
                                                     data-start="{{ $item->created_at }}">
                                                     <strong class="d-none">
                                                         <span class="day">0</span>d :
@@ -118,11 +110,11 @@
                                                         $money_customers = $money_partners;
                                                     }
                                                 @endphp
-                                                <span>Chuyên gia: </span>
+                                                {{-- <span>Chuyên gia: </span>
                                                 <span
                                                     class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_partners, 2) }}$</span>
-                                                <br>
-                                                <span>Khách hàng: </span>
+                                                <br> --}}
+                                                {{-- <span>Khách hàng: </span> --}}
                                                 <span
                                                     class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_customers, 2) }}$</span>
                                             @else
@@ -137,7 +129,7 @@
                                                 <span class="text-primary">Chưa xử lý</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             @foreach ($item->session_partners as $partner)
                                                 <p>
                                                     <span class="fw-bold">{{ $partner->user->name }}</span>
@@ -149,7 +141,7 @@
                                                     </span>
                                                 </p>
                                             @endforeach
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             @foreach ($item->session_customers as $customer)
                                                 <p>
@@ -239,11 +231,11 @@
                                                                 toán</label>
                                                             <br>
                                                             @if ($item->end_on)
-                                                                <span>Chuyên gia: </span>
+                                                                {{-- <span>Chuyên gia: </span>
                                                                 <span
                                                                     class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_partners, 2) }}$</span>
                                                                 <br>
-                                                                <span>Khách hàng: </span>
+                                                                <span>Khách hàng: </span> --}}
                                                                 <span
                                                                     class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_customers, 2) }}$</span>
                                                             @else
@@ -258,7 +250,7 @@
                                                                 <span class="fw-bold text-primary">Chưa xử lý</span>
                                                             @endif
                                                         </div>
-                                                        <div class="mb-2">
+                                                        {{-- <div class="mb-2">
                                                             <label
                                                                 class="form-label border-bottom  text-primary border-primary">Chuyên
                                                                 gia</label>
@@ -288,14 +280,13 @@
                                                                         <input type="text"
                                                                             class="form-control fw-bold text-success"
                                                                             data-toggle="input-mask"
-                                                                            data-mask-format="#,##0.00"
-                                                                            data-reverse="true"
+                                                                            data-mask-format="#,##0.00" data-reverse="true"
                                                                             name="moneys[{{ $partner->id }}]" multiple
                                                                             value="{{ number_format($partner->status == 1 ? $partner->money : $money_partner, 2) }}">
                                                                     </div>
                                                                 @endif
                                                             @endforeach
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="mb-2">
                                                             <label
                                                                 class="form-label border-bottom  text-primary border-primary">Khách
@@ -322,15 +313,14 @@
                                                                         <input type="text"
                                                                             class="form-control fw-bold text-success"
                                                                             data-toggle="input-mask"
-                                                                            data-mask-format="#,##0.00"
-                                                                            data-reverse="true"
+                                                                            data-mask-format="#,##0.00" data-reverse="true"
                                                                             name="moneys[{{ $customer->id }}]" multiple
                                                                             value="{{ number_format($customer->status == 1 ? $customer->money : $customer_money, 2) }}">
                                                                     </div>
                                                                 @endif
                                                             @endforeach
                                                         </div>
-                                                        <div class="mb-0">
+                                                        <div class="mb-2">
                                                             <label
                                                                 class="form-label border-bottom  text-primary border-primary">Quản
                                                                 trị</label>
@@ -341,6 +331,61 @@
                                                                         class="fw-bold">{{ $system_user->user->name }}</span>
                                                                     <br>
                                                                     {{ $system_user->user->email }}
+                                                                </p>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label
+                                                                class="form-label border-bottom  text-primary border-primary">Chuyên
+                                                                gia</label>
+                                                            <br>
+                                                            @foreach ($item->session_partners as $partner)
+                                                                <p>
+                                                                    <span
+                                                                        class="fw-bold">{{ $partner->user->name }}</span>
+                                                                    <br>
+                                                                    {{ $partner->user->email }}
+                                                                </p>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label
+                                                                class="form-label border-bottom  text-primary border-primary">Ghi
+                                                                âm</label>
+                                                            <br>
+                                                            @php
+                                                                if ($item->end_on) {
+                                                                    $query_raw = '(exists (select * from `avn_chat_room_calls` as `end_call` where `avn_chat_room_calls`.`id` = `end_call`.`call_id` and `end_call`.`end_on` >= "' . $item->created_at . '") ';
+                                                                    $query_raw .= ' or not exists (select * from `avn_chat_room_calls` as `end_call` where `avn_chat_room_calls`.`id` = `end_call`.`call_id`))';
+                                                                    $calls = Modules\AvnChat\Entities\ChatRoomCall::where('room_id', $item->room_id)
+                                                                        ->where('created_at', '<=', $item->end_on)
+                                                                        ->whereRaw(DB::raw($query_raw))
+                                                                        ->get();
+                                                                } else {
+                                                                    $calls = Modules\AvnChat\Entities\ChatRoomCall::where('room_id', $item->room_id)
+                                                                        ->where(function (Builder $query) use ($item) {
+                                                                            return $query
+                                                                                ->whereHas('end_call', function (Builder $query_sub) use ($item) {
+                                                                                    $query_sub->where('end_on', '>=', $item->created_at);
+                                                                                })
+                                                                                ->orWhere('end_on', null);
+                                                                        })
+                                                                        ->get();
+                                                                }
+                                                            @endphp
+                                                            @foreach ($calls as $call)
+                                                                <p>
+
+                                                                    <audio controls>
+                                                                        <source
+                                                                            src="{{ env('JANUS_URL') . '/record-' . $call->id . '.wav' }}"
+                                                                            type="audio/wav">
+                                                                        <a download="{{ 'record-' . $call->id . '-at-' . date('H-i-s-d-m-Y', strtotime($call->created_at)) }}"
+                                                                            href="{{ env('JANUS_URL') . '/record-' . $call->id . '.wav' }}"
+                                                                            class="fw-bold">
+                                                                            {{ 'record-' . $call->id . '-at-' . date('H-i-s-d-m-Y', strtotime($call->created_at)) }}
+                                                                        </a>
+                                                                    </audio>
                                                                 </p>
                                                             @endforeach
                                                         </div>
