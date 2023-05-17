@@ -150,8 +150,9 @@ apt-get install automake -y
             events = all
             grouping = true
             backend = http://localhost:8080
-            backend_user = myuser
-            backend_pwd = mypwd
+            backend_user = email admin account
+            backend_pwd = password admin account
+
             
         bỏ qua csrf_token cho các route nhận thông báo từ janus
             file App\Http\Middleware\VerifyCsrfToken 
