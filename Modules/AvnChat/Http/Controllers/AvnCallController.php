@@ -9,19 +9,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Events\NewCall;
 use App\Events\StopCall;
-use App\Events\SendMessageUser;
+use App\Events\NewSystemMessage;
 use Modules\AvnChat\Entities\Message;
 use Modules\AvnChat\Entities\ChatRoom;
-use Modules\AvnChat\Entities\ChatRoomSession;
-use Modules\AvnChat\Entities\ChatRoomSessionUser;
-use Modules\AvnChat\Entities\ChatRoomUser;
 use Modules\AvnChat\Entities\ChatRoomCallUser;
 use Modules\AvnChat\Entities\ChatRoomCall;
-use Modules\AvnChat\Entities\MessageFile;
 use Illuminate\Database\Eloquent\Builder;
-use Intervention\Image\ImageManagerStatic as Image;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class AvnCallController extends Controller
@@ -56,22 +49,25 @@ class AvnCallController extends Controller
         $call->room_id = $room->id;
         $call->pin = rand();
         $call->save();
+        $request_janus = [
+            'request' => "create",
+            "admin_key" => env('JANUS_AUDIO_BRIDGE_ADMIN_KEY'),
+            'room' => $call->id,
+            'audiolevel_event' => true,
+            'pin' => $call->pin . '',
+            "sampling_rate" => 24000
+        ];
+        if ($room->is_workspace) {
+            $request_janus['record'] = true;
+            $request_janus['record_file'] = 'record-' . $call->id . '.wav';
+            $request_janus['record_dir'] = env('JANUS_SERVER_PUBLIC_ROOT');
+        }
         $response = Http::accept('application/json')->post(env('JANUS_URL') . "/admin", [
             "janus" => "message_plugin",
             "transaction" => "P6xvDuukeWPV",
             "admin_secret" => env('JANUS_ADMIN_SECRET'),
             "plugin" => "janus.plugin.audiobridge",
-            "request" => [
-                'request' => "create",
-                "admin_key" => env('JANUS_AUDIO_BRIDGE_ADMIN_KEY'),
-                'room' => $call->id,
-                'audiolevel_event' => true,
-                'record' => true,
-                'record_file' => 'record-' . $call->id . '.wav',
-                'record_dir' => env('JANUS_SERVER_PUBLIC_ROOT'),
-                'pin' => $call->pin . '',
-                "sampling_rate" => 24000
-            ]
+            "request" => $request_janus
         ])->json();
         return $call;
     }
@@ -94,7 +90,7 @@ class AvnCallController extends Controller
                 $stop_call->call_id = $call->id;
                 $stop_call->end_on = $date;
                 $stop_call->save();
-                broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+                broadcast(new NewSystemMessage(message: $message));
                 broadcast(new StopCall(call: $call));
             }
         }
@@ -102,6 +98,9 @@ class AvnCallController extends Controller
     }
     public function janusEvent(Request $request)
     {
+        if (Auth::user()->type != 'system') {
+            return false;
+        }
         $janus_event = $request->all()[0];
 
         $call_id = $janus_event['event']['data']['room'];
@@ -121,7 +120,7 @@ class AvnCallController extends Controller
                 $message->message = 'start-call';
                 $message->save();
                 broadcast(new NewCall(call: $call));
-                broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+                broadcast(new NewSystemMessage(message: $message));
             }
 
             $call_user = new ChatRoomCallUser();
@@ -135,7 +134,7 @@ class AvnCallController extends Controller
             $message->room_id = $call->room_id;
             $message->message = 'joined-call ' . $user->name;
             $message->save();
-            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+            broadcast(new NewSystemMessage(message: $message));
         }
 
         // left audio bridge
@@ -158,7 +157,7 @@ class AvnCallController extends Controller
             $message->message = 'left-call ' . $user->name;
             $message->save();
 
-            broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+            broadcast(new NewSystemMessage(message: $message));
 
             if (!count($this->janusRoomParticipants($call)["response"]["participants"])) {
                 $this->janusStopCall($call);
@@ -171,7 +170,7 @@ class AvnCallController extends Controller
                 $stop_call->call_id = $call->id;
                 $stop_call->end_on = $date;
                 $stop_call->save();
-                broadcast(new SendMessageUser(user_send: null, message: $message, is_system: true));
+                broadcast(new NewSystemMessage(message: $message));
                 broadcast(new StopCall(call: $call));
             }
         }

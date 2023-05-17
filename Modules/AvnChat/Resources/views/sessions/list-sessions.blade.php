@@ -144,7 +144,7 @@
                                         </td> --}}
                                         <td>
                                             @foreach ($item->session_customers as $customer)
-                                                <p>
+                                                <p class="mb-0">
                                                     <span class="fw-bold">{{ $customer->user->name }}</span>
                                                     <br>
                                                     {{ $customer->user->email }}

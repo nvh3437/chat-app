@@ -10,32 +10,27 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserJoinedRoom implements ShouldBroadcast
+class NewUser implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public $room_id;
-    public $user_id;
-    public function __construct($user_id, $room_id)
+    public $message;
+    public function __construct($message)
     {
-        $this->user_id = $user_id;
-        $this->room_id = $room_id;
+        $this->message = $message;
     }
     public function broadcastOn()
     {
-        return new PrivateChannel('joined.user.' . $this->user_id); //private
-        // return new Channel('chat'); //public
+        return new PrivateChannel('chat.room.' . $this->message->room_id);
     }
 
     public function broadcastAs()
     {
-        return 'newRoom';
+        return 'newUser';
     }
     public function broadcastWith()
     {
         $res = [
-            'user_id' => $this->user_id,
-            'room_id' => $this->room_id,
+            'message' => $this->message,
         ];
         return $res;
     }

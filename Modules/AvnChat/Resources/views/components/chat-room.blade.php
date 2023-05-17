@@ -10,7 +10,6 @@
 @endphp
 <a href="javascript:void(0);" class="text-body chat-room" data-id="{{ $room->id }}">
     <div class="d-flex align-items-start mt-1 p-2 chat-room-badge">
-
         <div class="me-2 flex-shrink-0 chat-room-img">
             @if (count($imgs) == 1)
                 <img src="{{ asset($imgs[0] ?? 'resources/assets/images/users/avatar-1.jpg') }}"
