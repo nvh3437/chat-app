@@ -8,9 +8,12 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Events\NewMessage;
-use App\Events\NewUser;
 use App\Events\NewSystemMessage;
 use App\Events\NewRoom;
+use App\Events\NewUser;
+use App\Events\KickUser;
+use App\Events\StartSession;
+use App\Events\EndSession;
 use Modules\AvnChat\Entities\Message;
 use Modules\AvnChat\Entities\ChatRoom;
 use Modules\AvnChat\Entities\ChatRoomSession;
@@ -210,8 +213,7 @@ class AvnChatController extends Controller
             $messages = $messages->where('created_at', '>=', $room_user->created_at);
         }
         $messages = $messages->orderByDesc('created_at')
-            ->with('user:id,name', 'user.profile:id,img')
-            ->with('files')
+            ->with('user:id,name', 'user.profile:id,img', 'files')
             ->take(10)->get();
         if ($room_user && $messages->first() && $messages->first()->id > $room_user->last_seen_id) {
             $room_user->last_received_id = $messages->first()->id;
@@ -271,14 +273,10 @@ class AvnChatController extends Controller
                 $message->room_id = $room->id;
                 $message->message = 'add-user ' . $user->name;
                 $message->save();
-            }
-            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
-                $query->where('user_id', $user->id);
-            })->findOrFail($request->id);
-            if (isset($message)) {
+                broadcast(new NewUser(message: $message));
                 broadcast(new NewSystemMessage(message: $message));
             }
-            return true;
+            return $room;
         }
         return false;
     }
@@ -304,20 +302,13 @@ class AvnChatController extends Controller
                         $message->message = 'add-user ' . $user_in->name;
                         $message->save();
                         $messages->push($message);
+                        broadcast(new NewUser(message: $message));
                         broadcast(new NewRoom(user_id: $user_in->id, room_id: $room->id));
+                        broadcast(new NewSystemMessage(message: $message));
                     }
                 }
             }
-            $room = ChatRoom::whereHas('room_users', function (Builder $query) use ($user) {
-                $query->where('user_id', $user->id);
-            })->findOrFail($request->id);
-            if (count($messages)) {
-                foreach ($messages as $message) {
-                    broadcast(new NewUser(message: $message));
-                    broadcast(new NewSystemMessage(message: $message));
-                }
-            }
-            return true;
+            return $room;
         }
         return false;
     }
@@ -351,6 +342,7 @@ class AvnChatController extends Controller
                     $message->room_id = $room->id;
                     $message->message = 'end-session';
                     $message->save();
+                    broadcast(new EndSession(message: $message));
                     broadcast(new NewSystemMessage(message: $message));
                 }
             }
@@ -360,6 +352,7 @@ class AvnChatController extends Controller
             $message->message = 'kick-user ' . $user_not_partner->name;
             $message->save();
             broadcast(new NewSystemMessage(message: $message));
+            broadcast(new KickUser(message: $message));
             return true;
         }
         return false;
@@ -391,6 +384,7 @@ class AvnChatController extends Controller
             $message->room_id = $room->id;
             $message->message = 'start-session';
             $message->save();
+            broadcast(new StartSession(message: $message));
             broadcast(new NewSystemMessage(message: $message));
             return AvnChatHelper::roomInfo($user, $room);
         }
@@ -421,6 +415,7 @@ class AvnChatController extends Controller
             $message->room_id = $room->id;
             $message->message = 'end-session';
             $message->save();
+            broadcast(new EndSession(message: $message));
             broadcast(new NewSystemMessage(message: $message));
             return AvnChatHelper::roomInfo($user, $room);
         }

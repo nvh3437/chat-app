@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Events\NewMessage;
+use App\Events\SendMessageUser;
 use Modules\AvnChat\Entities\Message;
 use Modules\AvnChat\Entities\ChatRoom;
 use Modules\AvnChat\Entities\ChatRoomUser;
@@ -25,6 +25,9 @@ class AvnChatHelper
         }
         $join_users = $room->room_users->map(function ($item, $key) {
             return ['id' => $item->user_id, 'name' => $item->user->name, 'type' => $item->user->type, 'img' => $item->user->profile->img ?? null];
+        });
+        $customers = $room->users->where('type', 'customer')->map(function ($item, $key) {
+            return ['id' => $item->id, 'name' => $item->name, 'type' => $item->type, 'img' => $item->profile->img ?? null];
         });
         if ($room->session_chats->where('end_on', null)->count()) {
             $has_session = $room->session_chats->where('end_on', null)->count();
@@ -55,6 +58,7 @@ class AvnChatHelper
             'name' => $room_name,
             'imgs' => $imgs,
             'join_users' => $join_users,
+            'customers' => $customers,
             'is_workspace' => $room->is_workspace,
             'has_session' => $has_session,
             'session_start_on' => $session_start_on,

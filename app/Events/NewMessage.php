@@ -37,7 +37,7 @@ class NewMessage implements ShouldBroadcast
         $res = [
             'name' => $this->user_send->name ?? '',
             'img' => $this->user_send->profile->img ?? 'resources/assets/images/users/avatar-1.jpg',
-            'message' => $this->message->load('files'),
+            'message' => $this->message->load('files', 'user:id,name', 'user.profile:id,img'),
             'is_system' => $this->is_system,
         ];
         return $res;

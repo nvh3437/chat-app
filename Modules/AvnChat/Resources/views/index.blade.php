@@ -15,7 +15,7 @@
             </div>
             <!-- end chat users-->
             <!-- chat area -->
-            <div class="col-xl-6 chat-col d-none ">
+            <div class="col-xl-6 chat-col d-none" id="chat-container">
                 <div class="card shadow-lg mb-0 d-lg-none chat-navigation rounded-0"
                     style="background: rgba(var(--bs-primary-rgb),0.5);">
                     <div class="card-body d-flex align-items-center py-1">
@@ -354,6 +354,14 @@
     </div><!-- /.modal -->
 @endsection
 @section('js')
+    <script>
+        // add csrf
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            }
+        });
+    </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.2.2/adapter.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
@@ -362,7 +370,12 @@
     <script src="{{ asset('Modules/AvnChat/resources/assets/js/index.js') }}"></script>
     <script type="text/javascript">
         window.room_id = null;
-        window.user_id = {{ $user->id }};
+        // window.user_id = {{ $user->id }};
+        window.user = {
+            id: {{ $user->id }},
+            name: "{{ $user->name }}",
+            img: "{{ $user->profile->img ?? 'resources/assets/images/users/avatar-1.jpg' }}",
+        };
 
         window.room_calling_id = null;
         window.call_id = null;
@@ -389,17 +402,12 @@
         window.stop_call_modal = new bootstrap.Modal(document.getElementById('stop-call-modal'), {
             keyboard: false
         })
-        // add csrf
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-            }
-        });
         $(document).ready(function() {
             // listen chanel 
             window.Echo.private('joined.user.{{ $user->id }}')
                 .listen('.newRoom', (e) => {
-                    new_room(e.room_id)
+                    // new_room(e.room_id)
+                    window.room_container.newRoom(e.room_id)
                 })
             @foreach ($rooms as $room)
                 Echo_listen('chat.room.{{ $room->id }}')
@@ -436,12 +444,11 @@
                         }
                         if (e.message.user_id != {{ $user->id }}) {
                             if (room_id == e.message.room_id) {
-                                add_my_receive_message(e.name, e.img, e.message, new Date(e.message
-                                    .created_at))
+                                window.chat_container.addReceiveMessage(e.message)
                             }
-                            update_new_message_in_chat_room(e.message.message, e.message.created_at, e.message
-                                .room_id)
-                            scroll_to_bottom_message_container()
+                            window.room_container.getRoom(e.message.room_id).addNewMessage(e.message)
+                            window.chat_container.scrollBottom();
+
                         }
                         var room_chats = $(".chat-room[data-id=" + e.message.room_id + "]")
                         room_chats.each(function() {
@@ -470,94 +477,11 @@
                             $new_message_span.prev().append(
                                 '<i class="mdi mdi-checkbox-blank-circle text-primary"></i>')
                         }
-                        var system_message = ''
-                        if (e.message.message.indexOf("kick-user") == 0) {
-                            $.ajax({
-                                method: 'get',
-                                url: "{{ route('get-room-info') }}",
-                                dataType: "json",
-                                data: {
-                                    id: e.message.room_id,
-                                },
-                                success: function(res) {
-                                    console.log(res);
-                                    if (!res) {
-                                        if (e.message.room_id == room_id) {
-                                            $('.alert-join-room').removeClass('d-none')
-                                            $('#chat-form').addClass('d-none')
-                                        }
-                                        @if ($user->type != 'system')
-                                            window.Echo.leave(chanel_name);
-                                        @endif
-                                    } else {
-                                        console.log(res.joined_room);
-                                        if (!res.joined_room) {
-                                            $('.add-users-group').addClass('d-none')
-                                            $('.join-room').removeClass('d-none')
-                                            $('.alert-join-room').removeClass('d-none')
-                                            $('#chat-form').addClass('d-none')
-                                            @if ($user->type != 'system')
-                                                window.Echo.leave(chanel_name);
-                                            @endif
-                                        }
-                                        set_name_image_chat_room(res.name, res.imgs, res
-                                            .room_id)
-                                        if (res.room_id == room_id) {
-                                            set_name_image_chat_info(res.name, res.imgs)
-                                            update_users_in_list_users_in_room(res.join_users)
-                                            scroll_to_bottom_message_container()
-                                        }
-                                        update_room_status(res.is_workspace, res.has_session,
-                                            res
-                                            .join_users, res.room_id)
-                                    }
-                                },
-                            });
-                        } else if (e.message.message.indexOf("start-session") == 0) {
-                            $('.add-users-group').addClass('d-none')
-                            @if ($user->type == 'system')
-                                $('.workspace-session .start-session').addClass(
-                                    'd-none')
-                                $('.workspace-session .end-session').removeClass(
-                                    'd-none')
-                            @endif
-                            $('.workspace-session .time-session').removeClass(
-                                'd-none')
-                            timer_count_up(new Date(e.message.created_at))
-                            update_room_status(true, true, null, e.message.room_id)
-                        } else if (e.message.message.indexOf("end-session") == 0) {
-                            @if ($user->type == 'system')
-                                $('.add-users-group').removeClass('d-none')
-                                $('.workspace-session .start-session').removeClass(
-                                    'd-none')
-                                $('.workspace-session .end-session').addClass(
-                                    'd-none')
-                            @endif
-                            $('.workspace-session .time-session').addClass(
-                                'd-none')
-                            @if ($user->type != 'system')
-                                $('.workspace-session').addClass('d-none')
-                            @endif
-                            clearInterval(count_up);
-                            $.ajax({
-                                async: false,
-                                method: 'get',
-                                url: "{{ route('get-room-info') }}",
-                                dataType: "json",
-                                data: {
-                                    id: e.message.room_id,
-                                },
-                                success: function(res) {
-                                    update_room_status(res.is_workspace, res.has_session, res
-                                        .join_users, res.room_id)
-                                },
-                            });
-                        }
                         if (e.message.room_id == room_id) {
-                            add_message_send_by_system(e.message)
+                            window.chat_container.addReceiveMessage(message)
                         }
                         update_new_message_in_chat_room_send_by_system(e.message)
-                        scroll_to_bottom_message_container()
+                        window.chat_container.scrollBottom();
 
                         var room_chats = $(".chat-room[data-id=" + e.message.room_id + "]")
                         room_chats.each(function() {
@@ -579,8 +503,89 @@
                                 if (res.room_id == room_id) {
                                     set_name_image_chat_info(res.name, res.imgs)
                                     update_users_in_list_users_in_room(res.join_users)
-                                    scroll_to_bottom_message_container()
+                                    window.chat_container.scrollBottom();
                                 }
+                                update_room_status(res.is_workspace, res.has_session, res
+                                    .join_users, res.room_id)
+                            },
+                        });
+                    })
+                    .listen('.kickUser', (e) => {
+                        $.ajax({
+                            method: 'get',
+                            url: "{{ route('get-room-info') }}",
+                            dataType: "json",
+                            data: {
+                                id: e.message.room_id,
+                            },
+                            success: function(res) {
+                                console.log(res);
+                                if (!res) {
+                                    if (e.message.room_id == room_id) {
+                                        $('.alert-join-room').removeClass('d-none')
+                                        $('#chat-form').addClass('d-none')
+                                    }
+                                    window.Echo.leave(chanel_name);
+                                } else {
+                                    if (!res.joined_room) {
+                                        $('.add-users-group').addClass('d-none')
+                                        $('.join-room').removeClass('d-none')
+                                        $('.alert-join-room').removeClass('d-none')
+                                        $('#chat-form').addClass('d-none')
+                                        window.Echo.leave(chanel_name);
+                                    }
+                                    set_name_image_chat_room(res.name, res.imgs, res
+                                        .room_id)
+                                    if (res.room_id == room_id) {
+                                        set_name_image_chat_info(res.name, res.imgs)
+                                        update_users_in_list_users_in_room(res.join_users)
+                                        window.chat_container.scrollBottom();
+                                    }
+                                    update_room_status(res.is_workspace, res.has_session,
+                                        res
+                                        .join_users, res.room_id)
+                                }
+                            },
+                        });
+
+                    })
+                    .listen('.startSession', (e) => {
+                        $('.add-users-group').addClass('d-none')
+                        @if ($user->type == 'system')
+                            $('.workspace-session .start-session').addClass(
+                                'd-none')
+                            $('.workspace-session .end-session').removeClass(
+                                'd-none')
+                        @endif
+                        $('.workspace-session .time-session').removeClass(
+                            'd-none')
+                        timer_count_up(new Date(e.message.created_at))
+                        update_room_status(true, true, null, e.message.room_id)
+
+                    })
+                    .listen('.endSession', (e) => {
+                        @if ($user->type == 'system')
+                            $('.add-users-group').removeClass('d-none')
+                            $('.workspace-session .start-session').removeClass(
+                                'd-none')
+                            $('.workspace-session .end-session').addClass(
+                                'd-none')
+                        @endif
+                        $('.workspace-session .time-session').addClass(
+                            'd-none')
+                        @if ($user->type != 'system')
+                            $('.workspace-session').addClass('d-none')
+                        @endif
+                        clearInterval(count_up);
+                        $.ajax({
+                            async: false,
+                            method: 'get',
+                            url: "{{ route('get-room-info') }}",
+                            dataType: "json",
+                            data: {
+                                id: e.message.room_id,
+                            },
+                            success: function(res) {
                                 update_room_status(res.is_workspace, res.has_session, res
                                     .join_users, res.room_id)
                             },
@@ -704,62 +709,7 @@
                     })
             }
 
-            // check file upload 
-            $('label[for=files]').on('click', function(e) {
-                if (images.length >= 4) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    $.NotificationApp.send("Thất bại", "Tối đa 4 tệp", "bottom-right",
-                        "rgba(0,0,0,0.2)", "error")
-                }
-            })
-
-            // file upload show pre upload
-            $('#files').change(function(e) {
-                e.preventDefault();
-                if (this.files) {
-                    $('.files-container').removeClass('d-none')
-                    var htm = ''
-                    var filesAmount = this.files.length;
-                    for (i = 0; i < filesAmount; i++) {
-                        if (images.length >= 4) {
-                            $.NotificationApp.send("Thất bại", "Tối đa 4 tệp", "bottom-right",
-                                "rgba(0,0,0,0.2)", "error")
-                            break
-                        }
-                        file = this.files[i]
-                        images[images.length] = file
-                        var reader = new FileReader();
-                        reader.onload = function(event) {
-                            preview_images[preview_images.length] = event.target.result
-                            htm = '<div class="avatar-sm position-relative img-thumbnail mx-1">'
-                            htm += '<img src="' +
-                                event.target
-                                .result +
-                                '" class="rounded w-100 h-100" style="object-fit: cover;">'
-                            htm +=
-                                '<a class="remove-image" href="javascript: void(0);" style="display: inline;">&#215;</a>'
-                            htm += '</div>'
-                            $('.files-container .row').append(htm)
-                        }
-                        reader.readAsDataURL(file);
-                    }
-                    $("#files").val('')
-                }
-            })
-
-            // remove file upload
-            $('.files-container').on('click', '.remove-image', function() {
-                var index = preview_images.indexOf($(this).parent().find('img').attr('src'));
-                if (index > -1) { // only splice array when item is found
-                    preview_images.splice(index, 1); // 2nd parameter means remove one item only
-                    images.splice(index, 1); // 2nd parameter means remove one item only
-                    $(this).parent().remove()
-                }
-                if (!preview_images.length) {
-                    $('.files-container').addClass('d-none')
-                }
-            })
+            
             // add users to room
             $('.add-users').on('click', function() {
                 users = $('#add-users-select').val()
@@ -824,52 +774,6 @@
                 });
 
             })
-            // scroll to load more
-            $('.conversation-list .simplebar-content-wrapper').scroll(function() {
-                if ($(this).scrollTop() == 0) {
-                    if (load_more && last_load) {
-                        load_more = false
-                        var before_height = $('.conversation-list .simplebar-content').height()
-                        var htm =
-                            '<button class="btn btn-primary w-100 pre-message-loading mb-1" type="button" disabled>'
-                        htm +=
-                            '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>'
-                        htm += 'Đang tải...'
-                        htm += '</button>'
-                        $('.conversation-list .simplebar-content').prepend(htm);
-                        $.ajax({
-                            method: 'get',
-                            url: "{{ route('load-messages') }}",
-                            dataType: "json",
-                            data: {
-                                last_load: last_load,
-                                id: room_id,
-                            },
-                            success: function(res) {
-                                if (res.length) {
-                                    last_load = res[res.length - 1].id ?? 0
-
-                                } else {
-                                    last_load = 0
-                                }
-                                message_ajax_to_element(res, false)
-                                $('.conversation-list .simplebar-content-wrapper')
-                                    .scrollTop(
-                                        $('.conversation-list .simplebar-content')
-                                        .height() -
-                                        before_height);
-                                $(".conversation-list .simplebar-content .pre-message-loading")
-                                    .remove()
-
-                            },
-                            error: function() {
-                                $('.chat-conatiner .pre-loader-error').removeClass('d-none')
-                            }
-                        });
-                        load_more = true
-                    }
-                }
-            });
 
             // load room
             $('.chat-rooms-conatiner').on('click', '.chat-room', function() {
@@ -895,7 +799,7 @@
                     $('.chat-navigation .room-name').html($(this).find('.room-name').html());
                     $('.chat-navigation .chat-room-img').html($(this).find('.chat-room-img').html());
                     clearInterval(count_up);
-                    clear_message()
+                    window.chat_container.clearMessage()
                     preview_images = []
                     images = []
                     $('.files-container').addClass('d-none')
@@ -1001,16 +905,16 @@
                         },
                         success: function(res) {
                             if (res.length) {
-                                last_load = res[res.length - 1].id
+                                window.chat_container.last_load = res[res.length - 1].id
                             } else {
-                                last_load = 0
+                                window.chat_container.last_load = 0
                             }
                             console.log(res);
-                            message_ajax_to_element(res, false)
+                            window.chat_container.addListMessages(res, false);
                             $('.chat-conatiner .pre-loader').addClass('d-none')
                             $('.chat-conatiner .pre-loader-error').addClass('d-none')
-                            scroll_to_bottom_message_container()
-                            load_more = true
+                            window.chat_container.scrollBottom();
+                            window.chat_container.load_more = true
                         },
                         error: function() {
                             // $('.chat-conatiner .pre-loader-error').removeClass('d-none')
@@ -1055,71 +959,7 @@
                 });
             })
 
-            // send message
-            $('#chat-form').on('submit', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                var message = $('#message').val()
-                var random_message_id = Math.floor(Math.random() * 100000000000000)
-
-                var form_data = new FormData()
-                form_data.append("id", room_id);
-                form_data.append("message", message);
-                form_data.append("random_message_id", random_message_id);
-                images.forEach(img => {
-                    form_data.append("images[]", img);
-                });
-
-                add_my_send_message(message, new Date(), true, random_message_id)
-                update_new_message_in_chat_room(message)
-                scroll_to_bottom_message_container()
-
-                $('#message').val('')
-                preview_images = []
-                images = []
-                $('.files-container').addClass('d-none')
-                $('.files-container .row div').remove()
-
-                var send_new_message = $.ajax({
-                    method: 'post',
-                    url: "{{ route('send-message-to-user') }}",
-                    dataType: "json",
-                    processData: false,
-                    contentType: false,
-                    data: form_data,
-                    success: function(res) {
-                        $('.clearfix[data-random_message_id=' + res.random_message_id +
-                                '] .sending')
-                            .removeClass('mdi-checkbox-blank-circle-outline')
-                            .addClass('mdi-check-circle')
-                        $('.clearfix[data-random_message_id=' + res.random_message_id + ']')
-                            .attr('data-id', res.message.id)
-                        if (res && res.message_files && res.message_files.length) {
-                            $('.clearfix[data-random_message_id=' + res.random_message_id +
-                                '] .img-container').each(
-                                function(index) {
-                                    htm = '<a href="' +
-                                        res.message_files[index].file + '" target="_blank">'
-                                    htm += '<img src="' + res.message_files[index].file +
-                                        '" class="rounded w-100 h-100 p-0 mt-2" style="object-fit: cover;">'
-                                    htm += '</a>'
-                                    $(this).html(htm)
-                                }
-                            )
-                        }
-                    },
-                    error: function(e) {
-                        if (!navigator.onLine) {
-                            var request = this
-                            setTimeout(function() {
-                                $.ajax(request);
-                            }, 3000);
-                        }
-                    }
-                });
-
-            })
+            
 
             // remove user
             $('.list-users-in-room').on('click', '.remove-user', function() {
@@ -1206,7 +1046,7 @@
                         if (res.room_id == room_id) {
                             set_name_image_chat_info(res.name, res.imgs)
                             update_users_in_list_users_in_room(res.join_users)
-                            scroll_to_bottom_message_container()
+                            window.chat_container.scrollBottom();
                         }
                         update_room_status(res.is_workspace, res.has_session, res
                             .join_users, res.room_id)
@@ -1388,45 +1228,6 @@
                 }
             }
 
-            // ajax response json to messages
-            /**
-             * @param {JSON} res
-             * @param {Boolean} append
-             */
-            function message_ajax_to_element(res, append = true) {
-                var now = new Date()
-                res.forEach(message => {
-                    date = new Date(message.created_at)
-                    var htm = ''
-                    if (date.getFullYear() != now.getFullYear() || date.getMonth() != now.getMonth() ||
-                        date
-                        .getDate() != now.getDate()) {
-                        htm = '<li class = "text-center date-message">'
-                        htm += '<span class="badge badge-success-lighten">' + now.getDate() + '/' + now
-                            .getMonth() + '/' + now.getFullYear() + '</span>'
-                        htm += '</li>'
-                        $('.conversation-list .simplebar-content').prepend(htm);
-                        now = date
-                    }
-                    if (!message.user_id) {
-                        add_message_send_by_system(message, append)
-                    } else if (message.user_id == {{ $user->id }}) {
-                        add_my_send_message(message, date, append)
-                    } else {
-                        var avatar = 'resources/assets/images/users/avatar-1.jpg'
-                        if (message.user.profile && message.user.profile.img) {
-                            avatar = message.user.profile.img
-                        }
-                        add_my_receive_message(
-                            message.user.name,
-                            avatar,
-                            message,
-                            date,
-                            append)
-                    }
-                });
-            }
-
             /**
              * @param {Int} call_id
              * @param {String} call_pin
@@ -1440,40 +1241,6 @@
                 $('.conversation-list .simplebar-content').append(htm);
             }
 
-            /**
-             * @param {JSON} message
-             * @param {Boolean} append
-             */
-            function add_message_send_by_system(message, append = true) {
-                var system_message = ''
-                if (message.message.indexOf("add-user") == 0) {
-                    system_message = 'Đã thêm ' + message.message.substring(message.message.indexOf(
-                        " "), message.message.length)
-                } else if (message.message.indexOf("kick-user") == 0) {
-                    system_message = 'Đã xóa ' + message.message.substring(message.message.indexOf(
-                        " "), message.message.length)
-                } else if (message.message.indexOf("start-session") == 0) {
-                    system_message = 'Bắt đầu phiên làm việc'
-                } else if (message.message.indexOf("end-session") == 0) {
-                    system_message = 'Kết thúc phiên làm việc'
-                } else if (message.message.indexOf("start-call") == 0) {
-                    system_message = 'Bắt đầu cuộc gọi'
-                } else if (message.message.indexOf("joined-call") == 0) {
-                    system_message = message.message.substring(11) + ' tham gia cuộc gọi'
-                } else if (message.message.indexOf("left-call") == 0) {
-                    system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
-                } else if (message.message.indexOf("stop-call") == 0) {
-                    system_message = 'Kết thúc cuộc gọi'
-                }
-                htm = '<li class = "text-center date-message">'
-                htm += '<span class="badge badge-secondary-lighten">' + system_message + '</span>'
-                htm += '</li>'
-                if (append) {
-                    $('.conversation-list .simplebar-content').append(htm);
-                } else {
-                    $('.conversation-list .simplebar-content').prepend(htm);
-                }
-            }
 
             /**
              * @param {JSON} message
@@ -1508,134 +1275,6 @@
                     message.created_at);
             }
 
-            /**
-             * @param {JSON} message
-             * @param {Date} date
-             * @param {Boolean} append
-             * @param {String} random_message_id
-             */
-            function add_my_send_message(message, date = new Date(), append = true, random_message_id = null) {
-                var htm = '<li class="clearfix odd"'
-                if (random_message_id) {
-                    htm += ' data-random_message_id="' + random_message_id + '"'
-                }
-                if (message.id) {
-                    htm += ' data-id="' + message.id + '"'
-                }
-                htm += '>'
-                htm += '<div class="chat-avatar">'
-                htm +=
-                    '<img src="{{ asset($user->profile->img ?? 'resources/assets/images/users/avatar-1.jpg') }}" class="rounded" alt="{{ $user->name }}" />'
-                htm += '<i>' + date.getHours() + ':' + date.getMinutes() + '</i>'
-                htm += '</div>'
-                htm += '<div class="conversation-text">'
-                htm += '<div class="ctext-wrap">'
-                htm += '<i class="text-capitalize">{{ $user->name }} '
-                if (random_message_id) {
-                    htm += '<i class="mdi mdi-checkbox-blank-circle-outline text-primary d-inline sending"></i>'
-                }
-                htm += '</i>'
-                htm += '<p>'
-                htm += message.message ?? message
-                htm += '</p>'
-                if (message.files && message.files.length) {
-                    htm += images_element(message.files)
-                } else if (preview_images.length) {
-                    htm += preload_images_element(preview_images)
-                }
-                htm += '</div>'
-                htm += '</div>'
-                // if (message.files && message.files.length) {
-
-                //     htm += '<div class="conversation-actions dropdown">'
-                //     htm +=
-                //         '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil-ellipsis-v "></i></button>'
-                //     htm += '<div class="dropdown-menu">'
-                //     htm += '<a class="dropdown-item" href="#">Download</a>'
-                //     // htm += '<a class="dropdown-item" href="#">Edit</a>'
-                //     // htm += '<a class="dropdown-item" href="#">Delete</a>'
-                //     htm += '</div>'
-                //     htm += '</div>'
-                // }
-                htm += '</li>'
-                // $(htm).insertAfter('li.clearfix:last-child');
-                if (append) {
-                    $('.conversation-list .simplebar-content').append(htm);
-                } else {
-                    $('.conversation-list .simplebar-content').prepend(htm);
-                }
-            }
-
-            /**
-             * @param {String} name
-             * @param {String} img
-             * @param {JSON} message
-             * @param {Date} date
-             * @param {Boolean} append
-             */
-            function add_my_receive_message(name, img, message, date, append = true) {
-                var htm = '<li class="clearfix"'
-
-                if (message.id) {
-                    htm += ' data-id="' + message.id + '"'
-                }
-                htm += '>'
-                htm += '<div class="chat-avatar">'
-                htm += '<img src="' + (img) + '" class="rounded"'
-                htm += 'alt="' + name + '" />'
-                htm += '<i>' + date.getHours() + ':' + date.getMinutes() + '</i>'
-                htm += '</div>'
-                htm += '<div class="conversation-text">'
-                htm += '<div class="ctext-wrap">'
-                htm += '<i>' + name + '</i>'
-                htm += '<p>'
-                htm += message.message
-                htm += '</p>'
-                htm += images_element(message.files)
-                htm += '</div>'
-                htm += '</div>'
-                // if (message.files && message.files.length) {
-                //     htm += '<div class="conversation-actions dropdown">'
-                //     htm +=
-                //         '<button class="btn btn-sm btn-link" data-bs-toggle="dropdown" aria-expanded="false"><i class="uil uil-ellipsis-v"></i></button>'
-                //     htm += '<div class="dropdown-menu dropdown-menu-end">'
-                //     htm += '<a class="dropdown-item" href="#">Download</a>'
-                //     // htm += '<a class="dropdown-item" href="#">Edit</a>'
-                //     // htm += '<a class="dropdown-item" href="#">Delete</a>'
-                //     htm += '</div>'
-                //     htm += '</div>'
-                // }
-                htm += '</li>'
-                if (append) {
-                    $('.conversation-list .simplebar-content').append(htm);
-                } else {
-                    $('.conversation-list .simplebar-content').prepend(htm);
-                }
-            }
-
-            /**
-             * @param {JSON} preview_images
-             * 
-             * @return {String}
-             */
-            function preload_images_element(preview_images) {
-                if (preview_images.length) {
-                    var htm = '<div class="card mb-1 shadow-none border p-2">'
-                    htm += '<div class="row g-1">'
-                    preview_images.forEach(preview_image => {
-                        htm +=
-                            '<div class="col-12 position-relative m-0 p-0 img-container mt-2">'
-                        htm += '<div class="spinner-border" role="status">'
-                        htm += '<span class="visually-hidden">Loading...</span>'
-                        htm += '</div>'
-                        htm += '</div>'
-                    });
-                    htm += '</div>'
-                    htm += '</div>'
-                    return htm
-                }
-                return ''
-            }
 
             /**
              * @param {JSON} files
@@ -1796,27 +1435,18 @@
                             }
                             return message.room_id == room_id
                         })
-                        message_ajax_to_element(new_message_in_this_room, true)
-                        scroll_to_bottom_message_container()
+                        window.chat_container.addListMessages(new_message_in_this_room);
+                        window.chat_container.scrollBottom();
                     },
                     error: function() {}
                 });
             });
 
 
-            // scroll to bottom
-            function scroll_to_bottom_message_container() {
-                $(".conversation-list .simplebar-content-wrapper").animate({
-                    scrollTop: $(
-                            '.conversation-list .simplebar-content-wrapper .simplebar-content')
-                        .height()
-                }, 1);
-            }
-
-            // clear message 
-            function clear_message() {
-                $('.conversation-list .simplebar-content').html('')
-            }
+            // // clear message 
+            // function clear_message() {
+            //     $('.conversation-list .simplebar-content').html('')
+            // }
 
             // start timer count up
             function timer_count_up(date) {
