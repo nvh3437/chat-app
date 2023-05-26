@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    window.opaqueId = "user-" + window.user_id;
+    window.opaqueId = "user-" + window.user.id;
     window.mixertest = null;
     window.webrtcUp = false;
     window.stereo = false;
@@ -37,7 +37,7 @@ $(document).ready(function () {
                                 var join_audio_bridge = {
                                     request: "join",
                                     room: call_id,
-                                    id: user_id,
+                                    id: window.user.id,
                                     quality: 10,
                                     pin:
                                         typeof call_pin == "string"

@@ -374,6 +374,7 @@
         window.user = {
             id: {{ $user->id }},
             name: "{{ $user->name }}",
+            type: "{{ $user->type }}",
             img: "{{ $user->profile->img ?? 'resources/assets/images/users/avatar-1.jpg' }}",
         };
 
@@ -406,7 +407,6 @@
             // listen chanel 
             window.Echo.private('joined.user.{{ $user->id }}')
                 .listen('.newRoom', (e) => {
-                    // new_room(e.room_id)
                     window.room_container.newRoom(e.room_id)
                 })
             @foreach ($rooms as $room)
@@ -423,72 +423,20 @@
             function Echo_listen(chanel_name) {
                 window.Echo.private(chanel_name)
                     .listen('.newMessage', (e) => {
-                        $.ajax({
-                            method: 'post',
-                            url: "{{ route('received-message-to-user') }}",
-                            dataType: "json",
-                            data: {
-                                id: e.message.id,
-                                room_id: e.message.room_id,
-                                read: e.message.room_id == room_id ? 1 : 0,
-                            },
-                            success: function(res) {},
-                        });
-                        if (e.message.room_id != room_id && !$('.chat-room[data-id=' + e.message.room_id +
-                                '] .text-primary').length) {
-                            var $new_message_span = $('.chat-room[data-id=' + e.message.room_id +
-                                '] .new-message')
-                            $new_message_span.addClass('text-primary')
-                            $new_message_span.prev().append(
-                                '<i class="mdi mdi-checkbox-blank-circle text-primary"></i>')
-                        }
                         if (e.message.user_id != {{ $user->id }}) {
                             if (room_id == e.message.room_id) {
                                 window.chat_container.addReceiveMessage(e.message)
                             }
                             window.room_container.getRoom(e.message.room_id).addNewMessage(e.message)
                             window.chat_container.scrollBottom();
-
                         }
-                        var room_chats = $(".chat-room[data-id=" + e.message.room_id + "]")
-                        room_chats.each(function() {
-                            $room_chat = $(this)
-                            $room_chat.parent().prepend($room_chat.clone())
-                            $room_chat.remove()
-                        });
                     })
                     .listen('.newSystemMessage', (e) => {
-                        $.ajax({
-                            method: 'post',
-                            url: "{{ route('received-message-to-user') }}",
-                            dataType: "json",
-                            data: {
-                                id: e.message.id,
-                                room_id: e.message.room_id,
-                                read: e.message.room_id == room_id ? 1 : 0,
-                            },
-                            success: function(res) {},
-                        });
-                        if (e.message.room_id != room_id && !$('.chat-room[data-id=' + e.message.room_id +
-                                '] .text-primary').length) {
-                            var $new_message_span = $('.chat-room[data-id=' + e.message.room_id +
-                                '] .new-message')
-                            $new_message_span.addClass('text-primary')
-                            $new_message_span.prev().append(
-                                '<i class="mdi mdi-checkbox-blank-circle text-primary"></i>')
-                        }
                         if (e.message.room_id == room_id) {
-                            window.chat_container.addReceiveMessage(message)
+                            window.chat_container.addReceiveMessage(e.message)
                         }
-                        update_new_message_in_chat_room_send_by_system(e.message)
+                        window.room_container.getRoom(e.message.room_id).addNewMessage(e.message)
                         window.chat_container.scrollBottom();
-
-                        var room_chats = $(".chat-room[data-id=" + e.message.room_id + "]")
-                        room_chats.each(function() {
-                            $room_chat = $(this)
-                            $room_chat.parent().prepend($room_chat.clone())
-                            $room_chat.remove()
-                        });
                     })
                     .listen('.newUser', (e) => {
                         $.ajax({
@@ -499,14 +447,19 @@
                                 id: e.message.room_id,
                             },
                             success: function(res) {
-                                set_name_image_chat_room(res.name, res.imgs, res.room_id)
+                                var room = window.room_container.getRoom(res.room_id);
+                                room.updateRoomName(res.name);
+                                room.updateImg(res.imgs);
+                                room.updateRoomStatus(
+                                    is_workspace = res.is_workspace,
+                                    has_session = res.has_session,
+                                    has_customers = res.customers
+                                );
                                 if (res.room_id == room_id) {
                                     set_name_image_chat_info(res.name, res.imgs)
                                     update_users_in_list_users_in_room(res.join_users)
                                     window.chat_container.scrollBottom();
                                 }
-                                update_room_status(res.is_workspace, res.has_session, res
-                                    .join_users, res.room_id)
                             },
                         });
                     })
@@ -534,16 +487,20 @@
                                         $('#chat-form').addClass('d-none')
                                         window.Echo.leave(chanel_name);
                                     }
-                                    set_name_image_chat_room(res.name, res.imgs, res
-                                        .room_id)
+
+                                    var room = window.room_container.getRoom(res.room_id);
+                                    room.updateRoomName(res.name);
+                                    room.updateImg(res.imgs);
+                                    room.updateRoomStatus(
+                                        is_workspace = res.is_workspace,
+                                        has_session = res.has_session,
+                                        has_customers = res.customers
+                                    );
                                     if (res.room_id == room_id) {
                                         set_name_image_chat_info(res.name, res.imgs)
                                         update_users_in_list_users_in_room(res.join_users)
                                         window.chat_container.scrollBottom();
                                     }
-                                    update_room_status(res.is_workspace, res.has_session,
-                                        res
-                                        .join_users, res.room_id)
                                 }
                             },
                         });
@@ -560,8 +517,11 @@
                         $('.workspace-session .time-session').removeClass(
                             'd-none')
                         timer_count_up(new Date(e.message.created_at))
-                        update_room_status(true, true, null, e.message.room_id)
-
+                        window.room_container.getRoom(e.message.room_id).updateRoomStatus(
+                            is_workspace = true,
+                            has_session = true,
+                            has_customers = true
+                        );
                     })
                     .listen('.endSession', (e) => {
                         @if ($user->type == 'system')
@@ -586,8 +546,11 @@
                                 id: e.message.room_id,
                             },
                             success: function(res) {
-                                update_room_status(res.is_workspace, res.has_session, res
-                                    .join_users, res.room_id)
+                                window.room_container.getRoom(res.room_id).updateRoomStatus(
+                                    is_workspace = res.is_workspace,
+                                    has_session = res.has_session,
+                                    has_customers = res.customers
+                                );
                             },
                         });
                     })
@@ -709,7 +672,7 @@
                     })
             }
 
-            
+
             // add users to room
             $('.add-users').on('click', function() {
                 users = $('#add-users-select').val()
@@ -942,7 +905,15 @@
                     data: form_data,
                     success: function(res) {
                         console.log(res);
-                        set_name_image_chat_room(res.name, [res.img], res.id)
+
+                        var room = window.room_container.getRoom(res.id);
+                        room.updateRoomName(res.name);
+                        room.updateImg([res.img]);
+                        room.updateRoomStatus(
+                            is_workspace = res.is_workspace,
+                            has_session = res.has_session,
+                            has_customers = res.customers
+                        );
                         if (res.id == room_id) {
                             set_name_image_chat_info(res.name, [res.img])
                         }
@@ -959,7 +930,7 @@
                 });
             })
 
-            
+
 
             // remove user
             $('.list-users-in-room').on('click', '.remove-user', function() {
@@ -975,165 +946,6 @@
                     success: function(res) {}
                 });
             })
-
-            /**
-             * @param {Int} c_room_id
-             */
-            function new_room(c_room_id) {
-                $.ajax({
-                    method: 'get',
-                    url: "{{ route('get-room-info') }}",
-                    dataType: "json",
-                    data: {
-                        id: c_room_id,
-                    },
-                    success: function(res) {
-                        if (!$('.chat-room[data-id=' + res.room_id + ']').length) {
-                            var htm =
-                                '<a href="javascript:void(0);" class="text-body chat-room" data-id="' +
-                                res.room_id + '">'
-                            htm +=
-                                '<div class="d-flex align-items-start mt-1 p-2 chat-room-badge">'
-                            htm += '<div class="me-2 flex-shrink-0 chat-room-img">'
-                            if (res.imgs.length == 1)
-                                htm += '<img src="' + (res.imgs[0] ??
-                                    'resources/assets/images/users/avatar-1.jpg') +
-                                '" class="rounded-circle img-thumbnail p-0" style="object-fit: cover; height:48px; width:48px;" alt="' +
-                                res.name + '" />'
-                            else {
-
-                                htm +=
-                                    '<div class="position-relative" style="width: 48px; height: 48px;">'
-                                res.imgs.forEach((img, index) => {
-                                    htm += '<img src="' + (img ??
-                                            'resources/assets/images/users/avatar-1.jpg'
-                                        ) +
-                                        '" class="rounded-circle img-thumbnail position-absolute p-0 ' +
-                                        (
-                                            index % 2 == 0 ? 'top-0 start-0' :
-                                            'bottom-0 end-0') +
-                                        '" style="object-fit: cover; height:36px; width:36px;" alt="' +
-                                        res.name +
-                                        '" />'
-                                });
-                                htm += '</div>'
-                            }
-                            htm += '</div>'
-                            htm += '<div class="w-100 overflow-hidden">'
-                            htm += '<h5 class="mt-0 mb-0 font-14">'
-                            htm +=
-                                '<span class="float-end text-muted font-12 last-message-time" data-time=""></span>'
-                            htm += '<span class="room-name">' + res.name + '</span>'
-                            htm += '</h5>'
-                            htm += '<p class="mt-1 mb-0 text-muted font-14">'
-                            htm += '<span class="ms-2 float-end text-end">'
-                            htm += '<span class="badge badge-danger room-status d-none">'
-                            htm += '<i class="uil uil-comment-alt-redo"></i>'
-                            htm += '</span>'
-                            htm += '</span>'
-                            htm += '<span class="new-message text-truncate"></span>'
-                            htm += '</p>'
-                            htm += '</div>'
-                            htm += '</div>'
-                            htm += '</a>'
-                            $('#allChat .simplebar-content').prepend(htm);
-                        } else {
-                            $('.alert-join-room').addClass('d-none')
-                            $('#chat-form').removeClass('d-none')
-                        }
-                        Echo_listen('chat.room.' + res.room_id)
-                        set_name_image_chat_room(res.name, res.imgs, res.room_id)
-                        if (res.room_id == room_id) {
-                            set_name_image_chat_info(res.name, res.imgs)
-                            update_users_in_list_users_in_room(res.join_users)
-                            window.chat_container.scrollBottom();
-                        }
-                        update_room_status(res.is_workspace, res.has_session, res
-                            .join_users, res.room_id)
-                        if (res.last_message) {
-                            if (!res.last_message.user_id) {
-                                update_new_message_in_chat_room_send_by_system(res.last_message)
-                            } else {
-                                update_new_message_in_chat_room(res.last_message.message, res
-                                    .last_message.created_at, res.last_message.room_id)
-                            }
-                        }
-                        if (res.last_message.room_id != room_id && !$(
-                                '.chat-room[data-id=' + res.last_message.room_id +
-                                '] .text-primary').length) {
-                            var $new_message_span = $('.chat-room[data-id=' +
-                                res.last_message.room_id +
-                                '] .new-message')
-                            $new_message_span.addClass('text-primary')
-                            $new_message_span.prev().append(
-                                '<i class="mdi mdi-checkbox-blank-circle text-primary"></i>'
-                            )
-                        }
-                    },
-                });
-            }
-
-            /**
-             * @param {Boolean} is_workspace
-             * @param {Boolean} has_session
-             * @param {JSON} join_users
-             * @param {Int} c_room_id
-             */
-            function update_room_status(is_workspace, has_session, join_users, c_room_id) {
-                var room_status = $(".chat-room[data-id=" + c_room_id + "] .room-status")
-                if (is_workspace) {
-                    $(room_status).removeClass('d-none');
-                    if (has_session) {
-                        $('.workspace-session').removeClass('d-none')
-                        @if ($user->type == 'system')
-                            $('.end-session').removeClass('d-none')
-                            $('.start-session').addClass('d-none')
-                        @endif
-                        $('.time-session').removeClass('d-none')
-                        $(room_status).removeAttr('class');
-                        $(room_status).addClass('badge badge-danger-lighten room-status');
-                    } else if (join_users.filter(function(user) {
-                            return user.type == 'customer'
-                        }).length) {
-                        @if ($user->type == 'system')
-                            $('.workspace-session').removeClass('d-none')
-                            $('.end-session').addClass('d-none')
-                            $('.time-session').addClass('d-none')
-                            $('.start-session').removeClass('d-none')
-                        @endif
-                        $(room_status).removeAttr('class');
-                        $(room_status).addClass('badge badge-warning-lighten room-status');
-                    } else {
-                        $('.workspace-session').addClass('d-none')
-                        $(room_status).removeAttr('class');
-                        $(room_status).addClass('badge badge-success-lighten room-status');
-                    }
-                } else {
-                    $(room_status).addClass('d-none');
-                    $('.workspace-session').addClass('d-none')
-                }
-            }
-
-            /**
-             * @param {String} message
-             * @param {String} date
-             * @param {Int} c_room_id
-             */
-            function update_new_message_in_chat_room(message, date, c_room_id = null) {
-                $(".chat-room[data-id=" + (c_room_id ?? room_id) + "] .new-message").html(message);
-                if (date) {
-                    $(".chat-room[data-id=" + (c_room_id ?? room_id) + "] .last-message-time").html(time_ago(
-                        new Date(
-                            date)));
-                    $(".chat-room[data-id=" + (c_room_id ?? room_id) + "] .last-message-time").attr('data-time',
-                        date);
-                } else {
-                    $(".chat-room[data-id=" + (c_room_id ?? room_id) + "] .last-message-time").html(time_ago(
-                        new Date()));
-                    $(".chat-room[data-id=" + (c_room_id ?? room_id) + "] .last-message-time").attr('data-time',
-                        new Date());
-                }
-            }
 
             /**
              * @param {JSON} join_users
@@ -1166,38 +978,6 @@
                     htm += '</div>'
                 });
                 $('.list-users-in-room .simplebar-content').html(htm)
-            }
-
-            /**
-             * @param {String} name
-             * @param {Array} imgs
-             * @param {Int} c_room_id
-             */
-            function set_name_image_chat_room(name, imgs, c_room_id) {
-                $('.chat-room[data-id=' + c_room_id + '] .room-name').html(name)
-
-                var htm = ''
-                if (imgs.length == 1) {
-                    htm += '<img src="' + (imgs[0] ??
-                            'resources/assets/images/users/avatar-1.jpg') +
-                        '" class="rounded-circle img-thumbnail p-0" style="object-fit: cover; height:48px; width:48px;" />'
-                } else {
-                    htm +=
-                        '<div class="position-relative" style="width: 48px; height: 48px;">'
-                    imgs.forEach((img, index) => {
-                        htm += '<img src="' + (img ??
-                                'resources/assets/images/users/avatar-1.jpg'
-                            ) +
-                            '" class="rounded-circle img-thumbnail position-absolute p-0 ' +
-                            (index % 2 == 0 ? 'top-0' : 'bottom-0') + ' ' +
-                            (
-                                index % 2 == 0 ? 'start-0' : 'end-0') +
-                            '" style="object-fit: cover; height:36px; width:36px;" />'
-
-                    });
-                    htm += '</div>'
-                }
-                $('.chat-room[data-id=' + c_room_id + '] .chat-room-img').html(htm)
             }
 
             /**
@@ -1241,39 +1021,6 @@
                 $('.conversation-list .simplebar-content').append(htm);
             }
 
-
-            /**
-             * @param {JSON} message
-             */
-            function update_new_message_in_chat_room_send_by_system(message) {
-                var system_message = ''
-                if (message.message.indexOf("add-user") == 0) {
-                    system_message = 'Đã thêm ' + message.message.substring(message.message.indexOf(
-                        " "), message.message.length)
-                } else if (message.message.indexOf("kick-user") == 0) {
-                    system_message = 'Đã xóa ' + message.message.substring(message.message.indexOf(
-                        " "), message.message.length)
-                } else if (message.message.indexOf("start-session") == 0) {
-                    system_message = 'Bắt đầu phiên làm việc'
-                } else if (message.message.indexOf("end-session") == 0) {
-                    system_message = 'Kết thúc phiên làm việc'
-                } else if (message.message.indexOf("start-call") == 0) {
-                    system_message = 'Bắt đầu cuộc gọi'
-                } else if (message.message.indexOf("joined-call") == 0) {
-                    system_message = message.message.substring(11) + ' tham gia cuộc gọi'
-                } else if (message.message.indexOf("left-call") == 0) {
-                    system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
-                } else if (message.message.indexOf("stop-call") == 0) {
-                    system_message = 'Kết thúc cuộc gọi'
-                }
-
-                $(".chat-room[data-id=" + (message.room_id) + "] .new-message").html(system_message);
-                $(".chat-room[data-id=" + (message.room_id) + "] .last-message-time").html(time_ago(
-                    new Date(
-                        message.created_at)));
-                $(".chat-room[data-id=" + (message.room_id) + "] .last-message-time").attr('data-time',
-                    message.created_at);
-            }
 
 
             /**
@@ -1388,7 +1135,7 @@
                         var new_message_in_this_room = res.filter(function(message) {
                             if (!$('.chat-room[data-id=' + message.room_id + ']')
                                 .length) {
-                                new_room(message.room_id)
+                                window.room_container.newRoom(message.room_id)
                             } else {
                                 if (message.room_id != room_id && !$(
                                         '.chat-room[data-id=' + message.room_id +
@@ -1402,12 +1149,11 @@
                                     )
                                 }
                                 if (message.user_id) {
-                                    update_new_message_in_chat_room(message.message,
-                                        message
-                                        .created_at, message.room_id)
+                                    window.room_container.getRoom(message.room_id)
+                                        .addNewMessage(message)
                                 } else {
-                                    update_new_message_in_chat_room_send_by_system(
-                                        message)
+                                    window.room_container.getRoom(message.room_id)
+                                        .addNewMessage(message)
                                     if (e.message.message.indexOf("kick-user") == 0) {
                                         $.ajax({
                                             method: 'get',
@@ -1747,7 +1493,7 @@
             }
         })
     </script>
-    <script src="{{ asset('Modules/AvnChat/Resources/assets/js/audio.js') }}"></script>
+    <script src="{{ asset('Modules/AvnChat/Resources/assets/js/video.js') }}"></script>
 @endsection
 @section('css')
     <style>

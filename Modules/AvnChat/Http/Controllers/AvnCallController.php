@@ -32,14 +32,14 @@ class AvnCallController extends Controller
                 "janus" => "message_plugin",
                 "transaction" => "P6xvDuukeWPV",
                 "admin_secret" => env('JANUS_ADMIN_SECRET'),
-                "plugin" => "janus.plugin.audiobridge",
+                "plugin" => "janus.plugin.videoroom",
                 "request" => [
                     'request' => "listparticipants",
-                    "admin_key" => env('JANUS_AUDIO_BRIDGE_ADMIN_KEY'),
+                    "admin_key" => env('JANUS_VIDEO_ROOM_ADMIN_KEY'),
                     'room' => $call_now->id,
                 ]
             ])->json();
-            $has_call_room = $response['response']['audiobridge'] ?? null;
+            $has_call_room = $response['response']['videoroom'] ?? null;
             if ($has_call_room == 'participants') {
                 return $call_now;
             }
@@ -51,7 +51,7 @@ class AvnCallController extends Controller
         $call->save();
         $request_janus = [
             'request' => "create",
-            "admin_key" => env('JANUS_AUDIO_BRIDGE_ADMIN_KEY'),
+            "admin_key" => env('JANUS_VIDEO_ROOM_ADMIN_KEY'),
             'room' => $call->id,
             'audiolevel_event' => true,
             'pin' => $call->pin . '',
@@ -66,7 +66,7 @@ class AvnCallController extends Controller
             "janus" => "message_plugin",
             "transaction" => "P6xvDuukeWPV",
             "admin_secret" => env('JANUS_ADMIN_SECRET'),
-            "plugin" => "janus.plugin.audiobridge",
+            "plugin" => "janus.plugin.videoroom",
             "request" => $request_janus
         ])->json();
         return $call;
@@ -182,10 +182,10 @@ class AvnCallController extends Controller
             "janus" => "message_plugin",
             "transaction" => "P6xvDuukeWPV",
             "admin_secret" => env('JANUS_ADMIN_SECRET'),
-            "plugin" => "janus.plugin.audiobridge",
+            "plugin" => "janus.plugin.videoroom",
             "request" => [
                 'request' => "destroy",
-                "admin_key" => env('JANUS_AUDIO_BRIDGE_ADMIN_KEY'),
+                "admin_key" => env('JANUS_VIDEO_ROOM_ADMIN_KEY'),
                 'room' => $call->id,
             ]
         ])->json();
@@ -196,10 +196,10 @@ class AvnCallController extends Controller
             "janus" => "message_plugin",
             "transaction" => "P6xvDuukeWPV",
             "admin_secret" => env('JANUS_ADMIN_SECRET'),
-            "plugin" => "janus.plugin.audiobridge",
+            "plugin" => "janus.plugin.videoroom",
             "request" => [
                 'request' => "listparticipants",
-                "admin_key" => env('JANUS_AUDIO_BRIDGE_ADMIN_KEY'),
+                "admin_key" => env('JANUS_VIDEO_ROOM_ADMIN_KEY'),
                 'room' => $call->id,
             ]
         ])->json();

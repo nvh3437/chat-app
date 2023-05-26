@@ -1,6 +1,7 @@
 // room_selected_id;
 class RoomContainer {
     container;
+    room_id;
 
     constructor() {
         this.container = $("#room-container");
@@ -101,12 +102,14 @@ class RoomContainer {
 }
 class Room {
     room;
+    room_id;
 
     /**
      *
      * @param {Number} room_id
      */
     constructor(room_id) {
+        this.room_id = room_id;
         this.room = $("#room-container .chat-room[data-id=" + room_id + "]");
     }
 
@@ -159,7 +162,7 @@ class Room {
 
     /**
      *
-     * @param {MessageJson} message
+     * @param {JsonMessage} message
      * add new message
      */
     addNewMessage(message) {
@@ -212,6 +215,12 @@ class Room {
             }
             new_message_element.html(system_message);
         }
+        // mark as read
+        if (message.room_id == window.room_id) {
+            this.readMessage(message);
+        } else {
+            this.receivedMessage(message);
+        }
     }
 
     /**
@@ -251,11 +260,39 @@ class Room {
     }
 
     /**
+     * @param {JsonMessage} message
      * mark as read
      */
-    readMessage() {
+    readMessage(message) {
         this.room.find("i.text-primary").remove();
         this.room.find(".text-primary").removeClass("text-primary");
+        $.ajax({
+            method: "post",
+            url: "chat/received-message",
+            dataType: "json",
+            data: {
+                id: message.id,
+                room_id: message.room_id,
+                read: 1,
+            },
+            success: function (res) {},
+        });
+    }
+    /**
+     * @param {JsonMessage} message
+     * mark as read
+     */
+    receivedMessage(message) {
+        $.ajax({
+            method: "post",
+            url: "chat/received-message",
+            dataType: "json",
+            data: {
+                id: message.id,
+                room_id: message.room_id,
+            },
+            success: function (res) {},
+        });
     }
 }
 class ChatContainer {
@@ -329,6 +366,11 @@ class ChatContainer {
         return $(".clearfix[data-random_message_id=" + random_message_id + "]");
     }
 
+    /**
+     *
+     * @param {JsonMessages} messages
+     * @param {boolean} append
+     */
     addListMessages(messages, append = true) {
         var now = new Date();
         messages.forEach((message) => {
@@ -358,7 +400,7 @@ class ChatContainer {
 
     /**
      *
-     * @param {MessageJson} message
+     * @param {JsonMessage} message
      * @param {Boolean} append
      * add new received message
      */
@@ -639,6 +681,8 @@ class ChatContainer {
             window.room_container.getRoom(window.room_id).addNewMessage({
                 message: message,
                 user_id: window.user.id,
+                room_id: window.room_id,
+                created_at: Date.now(),
             });
             window.chat_container.scrollBottom();
             window.chat_container.input_message.val("");

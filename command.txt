@@ -133,7 +133,7 @@ apt-get install automake -y
             admin_secret = {string}
             thêm vào .env
     #config plugins =========================================================================================
-        nano /opt/janus/etc/janus/janus.plugin.audiobridge.jcfg
+        nano /opt/janus/etc/janus/janus.plugin.videoroom.jcfg
         set admin_key = {string}
         cập nhật admin key vào env
     #config admin api (secret = janusoverlord)=================================================================================
@@ -183,7 +183,7 @@ apt-get install automake -y
     
 
 
-https://7a5e-2a09-bac5-d456-18be-00-277-32.ngrok-free.app/japan-chat-app/chat/janus-event
+https://0074-2a09-bac1-7aa0-e88-00-245-68.ngrok-free.app/japan-chat-app/chat/janus-event
 
 chrome://flags
 search: Insecure origins treated as secure
