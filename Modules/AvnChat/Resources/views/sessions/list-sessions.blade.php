@@ -26,7 +26,6 @@
                                     <th>#</th>
                                     <th>Trạng thái</th>
                                     <th>Thanh toán</th>
-                                    {{-- <th>Chuyên gia</th> --}}
                                     <th>Khách hàng</th>
                                     <th>Chọn</th>
                                 </tr>
@@ -91,57 +90,35 @@
                                                     $time_end = Carbon::createFromFormat('Y-m-d H:i:s', $item->end_on);
                                                     $created = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at);
                                                     $seconds = $time_end->diffInSeconds($created);
+                                                    $price = 0;
                                                     if ($item->status == 1) {
-                                                        $money_partners = $item->session_partners->sum('money');
+                                                        $money = $item->session_customers->sum('money');
                                                     } else {
-                                                        $price = 0;
                                                         foreach ($item->session_partners as $key => $partner) {
                                                             $price += $partner->user->profile->price ?? 0;
                                                         }
                                                         if ($price) {
-                                                            $money_partners = ($price / 3600) * $seconds;
+                                                            $price = $price / 3600;
                                                         } else {
-                                                            $money_partners = 0;
+                                                            $price = 0;
                                                         }
-                                                    }
-                                                    if ($item->status == 1) {
-                                                        $money_customers = $item->session_customers->sum('money');
-                                                    } else {
-                                                        $money_customers = $money_partners;
+                                                        $money = $price * $seconds;
                                                     }
                                                 @endphp
-                                                {{-- <span>Chuyên gia: </span>
                                                 <span
-                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_partners, 2) }}$</span>
-                                                <br> --}}
-                                                {{-- <span>Khách hàng: </span> --}}
-                                                <span
-                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_customers, 2) }}$</span>
-                                            @else
-                                                ...
+                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money, 2) }}$</span>
+                                                <br>
                                             @endif
-                                            <br>
                                             @if ($item->status == 1)
-                                                <span class="text-success">Đã xử lý</span>
+                                                <span class="badge bg-success">Đã xử lý</span>
                                             @elseif($item->status == -1)
-                                                <span class="text-warning">Từ chối</span>
+                                                <span class="badge bg-warning">Từ chối</span>
                                             @elseif($item->end_on)
-                                                <span class="text-primary">Chưa xử lý</span>
+                                                <span class="badge bg-primary">Chưa xử lý</span>
+                                            @else
+                                                <span class="badge bg-danger">Phiên đang diễn ra</span>
                                             @endif
                                         </td>
-                                        {{-- <td>
-                                            @foreach ($item->session_partners as $partner)
-                                                <p>
-                                                    <span class="fw-bold">{{ $partner->user->name }}</span>
-                                                    <br>
-                                                    {{ $partner->user->email }}
-                                                    <br>
-                                                    <span class="fw-bold">
-                                                        {{ $partner->user->profile->price ?? 0 }} $/Giờ
-                                                    </span>
-                                                </p>
-                                            @endforeach
-                                        </td> --}}
                                         <td>
                                             @foreach ($item->session_customers as $customer)
                                                 <p class="mb-0">
@@ -161,7 +138,7 @@
                                     <!----Modal Edit----->
                                     <div class="modal fade" id="view-{{ $item->id }}" tabindex="-1"
                                         aria-hidden="true">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title text-dark">Phiên làm việc
@@ -173,9 +150,19 @@
                                                     @csrf
                                                     @method('put')
                                                     <div class="modal-body text-dark">
-                                                        <div class="mb-2">
-                                                            <label
-                                                                class="form-label border-bottom  text-primary border-primary">Trạng
+                                                        @if ($item->status == 1)
+                                                            <span class="fw-bold badge fs-5 bg-success">Đã xử lý</span>
+                                                        @elseif($item->status == -1)
+                                                            <span class="fw-bold badge fs-5 bg-warning">Từ chối</span>
+                                                        @elseif($item->end_on)
+                                                            <span class="fw-bold badge fs-5 bg-primary">Chưa xử
+                                                                lý</span>
+                                                        @else
+                                                            <span class="fw-bold badge fs-5 bg-danger">Phiên đang diễn
+                                                                ra</span>
+                                                        @endif
+                                                        <div class="my-2">
+                                                            <label class="form-label border-bottom  fw-bold">Trạng
                                                                 thái</label>
                                                             <br>
                                                             @if ($item->end_on)
@@ -224,133 +211,87 @@
                                                             <br>
                                                             <span>Kết thúc:
                                                                 {{ $item->end_on ? date('H:i - d/m/Y', strtotime($item->end_on)) : '...' }}</span>
+
+                                                            @if ($item->end_on)
+                                                                @php
+                                                                    if (!$item->time) {
+                                                                        $time_end = Carbon::createFromFormat('Y-m-d H:i:s', $item->end_on);
+                                                                        $created = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at);
+                                                                        $minutes = $time_end->diffInMinutes($created);
+                                                                    }
+                                                                @endphp
+                                                                <div class="input-group mb-2">
+                                                                    <label
+                                                                        class="input-group-text fw-bold {{ $item->status == 1 ? 'text-success' : 'text-primary' }}">Thời
+                                                                        gian (phút)</label>
+                                                                    <input type="number"
+                                                                        class="form-control fw-bold {{ $item->status == 1 ? 'text-success' : 'text-primary' }}"
+                                                                        name="time"
+                                                                        value="{{ $item->time ?? $minutes }}">
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label
-                                                                class="form-label border-bottom  text-primary border-primary">Thanh
+                                                            <label class="form-label border-bottom  fw-bold">Thanh
                                                                 toán</label>
                                                             <br>
                                                             @if ($item->end_on)
-                                                                {{-- <span>Chuyên gia: </span>
                                                                 <span
-                                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_partners, 2) }}$</span>
-                                                                <br>
-                                                                <span>Khách hàng: </span> --}}
-                                                                <span
-                                                                    class="text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money_customers, 2) }}$</span>
-                                                            @else
-                                                                ...
-                                                            @endif
-                                                            <br>
-                                                            @if ($item->status == 1)
-                                                                <span class="fw-bold text-success">Đã xử lý</span>
-                                                            @elseif($item->status == -1)
-                                                                <span class="fw-bold text-warning">Từ chối</span>
-                                                            @elseif($item->end_on)
-                                                                <span class="fw-bold text-primary">Chưa xử lý</span>
+                                                                    class="fw-bold text-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'warning' : 'primary') }}">{{ number_format($money, 2) }}$</span>
                                                             @endif
                                                         </div>
-                                                        {{-- <div class="mb-2">
-                                                            <label
-                                                                class="form-label border-bottom  text-primary border-primary">Chuyên
-                                                                gia</label>
-                                                            <br>
-                                                            @foreach ($item->session_partners as $partner)
-                                                                <p class="mb-0 ">
-                                                                    <span class="fw-bold">{{ $partner->user->name }}</span>
-                                                                    <br>
-                                                                    {{ $partner->user->email }}
-                                                                    <br>
-                                                                    <span class="fw-bold">
-                                                                        {{ $partner->user->profile->price ?? 0 }} $/Giờ
-                                                                    </span>
-                                                                </p>
-                                                                @if ($item->end_on)
-                                                                    <div class="input-group mb-2">
-                                                                        <label class="input-group-text text-success">Nhận
-                                                                            tiền</label>
-                                                                        @php
-                                                                            $price = $partner->user->profile->price ?? 0;
-                                                                            if ($price) {
-                                                                                $money_partner = ($price / 3600) * $seconds;
-                                                                            } else {
-                                                                                $money_partner = 0;
-                                                                            }
-                                                                        @endphp
-                                                                        <input type="text"
-                                                                            class="form-control fw-bold text-success"
-                                                                            data-toggle="input-mask"
-                                                                            data-mask-format="#,##0.00" data-reverse="true"
-                                                                            name="moneys[{{ $partner->id }}]" multiple
-                                                                            value="{{ number_format($partner->status == 1 ? $partner->money : $money_partner, 2) }}">
-                                                                    </div>
-                                                                @endif
-                                                            @endforeach
-                                                        </div> --}}
                                                         <div class="mb-2">
-                                                            <label
-                                                                class="form-label border-bottom  text-primary border-primary">Khách
+                                                            <label class="form-label border-bottom  fw-bold">Khách
                                                                 hàng</label>
                                                             <br>
                                                             @foreach ($item->session_customers as $customer)
                                                                 <p class="mb-0 ">
                                                                     <span
                                                                         class="fw-bold">{{ $customer->user->name }}</span>
-                                                                    <br>
-                                                                    {{ $customer->user->email }}
+                                                                    (<small>{{ $customer->user->email }}</small>)
                                                                 </p>
                                                                 @if ($item->end_on)
-                                                                    @php
-                                                                        if ($money_partners) {
-                                                                            $customer_money = $money_partners / $item->session_customers->count();
-                                                                        } else {
-                                                                            $customer_money = 0;
-                                                                        }
-                                                                    @endphp
                                                                     <div class="input-group mb-2">
-                                                                        <label class="input-group-text text-danger">Thanh
+                                                                        <label
+                                                                            class="input-group-text fw-bold {{ $customer->status == 1 ? 'text-success' : 'text-primary' }}">Thanh
                                                                             toán</label>
                                                                         <input type="text"
-                                                                            class="form-control fw-bold text-success"
+                                                                            class="form-control fw-bold {{ $customer->status == 1 ? 'text-success' : 'text-primary' }}"
                                                                             data-toggle="input-mask"
-                                                                            data-mask-format="#,##0.00" data-reverse="true"
+                                                                            data-mask-format="#,##0.00"
+                                                                            data-reverse="true"
                                                                             name="moneys[{{ $customer->id }}]" multiple
-                                                                            value="{{ number_format($customer->status == 1 ? $customer->money : $customer_money, 2) }}">
+                                                                            value="{{ number_format($customer->status == 1 ? $customer->money : ($money ? $money / count($item->session_customers) : 0), 2) }}">
                                                                     </div>
                                                                 @endif
                                                             @endforeach
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label
-                                                                class="form-label border-bottom  text-primary border-primary">Quản
+                                                            <label class="form-label border-bottom  fw-bold">Quản
                                                                 trị</label>
                                                             <br>
                                                             @foreach ($item->session_system_users as $system_user)
                                                                 <p class="mb-0 ">
                                                                     <span
                                                                         class="fw-bold">{{ $system_user->user->name }}</span>
-                                                                    <br>
-                                                                    {{ $system_user->user->email }}
+                                                                    (<small>{{ $system_user->user->email }}</small>)
                                                                 </p>
                                                             @endforeach
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label
-                                                                class="form-label border-bottom  text-primary border-primary">Chuyên
+                                                            <label class="form-label border-bottom  fw-bold">Chuyên
                                                                 gia</label>
                                                             <br>
                                                             @foreach ($item->session_partners as $partner)
                                                                 <p>
                                                                     <span
                                                                         class="fw-bold">{{ $partner->user->name }}</span>
-                                                                    <br>
-                                                                    {{ $partner->user->email }}
+                                                                    (<small> {{ $partner->user->email }}</small>)
                                                                 </p>
                                                             @endforeach
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label
-                                                                class="form-label border-bottom  text-primary border-primary">Ghi
+                                                            <label class="form-label border-bottom  fw-bold">Ghi
                                                                 âm</label>
                                                             <br>
                                                             @php
@@ -375,7 +316,6 @@
                                                             @endphp
                                                             @foreach ($calls as $call)
                                                                 <p>
-
                                                                     <audio controls>
                                                                         <source
                                                                             src="{{ env('JANUS_URL') . '/record-' . $call->id . '.wav' }}"
@@ -394,7 +334,7 @@
                                                         <button type="button" class="btn btn-light"
                                                             data-bs-dismiss="modal">Hủy
                                                         </button>
-                                                        @if ($item->end_on)
+                                                        @if ($item->end_on && $item->status <= 0)
                                                             <button type="submit" name="status" value="1"
                                                                 class="btn btn-success">Xác nhận</button>
                                                             <button type="submit" name="status" value="-1"

@@ -18,15 +18,6 @@ class AvnChatSessionController extends Controller
     public function listSession()
     {
         $sessions = ChatRoomSession::orderByDesc('created_at')->get();
-        // $item = $sessions->last();
-        // // return \Modules\AvnChat\Entities\ChatRoomCall::where('room_id', 2)->get();
-        // $query_raw = '(exists (select * from `avn_chat_room_calls` as `end_call` where `avn_chat_room_calls`.`id` = `end_call`.`call_id` and `end_call`.`end_on` >= "' . $item->created_at . '") ';
-        // $query_raw .= ' or not exists (select * from `avn_chat_room_calls` as `end_call` where `avn_chat_room_calls`.`id` = `end_call`.`call_id`))';
-        // $calls = \Modules\AvnChat\Entities\ChatRoomCall::where('room_id', $item->room_id)
-        //     ->where('created_at', '<=', $item->end_on)
-        //     ->whereRaw(DB::raw($query_raw))
-        //     ->toSql();
-        //     return $calls;
         return view('avnchat::sessions.list-sessions', compact('sessions'));
     }
 
@@ -35,6 +26,7 @@ class AvnChatSessionController extends Controller
         // try {
         $session = ChatRoomSession::where('end_on', '!=', null)->findOrFail($id);
         $session->status = $request->status;
+        $session->time = $request->time;
         $session->save();
         foreach ($session->session_users as $key => $session_user) {
             $session_user->status = $request->status;
