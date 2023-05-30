@@ -128,7 +128,7 @@
                         </div>
                     </div>
                 </div>
-                <div data-simplebar style="height: 550px">
+                {{-- <div data-simplebar style="height: 550px"> --}}
                     @isset($newsfeed)
                         @foreach ($newsfeed as $item)
                             <div class="card shadow-lg">
@@ -428,7 +428,7 @@
                             </div>
                         @endforeach()
                     @endisset
-                </div>
+                {{-- </div> --}}
             </div>
         </div>
     </div>
