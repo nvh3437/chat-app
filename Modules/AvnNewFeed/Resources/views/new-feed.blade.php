@@ -61,8 +61,8 @@
                                 </div>
                             </div>
                             <h4 class="header-title mb-1">Thông báo</h4>
+                            @foreach ($notifications as $notification)
                             <div class="d-flex mt-3">
-                                @foreach ($notifications as $notification)
                                     <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
                                     <div>
                                         <a class="mt-1 font-14"
@@ -75,8 +75,8 @@
                                             </span>
                                         </a>
                                     </div>
+                                </div>
                                 @endforeach
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -749,7 +749,7 @@
             });
             $.ajax({
                 method: 'post',
-                url: "route('store-feed')",
+                url: "{{route('store-feed')}}",
                 dataType: "json",
                 processData: false,
                 contentType: false,
