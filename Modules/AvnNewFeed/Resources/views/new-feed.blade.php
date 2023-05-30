@@ -3,137 +3,124 @@
     use Modules\AvnNewFeed\Http\Controllers\NewFeedLikeController;
     $notifications = App\Http\Controllers\NotificationController::getNotifications();
 @endphp
-@extends('layouts.guest')
-@section('title')
-    {{ $title ?? '' }}
-@endsection
+@extends('layouts.guest', ['seo_title' => 'Bản tin'])
 @section('content')
     <div class="container">
         <div class="row mt-2">
-            <div class="col-xxl-3 col-lg-3 col-md-4 col-sm-12 order-lg-1 order-xxl-1">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <div class="dropdown float-end">
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a href="javascript:void(0);" class="dropdown-item">Sửa hồ sơ</a>
-                            </div>
-                        </div>
-                        <div class="d-flex align-self-start">
-                            @if ($user->profile && $user->profile->img)
+            <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-1 position-relative mb-3">
+                <div class="position-sticky top-0">
+                    <div class="card shadow-lg mb-0">
+                        <div class="card-body">
+                            <div class="d-flex align-self-start">
                                 <img class="d-flex align-self-start rounded me-2"
-                                    src="{{ asset($user->profile->img ?? '/resources/assets/images/logo.png') }}"
+                                    src="{{ asset($user->profile->img ?? config('constants.default_avatar')) }}"
                                     style="height: 48px; width: 48px; object-fit: cover;">
-                            @else
-                                <img class="d-flex align-self-start rounded me-2"
-                                    src="{{ asset('/resources/assets/images/logo.png') }}"
-                                    style="height: 48px; width: 48px; object-fit: cover;">
-                            @endif
-                            <div class="w-100 overflow-hidden">
-                                <h5 class="mt-1 mb-0">{{ $user->name }}</h5>
-                                <p class="mb-1 mt-1 text-muted">
-                                    @if ($user->type == 'system')
-                                        Quản lý
-                                    @elseif($user->type == 'customer')
-                                        Khách hàng
-                                    @else
-                                        Chuyên gia
-                                    @endif
-                                </p>
-                            </div>
-                        </div>
-                        <div class="list-group list-group-flush mt-2">
-                            <a href="{{ route('new-feed') }}"
-                                class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'new-feed' ? 'text-primary' : '' }} border-0"><i
-                                    class='uil uil-images me-1'></i> Bản tin</a>
-                            <a href="{{ route('my-feed') }}"
-                                class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'my-feed' ? 'text-primary' : '' }} border-0"><i
-                                    class='uil uil-images me-1'></i> Tin của tôi</a>
-                            <a href="{{ route('chat-index') }}" class="list-group-item list-group-item-action border-0"><i
-                                    class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="mdi mdi-dots-horizontal"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <form action="{{ route('clear-notifications') }}" method="POST">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="dropdown-item">Xóa hết</button>
-                                </form>
-                            </div>
-                        </div>
-                        <h4 class="header-title mb-1">Thông báo</h4>
-                        <div class="d-flex mt-3">
-                            @foreach ($notifications as $notification)
-                                <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
-                                <div>
-                                    <a class="mt-1 font-14"
-                                        href="{{ route('read-notifications', ['id' => $notification->id]) }}"
-                                        data-link="{{ $notification->link ?? 'none' }}" data-id="{{ $notification->id }}"
-                                        data-status="{{ $notification->status }}">
-                                        <strong>{{ $notification->title }}:</strong>
-                                        <span class="text-muted">
-                                            {!! $notification->content !!}
-                                        </span>
-                                    </a>
+                                <div class="w-100 overflow-hidden">
+                                    <h5 class="mt-1 mb-0">{{ $user->name }}</h5>
+                                    <p class="mb-1 mt-1 text-muted">
+                                        @if ($user->type == 'system')
+                                            Quản lý
+                                        @elseif($user->type == 'customer')
+                                            Khách hàng
+                                        @else
+                                            Chuyên gia
+                                        @endif
+                                    </p>
                                 </div>
-                            @endforeach
+                            </div>
+                            <div class="list-group list-group-flush mt-2">
+                                <a href="{{ route('new-feed') }}"
+                                    class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'new-feed' ? 'text-primary' : '' }} border-0"><i
+                                        class='uil uil-images me-1'></i> Bản tin</a>
+                                <a href="{{ route('my-feed') }}"
+                                    class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'my-feed' ? 'text-primary' : '' }} border-0"><i
+                                        class='uil uil-images me-1'></i> Tin của tôi</a>
+                                <a href="{{ route('chat-index') }}"
+                                    class="list-group-item list-group-item-action border-0"><i
+                                        class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xxl-9 col-lg-9 col-md-8 col-sm-12 order-lg-2 order-xxl-1">
+            <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-2 position-relative mb-3">
+                <div class="position-sticky top-0">
+                    <div class="card shadow-lg mb-0">
+                        <div class="card-body">
+                            <div class="dropdown float-end">
+                                <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="mdi mdi-dots-horizontal"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <form action="{{ route('clear-notifications') }}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="dropdown-item">Xóa hết</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <h4 class="header-title mb-1">Thông báo</h4>
+                            <div class="d-flex mt-3">
+                                @foreach ($notifications as $notification)
+                                    <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
+                                    <div>
+                                        <a class="mt-1 font-14"
+                                            href="{{ route('read-notifications', ['id' => $notification->id]) }}"
+                                            data-link="{{ $notification->link ?? 'none' }}"
+                                            data-id="{{ $notification->id }}" data-status="{{ $notification->status }}">
+                                            <strong>{{ $notification->title }}:</strong>
+                                            <span class="text-muted">
+                                                {!! $notification->content !!}
+                                            </span>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-6 col-lg-12 order-lg-2 order-xxl-1">
                 <div class="card shadow-lg">
                     <div class="card-body p-0">
-                        @php
-                            if (isset($edit_feed)) {
-                                $is_edit = true;
-                            } else {
-                                $is_edit = false;
-                            }
-                        @endphp
                         <ul class="nav nav-tabs nav-bordered">
                             <li class="nav-item">
                                 <a href="#newpost" data-bs-toggle="tab" aria-expanded="false"
                                     class="nav-link active px-3 py-2">
-                                    <i class="mdi mdi-pencil-box-multiple font-18 d-md-none d-block"></i>
-                                    <span class="d-none d-md-block">{{ $is_edit ? 'Sửa bài' : 'Đăng bài' }}</span>
+                                    Đăng bài
                                 </a>
                             </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane show active p-3" id="newpost">
                                 <div class="border rounded">
-                                    <form
-                                        action="{{ $is_edit ? route('update-feed', $edit_feed->id) : route('store-feed') }}"
-                                        method="POST" enctype="multipart/form-data" class="comment-area-box">
+                                    <form class="comment-area-box" id="feed-form">
                                         @csrf
-                                        @if ($is_edit)
-                                            @method('PUT')
-                                        @endif
-                                        <textarea rows="4" class="form-control border-0 resize-none" name="description" id="editor"
-                                            placeholder="Nhập bài đăng....">
-                                            @if ($is_edit)
-{!! $edit_feed->description !!}
-@endif
-                                        </textarea>
-                                        <div class="p-2 bg-light d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" name="status"
-                                                        value="1"
-                                                        {{ $is_edit && $edit_feed->status == 1 ? 'checked' : '' }}>
-                                                    <label class="form-check-label">Cá nhân</label>
+                                        <textarea rows="4" class="form-control border-0 resize-none" name="description"
+                                            placeholder="Bạn đang nghĩ gì...."></textarea>
+                                        <div class="files-container d-none">
+                                            <div class="card mb-1 shadow-none p-2">
+                                                <div class="row g-1">
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-sm btn-success"><i
-                                                    class='uil uil-message me-1'></i>{{ $is_edit ? 'Cập nhật' : 'Đăng' }}</button>
+                                        </div>
+                                        <div class="p-2 bg-light d-flex justify-content-between align-items-center">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="status"
+                                                    value="1">
+                                                <label class="form-check-label">Cá nhân</label>
+                                            </div>
+                                            <div class="btn-group">
+                                                <input type="file" id="input-images" accept="image/*" multiple hidden>
+                                                <input type="file" name="images" id="images" accept="image/*"
+                                                    multiple hidden>
+                                                <label class="btn btn-link btn-sm text-muted font-18" for="input-images">
+                                                    <i class="dripicons-paperclip"></i>
+                                                </label>
+                                                <button type="button" class="btn btn-sm btn-success text-end"
+                                                    id="feed-submit"><i class='uil uil-message me-1'></i>Đăng bài</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -141,303 +128,307 @@
                         </div>
                     </div>
                 </div>
-                {{-- @include('avnnewfeed::components.feeds', compact('user','notifications','newsfeed')) --}}
-                @isset($newsfeed)
-                    @foreach ($newsfeed as $item)
-                        <div class="card shadow-lg">
-                            <div class="card-body pb-1">
-                                <div class="d-flex">
-                                    @if ($item->new_feed_user->profile && $item->new_feed_user->profile->img)
+                <div data-simplebar style="height: 550px">
+                    @isset($newsfeed)
+                        @foreach ($newsfeed as $item)
+                            <div class="card shadow-lg">
+                                <div class="card-body pb-1">
+                                    <div class="d-flex">
                                         <img class="me-2 rounded"
-                                            src="{{ asset($item->new_feed_user->profile->img ?? '/resources/assets/images/logo.png') }}"
+                                            src="{{ asset($item->new_feed_user->profile->img ?? config('constants.default_avatar')) }}"
                                             style="height: 32px; width: 32px; object-fit: cover;">
-                                    @else
-                                        <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}"
-                                            style="height: 32px; width: 32px; object-fit: cover;">
-                                    @endif
-                                    <div class="w-100">
-                                        @if ($user->id == $item->user_id)
-                                            <div class="dropdown float-end text-muted">
-                                                <a href="#" class="dropdown-toggle arrow-none card-drop"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    @php
-                                                        $params = [
-                                                            'alias' => $item->alias ?? $item->id,
-                                                        ];
-                                                    @endphp
-                                                    <a href="{{ route('edit-feed', $params) }}" class="dropdown-item">Chỉnh
-                                                        sửa</a>
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal"
-                                                        data-bs-target="#delete-{{ $item->id }}"
-                                                        class="dropdown-item">Xóa</a>
+                                        <div class="w-100">
+                                            @if ($user->id == $item->user_id)
+                                                <div class="dropdown float-end text-muted">
+                                                    <a href="#" class="dropdown-toggle arrow-none card-drop"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="mdi mdi-dots-horizontal"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        @php
+                                                            $params = [
+                                                                'alias' => $item->alias ?? $item->id,
+                                                            ];
+                                                        @endphp
+                                                        <a href="{{ route('edit-feed', $params) }}"
+                                                            class="dropdown-item">Chỉnh
+                                                            sửa</a>
+                                                        <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-{{ $item->id }}"
+                                                            class="dropdown-item">Xóa</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <!------- Quản lý thì đc phép xóa --------->
-                                        @elseif(Route::currentRouteName() == 'new-feed' && $user->type == 'system')
-                                            <div class="dropdown float-end text-muted">
-                                                <a href="#" class="dropdown-toggle arrow-none card-drop"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal"
-                                                        data-bs-target="#delete-{{ $item->id }}"
-                                                        class="dropdown-item">Xóa</a>
+                                                <!------- Quản lý thì đc phép xóa --------->
+                                            @elseif(Route::currentRouteName() == 'new-feed' && $user->type == 'system')
+                                                <div class="dropdown float-end text-muted">
+                                                    <a href="#" class="dropdown-toggle arrow-none card-drop"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="mdi mdi-dots-horizontal"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-{{ $item->id }}"
+                                                            class="dropdown-item">Xóa</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        @endif
+                                            @endif
 
-                                        <h5 class="m-0">{{ $item->new_feed_user->name }}</h5>
-                                        <p class="text-muted">
-                                            <small>{{ NotificationController::timeAgo($item->updated_at) }}
-                                                @if ($user->id == $item->new_feed_user->id)
-                                                    <span class="mx-1">⚬</span>
-                                                    <span>
-                                                        @if ($item->status == '0')
-                                                            Public
-                                                        @else
-                                                            Cá nhân
-                                                        @endif
-                                                    </span>
-                                                @endif
-                                            </small>
-                                        </p>
-                                    </div>
-                                </div>
-                                <hr class="m-0" />
-                                <div class="my-3 w-100 overflow-hidden ck-content">
-                                    {!! $item->description !!}
-                                </div>
-                                <hr class="m-0" />
-                                <div class="my-1">
-                                    <a href="javascript: void(0);" feed-id="{{ $item->id }}"
-                                        class="like-btn btn btn-sm btn-link text-muted ps-0"><i
-                                            class='mdi mdi-thumb-up{{ NewFeedLikeController::isLikeFeed($item->id) ? '' : '-outline' }}'></i>
-                                        <span>{{ count($item->new_feed_likes) }}</span></a>
-                                    <a href="javascript: void(0);" data-bs-toggle="modal"
-                                        data-bs-target="#open-{{ $item->id }}"
-                                        class="btn btn-sm btn-link text-muted ps-0"><i class='uil uil-comments-alt'></i>
-                                        {{ count($item->new_feed_comments) }}</a>
-                                </div>
-                                <div class="modal fade" id="open-{{ $item->id }}" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-dark">Bài viết của
-                                                    {{ $item->new_feed_user->name }}</h5>
-                                                <button type="button" class="btn-close"
-                                                    data-bs-dismiss="modal"aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="post">
-                                                    <div class="d-flex">
-                                                        @if ($item->new_feed_user->profile && $item->new_feed_user->profile->img)
-                                                            <img class="me-2 rounded"
-                                                                src="{{ asset($item->new_feed_user->profile->img ?? '/resources/assets/images/logo.png') }}"
-                                                                style="height: 32px; width: 32px; object-fit: cover;">
-                                                        @else
-                                                            <img class="me-2 rounded"
-                                                                src="{{ asset('/resources/assets/images/logo.png') }}"
-                                                                style="height: 32px; width: 32px; object-fit: cover;">
-                                                        @endif
-                                                        <div class="w-100">
-                                                            @if ($user->id == $item->user_id)
-                                                                <div class="dropdown float-end text-muted">
-                                                                    <a href="#"
-                                                                        class="dropdown-toggle arrow-none card-drop"
-                                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        @php
-                                                                            $params = [
-                                                                                'alias' => $item->alias ?? $item->id,
-                                                                            ];
-                                                                        @endphp
-                                                                        <a href="{{ route('edit-feed', $params) }}"
-                                                                            class="dropdown-item">Chỉnh
-                                                                            sửa</a>
-                                                                        <a href="javascript:void(0);" data-bs-toggle="modal"
-                                                                            data-bs-target="#delete-{{ $item->id }}"
-                                                                            class="dropdown-item">Xóa</a>
-                                                                    </div>
-                                                                </div>
-                                                                <!------- Quản lý thì đc phép xóa --------->
-                                                            @elseif(Route::currentRouteName() == 'new-feed' && $user->type == 'system')
-                                                                <div class="dropdown float-end text-muted">
-                                                                    <a href="#"
-                                                                        class="dropdown-toggle arrow-none card-drop"
-                                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <a href="javascript:void(0);" data-bs-toggle="modal"
-                                                                            data-bs-target="#delete-{{ $item->id }}"
-                                                                            class="dropdown-item">Xóa</a>
-                                                                    </div>
-                                                                </div>
-                                                            @endif
-                                                            <h5 class="m-0">{{ $item->new_feed_user->name }}</h5>
-                                                            <p class="text-muted">
-                                                                <small>{{ NotificationController::timeAgo($item->updated_at) }}
-                                                                    @if ($user->id == $item->new_feed_user->id)
-                                                                        <span class="mx-1">⚬</span>
-                                                                        <span>
-                                                                            @if ($item->status == '0')
-                                                                                Public
-                                                                            @else
-                                                                                Cá nhân
-                                                                            @endif
-                                                                        </span>
-                                                                    @endif
-                                                                </small>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <hr class="m-0" />
-                                                    <div class="my-3 w-100 overflow-hidden ck-content">
-                                                        {!! $item->description !!}
-                                                    </div>
-                                                    <hr class="m-0" />
-                                                    <div class="my-1">
-                                                        <a href="javascript: void(0);"
-                                                            class="btn btn-sm btn-link text-muted ps-0"><i
-                                                                class='uil uil-comments-alt'></i>
-                                                            {{ count($item->new_feed_comments) }}</a>
-                                                    </div>
-                                                </div>
-                                                <div class="comments" post-id="{{ $item->id }}"
-                                                    total="{{ $item->new_feed_comments->count() }}">
-                                                    @php $comment_count = 0 @endphp
-                                                    @foreach ($item->new_feed_comments as $index => $child)
-                                                        @if ($index == 0)
-                                                            <hr class="m-0 mb-3" />
-                                                        @endif
-                                                        <div class="d-flex item" comment-id="{{ $child->id }}">
-                                                            @if ($child->new_feed_comment_user->profile && $child->new_feed_comment_user->profile->img)
-                                                                <img class="me-2 rounded"
-                                                                    src="{{ asset($child->new_feed_comment_user->profile->img ?? '/resources/assets/images/logo.png') }}"
-                                                                    style="height: 32px; width: 32px; object-fit: cover;">
+                                            <h5 class="m-0">{{ $item->new_feed_user->name }}</h5>
+                                            <p class="text-muted">
+                                                <small>{{ NotificationController::timeAgo($item->updated_at) }}
+                                                    @if ($user->id == $item->new_feed_user->id)
+                                                        <span class="mx-1">⚬</span>
+                                                        <span>
+                                                            @if ($item->status == '0')
+                                                                Public
                                                             @else
-                                                                <img class="me-2 rounded"
-                                                                    src="{{ asset('/resources/assets/images/logo.png') }}"
-                                                                    style="height: 32px; width: 32px; object-fit: cover;">
+                                                                Cá nhân
                                                             @endif
-                                                            <div>
-                                                                <h5 class="m-0">{{ $child->new_feed_comment_user->name }}
-                                                                </h5>
-                                                                <p class="text-muted mb-0">
-                                                                    <small>{{ NotificationController::timeAgo($child->updated_at) }}</small>
-                                                                </p>
-                                                                <p class="comment-text text-dark mb-2">{!! $child->comment !!}
-                                                                </p>
-                                                                <!--- Người bình luận đc sửa --->
-                                                                @if ($user->id == $child->user_id)
-                                                                    <div>
-                                                                        <a href="javascript: void(0);"
-                                                                            class="edit-comment btn btn-sm btn-link text-muted p-0">
-                                                                            <i class='mdi mdi-pencil'></i> Sửa
+                                                        </span>
+                                                    @endif
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="py-3 w-100 overflow-hidden border-top border-bottom ">
+                                        <div class="font-18 mx-1">
+                                            {!! $item->description !!}
+                                        </div>
+                                        <div class="gallery-container animated-thumbnails-gallery position-relative"
+                                            {{ count($item->images) > 4 ? 'data-view-more=' . count($item->images) - 4 : '' }}>
+                                            @foreach ($item->images as $image)
+                                                <a href="{{ asset($image->image) }}"
+                                                    class="gallery-item {{ $loop->index > 3 ? 'd-none' : '' }}">
+                                                    <img src="{{ asset($image->image) }}"
+                                                        class="img-fluid {{ $loop->index > 3 ? 'd-none' : '' }}">
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="my-1">
+                                        <a href="javascript: void(0);" feed-id="{{ $item->id }}"
+                                            class="like-btn btn btn-sm btn-link text-muted ps-0"><i
+                                                class='mdi mdi-thumb-up{{ NewFeedLikeController::isLikeFeed($item->id) ? '' : '-outline' }}'></i>
+                                            <span>{{ count($item->new_feed_likes) }}</span></a>
+                                        <a href="javascript: void(0);" data-bs-toggle="modal"
+                                            data-bs-target="#open-{{ $item->id }}"
+                                            class="btn btn-sm btn-link text-muted ps-0"><i class='uil uil-comments-alt'></i>
+                                            {{ count($item->new_feed_comments) }}</a>
+                                    </div>
+                                    <div class="modal fade" id="open-{{ $item->id }}" tabindex="-1"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-dark">Bài viết của
+                                                        {{ $item->new_feed_user->name }}</h5>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="post">
+                                                        <div class="d-flex">
+                                                            <img class="me-2 rounded"
+                                                                src="{{ asset($item->new_feed_user->profile->img ?? config('constants.default_avatar')) }}"
+                                                                style="height: 32px; width: 32px; object-fit: cover;">
+                                                            <div class="w-100">
+                                                                @if ($user->id == $item->user_id)
+                                                                    <div class="dropdown float-end text-muted">
+                                                                        <a href="#"
+                                                                            class="dropdown-toggle arrow-none card-drop"
+                                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            <i class="mdi mdi-dots-horizontal"></i>
                                                                         </a>
-                                                                        <a href="javascript: void(0);"
-                                                                            class="delete-comment btn btn-sm btn-link text-muted p-0 ps-2">
-                                                                            <i class='mdi mdi-delete'></i> Xóa
-                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                                            @php
+                                                                                $params = [
+                                                                                    'alias' => $item->alias ?? $item->id,
+                                                                                ];
+                                                                            @endphp
+                                                                            <a href="{{ route('edit-feed', $params) }}"
+                                                                                class="dropdown-item">Chỉnh
+                                                                                sửa</a>
+                                                                            <a href="javascript:void(0);"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#delete-{{ $item->id }}"
+                                                                                class="dropdown-item">Xóa</a>
+                                                                        </div>
                                                                     </div>
+                                                                    <!------- Quản lý thì đc phép xóa --------->
                                                                 @elseif(Route::currentRouteName() == 'new-feed' && $user->type == 'system')
-                                                                    <!---- Quản lý được xóa --->
-                                                                    <div>
-                                                                        <a href="javascript: void(0);"
-                                                                            class="delete-comment btn btn-sm btn-link text-muted p-0">
-                                                                            <i class='mdi mdi-delete'></i> Xóa
+                                                                    <div class="dropdown float-end text-muted">
+                                                                        <a href="#"
+                                                                            class="dropdown-toggle arrow-none card-drop"
+                                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            <i class="mdi mdi-dots-horizontal"></i>
                                                                         </a>
+                                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                                            <a href="javascript:void(0);"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#delete-{{ $item->id }}"
+                                                                                class="dropdown-item">Xóa</a>
+                                                                        </div>
                                                                     </div>
                                                                 @endif
+                                                                <h5 class="m-0">{{ $item->new_feed_user->name }}</h5>
+                                                                <p class="text-muted">
+                                                                    <small>{{ NotificationController::timeAgo($item->updated_at) }}
+                                                                        @if ($user->id == $item->new_feed_user->id)
+                                                                            <span class="mx-1">⚬</span>
+                                                                            <span>
+                                                                                @if ($item->status == '0')
+                                                                                    Public
+                                                                                @else
+                                                                                    Cá nhân
+                                                                                @endif
+                                                                            </span>
+                                                                        @endif
+                                                                    </small>
+                                                                </p>
                                                             </div>
                                                         </div>
-                                                        <hr />
-                                                        @php
-                                                            if ($index == 1) {
-                                                                if (count($item->new_feed_comments) - 1 > $index) {
-                                                                    $comment_count = $index + 1;
-                                                                }
-                                                                break;
-                                                            }
-                                                        @endphp
-                                                    @endforeach
-                                                </div>
-                                                @if ($comment_count)
-                                                    <div>
-                                                        <hr />
-                                                        <a href="javascript: void(0);"
-                                                            class="loadmore-cm btn btn-sm btn-link text-muted ps-0"
-                                                            comment-count="{{ $comment_count }}"
-                                                            feed-id="{{ $item->id }}">Xem thêm bình luận</a>
+                                                        <div class="my-3 w-100 overflow-hidden">
+                                                            {!! $item->description !!}
+                                                        </div>
+                                                        <div class="my-1 border-top border-bottom">
+                                                            <a href="javascript: void(0);"
+                                                                class="btn btn-sm btn-link text-muted ps-0"><i
+                                                                    class='uil uil-comments-alt'></i>
+                                                                {{ count($item->new_feed_comments) }}</a>
+                                                        </div>
                                                     </div>
-                                                @endif
-                                            </div>
-                                            <div class="modal-footer">
-                                                <div class="d-flex mb-2 w-100">
-                                                    @if ($user->profile && $user->profile->img)
-                                                        <img class="align-self-start rounded me-2"
-                                                            src="{{ asset($user->profile->img ?? '/resources/assets/images/logo.png') }}"
-                                                            style="height: 32px; width: 32px; object-fit: cover;">
-                                                    @else
-                                                        <img class="align-self-start rounded me-2"
-                                                            src="{{ asset('/resources/assets/images/logo.png') }}"
-                                                            style="height: 32px; width: 32px; object-fit: cover;">
-                                                    @endif
-                                                    <div class="w-100">
-                                                        <form action="{{ route('store-comment-feed') }}" method="POST"
-                                                            enctype="multipart/form-data">
-                                                            @csrf
-                                                            <input type="hidden" name="feed_id"
-                                                                value="{{ $item->id }}">
-                                                            <input type="text"
-                                                                class="form-control border-0 form-control-sm" name="comment"
-                                                                placeholder="Bình luận....">
-                                                            <div class="mt-2 d-flex justify-content-end align-items-center">
-                                                                <button type="submit" class="btn btn-sm btn-success">Bình
-                                                                    luận</button>
+                                                    <div class="comments" post-id="{{ $item->id }}"
+                                                        total="{{ $item->new_feed_comments->count() }}">
+                                                        @php $comment_count = 0 @endphp
+                                                        @foreach ($item->new_feed_comments as $index => $child)
+                                                            <div class="d-flex item" comment-id="{{ $child->id }}">
+                                                                <img class="me-2 rounded"
+                                                                    src="{{ asset($child->new_feed_comment_user->profile->img ?? config('constants.default_avatar')) }}"
+                                                                    style="height: 32px; width: 32px; object-fit: cover;">
+                                                                <div>
+                                                                    <h5 class="m-0">
+                                                                        {{ $child->new_feed_comment_user->name }}
+                                                                        <!--- Người bình luận đc sửa --->
+                                                                        @if ($user->id == $child->user_id)
+                                                                            <div class="dropdown float-end ms-1">
+                                                                                <a href="#"
+                                                                                    class="dropdown-toggle arrow-none card-drop"
+                                                                                    data-bs-toggle="dropdown"
+                                                                                    aria-expanded="true">
+                                                                                    <i class="mdi mdi-dots-horizontal"></i>
+                                                                                </a>
+                                                                                <div class="dropdown-menu">
+                                                                                    <a href="javascript: void(0);"
+                                                                                        class="dropdown-item edit-comment">
+                                                                                        <i class='mdi mdi-pencil'></i> Sửa
+                                                                                    </a>
+                                                                                    <a href="javascript: void(0);"
+                                                                                        class="dropdown-item delete-comment ">
+                                                                                        <i class='mdi mdi-delete'></i> Xóa
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        @elseif(Route::currentRouteName() == 'new-feed' && $user->type == 'system')
+                                                                            <!---- Quản lý được xóa --->
+                                                                            <div class="dropdown float-end ms-1">
+                                                                                <a href="#"
+                                                                                    class="dropdown-toggle arrow-none card-drop"
+                                                                                    data-bs-toggle="dropdown"
+                                                                                    aria-expanded="true">
+                                                                                    <i class="mdi mdi-dots-horizontal"></i>
+                                                                                </a>
+                                                                                <div class="dropdown-menu">
+                                                                                    <a href="javascript: void(0);"
+                                                                                        class="dropdown-item delete-comment">
+                                                                                        <i class='mdi mdi-delete'></i> Xóa
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endif
+                                                                    </h5>
+                                                                    <p class="text-muted mb-0">
+                                                                        <small>{{ NotificationController::timeAgo($child->updated_at) }}</small>
+                                                                    </p>
+                                                                    <p class="comment-text text-dark mb-2">
+                                                                        {!! $child->comment !!}
+                                                                    </p>
+                                                                </div>
                                                             </div>
-                                                        </form>
+                                                            @php
+                                                                if ($index == 1) {
+                                                                    if (count($item->new_feed_comments) - 1 > $index) {
+                                                                        $comment_count = $index + 1;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            @endphp
+                                                        @endforeach
+                                                    </div>
+                                                    @if ($comment_count)
+                                                        <div>
+                                                            <a href="javascript: void(0);"
+                                                                class="loadmore-cm btn btn-sm btn-link text-muted ps-0"
+                                                                comment-count="{{ $comment_count }}"
+                                                                feed-id="{{ $item->id }}">Xem thêm bình luận</a>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <div class="modal-footer border-top-0">
+                                                    <div class="d-flex mb-2 w-100">
+                                                        <img class="align-self-start rounded me-2"
+                                                            src="{{ asset($user->profile->img ?? config('constants.default_avatar')) }}"
+                                                            style="height: 32px; width: 32px; object-fit: cover;">
+                                                        <div class="w-100">
+                                                            <form action="{{ route('store-comment-feed') }}" method="POST"
+                                                                enctype="multipart/form-data">
+                                                                @csrf
+                                                                <input type="hidden" name="feed_id"
+                                                                    value="{{ $item->id }}">
+                                                                <input type="text"
+                                                                    class="form-control border-0 form-control-sm"
+                                                                    name="comment" placeholder="Bình luận....">
+                                                                <div
+                                                                    class="mt-2 d-flex justify-content-end align-items-center">
+                                                                    <button type="submit" class="btn btn-sm btn-success">Bình
+                                                                        luận</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!----Modal Delete bài viết----->
-                                <div class="modal fade" id="delete-{{ $item->id }}" tabindex="-1" aria-hidden="true"
-                                    style="background-color: rgba(49,58,70,0.7);">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-dark">Xác nhận</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body text-dark">
-                                                <p>Bạn có muốn xóa không?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
-                                                </button>
-                                                <form action="{{ route('delete-feed', [$item->id]) }}" method="POST">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-primary">Xóa</button>
-                                                </form>
+                                    <!----Modal Delete bài viết----->
+                                    <div class="modal fade" id="delete-{{ $item->id }}" tabindex="-1"
+                                        aria-hidden="true" style="background-color: rgba(49,58,70,0.7);">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body text-dark">
+                                                    <p>Bạn có muốn xóa không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                                                    </button>
+                                                    <form action="{{ route('delete-feed', [$item->id]) }}" method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="btn btn-primary">Xóa</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach()
-                @endisset
+                        @endforeach()
+                    @endisset
+                </div>
             </div>
         </div>
     </div>
@@ -492,184 +483,107 @@
     </div>
 @endsection
 @section('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/css/lightgallery.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/css/lg-zoom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/css/lg-thumbnail.css">
     <style>
         .card .modal-body .comments hr:last-of-type {
             display: none;
         }
+
+        .remove-image {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            border-radius: 100%;
+            padding: 1px 4px 2px;
+            font: 700 13px/13px sans-serif;
+            background: #555;
+            border: 2px solid #fff;
+            color: #FFF;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            -webkit-transition: background 0.5s;
+            transition: background 0.5s;
+        }
+
+        .remove-image:hover {
+            background: #E54E4E;
+            top: -11px;
+            right: -11px;
+        }
     </style>
+    <link rel="stylesheet" href="{{ asset('Modules/AvnNewFeed/Resources/assets/sort-image.css') }}">
 @endsection
 @section('js')
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
-    <script>
-        CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
-            toolbar: {
-                items: [
-                    'heading', '|',
-                    'bold', 'italic', 'strikethrough', 'underline',
-                    'bulletedList', '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                    'alignment', '|',
-                    'link', 'insertImage', 'blockQuote', 'mediaEmbed',
-                    '|',
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            language: 'vi',
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-            heading: {
-                options: [{
-                        model: 'paragraph',
-                        title: 'Paragraph',
-                        class: 'ck-heading_paragraph'
-                    },
-                    {
-                        model: 'heading1',
-                        view: 'h1',
-                        title: 'Heading 1',
-                        class: 'ck-heading_heading1'
-                    },
-                    {
-                        model: 'heading2',
-                        view: 'h2',
-                        title: 'Heading 2',
-                        class: 'ck-heading_heading2'
-                    },
-                    {
-                        model: 'heading3',
-                        view: 'h3',
-                        title: 'Heading 3',
-                        class: 'ck-heading_heading3'
-                    },
-                    {
-                        model: 'heading4',
-                        view: 'h4',
-                        title: 'Heading 4',
-                        class: 'ck-heading_heading4'
-                    },
-                    {
-                        model: 'heading5',
-                        view: 'h5',
-                        title: 'Heading 5',
-                        class: 'ck-heading_heading5'
-                    },
-                    {
-                        model: 'heading6',
-                        view: 'h6',
-                        title: 'Heading 6',
-                        class: 'ck-heading_heading6'
-                    }
-                ]
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-            placeholder: 'Nội dung',
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-            fontFamily: {
-                options: [
-                    'default',
-                    'Arial, Helvetica, sans-serif',
-                    'Courier New, Courier, monospace',
-                    'Georgia, serif',
-                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                    'Tahoma, Geneva, sans-serif',
-                    'Times New Roman, Times, serif',
-                    'Trebuchet MS, Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ],
-                supportAllValues: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-            fontSize: {
-                options: [10, 12, 14, 'default', 18, 20, 22],
-                supportAllValues: true
-            },
-            // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-            // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-            htmlSupport: {
-                allow: [{
-                    name: /.*/,
-                    attributes: true,
-                    classes: true,
-                    styles: true
-                }]
-            },
-            // Be careful with enabling previews
-            // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-            htmlEmbed: {
-                showPreviews: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/lightgallery.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/plugins/zoom/lg-zoom.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/plugins/thumbnail/lg-thumbnail.umd.js"></script>
+
+    <script type="text/javascript">
+        $(".animated-thumbnails-gallery").each(function() {
+            window.lightGallery(
+                this, {
+                    galleryId: "nature",
+                    plugins: [lgZoom, lgThumbnail],
+                    mobileSettings: {
+                        controls: false,
+                        showCloseIcon: false,
+                        download: false,
+                        rotate: false
                     }
                 }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-            mention: {
-                feeds: [{
-                    marker: '@',
-                    feed: [
-                        '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes',
-                        '@chocolate', '@cookie', '@cotton', '@cream',
-                        '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread',
-                        '@gummi', '@ice', '@jelly-o',
-                        '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding',
-                        '@sesame', '@snaps', '@soufflé',
-                        '@sugar', '@sweet', '@topping', '@wafer'
-                    ],
-                    minimumCharacters: 1
-                }]
-            },
-            // The "super-build" contains more premium features that require additional configuration, disable them below.
-            // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-            removePlugins: [
-                // These two are commercial, but you can try them out without registering to a trial.
-                // 'ExportPdf',
-                // 'ExportWord',
-                'CKBox',
-                // 'CKFinder',
-                'EasyImage',
-                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-                // Storing images as Base64 is usually a very bad idea.
-                // Replace it on production website with other solutions:
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-                // 'Base64UploadAdapter',
-                'RealTimeCollaborativeComments',
-                'RealTimeCollaborativeTrackChanges',
-                'RealTimeCollaborativeRevisionHistory',
-                'PresenceList',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader',
-                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                // from a local file system (file://) - load this site via HTTP server if you enable MathType
-                'MathType'
-            ],
-            ckfinder: {
-                uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
-            },
-            image: { styles: ['alignCenter']}
+            );
+        })
+        $('.gallery-container').each(function() {
+            var container = this
+            var img = $(this).find('img:not(.d-none)');
+            var aspect_ratio = [];
+            if (img.length > 1) {
+                img.each(function(index, image) {
+                    if (image.height / image.width > 1.1) {
+                        aspect_ratio[aspect_ratio.length] = 'portrait';
+                    } else if (image.height / image.width < 0.9) {
+                        aspect_ratio[aspect_ratio.length] = 'landscape';
+                    } else {
+                        aspect_ratio[aspect_ratio.length] = 'square';
+                    }
+                });
+                if (aspect_ratio.length == 2) {
+                    $(container).addClass('gallery-container2');
+                }
+                if (aspect_ratio.length == 3) {
+                    if (aspect_ratio[0] == 'landscape') {
+                        $(container).addClass('gallery-container3-2');
+                    } else if (
+                        aspect_ratio[0] == 'square' ||
+                        aspect_ratio.filter((item) => (item == 'portrait')).length == 3
+                    ) {
+                        $(container).addClass('gallery-container3-3');
+                    } else {
+                        $(container).addClass('gallery-container3-1');
+                    }
+                }
+                if (aspect_ratio.length == 4) {
+                    if (aspect_ratio[0] == 'square') {
+                        $(container).addClass('gallery-container4-1');
+                    } else if (aspect_ratio[0] == 'landscape') {
+                        $(container).addClass('gallery-container4-3');
+                    } else {
+                        $(container).addClass('gallery-container4-2');
+                    }
+                    console.log($(container).attr('data-view-more'));
+                    if ($(container).attr('data-view-more')) {
+                        $(container).find('a:not(.d-none):nth-child(4)').append(
+                            '<div class="position-absolute top-0 start-0 w-100 h-100 text-white fw-bold d-flex fs-2 justify-content-center align-items-center" style=" background-color: rgba(var(--bs-dark-rgb),0.4)!important; ">+' +
+                            $(container).attr('data-view-more') + '</div>')
+                    }
+                }
+                img.addClass('h-100 w-100')
+            }
         });
     </script>
+
     <script type="text/javascript">
         // add csrf
         $.ajaxSetup({
@@ -687,7 +601,8 @@
                 action_str = action_str.slice(0, idx + 1);
                 form.attr('action', action_str + $(this).closest('.item').attr('comment-id'));
                 form.find('[name="feed_id"]').val($(this).closest('.comments').attr('post-id'));
-                form.find('[name="comment"]').val($(this).closest('.item').find('.comment-text').html());
+                form.find('[name="comment"]').val($(this).closest('.item').find('.comment-text').html()
+                    .trim());
                 modalEditComment.show();
             })
             $('.comments').on('click', '.delete-comment', function() {
@@ -759,7 +674,98 @@
             })
         })
     </script>
-@endsection
-@section('css')
-    <link rel="stylesheet" href="{{ asset('resources/css/ckeditor.css') }}">
+    <script>
+        // check file upload 
+        $('label[for=input-images]').on('click', function(e) {
+            if (images.length >= 6) {
+                e.preventDefault();
+                e.stopPropagation();
+                $.NotificationApp.send("Thất bại", "Tối đa 6 tệp", "bottom-right",
+                    "rgba(0,0,0,0.2)", "error")
+            }
+        })
+        window.images = [];
+        window.preview_images = [];
+        $('#input-images').change(function(e) {
+            e.preventDefault();
+            if (this.files) {
+                $('.files-container').removeClass('d-none')
+                var htm = ''
+                var filesAmount = this.files.length;
+                for (i = 0; i < filesAmount; i++) {
+                    if (images.length >= 6) {
+                        $.NotificationApp.send("Thất bại", "Tối đa 6 tệp", "bottom-right",
+                            "rgba(0,0,0,0.2)", "error")
+                        break
+                    }
+                    file = this.files[i]
+                    images[images.length] = file
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        preview_images[preview_images.length] = event.target.result
+                        htm =
+                            '<div class="col-6 col-lg-4 col-xxl-3"><div class="position-relative img-thumbnail " style="padding-bottom:100%;">'
+                        htm += '<img src="' +
+                            event.target
+                            .result +
+                            '" class="position-absolute start-0 top-0  rounded w-100 h-100" style="object-fit: cover;">'
+                        htm +=
+                            '<a class="remove-image" href="javascript: void(0);" style="display: inline;">&#215;</a>'
+                        htm += '</div></div>'
+                        $('.files-container .row').append(htm)
+                    }
+                    reader.readAsDataURL(file);
+                }
+                $("#input-images").val('')
+            }
+        })
+
+        // remove file upload
+        $('.files-container').on('click', '.remove-image', function() {
+            var index = preview_images.indexOf($(this).parent().find('img').attr('src'));
+            if (index > -1) { // only splice array when item is found
+                preview_images.splice(index, 1); // 2nd parameter means remove one item only
+                images.splice(index, 1); // 2nd parameter means remove one item only
+                $(this).parent().parent().remove()
+            }
+            if (!preview_images.length) {
+                $('.files-container').addClass('d-none')
+            }
+        })
+
+        $('#feed-submit').on('click', function() {
+            $(this).text('Đang tải lên');
+            $(this).attr('disabled', 'true');
+            $('#feed-form').append(
+                '<p class="d-flex align-items-center"><span class="spinner-border text-primary flex-shrink-0 me-1" role="status"></span> <span>Đang tải lên vui lòng không rời khỏi trang.</span></p>'
+            )
+            var status = $('#feed-form input[name=status]')[0].checked ? 1 : 0;
+            var description = $('#feed-form textarea[name=description]').val();
+            var form_data = new FormData()
+            form_data.append("status", status);
+            form_data.append("description", description);
+            images.forEach(img => {
+                form_data.append("images[]", img);
+            });
+            $.ajax({
+                method: 'post',
+                url: "route('store-feed')",
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function(res) {
+                    location.reload();
+                },
+                error: function(e) {
+                    if (!navigator.onLine) {
+                        var request = this
+                        setTimeout(function() {
+                            $.ajax(request);
+                        }, 3000);
+                    }
+                }
+            });
+        })
+    </script>
 @endsection

@@ -32,4 +32,8 @@ class NewFeed extends Model
     {
         return $this->hasMany(NewFeedLike::class, 'feed_id', 'id')->orderBy('updated_at', 'DESC');
     }
+    public function images()
+    {
+        return $this->hasMany(NewFeedImage::class, 'feed_id', 'id')->orderBy('updated_at', 'DESC');
+    }
 }

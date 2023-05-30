@@ -1,123 +1,140 @@
 @php
     use App\Http\Controllers\NotificationController;
-    $user = App\Http\Controllers\Controller::getUser();
+    use Modules\AvnNewFeed\Http\Controllers\NewFeedLikeController;
     $notifications = App\Http\Controllers\NotificationController::getNotifications();
 @endphp
-@extends('layouts.guest')
-@section('title')
-    Sửa bài
-@endsection
+@extends('layouts.guest', ['seo_title' => 'Cập nhật bài viết'])
 @section('content')
     <div class="container">
         <div class="row mt-2">
-            <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-1">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <div class="dropdown float-end">
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a href="javascript:void(0);" class="dropdown-item">Sửa hồ sơ</a>
-                            </div>
-                        </div>
-                        <div class="d-flex align-self-start">
-                            @if ($user->profile && $user->profile->img)
+            <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-1 position-relative mb-3">
+                <div class="position-sticky top-0">
+                    <div class="card shadow-lg mb-0">
+                        <div class="card-body">
+                            <div class="d-flex align-self-start">
                                 <img class="d-flex align-self-start rounded me-2"
-                                    src="{{ asset($user->profile->img ?? '/resources/assets/images/logo.png') }}"
-                                    height="48">
-                            @else
-                                <img class="d-flex align-self-start rounded me-2"
-                                    src="{{ asset('/resources/assets/images/logo.png') }}" height="48">
-                            @endif
-                            <div class="w-100 overflow-hidden">
-                                <h5 class="mt-1 mb-0">{{ $user->name }}</h5>
-                                <p class="mb-1 mt-1 text-muted">
-                                    @if ($user->type == 'system')
-                                        Quản lý
-                                    @elseif($user->type == 'customer')
-                                        Khách hàng
-                                    @else
-                                        Chuyên gia
-                                    @endif
-                                </p>
-                            </div>
-                        </div>
-                        <div class="list-group list-group-flush mt-2">
-                            <a href="{{ route('new-feed') }}"
-                                class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'new-feed' ? 'text-primary' : '' }} border-0"><i
-                                    class='uil uil-images me-1'></i> Bản tin</a>
-                            <a href="{{ route('my-feed') }}"
-                                class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'my-feed' ? 'text-primary' : '' }} border-0"><i
-                                    class='uil uil-images me-1'></i> Tin của tôi</a>
-                            <a href="{{ route('chat-index') }}" class="list-group-item list-group-item-action border-0"><i
-                                    class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="mdi mdi-dots-horizontal"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <form action="{{ route('clear-notifications') }}" method="POST">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="dropdown-item">Xóa hết</button>
-                                </form>
-                            </div>
-                        </div>
-                        <h4 class="header-title mb-1">Thông báo</h4>
-                        <div class="d-flex mt-3">
-                            @foreach ($notifications as $notification)
-                                <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
-                                <div>
-                                    <a class="mt-1 font-14"
-                                        href="{{ route('read-notifications', ['id' => $notification->id]) }}"
-                                        data-link="{{ $notification->link ?? 'none' }}" data-id="{{ $notification->id }}"
-                                        data-status="{{ $notification->status }}">
-                                        <strong>{{ $notification->title }}:</strong>
-                                        <span class="text-muted">
-                                            {!! $notification->content !!}
-                                        </span>
-                                    </a>
+                                    src="{{ asset($user->profile->img ?? config('constants.default_avatar')) }}"
+                                    style="height: 48px; width: 48px; object-fit: cover;">
+                                <div class="w-100 overflow-hidden">
+                                    <h5 class="mt-1 mb-0">{{ $user->name }}</h5>
+                                    <p class="mb-1 mt-1 text-muted">
+                                        @if ($user->type == 'system')
+                                            Quản lý
+                                        @elseif($user->type == 'customer')
+                                            Khách hàng
+                                        @else
+                                            Chuyên gia
+                                        @endif
+                                    </p>
                                 </div>
-                            @endforeach
+                            </div>
+                            <div class="list-group list-group-flush mt-2">
+                                <a href="{{ route('new-feed') }}"
+                                    class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'new-feed' ? 'text-primary' : '' }} border-0"><i
+                                        class='uil uil-images me-1'></i> Bản tin</a>
+                                <a href="{{ route('my-feed') }}"
+                                    class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'my-feed' ? 'text-primary' : '' }} border-0"><i
+                                        class='uil uil-images me-1'></i> Tin của tôi</a>
+                                <a href="{{ route('chat-index') }}"
+                                    class="list-group-item list-group-item-action border-0"><i
+                                        class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xxl-9 col-lg-12 order-lg-2 order-xxl-1">
+            <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-2 position-relative mb-3">
+                <div class="position-sticky top-0">
+                    <div class="card shadow-lg mb-0">
+                        <div class="card-body">
+                            <div class="dropdown float-end">
+                                <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="mdi mdi-dots-horizontal"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <form action="{{ route('clear-notifications') }}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="dropdown-item">Xóa hết</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <h4 class="header-title mb-1">Thông báo</h4>
+                            <div class="d-flex mt-3">
+                                @foreach ($notifications as $notification)
+                                    <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
+                                    <div>
+                                        <a class="mt-1 font-14"
+                                            href="{{ route('read-notifications', ['id' => $notification->id]) }}"
+                                            data-link="{{ $notification->link ?? 'none' }}"
+                                            data-id="{{ $notification->id }}" data-status="{{ $notification->status }}">
+                                            <strong>{{ $notification->title }}:</strong>
+                                            <span class="text-muted">
+                                                {!! $notification->content !!}
+                                            </span>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-6 col-lg-12 order-lg-2 order-xxl-1">
                 <div class="card shadow-lg">
                     <div class="card-body p-0">
                         <ul class="nav nav-tabs nav-bordered">
                             <li class="nav-item">
                                 <a href="#newpost" data-bs-toggle="tab" aria-expanded="false"
                                     class="nav-link active px-3 py-2">
-                                    <i class="mdi mdi-pencil-box-multiple font-18 d-md-none d-block"></i>
-                                    <span class="d-none d-md-block">Sửa bài</span>
+                                    Cập nhật
                                 </a>
                             </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane show active p-3" id="newpost">
                                 <div class="border rounded">
-                                    <form action="{{ route('update-feed', $new_feed->id) }}" method="POST"
-                                        enctype="multipart/form-data" class="comment-area-box">
+                                    <form class="comment-area-box" id="feed-form">
                                         @csrf
                                         @method('PUT')
-                                        <textarea rows="4" class="form-control border-0 resize-none" name="description" id="editor">{!! $new_feed->description !!}</textarea>
-                                        <div class="p-2 bg-light d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="status" value="1"
-                                                        class="form-check-input"
-                                                        {{ $new_feed->status == 1 ? 'checked' : '' }}>
-                                                    <label class="form-check-label">Cá nhân</label>
+                                        <textarea rows="4" class="form-control border-0 resize-none" name="description"
+                                            placeholder="Bạn đang nghĩ gì...."> {!! $edit_feed->description !!}</textarea>
+                                        <div class="files-container {{ !count($edit_feed->images) ? 'd-none' : '' }}">
+                                            <div class="card mb-1 shadow-none p-2">
+                                                <div class="row g-1">
+                                                    @foreach ($edit_feed->images as $image)
+                                                        <div class="col-6 col-lg-4 col-xxl-3">
+                                                            <div class="position-relative img-thumbnail "
+                                                                style="padding-bottom:100%;">
+                                                                <img src="{{ asset($image->image) }}"
+                                                                    class="position-absolute start-0 top-0  rounded w-100 h-100"
+                                                                    style="object-fit: cover;">
+                                                                <a class="remove-image" data-id="{{ $image->id }}"
+                                                                    href="javascript: void(0);"
+                                                                    style="display: inline;">×</a>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-sm btn-success"><i
-                                                    class='uil uil-message me-1'></i>Cập nhật</button>
+                                        </div>
+                                        <div class="p-2 bg-light d-flex justify-content-between align-items-center">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="status"
+                                                    value="1" {{ $edit_feed->status == 1 ? 'checked' : '' }}>
+                                                <label class="form-check-label">Cá nhân</label>
+                                            </div>
+                                            <div class="btn-group">
+                                                <input type="file" id="input-images" accept="image/*" multiple hidden>
+                                                <input type="file" name="images" id="images" accept="image/*"
+                                                    multiple hidden>
+                                                <label class="btn btn-link btn-sm text-muted font-18" for="input-images">
+                                                    <i class="dripicons-paperclip"></i>
+                                                </label>
+                                                <button type="button" class="btn btn-sm btn-success text-end"
+                                                    id="feed-submit"><i class='uil uil-message me-1'></i>Cập nhật</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -129,178 +146,152 @@
         </div>
     </div>
 @endsection
+@section('css')
+    <style>
+        .remove-image {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            border-radius: 100%;
+            padding: 1px 4px 2px;
+            font: 700 13px/13px sans-serif;
+            background: #555;
+            border: 2px solid #fff;
+            color: #FFF;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            -webkit-transition: background 0.5s;
+            transition: background 0.5s;
+        }
+
+        .remove-image:hover {
+            background: #E54E4E;
+            top: -11px;
+            right: -11px;
+        }
+    </style>
+@endsection
 @section('js')
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
-    <script>
-        CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
-            toolbar: {
-                items: [
-                    'heading', '|',
-                    'bold', 'italic', 'strikethrough', 'underline',
-                    'bulletedList', '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                    'alignment', '|',
-                    'link', 'insertImage', 'blockQuote', 'mediaEmbed',
-                    '|',
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            language: 'vi',
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-            heading: {
-                options: [{
-                        model: 'paragraph',
-                        title: 'Paragraph',
-                        class: 'ck-heading_paragraph'
-                    },
-                    {
-                        model: 'heading1',
-                        view: 'h1',
-                        title: 'Heading 1',
-                        class: 'ck-heading_heading1'
-                    },
-                    {
-                        model: 'heading2',
-                        view: 'h2',
-                        title: 'Heading 2',
-                        class: 'ck-heading_heading2'
-                    },
-                    {
-                        model: 'heading3',
-                        view: 'h3',
-                        title: 'Heading 3',
-                        class: 'ck-heading_heading3'
-                    },
-                    {
-                        model: 'heading4',
-                        view: 'h4',
-                        title: 'Heading 4',
-                        class: 'ck-heading_heading4'
-                    },
-                    {
-                        model: 'heading5',
-                        view: 'h5',
-                        title: 'Heading 5',
-                        class: 'ck-heading_heading5'
-                    },
-                    {
-                        model: 'heading6',
-                        view: 'h6',
-                        title: 'Heading 6',
-                        class: 'ck-heading_heading6'
-                    }
-                ]
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-            placeholder: 'Nội dung',
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-            fontFamily: {
-                options: [
-                    'default',
-                    'Arial, Helvetica, sans-serif',
-                    'Courier New, Courier, monospace',
-                    'Georgia, serif',
-                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                    'Tahoma, Geneva, sans-serif',
-                    'Times New Roman, Times, serif',
-                    'Trebuchet MS, Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ],
-                supportAllValues: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-            fontSize: {
-                options: [10, 12, 14, 'default', 18, 20, 22],
-                supportAllValues: true
-            },
-            // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-            // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-            htmlSupport: {
-                allow: [{
-                    name: /.*/,
-                    attributes: true,
-                    classes: true,
-                    styles: true
-                }]
-            },
-            // Be careful with enabling previews
-            // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-            htmlEmbed: {
-                showPreviews: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
-                    }
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-            mention: {
-                feeds: [{
-                    marker: '@',
-                    feed: [
-                        '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes',
-                        '@chocolate', '@cookie', '@cotton', '@cream',
-                        '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread',
-                        '@gummi', '@ice', '@jelly-o',
-                        '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding',
-                        '@sesame', '@snaps', '@soufflé',
-                        '@sugar', '@sweet', '@topping', '@wafer'
-                    ],
-                    minimumCharacters: 1
-                }]
-            },
-            // The "super-build" contains more premium features that require additional configuration, disable them below.
-            // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-            removePlugins: [
-                // These two are commercial, but you can try them out without registering to a trial.
-                // 'ExportPdf',
-                // 'ExportWord',
-                'CKBox',
-                // 'CKFinder',
-                'EasyImage',
-                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-                // Storing images as Base64 is usually a very bad idea.
-                // Replace it on production website with other solutions:
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-                // 'Base64UploadAdapter',
-                'RealTimeCollaborativeComments',
-                'RealTimeCollaborativeTrackChanges',
-                'RealTimeCollaborativeRevisionHistory',
-                'PresenceList',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader',
-                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                // from a local file system (file://) - load this site via HTTP server if you enable MathType
-                'MathType'
-            ],
-            ckfinder: {
-                uploadUrl: "{{ route('image-upload') . '?_token=' . csrf_token() }}",
-            },
-            image: {
-                styles: ['alignCenter']
+    <script type="text/javascript">
+        // add csrf
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
             }
         });
+
+        window.images = [];
+        window.preview_images = [];
+        window.before_images = [
+            @foreach ($edit_feed->images as $image)
+                "{{ $image->id }}",
+            @endforeach
+        ];
+        window.remove_before_images = [];
+        // check file upload 
+        $('label[for=input-images]').on('click', function(e) {
+            if ((images.length + before_images.length) >= 6) {
+                e.preventDefault();
+                e.stopPropagation();
+                $.NotificationApp.send("Thất bại", "Tối đa 6 tệp", "bottom-right",
+                    "rgba(0,0,0,0.2)", "error")
+            }
+        })
+        $('#input-images').change(function(e) {
+            e.preventDefault();
+            if (this.files) {
+                $('.files-container').removeClass('d-none')
+                var htm = ''
+                var filesAmount = this.files.length;
+                for (i = 0; i < filesAmount; i++) {
+                    if ((images.length + before_images.length) >= 6) {
+                        $.NotificationApp.send("Thất bại", "Tối đa 6 tệp", "bottom-right",
+                            "rgba(0,0,0,0.2)", "error")
+                        break
+                    }
+                    file = this.files[i]
+                    images[images.length] = file
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        preview_images[preview_images.length] = event.target.result
+                        htm =
+                            '<div class="col-6 col-lg-4 col-xxl-3"><div class="position-relative img-thumbnail " style="padding-bottom:100%;">'
+                        htm += '<img src="' +
+                            event.target
+                            .result +
+                            '" class="position-absolute start-0 top-0  rounded w-100 h-100" style="object-fit: cover;">'
+                        htm +=
+                            '<a class="remove-image" href="javascript: void(0);" style="display: inline;">&#215;</a>'
+                        htm += '</div></div>'
+                        $('.files-container .row').append(htm)
+                    }
+                    reader.readAsDataURL(file);
+                }
+                $("#input-images").val('')
+            }
+        })
+
+        // remove file upload
+        $('.files-container').on('click', '.remove-image', function() {
+            if ($(this).attr('data-id')) {
+                var index = before_images.indexOf($(this).attr('data-id'));
+                console.log(index);
+                if (index > -1) {
+                    before_images.splice(index, 1);
+                    remove_before_images[remove_before_images.length] = $(this).attr('data-id');
+                    $(this).parent().parent().remove();
+                }
+            } else {
+                var index = preview_images.indexOf($(this).parent().find('img').attr('src'));
+                if (index > -1) { // only splice array when item is found
+                    preview_images.splice(index, 1); // 2nd parameter means remove one item only
+                    images.splice(index, 1); // 2nd parameter means remove one item only
+                    $(this).parent().parent().remove()
+                }
+            }
+
+            if (!(preview_images.length + before_images.length)) {
+                $('.files-container').addClass('d-none')
+            }
+        })
+
+        $('#feed-submit').on('click', function() {
+            $(this).text('Đang tải lên');
+            $(this).attr('disabled', 'true');
+            $('#feed-form').append(
+                '<p class="d-flex align-items-center"><span class="spinner-border text-primary flex-shrink-0 me-1" role="status"></span> <span>Đang tải lên vui lòng không rời khỏi trang.</span></p>'
+            )
+            var status = $('#feed-form input[name=status]')[0].checked ? 1 : 0;
+            var description = $('#feed-form textarea[name=description]').val();
+            var form_data = new FormData()
+            form_data.append("_method", 'PUT');
+            form_data.append("status", status);
+            form_data.append("description", description);
+            images.forEach(img => {
+                form_data.append("images[]", img);
+            });
+            remove_before_images.forEach(img => {
+                form_data.append("remove_images[]", img);
+            });
+            $.ajax({
+                method: 'post',
+                url: "{{ route('update-feed', $edit_feed->id) }}",
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function(res) {
+                    location.reload();
+                },
+                error: function(e) {
+                    if (!navigator.onLine) {
+                        var request = this
+                        setTimeout(function() {
+                            $.ajax(request);
+                        }, 3000);
+                    }
+                }
+            });
+        })
     </script>
 @endsection

@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
     public function addsub_money()
     {
-        return $this->hasMany(AddSubMoney::class, 'user_id');
+        return $this->hasMany(AddSubMoney::class, 'user_id')->orderByDesc('created_at');
     }
     public function room_users()
     {
@@ -79,7 +79,7 @@ class User extends Authenticatable
     }
     public function sessions()
     {
-        return $this->belongsToMany(ChatRoomSession::class, 'avn_chat_room_session_users', 'user_id', 'session_id');
+        return $this->belongsToMany(ChatRoomSession::class, 'avn_chat_room_session_users', 'user_id', 'session_id')->orderByDesc('created_at');
     }
     public function call_users()
     {

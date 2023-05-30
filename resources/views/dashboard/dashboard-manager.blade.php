@@ -61,18 +61,6 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        {{-- <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="mdi mdi-dots-vertical"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Cài đặt</a>
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Hành động</a>
-                            </div>
-                        </div> --}}
                         <h4 class="header-title mb-3">Top khách hàng</h4>
 
                         <div class="table-responsive">
@@ -82,7 +70,6 @@
                                         <th>Tên</th>
                                         <th>Số lần y.c</th>
                                         <th>Số tiền đã dùng</th>
-                                        {{-- <th></th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -104,11 +91,7 @@
                                                 </div>
                                             </td>
                                             <td>{{ number_format($top_customer->count_sessions) }}</td>
-                                            <td>{{ number_format($top_customer->sub_money) }}</td>
-                                            {{-- <td class="table-action">
-                                                <a href="javascript: void(0);" class="action-icon"> <i
-                                                        class="mdi mdi-eye"></i></a>
-                                            </td> --}}
+                                            <td>{{ number_format($top_customer->sub_money, 2, '.', ',') }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -122,27 +105,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        {{-- <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="mdi mdi-dots-vertical"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Cài đặt</a>
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Hành động</a>
-                            </div>
-                        </div> --}}
                         <h4 class="header-title mb-3">Top Chuyên gia</h4>
-
                         <div class="table-responsive">
                             <table class="table table-striped table-sm table-nowrap table-centered mb-0">
                                 <thead>
                                     <tr>
                                         <th>Tên</th>
                                         <th>Số lần y.c</th>
-                                        {{-- <th></th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -164,10 +133,6 @@
                                                 </div>
                                             </td>
                                             <td>{{ number_format($top_partner->count_sessions) }}</td>
-                                            {{-- <td class="table-action">
-                                                <a href="javascript: void(0);" class="action-icon"> <i
-                                                        class="mdi mdi-eye"></i></a>
-                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -179,37 +144,6 @@
             </div>
             <!-- end col-->
 
-            {{-- <div class="col-xl-4 col-lg-6">
-                <!-- end card-->
-
-                <!-- Todo-->
-                <div class="card">
-                    <div class="card-body shadow-lg">
-                        <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="mdi mdi-dots-vertical"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Settings</a>
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Action</a>
-                            </div>
-                        </div>
-                        <h4 class="header-title mb-2">Việc cần làm</h4>
-
-                        <div class="todoapp">
-                            <div data-simplebar style="max-height: 224px">
-                                <ul class="list-group list-group-flush todo-list" id="todo-list"></ul>
-                            </div>
-                        </div> <!-- end .todoapp-->
-
-                    </div> <!-- end card-body -->
-                </div> <!-- end card-->
-
-            </div> --}}
-            <!-- end col -->
         </div>
         <div class="row">
             <div class="col-xl-5 col-lg-6">
@@ -304,7 +238,7 @@
             <div class="col-xl-7 col-lg-6">
                 <div class="card card-h-100">
                     <div class="card-body shadow-lg">
-                        <div class="dropdown float-end">
+                        {{-- <div class="dropdown float-end">
                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical"></i>
@@ -319,9 +253,8 @@
                                 <!-- item-->
                                 <a href="javascript:void(0);" class="dropdown-item">Action</a>
                             </div>
-                        </div>
-                        <h4 class="header-title mb-3">Projections Vs Actuals</h4>
-
+                        </div> --}}
+                        <h4 class="header-title mb-3">Revenue</h4>
                         <div dir="ltr">
                             <div id="high-performing-product" class="apex-charts" data-colors="#727cf5,#e3eaef"></div>
                         </div>
@@ -368,10 +301,9 @@
                         colors: ["transparent"]
                     },
                     series: [{
-                            name: "Revenue",
-                            data: [{{implode(', ', $total_revernue)}}]
-                        },
-                    ],
+                        name: "Revenue",
+                        data: [{{ implode(', ', $total_revernue) }}]
+                    }, ],
                     zoom: {
                         enabled: !1
                     },
@@ -401,16 +333,16 @@
                     tooltip: {
                         y: {
                             formatter: function(e) {
-                                return "$" + e ;
+                                return "$" + e;
                             },
                         },
                     },
                 };
                 new ApexCharts(document.querySelector("#high-performing-product"), r).render();
             }),
-            
+
             (e.prototype.init = function() {
-            this.initCharts();
+                this.initCharts();
             }),
             (o.Dashboard = new e());
         })(window.jQuery),

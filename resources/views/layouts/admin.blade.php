@@ -28,7 +28,6 @@
     <!-- third party css -->
 
     <link href="{{ asset('resources/assets/css/vendor/jquery-jvectormap-1.2.2.css') }}" rel="stylesheet"
-
         type="text/css" />
 
     <!-- third party css end -->
@@ -36,19 +35,12 @@
     <!-- App css -->
 
     <link href="{{ asset('resources/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-
     <link href="{{ asset('resources/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="light-style" />
-
     <link href="{{ asset('resources/assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css"
-
         id="dark-style" />
-
     <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css"
-
         id="dark-style" />
-
     <link href="{{ asset('resources/assets/css/avntech.css') }}" rel="stylesheet" type="text/css" />
-
     @yield('css')
 
 </head>
@@ -56,7 +48,6 @@
 
 
 <body class="loading"
-
     data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
 
     <!-- Begin page -->
@@ -120,63 +111,25 @@
     <script src="{{ asset('resources/assets/js/vendor.min.js') }}"></script>
 
     <script src="{{ asset('resources/assets/js/app.min.js') }}"></script>
-
-    <!-- third party js -->
-
-    <!-- <script src="assets/js/vendor/Chart.bundle.min.js') }}"></script> -->
-
-    <!-- <script src="{{ asset('resources/assets/js/vendor/apexcharts.min.js') }}"></script> -->
-
-    <!--         <script src="{{ asset('resources/assets/js/vendor/jquery-jvectormap-1.2.2.min.js') }}"></script>
-
-        <script src="{{ asset('resources/assets/js/vendor/jquery-jvectormap-world-mill-en.js') }}"></script> -->
-
-    <!-- third party js ends -->
-
-
-
-    <!-- demo app -->
-
-    <!-- <script src="{{ asset('resources/assets/js/pages/demo.dashboard-analytics.js') }}"></script> -->
-
-    <!-- end demo js-->
-
     @yield('js')
 
     <!------------Noti---------------->
 
     @include('layouts.toasts')
-
     <script>
-
         $('.side-nav .parent').each(function(indexInArray, valueOfElement) {
-
             if ($(this).find('.children').length <= 0)
-
                 $(this).remove();
-
             else {
-
                 $(this).find('.parent-1').each(function(indexInArray, valueOfElement) {
-
                     if ($(this).find('.children-1').length <= 0)
-
                         $(this).remove();
-
                 });
-
             }
-
         });
         $('body').removeClass('end-bar-enabled')
-
     </script>
-
     <!-----------End Noti------------->
-
 </body>
-
-
-
 </html>
 

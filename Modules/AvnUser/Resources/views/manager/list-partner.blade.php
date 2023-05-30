@@ -42,14 +42,17 @@
                                 @foreach ($partners as $item)
                                     <tr>
                                         <td>{{ ++$i }}</td>
-                                        <td>{{ $item->user->name }}</td>
+                                        <td>{{ $item->user->name }}
+                                            <br>
+                                            <small>{{ $item->user->email }}</small>
+                                        </td>
                                         <td>
-                                            @if($item->img == '')
-                                            <img src="{{ asset('/resources/assets/images/logo.png') }}"
-                                                class="rounded" style="width: 30px; height: 30px; object-fit: cover">
+                                            @if ($item->img == '')
+                                                <img src="{{ asset('/resources/assets/images/logo.png') }}" class="rounded"
+                                                    style="width: 30px; height: 30px; object-fit: cover">
                                             @else
-                                            <img src="{{ asset($item->img) }}" alt=""
-                                                class="rounded" style="width: 30px; height: 30px; object-fit: cover">
+                                                <img src="{{ asset($item->img) }}" alt="" class="rounded"
+                                                    style="width: 30px; height: 30px; object-fit: cover">
                                             @endif
                                         </td>
                                         <td>{{ $item->exp }}</td>
@@ -79,7 +82,8 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
                                                     </button>
-                                                    <form action="{{ route('delete-partner', [$item->id]) }}" method="POST">
+                                                    <form action="{{ route('delete-partner', [$item->id]) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn btn-primary">Xóa</button>

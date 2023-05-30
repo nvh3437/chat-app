@@ -61,5 +61,6 @@ Route::get('login/{social}/callback', [SocialController::class, 'handleProviderC
 // Route::put('/update-customer-profile', [CustomerController::class, 'updateCustomerProfile'])->middleware(['auth'])->name('update-customer-profile');
 
 //-------------------------- Chuyên gia xem thông tin bản thân,... ---------------------//
+Route::get('/money-history', [UserController::class, 'moneyHistory'])->middleware(['auth'])->name('money-history');
 Route::get('/profile', [UserController::class, 'profile'])->middleware(['auth'])->name('profile');
 Route::put('/update-profile', [UserController::class, 'updateProfile'])->middleware(['auth'])->name('update-profile');
