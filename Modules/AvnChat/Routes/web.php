@@ -13,7 +13,7 @@
 
 Route::prefix('chat')->group(function () {
     // chat
-    Route::get('/', 'AvnChatController@index')->middleware(['auth.basic', 'lastactivity'])->name('chat-index');
+    Route::get('/', 'AvnChatController@index')->middleware(['auth', 'lastactivity'])->name('chat-index');
     Route::get('/get-miss-messages', 'AvnChatController@getMissMessage')->middleware(['auth', 'lastactivity'])->name('get-miss-message');
     Route::get('/load-messages', 'AvnChatController@loadMessages')->middleware(['auth', 'lastactivity'])->name('load-messages');
     Route::get('/get-messages', 'AvnChatController@getMessages')->middleware(['auth', 'lastactivity'])->name('get-messages');
