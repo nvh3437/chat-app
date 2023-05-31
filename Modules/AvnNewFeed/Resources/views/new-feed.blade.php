@@ -213,6 +213,9 @@
             top: -11px;
             right: -11px;
         }
+        .lg-container .lg-outer, .lg-container .lg-backdrop{
+            z-index: 10000;
+        }
     </style>
     <link rel="stylesheet" href="{{ asset('Modules/AvnNewFeed/Resources/assets/sort-image.css') }}">
 @endsection

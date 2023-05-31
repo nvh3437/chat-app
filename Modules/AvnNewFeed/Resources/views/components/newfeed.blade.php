@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="py-3 w-100 overflow-hidden border-top border-bottom ">
-                <div class="font-18 mx-1">
+                <div class="font-18 {{ count($item->images) ? 'mb-3' : '' }}">
                     {!! $item->description !!}
                 </div>
                 <div class="gallery-container animated-thumbnails-gallery position-relative"
@@ -155,8 +155,20 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="my-3 w-100 overflow-hidden">
-                                    {!! $item->description !!}
+                                <div class="py-3 w-100 overflow-hidden">
+                                    <div class="font-18 {{ count($item->images) && $item->description ? 'mb-3' : '' }}">
+                                        {!! $item->description !!}
+                                    </div>
+                                    <div class="gallery-container animated-thumbnails-gallery position-relative"
+                                        {{ count($item->images) > 4 ? 'data-view-more=' . count($item->images) - 4 : '' }}>
+                                        @foreach ($item->images as $image)
+                                            <a href="{{ asset($image->image) }}"
+                                                class="gallery-item {{ $loop->index > 3 ? 'd-none' : '' }}">
+                                                <img src="{{ asset($image->image) }}"
+                                                    class="img-fluid {{ $loop->index > 3 ? 'd-none' : '' }}">
+                                            </a>
+                                        @endforeach
+                                    </div>
                                 </div>
                                 <div class="my-1 border-top border-bottom">
                                     <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted ps-0"><i
