@@ -3,6 +3,7 @@
 namespace Modules\AvnNewFeed\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnNewFeed\Entities\NewFeed;
@@ -21,8 +22,14 @@ class NewFeedController extends Controller
     public function newFeed()
     {
         $user = Auth::user();
-        $newsfeed = NewFeed::where('status', 0)->orderBy('updated_at', 'DESC')->take(3)->get();
+        $newsfeed = NewFeed::where('status', 0)->orWhere('user_id', $user->id)->orderBy('updated_at', 'DESC')->paginate(10);
         return view('avnnewfeed::new-feed', compact('user', 'newsfeed'));
+    }
+    public function loadNewFeed()
+    {
+        $user = Auth::user();
+        $newsfeed = NewFeed::where('status', 0)->orWhere('user_id', $user->id)->orderBy('updated_at', 'DESC')->paginate(10, ['*'], 'newfeed_paginate');
+        return view('avnnewfeed::components.newfeed', compact('user', 'newsfeed'));
     }
 
     public function myFeed()
@@ -35,54 +42,13 @@ class NewFeedController extends Controller
     public function loadCommentFeed(Request $request)
     {
         $user = Auth::user();
-        $currentRouteName = $request->currentRouteName ?? '';
-        $comments = NewFeedComment::where('feed_id', $request->feed_id)->orderBy('updated_at', 'DESC')->skip($request->comment_count)->take(1)->get();
-
-        foreach ($comments as $index => $child):
-            echo '<div class="d-flex item" comment-id="' . $child->id . '">';
-            if ($child->new_feed_comment_user->profile && $child->new_feed_comment_user->profile->img):
-                echo '<img class="me-2 rounded" src="' . asset($child->new_feed_comment_user->profile->img ?? '/resources/assets/images/logo.png') . '" style="height: 32px; width: 32px; object-fit: cover;">';
-            else:
-                echo '<img class="me-2 rounded" src="' . asset('/resources/assets/images/logo.png') . '" style="height: 32px; width: 32px; object-fit: cover;">';
-            endif;
-            echo '<div>
-                            <h5 class="m-0">' . $child->new_feed_comment_user->name . '</h5>
-                            <p class="text-muted mb-0">
-                                <small>' . NotificationController::timeAgo($child->updated_at) . '</small>
-                            </p>
-                            <p class="comment-text text-dark mb-2">' . $child->comment . '</p>
-                            <!--- Người bình luận đc sửa --->';
-            if ($user->id == $child->user_id):
-                echo '<div>
-                            <a href="javascript: void(0);"
-                                class="edit-comment btn btn-sm btn-link text-muted p-0">
-                                <i class="mdi mdi-pencil"></i> Sửa
-                            </a>
-                            <a href="javascript: void(0);" 
-                                class="delete-comment btn btn-sm btn-link text-muted p-0 ps-2">
-                                <i class="mdi mdi-delete"></i> Xóa
-                            </a>
-                        </div>';
-            elseif ($currentRouteName == 'new-feed' && $user->type == 'system'):
-                echo '<!---- Quản lý được xóa --->;
-                        <div>
-                            <a href="javascript: void(0);" 
-                                class="delete-comment btn btn-sm btn-link text-muted p-0">
-                                <i class="mdi mdi-delete"></i> Xóa
-                            </a>
-                        </div>';
-            endif;
-            echo '</div>
-            </div>
-            <hr />';
-            // if ($index == 1):
-            //     if (count($item->new_feed_comments) - 1 > $index):
-            //         echo '<hr />
-            //         <a href="javascript: void(0);" class="loadmore-cm btn btn-sm btn-link text-muted ps-0" comment-count="'.$index.'" feed-id="'.$item->id.'">Xem thêm bình luận</a>';
-            //     endif;
-            //     break;
-            // endif;
-        endforeach;
+        $comments = NewFeedComment::where('feed_id', $request->feed_id)
+            ->whereHas('feed', function (Builder $query) use ($user) {
+                $query->where('status', 0)->orWhere('user_id', $user->id);
+            })
+            ->orderBy('updated_at', 'DESC')
+            ->paginate(10, ['*'], 'comment_paginate');
+        return view('avnnewfeed::components.comments', compact('user', 'comments'));
     }
 
     public function storeFeed(Request $request)

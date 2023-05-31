@@ -7,7 +7,7 @@
 @section('content')
     <div class="container">
         <div class="row mt-2">
-            <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-1 position-relative mb-3">
+            <div class="col-lg-3 order-md-1 order-lg-1 position-relative mb-3">
                 <div class="position-sticky top-0">
                     <div class="card shadow-lg mb-0">
                         <div class="card-body">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xxl-3 col-lg-6 order-lg-1 order-xxl-2 position-relative mb-3">
+            <div class="col-lg-3 order-md-1 order-lg-2 position-relative mb-3 d-none d-lg-block">
                 <div class="position-sticky top-0">
                     <div class="card shadow-lg mb-0">
                         <div class="card-body">
@@ -62,7 +62,7 @@
                             </div>
                             <h4 class="header-title mb-1">Thông báo</h4>
                             @foreach ($notifications as $notification)
-                            <div class="d-flex mt-3">
+                                <div class="d-flex mt-3">
                                     <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
                                     <div>
                                         <a class="mt-1 font-14"
@@ -76,12 +76,12 @@
                                         </a>
                                     </div>
                                 </div>
-                                @endforeach
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xxl-6 col-lg-12 order-lg-2 order-xxl-1">
+            <div class="col-lg-6 order-md-2 order-lg-1" id="feed-container">
                 <div class="card shadow-lg">
                     <div class="card-body p-0">
                         <ul class="nav nav-tabs nav-bordered">
@@ -119,7 +119,8 @@
                                                     <i class="dripicons-paperclip"></i>
                                                 </label>
                                                 <button type="button" class="btn btn-sm btn-success text-end"
-                                                    id="feed-submit"><i class='uil uil-message me-1'></i>Đăng bài</button>
+                                                    id="feed-submit"><i class='uil uil-message me-1'></i>Đăng
+                                                    bài</button>
                                             </div>
                                         </div>
                                     </form>
@@ -128,307 +129,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div data-simplebar style="height: 550px"> --}}
-                    @isset($newsfeed)
-                        @foreach ($newsfeed as $item)
-                            <div class="card shadow-lg">
-                                <div class="card-body pb-1">
-                                    <div class="d-flex">
-                                        <img class="me-2 rounded"
-                                            src="{{ asset($item->new_feed_user->profile->img ?? config('constants.default_avatar')) }}"
-                                            style="height: 32px; width: 32px; object-fit: cover;">
-                                        <div class="w-100">
-                                            @if ($user->id == $item->user_id)
-                                                <div class="dropdown float-end text-muted">
-                                                    <a href="#" class="dropdown-toggle arrow-none card-drop"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        @php
-                                                            $params = [
-                                                                'alias' => $item->alias ?? $item->id,
-                                                            ];
-                                                        @endphp
-                                                        <a href="{{ route('edit-feed', $params) }}"
-                                                            class="dropdown-item">Chỉnh
-                                                            sửa</a>
-                                                        <a href="javascript:void(0);" data-bs-toggle="modal"
-                                                            data-bs-target="#delete-{{ $item->id }}"
-                                                            class="dropdown-item">Xóa</a>
-                                                    </div>
-                                                </div>
-                                                <!------- Quản lý thì đc phép xóa --------->
-                                            @elseif(Route::currentRouteName() == 'new-feed' && $user->type == 'system')
-                                                <div class="dropdown float-end text-muted">
-                                                    <a href="#" class="dropdown-toggle arrow-none card-drop"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="mdi mdi-dots-horizontal"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a href="javascript:void(0);" data-bs-toggle="modal"
-                                                            data-bs-target="#delete-{{ $item->id }}"
-                                                            class="dropdown-item">Xóa</a>
-                                                    </div>
-                                                </div>
-                                            @endif
-
-                                            <h5 class="m-0">{{ $item->new_feed_user->name }}</h5>
-                                            <p class="text-muted">
-                                                <small>{{ NotificationController::timeAgo($item->updated_at) }}
-                                                    @if ($user->id == $item->new_feed_user->id)
-                                                        <span class="mx-1">⚬</span>
-                                                        <span>
-                                                            @if ($item->status == '0')
-                                                                Public
-                                                            @else
-                                                                Cá nhân
-                                                            @endif
-                                                        </span>
-                                                    @endif
-                                                </small>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="py-3 w-100 overflow-hidden border-top border-bottom ">
-                                        <div class="font-18 mx-1">
-                                            {!! $item->description !!}
-                                        </div>
-                                        <div class="gallery-container animated-thumbnails-gallery position-relative"
-                                            {{ count($item->images) > 4 ? 'data-view-more=' . count($item->images) - 4 : '' }}>
-                                            @foreach ($item->images as $image)
-                                                <a href="{{ asset($image->image) }}"
-                                                    class="gallery-item {{ $loop->index > 3 ? 'd-none' : '' }}">
-                                                    <img src="{{ asset($image->image) }}"
-                                                        class="img-fluid {{ $loop->index > 3 ? 'd-none' : '' }}">
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    <div class="my-1">
-                                        <a href="javascript: void(0);" feed-id="{{ $item->id }}"
-                                            class="like-btn btn btn-sm btn-link text-muted ps-0"><i
-                                                class='mdi mdi-thumb-up{{ NewFeedLikeController::isLikeFeed($item->id) ? '' : '-outline' }}'></i>
-                                            <span>{{ count($item->new_feed_likes) }}</span></a>
-                                        <a href="javascript: void(0);" data-bs-toggle="modal"
-                                            data-bs-target="#open-{{ $item->id }}"
-                                            class="btn btn-sm btn-link text-muted ps-0"><i class='uil uil-comments-alt'></i>
-                                            {{ count($item->new_feed_comments) }}</a>
-                                    </div>
-                                    <div class="modal fade" id="open-{{ $item->id }}" tabindex="-1"
-                                        aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title text-dark">Bài viết của
-                                                        {{ $item->new_feed_user->name }}</h5>
-                                                    <button type="button" class="btn-close"
-                                                        data-bs-dismiss="modal"aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="post">
-                                                        <div class="d-flex">
-                                                            <img class="me-2 rounded"
-                                                                src="{{ asset($item->new_feed_user->profile->img ?? config('constants.default_avatar')) }}"
-                                                                style="height: 32px; width: 32px; object-fit: cover;">
-                                                            <div class="w-100">
-                                                                @if ($user->id == $item->user_id)
-                                                                    <div class="dropdown float-end text-muted">
-                                                                        <a href="#"
-                                                                            class="dropdown-toggle arrow-none card-drop"
-                                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            <i class="mdi mdi-dots-horizontal"></i>
-                                                                        </a>
-                                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                                            @php
-                                                                                $params = [
-                                                                                    'alias' => $item->alias ?? $item->id,
-                                                                                ];
-                                                                            @endphp
-                                                                            <a href="{{ route('edit-feed', $params) }}"
-                                                                                class="dropdown-item">Chỉnh
-                                                                                sửa</a>
-                                                                            <a href="javascript:void(0);"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#delete-{{ $item->id }}"
-                                                                                class="dropdown-item">Xóa</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!------- Quản lý thì đc phép xóa --------->
-                                                                @elseif(Route::currentRouteName() == 'new-feed' && $user->type == 'system')
-                                                                    <div class="dropdown float-end text-muted">
-                                                                        <a href="#"
-                                                                            class="dropdown-toggle arrow-none card-drop"
-                                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            <i class="mdi mdi-dots-horizontal"></i>
-                                                                        </a>
-                                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                                            <a href="javascript:void(0);"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#delete-{{ $item->id }}"
-                                                                                class="dropdown-item">Xóa</a>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
-                                                                <h5 class="m-0">{{ $item->new_feed_user->name }}</h5>
-                                                                <p class="text-muted">
-                                                                    <small>{{ NotificationController::timeAgo($item->updated_at) }}
-                                                                        @if ($user->id == $item->new_feed_user->id)
-                                                                            <span class="mx-1">⚬</span>
-                                                                            <span>
-                                                                                @if ($item->status == '0')
-                                                                                    Public
-                                                                                @else
-                                                                                    Cá nhân
-                                                                                @endif
-                                                                            </span>
-                                                                        @endif
-                                                                    </small>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="my-3 w-100 overflow-hidden">
-                                                            {!! $item->description !!}
-                                                        </div>
-                                                        <div class="my-1 border-top border-bottom">
-                                                            <a href="javascript: void(0);"
-                                                                class="btn btn-sm btn-link text-muted ps-0"><i
-                                                                    class='uil uil-comments-alt'></i>
-                                                                {{ count($item->new_feed_comments) }}</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="comments" post-id="{{ $item->id }}"
-                                                        total="{{ $item->new_feed_comments->count() }}">
-                                                        @php $comment_count = 0 @endphp
-                                                        @foreach ($item->new_feed_comments as $index => $child)
-                                                            <div class="d-flex item" comment-id="{{ $child->id }}">
-                                                                <img class="me-2 rounded"
-                                                                    src="{{ asset($child->new_feed_comment_user->profile->img ?? config('constants.default_avatar')) }}"
-                                                                    style="height: 32px; width: 32px; object-fit: cover;">
-                                                                <div>
-                                                                    <h5 class="m-0">
-                                                                        {{ $child->new_feed_comment_user->name }}
-                                                                        <!--- Người bình luận đc sửa --->
-                                                                        @if ($user->id == $child->user_id)
-                                                                            <div class="dropdown float-end ms-1">
-                                                                                <a href="#"
-                                                                                    class="dropdown-toggle arrow-none card-drop"
-                                                                                    data-bs-toggle="dropdown"
-                                                                                    aria-expanded="true">
-                                                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                                                </a>
-                                                                                <div class="dropdown-menu">
-                                                                                    <a href="javascript: void(0);"
-                                                                                        class="dropdown-item edit-comment">
-                                                                                        <i class='mdi mdi-pencil'></i> Sửa
-                                                                                    </a>
-                                                                                    <a href="javascript: void(0);"
-                                                                                        class="dropdown-item delete-comment ">
-                                                                                        <i class='mdi mdi-delete'></i> Xóa
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        @elseif(Route::currentRouteName() == 'new-feed' && $user->type == 'system')
-                                                                            <!---- Quản lý được xóa --->
-                                                                            <div class="dropdown float-end ms-1">
-                                                                                <a href="#"
-                                                                                    class="dropdown-toggle arrow-none card-drop"
-                                                                                    data-bs-toggle="dropdown"
-                                                                                    aria-expanded="true">
-                                                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                                                </a>
-                                                                                <div class="dropdown-menu">
-                                                                                    <a href="javascript: void(0);"
-                                                                                        class="dropdown-item delete-comment">
-                                                                                        <i class='mdi mdi-delete'></i> Xóa
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        @endif
-                                                                    </h5>
-                                                                    <p class="text-muted mb-0">
-                                                                        <small>{{ NotificationController::timeAgo($child->updated_at) }}</small>
-                                                                    </p>
-                                                                    <p class="comment-text text-dark mb-2">
-                                                                        {!! $child->comment !!}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                            @php
-                                                                if ($index == 1) {
-                                                                    if (count($item->new_feed_comments) - 1 > $index) {
-                                                                        $comment_count = $index + 1;
-                                                                    }
-                                                                    break;
-                                                                }
-                                                            @endphp
-                                                        @endforeach
-                                                    </div>
-                                                    @if ($comment_count)
-                                                        <div>
-                                                            <a href="javascript: void(0);"
-                                                                class="loadmore-cm btn btn-sm btn-link text-muted ps-0"
-                                                                comment-count="{{ $comment_count }}"
-                                                                feed-id="{{ $item->id }}">Xem thêm bình luận</a>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="modal-footer border-top-0">
-                                                    <div class="d-flex mb-2 w-100">
-                                                        <img class="align-self-start rounded me-2"
-                                                            src="{{ asset($user->profile->img ?? config('constants.default_avatar')) }}"
-                                                            style="height: 32px; width: 32px; object-fit: cover;">
-                                                        <div class="w-100">
-                                                            <form action="{{ route('store-comment-feed') }}" method="POST"
-                                                                enctype="multipart/form-data">
-                                                                @csrf
-                                                                <input type="hidden" name="feed_id"
-                                                                    value="{{ $item->id }}">
-                                                                <input type="text"
-                                                                    class="form-control border-0 form-control-sm"
-                                                                    name="comment" placeholder="Bình luận....">
-                                                                <div
-                                                                    class="mt-2 d-flex justify-content-end align-items-center">
-                                                                    <button type="submit" class="btn btn-sm btn-success">Bình
-                                                                        luận</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!----Modal Delete bài viết----->
-                                    <div class="modal fade" id="delete-{{ $item->id }}" tabindex="-1"
-                                        aria-hidden="true" style="background-color: rgba(49,58,70,0.7);">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title text-dark">Xác nhận</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body text-dark">
-                                                    <p>Bạn có muốn xóa không?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
-                                                    </button>
-                                                    <form action="{{ route('delete-feed', [$item->id]) }}" method="POST">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button type="submit" class="btn btn-primary">Xóa</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach()
-                    @endisset
-                {{-- </div> --}}
+                @include('avnnewfeed::components.newfeed', ['newsfeed' => $newsfeed])
             </div>
         </div>
     </div>
@@ -519,69 +220,111 @@
     <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/lightgallery.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/plugins/zoom/lg-zoom.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/plugins/thumbnail/lg-thumbnail.umd.js"></script>
-
     <script type="text/javascript">
-        $(".animated-thumbnails-gallery").each(function() {
-            window.lightGallery(
-                this, {
-                    galleryId: "nature",
-                    plugins: [lgZoom, lgThumbnail],
-                    mobileSettings: {
-                        controls: false,
-                        showCloseIcon: false,
-                        download: false,
-                        rotate: false
-                    }
+        window.newfeed_paginate = 1;
+        window.load_more_feed = true;
+        init_gallery();
+        $(window).scroll(function() {
+            if ($(window).scrollTop() + $(window).height() + $('footer').outerHeight() >= $(document).height()) {
+                if (window.load_more_feed) {
+                    window.load_more_feed = false;
+                    ++window.newfeed_paginate;
+                    var htm =
+                        '<button id="load-more-spin" class="btn btn-primary w-100 mb-1" type="button" disabled>'
+                    htm +=
+                        '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>'
+                    htm += 'Đang tải thêm ...'
+                    htm += '</button>'
+                    $('#feed-container').append(htm);
+                    $.ajax({
+                        method: 'get',
+                        url: "{{ route('load-new-feed') }}",
+                        dataType: "html",
+                        data: {
+                            newfeed_paginate: window.newfeed_paginate,
+                        },
+                        success: function(res) {
+                            $('#load-more-spin').remove();
+                            if (!res) {
+                                window.load_more_feed = false;
+                                var htm =
+                                    '<button id="load-more-spin" class="btn btn-outline-primary w-100 mb-1 fw-bold" type="button" disabled="">Tất cả đã được tải</button>'
+                                $('#feed-container').append(htm);
+                            } else {
+                                window.load_more_feed = true;
+                                $('#feed-container').append(res);
+                                init_gallery();
+                            }
+                        }
+                    });
                 }
-            );
-        })
-        $('.gallery-container').each(function() {
-            var container = this
-            var img = $(this).find('img:not(.d-none)');
-            var aspect_ratio = [];
-            if (img.length > 1) {
-                img.each(function(index, image) {
-                    if (image.height / image.width > 1.1) {
-                        aspect_ratio[aspect_ratio.length] = 'portrait';
-                    } else if (image.height / image.width < 0.9) {
-                        aspect_ratio[aspect_ratio.length] = 'landscape';
-                    } else {
-                        aspect_ratio[aspect_ratio.length] = 'square';
-                    }
-                });
-                if (aspect_ratio.length == 2) {
-                    $(container).addClass('gallery-container2');
-                }
-                if (aspect_ratio.length == 3) {
-                    if (aspect_ratio[0] == 'landscape') {
-                        $(container).addClass('gallery-container3-2');
-                    } else if (
-                        aspect_ratio[0] == 'square' ||
-                        aspect_ratio.filter((item) => (item == 'portrait')).length == 3
-                    ) {
-                        $(container).addClass('gallery-container3-3');
-                    } else {
-                        $(container).addClass('gallery-container3-1');
-                    }
-                }
-                if (aspect_ratio.length == 4) {
-                    if (aspect_ratio[0] == 'square') {
-                        $(container).addClass('gallery-container4-1');
-                    } else if (aspect_ratio[0] == 'landscape') {
-                        $(container).addClass('gallery-container4-3');
-                    } else {
-                        $(container).addClass('gallery-container4-2');
-                    }
-                    console.log($(container).attr('data-view-more'));
-                    if ($(container).attr('data-view-more')) {
-                        $(container).find('a:not(.d-none):nth-child(4)').append(
-                            '<div class="position-absolute top-0 start-0 w-100 h-100 text-white fw-bold d-flex fs-2 justify-content-center align-items-center" style=" background-color: rgba(var(--bs-dark-rgb),0.4)!important; ">+' +
-                            $(container).attr('data-view-more') + '</div>')
-                    }
-                }
-                img.addClass('h-100 w-100')
             }
-        });
+        })
+
+        function init_gallery() {
+            $(".feed-without-gallery .animated-thumbnails-gallery").each(function() {
+                window.lightGallery(
+                    this, {
+                        galleryId: "nature",
+                        plugins: [lgZoom, lgThumbnail],
+                        mobileSettings: {
+                            controls: false,
+                            showCloseIcon: false,
+                            download: false,
+                            rotate: false
+                        }
+                    }
+                );
+            })
+            $('.feed-without-gallery .gallery-container').each(function() {
+                var container = this
+                var img = $(this).find('img:not(.d-none)');
+                var aspect_ratio = [];
+                if (img.length > 1) {
+                    img.each(function(index, image) {
+                        if (image.height / image.width > 1.1) {
+                            aspect_ratio[aspect_ratio.length] = 'portrait';
+                        } else if (image.height / image.width < 0.9) {
+                            aspect_ratio[aspect_ratio.length] = 'landscape';
+                        } else {
+                            aspect_ratio[aspect_ratio.length] = 'square';
+                        }
+                    });
+                    if (aspect_ratio.length == 2) {
+                        $(container).addClass('gallery-container2');
+                    }
+                    if (aspect_ratio.length == 3) {
+                        if (aspect_ratio[0] == 'landscape') {
+                            $(container).addClass('gallery-container3-2');
+                        } else if (
+                            aspect_ratio[0] == 'square' ||
+                            aspect_ratio.filter((item) => (item == 'portrait')).length == 3
+                        ) {
+                            $(container).addClass('gallery-container3-3');
+                        } else {
+                            $(container).addClass('gallery-container3-1');
+                        }
+                    }
+                    if (aspect_ratio.length == 4) {
+                        if (aspect_ratio[0] == 'square') {
+                            $(container).addClass('gallery-container4-1');
+                        } else if (aspect_ratio[0] == 'landscape') {
+                            $(container).addClass('gallery-container4-3');
+                        } else {
+                            $(container).addClass('gallery-container4-2');
+                        }
+                        console.log($(container).attr('data-view-more'));
+                        if ($(container).attr('data-view-more')) {
+                            $(container).find('a:not(.d-none):nth-child(4)').append(
+                                '<div class="position-absolute top-0 start-0 w-100 h-100 text-white fw-bold d-flex fs-2 justify-content-center align-items-center" style=" background-color: rgba(var(--bs-dark-rgb),0.4)!important; ">+' +
+                                $(container).attr('data-view-more') + '</div>')
+                        }
+                    }
+                    img.addClass('h-100 w-100')
+                }
+            });
+            $('.feed-without-gallery').removeClass('feed-without-gallery');
+        }
     </script>
 
     <script type="text/javascript">
@@ -594,7 +337,7 @@
         jQuery(document).ready(function($) {
             var modalEditComment = new bootstrap.Modal(document.getElementById('edit-comment'))
             var modalDeleteComment = new bootstrap.Modal(document.getElementById('delete-comment'))
-            $('.comments').on('click', '.edit-comment', function() {
+            $('#feed-container ').on('click', '.comments .edit-comment', function() {
                 let form = $('#edit-comment form');
                 let action_str = form.attr('action');
                 let idx = action_str.lastIndexOf('/');
@@ -605,7 +348,7 @@
                     .trim());
                 modalEditComment.show();
             })
-            $('.comments').on('click', '.delete-comment', function() {
+            $('#feed-container').on('click', '.comments .delete-comment', function() {
                 let form = $('#delete-comment form');
                 let action_str = form.attr('action');
                 let idx = action_str.lastIndexOf('/');
@@ -613,7 +356,7 @@
                 form.attr('action', action_str + $(this).closest('.item').attr('comment-id'));
                 modalDeleteComment.show();
             })
-            $('.like-btn').on('click', function() {
+            $('#feed-container').on('click', '.like-btn', function() {
                 let $this = $(this);
                 let feed_id = $this.attr('feed-id');
                 if ($this.find('i').hasClass('mdi-thumb-up-outline')) {
@@ -642,32 +385,37 @@
                     });
                 }
             })
-            $('.loadmore-cm').on('click', function() {
-                let $this = $(this);
-                let container = $(this).closest('.modal').find('.comments');
-                let feed_id = $(this).attr('feed-id');
-                let comment_count = parseInt($(this).attr('comment-count'));
-                let total = parseInt(container.attr('total'));
-                $this.addClass("disabled");
+            $('#feed-container').on('click', '.load-more-comment', function() {
+                var button = this;
+                var feed_id = $(this).attr('data-feed-id');
+                var comment_paginate = $(this).attr('data-page');
+                comment_paginate++;
+                $(this).attr('data-page', comment_paginate);
+                $(this).addClass("d-none");
+                var htm =
+                    '<p class="load-more-spin w-100 mb-1">'
+                htm +=
+                    '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>'
+                htm += 'Đang tải thêm ...'
+                htm += '</p>'
+                $(htm).insertBefore(this);
                 $.ajax({
                     method: 'get',
                     url: "{{ route('load-comment-feed') }}",
-                    // dataType: "json",
+                    dataType: "html",
                     data: {
                         feed_id: feed_id,
-                        comment_count: comment_count,
-                        currentRouteName: '{{ Route::currentRouteName() }}',
+                        comment_paginate: comment_paginate,
                     },
                     success: function(res) {
+                        $(button).parent().find('.load-more-spin').remove();
                         if (res) {
-                            comment_count += 1;
-                            if (comment_count >= total) {
-                                $this.parent().remove();
-                            } else {
-                                $this.attr('comment-count', comment_count);
-                            }
-                            container.append(res);
-                            $this.removeClass("disabled");
+                            $(res).insertBefore(button);
+                            $(button).removeClass("d-none");
+                        } else {
+                            $('<p class="mb-1 fw-bold text-primary">Tất cả đã được tải</p>')
+                                .insertBefore(button);
+
                         }
                     }
                 });
@@ -749,7 +497,7 @@
             });
             $.ajax({
                 method: 'post',
-                url: "{{route('store-feed')}}",
+                url: "{{ route('store-feed') }}",
                 dataType: "json",
                 processData: false,
                 contentType: false,
