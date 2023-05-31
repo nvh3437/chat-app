@@ -3,97 +3,92 @@
 namespace Modules\AvnNewFeed\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnNewFeed\Entities\NewFeed;
+use Modules\AvnNewFeed\Entities\NewFeedImage;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Modules\AvnNewFeed\Http\Requests\NewFeedRequest;
 use Modules\AvnNewFeed\Entities\NewFeedComment;
 use App\Http\Controllers\NotificationController;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\File;
 
 class NewFeedController extends Controller
 {
     public function newFeed()
     {
         $user = Auth::user();
-        $title = 'NewFeed';
-        $newsfeed = NewFeed::where('status', 0)->orderBy('updated_at', 'DESC')->get();
-        return view('avnnewfeed::new-feed', compact('user', 'title', 'newsfeed'));
+        $newsfeed = NewFeed::where('status', 0)->orWhere('user_id', $user->id)->orderBy('updated_at', 'DESC')->paginate(10);
+        return view('avnnewfeed::new-feed', compact('user', 'newsfeed'));
+    }
+    public function loadNewFeed()
+    {
+        $user = Auth::user();
+        $newsfeed = NewFeed::where('status', 0)->orWhere('user_id', $user->id)->orderBy('updated_at', 'DESC')->paginate(10, ['*'], 'newfeed_paginate');
+        return view('avnnewfeed::components.newfeed', compact('user', 'newsfeed'));
     }
 
     public function myFeed()
     {
         $user = Auth::user();
-        $title = 'Bài đăng của tôi';
         $newsfeed = NewFeed::where('user_id', $user->id)->orderBy('updated_at', 'DESC')->get();
-        return view('avnnewfeed::new-feed', compact('user', 'title', 'newsfeed'));
+        return view('avnnewfeed::new-feed', compact('user', 'newsfeed'));
     }
 
     public function loadCommentFeed(Request $request)
     {
         $user = Auth::user();
-        $currentRouteName = $request->currentRouteName ?? '';
-        $comments = NewFeedComment::where('feed_id', $request->feed_id)->orderBy('updated_at', 'DESC')->skip($request->comment_count)->take(1)->get();
-
-        foreach ($comments as $index => $child):
-            echo '<div class="d-flex item" comment-id="' . $child->id . '">';
-            if ($child->new_feed_comment_user->profile && $child->new_feed_comment_user->profile->img):
-                echo '<img class="me-2 rounded" src="' . asset($child->new_feed_comment_user->profile->img ?? '/resources/assets/images/logo.png') . '" style="height: 32px; width: 32px; object-fit: cover;">';
-            else:
-                echo '<img class="me-2 rounded" src="' . asset('/resources/assets/images/logo.png') . '" style="height: 32px; width: 32px; object-fit: cover;">';
-            endif;
-            echo '<div>
-                            <h5 class="m-0">' . $child->new_feed_comment_user->name . '</h5>
-                            <p class="text-muted mb-0">
-                                <small>' . NotificationController::timeAgo($child->updated_at) . '</small>
-                            </p>
-                            <p class="comment-text text-dark mb-2">' . $child->comment . '</p>
-                            <!--- Người bình luận đc sửa --->';
-            if ($user->id == $child->user_id):
-                echo '<div>
-                            <a href="javascript: void(0);"
-                                class="edit-comment btn btn-sm btn-link text-muted p-0">
-                                <i class="mdi mdi-pencil"></i> Sửa
-                            </a>
-                            <a href="javascript: void(0);" 
-                                class="delete-comment btn btn-sm btn-link text-muted p-0 ps-2">
-                                <i class="mdi mdi-delete"></i> Xóa
-                            </a>
-                        </div>';
-            elseif ($currentRouteName == 'new-feed' && $user->type == 'system'):
-                echo '<!---- Quản lý được xóa --->;
-                        <div>
-                            <a href="javascript: void(0);" 
-                                class="delete-comment btn btn-sm btn-link text-muted p-0">
-                                <i class="mdi mdi-delete"></i> Xóa
-                            </a>
-                        </div>';
-            endif;
-            echo '</div>
-            </div>
-            <hr />';
-            // if ($index == 1):
-            //     if (count($item->new_feed_comments) - 1 > $index):
-            //         echo '<hr />
-            //         <a href="javascript: void(0);" class="loadmore-cm btn btn-sm btn-link text-muted ps-0" comment-count="'.$index.'" feed-id="'.$item->id.'">Xem thêm bình luận</a>';
-            //     endif;
-            //     break;
-            // endif;
-        endforeach;
+        $comments = NewFeedComment::where('feed_id', $request->feed_id)
+            ->whereHas('feed', function (Builder $query) use ($user) {
+                $query->where('status', 0)->orWhere('user_id', $user->id);
+            })
+            ->orderBy('updated_at', 'DESC')
+            ->paginate(10, ['*'], 'comment_paginate');
+        return view('avnnewfeed::components.comments', compact('user', 'comments'));
     }
 
-    public function storeFeed(NewFeedRequest $request)
+    public function storeFeed(Request $request)
     {
         try {
             $new_feed = new NewFeed();
-            $new_feed->description = $request->description;
-            $new_feed->alias = Str::random(10);
+            $new_feed->description = $request->description ?? '';
+            $new_feed->alias = Str::random(15);
             $new_feed->status = $request->status ?? 0;
             $new_feed->user_id = Auth::user()->id;
             $new_feed->save();
-            return back()->with('Success', 'Đăng bài thành công');
+            if ($request->images && count($request->images)) {
+                if (!file_exists('storage/app/AvnNewFeed')) {
+                    File::makeDirectory('storage/app/AvnNewFeed', 0777, true, true);
+                }
+                foreach ($request->images as $image) {
+                    if ($image->isValid()) {
+                        try {
+                            $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
+                            $image_resize = Image::make($image->getRealPath());
+                            $image_resize->resize(1500, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                            $path = "storage/app/AvnNewFeed/" . $filename;
+                            if (!file_exists('storage/app/AvnNewFeed')) {
+                                File::makeDirectory('storage/app/AvnNewFeed', 0777, true, true);
+                            }
+                            $image_resize->save($path);
+
+                            $feed_image = new NewFeedImage();
+                            $feed_image->feed_id = $new_feed->id;
+                            $feed_image->image = $path;
+                            $feed_image->save();
+                        } catch (\Throwable $th) {
+                            //throw $th;
+                        }
+                    }
+                }
+            }
+            return $new_feed;
         } catch (Exception $e) {
             return back()->with('Failed', 'Đăng bài thất bại');
         }
@@ -102,26 +97,60 @@ class NewFeedController extends Controller
     public function editFeed($alias)
     {
         $user = Auth::user();
-        $title = 'Sửa bài';
         $edit_feed = NewFeed::where('alias', $alias)->first();
         if (!$edit_feed) {
-            $edit_feed = Store::findOrFail($alias);
+            abort(404);
         }
-        return view('avnnewfeed::new-feed', compact('user', 'title', 'edit_feed'));
+        return view('avnnewfeed::edit-feed', compact('user', 'edit_feed'));
     }
 
-    public function updateFeed(NewFeedRequest $request, $id)
+    public function updateFeed(Request $request, $id)
     {
         try {
-            $new_feed = NewFeed::where([
-                'id' => $id,
-                'user_id' => Auth::user()->id
-            ])->first();
-            $new_feed->description = $request->description;
-            $new_feed->alias = Str::random(10);
+            $new_feed = NewFeed::where(
+                'user_id', Auth::user()->id
+            )->findOrFail($id);
+            $new_feed->description = $request->description ?? '';
             $new_feed->status = $request->status ?? 0;
             $new_feed->save();
-            return redirect()->route('new-feed')->with('Success', 'Cập nhật thành công');
+            if ($request->remove_images && count($request->remove_images)) {
+                foreach ($request->remove_images as $remove_image) {
+                    $remove_image = NewFeedImage::where('feed_id', $new_feed->id)->find($remove_image);
+                    if ($remove_image) {
+                        File::delete($remove_image);
+                        $remove_image->delete();
+                    }
+                }
+            }
+            if ($request->images && count($request->images)) {
+                if (!file_exists('storage/app/AvnNewFeed')) {
+                    File::makeDirectory('storage/app/AvnNewFeed', 0777, true, true);
+                }
+                foreach ($request->images as $image) {
+                    if ($image->isValid()) {
+                        try {
+                            $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
+                            $image_resize = Image::make($image->getRealPath());
+                            $image_resize->resize(1500, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                            $path = "storage/app/AvnNewFeed/" . $filename;
+                            if (!file_exists('storage/app/AvnNewFeed')) {
+                                File::makeDirectory('storage/app/AvnNewFeed', 0777, true, true);
+                            }
+                            $image_resize->save($path);
+
+                            $feed_image = new NewFeedImage();
+                            $feed_image->feed_id = $new_feed->id;
+                            $feed_image->image = $path;
+                            $feed_image->save();
+                        } catch (\Throwable $th) {
+                            //throw $th;
+                        }
+                    }
+                }
+            }
+            return $new_feed;
         } catch (Exception $e) {
             return back()->with('Failed', 'Cập nhật thất bại');
         }
@@ -131,13 +160,20 @@ class NewFeedController extends Controller
     {
         try {
             if (Auth::user()->type == 'system') {
-                NewFeed::destroy($id);
+                $new_feed = NewFeed::findOrFail($id);
             } else {
-                $new_feed = NewFeed::where([
-                    'id' => $id,
-                    'user_id' => Auth::user()->id
-                ])->first()->delete();
+                $new_feed = NewFeed::where('user_id', Auth::user()->id)->findOrFail($id);
             }
+            if ($new_feed->remove_images && count($new_feed->remove_images)) {
+                foreach ($new_feed->remove_images as $remove_image) {
+                    $remove_image = NewFeedImage::where('feed_id', $new_feed->id)->find($remove_image);
+                    if ($remove_image) {
+                        File::delete($remove_image);
+                        $remove_image->delete();
+                    }
+                }
+            }
+            $new_feed->delete();
             return back()->with('Success', 'Xóa thành công');
         } catch (Exception $e) {
             return back()->with('Failed', 'Xóa thất bại');

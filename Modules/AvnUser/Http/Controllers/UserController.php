@@ -3,6 +3,7 @@
 namespace Modules\AvnUser\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnUser\Entities\Partner;
@@ -12,9 +13,24 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Modules\AvnUser\Entities\Profile;
+use Modules\AvnUser\Entities\AddSubMoney;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
+    public function moneyHistory(Request $request)
+    {
+        $date = $request->date ? Carbon::createFromFormat('M Y', $request->date) : new Carbon();
+        if (Auth::user()->type == 'system') {
+            $money_histories = AddSubMoney::where('user_id', $request->user_id);
+        } else {
+            $money_histories = AddSubMoney::where('user_id', Auth::user()->id);
+        }
+
+        $money_histories = $money_histories->where('created_at', '<=', $date->copy()->endOfMonth())->where('created_at', '>=', $date->copy()->startOfMonth())->orderByDesc('created_at')->get();
+        return view('avnuser::money-history', compact('money_histories', 'date'));
+    }
+
     public function profile()
     {
         $user = Auth::user();

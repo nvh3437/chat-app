@@ -15,6 +15,7 @@ use Modules\AvnNewFeed\Http\Controllers\NewFeedLikeController;
 
 //---------------------------- New Feed -----------------------//
 Route::get('/new-feed', [NewFeedController::class, 'newFeed'])->middleware(['auth'])->name('new-feed');
+Route::get('/load-new-feed', [NewFeedController::class, 'loadNewFeed'])->middleware(['auth'])->name('load-new-feed');
 Route::get('/my-feed', [NewFeedController::class, 'myFeed'])->middleware(['auth'])->name('my-feed');
 Route::get('/load-comment-feed', [NewFeedController::class, 'loadCommentFeed'])->middleware(['auth'])->name('load-comment-feed');
 Route::get('/edit-feed/{alias}', [NewFeedController::class, 'editFeed'])->middleware(['auth'])->name('edit-feed');

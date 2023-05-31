@@ -35,6 +35,7 @@ Route::prefix('chat')->group(function () {
     Route::delete('/delete-order/{id}', 'AvnChatOrderController@deleteOrder')->middleware(['auth', 'permission'])->name('delete-order');
     // session
     Route::get('/session', 'AvnChatSessionController@listSession')->middleware(['auth', 'permission'])->name('list-session');
+    Route::get('/session/users', 'AvnChatSessionController@listSessionUser')->middleware(['auth'])->name('list-session-user');
     Route::put('/process-session/{id}', 'AvnChatSessionController@processSession')->middleware(['auth', 'permission'])->name('process-session');
     // call
     Route::post('/start-call', 'AvnCallController@startCall')->middleware(['auth', 'lastactivity'])->name('start-call');

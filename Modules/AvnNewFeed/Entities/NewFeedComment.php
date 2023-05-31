@@ -22,4 +22,8 @@ class NewFeedComment extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+    public function feed()
+    {
+        return $this->hasOne(NewFeed::class, 'id', 'feed_id');
+    }
 }

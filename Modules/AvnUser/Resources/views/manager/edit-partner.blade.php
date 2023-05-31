@@ -1,3 +1,6 @@
+@php
+    use Carbon\Carbon;
+@endphp
 @extends('layouts.admin')
 @section('title')
     Sửa chuyên gia
@@ -173,7 +176,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($user->addsub_money as $index => $item)
+                                    @foreach ($user->addsub_money->take(5) as $index => $item)
                                         <tr class="{{ $item->add ? 'text-success' : 'text-danger' }}">
                                             <td>{{ date('H:i d/m/Y', strtotime($item->created_at)) }}</td>
                                             <td>
@@ -185,7 +188,107 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="text-center">
+                                <a href="{{ route('money-history', ['user_id' => $user->id]) }}"
+                                    class="btn btn-outline-primary">Xem thêm</a>
+                            </div>
+                            
                         </div>
+                        @if (count($user->sessions))
+                                <h4 class="mt-3">Phiên làm việc: </h4>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="table-dark align-middle">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Ngày</th>
+                                                <th>Trạng thái</th>
+                                                <th>Thời gian</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($user->sessions->take(5) as $item)
+                                                <tr
+                                                    class="{{ $item->status == 1 ? 'text-success' : ($item->status == -1 ? 'text-danger' : 'text-warning') }}">
+                                                    <td class="fw-bold">#{{ $item->id }}</td>
+                                                    <td>{{ date('H:i d/m/Y', strtotime($item->created_at)) }}</td>
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'danger' : 'warning') }} text-white">
+                                                            @if ($item->status == 1)
+                                                                Đã xử lý
+                                                            @elseif ($item->status == -1)
+                                                                Từ chối
+                                                            @else
+                                                                Chưa xử lý
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @if ($item->status == 1)
+                                                            @php
+                                                                if (!$item->time) {
+                                                                    $time_end = Carbon::createFromFormat('Y-m-d H:i:s', $item->end_on);
+                                                                    $created = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at);
+                                                                    $minutes = $time_end->diffInMinutes($created);
+                                                                }
+                                                            @endphp
+                                                            {{ $item->time ?? $minutes }} phút
+                                                        @else
+                                                            ...
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <h4 class="mt-3">Tháng này: </h4>
+                                    <table class="table">
+                                        <thead class="table-dark align-middle">
+                                            <tr>
+                                                <th>Tài khoản</th>
+                                                <th>Tổng số phiên</th>
+                                                <th>Phiên chưa xử lý</th>
+                                                <th>Phiên đã xử lý</th>
+                                                <th>Phiên đã từ chối</th>
+                                                <th>Thời gian đã xử lý</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <img src="{{ asset($user->profile->img ?? config('constants.default_avatar')) }}"
+                                                        class="avatar-xs rounded-circle" style="object-fit: cover">
+                                                    <span class="fw-bold">{{ $user->name }}</span>
+                                                </td>
+                                                @php
+                                                    $date = new Carbon();
+                                                    $user_sessions = $user->sessions->where('created_at', '<=', $date->copy()->endOfMonth())->where('created_at', '>=', $date->copy()->startOfMonth());
+                                                @endphp
+                                                <td class="fw-bold">
+                                                    {{ count($user_sessions) }}
+                                                </td>
+                                                <td class="fw-bold text-warning">
+                                                    {{ count($user_sessions->where('status', 0)) }}
+                                                </td>
+                                                <td class="fw-bold text-success">
+                                                    {{ count($user_sessions->where('status', 1)) }}
+                                                </td>
+                                                <td class="fw-bold text-danger">
+                                                    {{ count($user_sessions->where('status', -1)) }}
+                                                </td>
+                                                <td class="fw-bold text-success">
+                                                    {{ $user_sessions->sum('time') }} phút
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center">
+                                    <a href="{{ route('list-session-user', ['user_id' => $user->id]) }}" class="btn btn-outline-primary">Xem
+                                        thêm</a>
+                                </div>
+                            @endif
                     </div>
                 </div>
             </div>
