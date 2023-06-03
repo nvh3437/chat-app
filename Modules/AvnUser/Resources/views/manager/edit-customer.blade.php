@@ -3,14 +3,14 @@
 @endphp
 @extends('layouts.admin')
 @section('title')
-    Sửa khách hàng
+    @lang('settings.Update.update') @lang('settings.Customer')
 @endsection
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Sửa khách hàng</h4>
+                    <h4 class="page-title">@lang('settings.Update.update') @lang('settings.Customer')</h4>
                 </div>
             </div>
         </div>
@@ -21,71 +21,69 @@
                     @method('PUT')
                     <div class="card">
                         <div class="card-body shadow-lg">
-                            <h4 class="header-title">Thông tin cơ bản</h4>
+                            <h4 class="header-title">@lang('settings.Profile')</h4>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Ảnh đại diện
+                                        @lang('settings.Avatar')
                                     </label>
                                     <input accept="image/*" type="file" class="form-control" name="img">
-                                    @if ($customer->img == '')
-                                        <img class="img-fluid mt-2" src="{{ asset('/resources/assets/images/logo.png') }}"
-                                            style="max-width: 200px;" />
-                                    @else
-                                        <img class="img-fluid mt-2" src="{{ asset($customer->img) }}"
-                                            style="max-width: 200px;" />
-                                    @endif
+                                    <img class="img-fluid mt-2"
+                                        src="{{ asset($customer->img ?? config('constants.default_avatar')) }}"
+                                        style="max-width: 200px;" />
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Tên <span class="text-danger">*</span>
+                                        @lang('settings.Name') <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" name="name"
                                         value="{{ $customer->user->name }}" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Giới tính <span class="text-danger">*</span>
+                                        @lang('settings.Gender') <span class="text-danger">*</span>
                                     </label>
                                     <select class="form-select" name="gender">
                                         <option value="0" class="form-control"
-                                            {{ $customer && $customer->gender == '0' ? 'selected' : '' }}>Nam
+                                            {{ $customer && $customer->gender == '0' ? 'selected' : '' }}>
+                                            @lang('settings.Male')
                                         </option>
                                         <option value="1" class="form-control"
-                                            {{ $customer && $customer->gender == '1' ? 'selected' : '' }}>Nữ
+                                            {{ $customer && $customer->gender == '1' ? 'selected' : '' }}>
+                                            @lang('settings.Female')
                                         </option>
                                     </select>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Email <span class="text-danger">*</span>
+                                        @lang('settings.Email') <span class="text-danger">*</span>
                                     </label>
                                     <input type="email" class="form-control" name="email" value="{{ $user->email }}"
                                         required>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Số điện thoại
+                                        @lang('settings.Phone')
                                     </label>
                                     <input type="number" class="form-control" name="phone"
                                         value="{{ $customer->phone }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Ngày sinh
+                                        @lang('settings.Birth')
                                     </label>
                                     <input type="date" class="form-control" name="birth"
                                         value="{{ $customer->birth }}">
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
-                                        Địa chỉ
+                                        @lang('settings.Address')
                                     </label>
                                     <textarea class="form-control" name="address" rows="5">{!! $customer->address !!}</textarea>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-2">
-                                        Tiểu sử
+                                        @lang('avnuser::profile.Life_story')
                                     </label>
                                     <textarea class="form-control" name="description" rows="5">{!! $customer->description !!}</textarea>
                                 </div>
@@ -94,18 +92,18 @@
                     </div>
                     <div class="card">
                         <div class="card-body shadow-lg">
-                            <h4 class="header-title">Thông tin tài khoản</h4>
+                            <h4 class="header-title">@lang('settings.Account_info')</h4>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Tên đăng nhập <span class="text-danger">*</span>
+                                        @lang('settings.Username') <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" name="username" readonly
                                         value="{{ $user->username }}">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Mật khẩu <span class="text-danger">*</span>
+                                        @lang('settings.Password') <span class="text-danger">*</span>
                                     </label>
                                     <input type="password" class="form-control" name="password">
                                 </div>
@@ -113,19 +111,23 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-center mt-3 mb-3">
-                        <button type="submit" class="btn btn-danger me-3">Cập nhật</button>
-                        <a href="{{ route('list-customer') }}" class="btn btn-secondary ms-3">Quay lại</a>
+                        <button type="submit" class="btn btn-danger me-3">
+                            @lang('settings.Update.update')
+                        </button>
+                        <a href="{{ route('list-customer') }}" class="btn btn-secondary ms-3">
+                            @lang('settings.Back')
+                        </a>
                     </div>
                 </form>
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        <h4 class="header-title">Thông tin số dư</h4>
+                        <h4 class="header-title">@lang('avnuser::profile.Balance')</h4>
                         <form action="{{ route('update-money-customer', $customer->id) }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Cộng tiền
+                                        @lang('settings.Plus') @lang('avnuser::profile.Balance')
                                     </label>
                                     <input type="text" class="form-control" data-toggle="input-mask"
                                         data-mask-format="#,##0.00" data-reverse="true" name="add"
@@ -133,7 +135,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
-                                        Trừ tiền
+                                        @lang('settings.Subtract') @lang('avnuser::profile.Balance')
                                     </label>
                                     <input type="text" class="form-control" data-toggle="input-mask"
                                         data-mask-format="#,##0.00" data-reverse="true" name="sub"
@@ -141,25 +143,27 @@
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label mt-2">
-                                        Ghi chú
+                                        @lang('settings.Note')
                                     </label>
                                     <textarea class="form-control" name="note" rows="5"></textarea>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-danger mt-3">Cập nhật</button>
+                                    <button type="submit" class="btn btn-danger mt-3">
+                                        @lang('settings.Update.update')
+                                    </button>
                                 </div>
                             </div>
                         </form>
-                        <h4 class="mt-3">Số dư hiện tại: <span
+                        <h4 class="mt-3">@lang('avnuser::profile.Current_balance'): <span
                                 class="badge bg-primary">{{ number_format($customer->money, 2) }} $</span></h4>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="table-dark align-middle">
                                     <tr>
-                                        <th>Ngày</th>
-                                        <th>Cộng/Trừ</th>
-                                        <th>Số dư sau xử lý</th>
-                                        <th>Ghi chú</th>
+                                        <th>@lang('settings.Date')</th>
+                                        <th>@lang('settings.Plus')/@lang('settings.Subtract')</th>
+                                        <th>@lang('avnuser::profile.Processed_balance')</th>
+                                        <th>@lang('settings.Note')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -177,19 +181,21 @@
                             </table>
                             <div class="text-center">
                                 <a href="{{ route('money-history', ['user_id' => $user->id]) }}"
-                                    class="btn btn-outline-primary">Xem thêm</a>
+                                    class="btn btn-outline-primary">
+                                    @lang('settings.View_more')
+                                </a>
                             </div>
                         </div>
                         @if (count($user->sessions))
-                            <h4 class="mt-3">Phiên làm việc: </h4>
+                            <h4 class="mt-3">@lang('settings.Working_session'): </h4>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead class="table-dark align-middle">
                                         <tr>
                                             <th>#</th>
-                                            <th>Ngày</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thời gian</th>
+                                            <th>@lang('settings.Date')</th>
+                                            <th>@lang('settings.Status')</th>
+                                            <th>@lang('settings.Time')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -202,11 +208,11 @@
                                                     <span
                                                         class="badge bg-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'danger' : 'warning') }} text-white">
                                                         @if ($item->status == 1)
-                                                            Đã xử lý
+                                                            @lang('settings.Processed')
                                                         @elseif ($item->status == -1)
-                                                            Từ chối
+                                                            @lang('settings.Deny')
                                                         @else
-                                                            Chưa xử lý
+                                                            @lang('settings.Unprocessed')
                                                         @endif
                                                     </span>
                                                 </td>
@@ -219,7 +225,7 @@
                                                                 $minutes = $time_end->diffInMinutes($created);
                                                             }
                                                         @endphp
-                                                        {{ $item->time ?? $minutes }} phút
+                                                        {{ $item->time ?? $minutes }} @lang('settings.minute')
                                                     @else
                                                         ...
                                                     @endif
@@ -228,16 +234,16 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <h4 class="mt-3">Tháng này: </h4>
+                                <h4 class="mt-3">@lang('settings.This_month'): </h4>
                                 <table class="table">
                                     <thead class="table-dark align-middle">
                                         <tr>
-                                            <th>Tài khoản</th>
-                                            <th>Tổng số phiên</th>
-                                            <th>Phiên chưa xử lý</th>
-                                            <th>Phiên đã xử lý</th>
-                                            <th>Phiên đã từ chối</th>
-                                            <th>Thời gian đã xử lý</th>
+                                            <th>@lang('settings.Account')</th>
+                                            <th>@lang('settings.Sum_session')</th>
+                                            <th>@lang('settings.Unprocessed_session')</th>
+                                            <th>@lang('settings.Processed_session')</th>
+                                            <th>@lang('settings.Denied_session')</th>
+                                            <th>@lang('settings.Processing_time')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -264,7 +270,7 @@
                                                 {{ count($user_sessions->where('status', -1)) }}
                                             </td>
                                             <td class="fw-bold text-success">
-                                                {{ $user_sessions->sum('time') }} phút
+                                                {{ $user_sessions->sum('time') }}  @lang('settings.minute')
                                             </td>
                                         </tr>
                                     </tbody>
@@ -272,8 +278,9 @@
                             </div>
                             <div class="text-center">
                                 <a href="{{ route('list-session-user', ['user_id' => $user->id]) }}"
-                                    class="btn btn-outline-primary">Xem
-                                    thêm</a>
+                                    class="btn btn-outline-primary">
+                                    @lang('settings.View_more')
+                                </a>
                             </div>
                         @endif
                     </div>
@@ -283,7 +290,6 @@
     </div>
 @endsection
 @section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>

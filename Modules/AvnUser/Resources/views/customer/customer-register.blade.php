@@ -7,10 +7,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Đăng ký</title>
+    <title>@lang('settings.Register')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="{{ GeneralSettings::where('key', 'web_title')->first()->value ?? '' }}"
-        name="description" />
+    <meta content="@lang('settings.Register')" name="description" />
     <meta content="AVNTech" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('resources/assets/images/favicon.ico') }}">
@@ -21,7 +20,7 @@
     <link href="{{ asset('resources/assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css"
         id="dark-style" />
     <style>
-        .auth-fluid{
+        .auth-fluid {
             background-image: initial;
         }
     </style>
@@ -51,20 +50,19 @@
                             </span>
                         </a>
                     </div>
-                    <h4 class="mt-5">Đăng ký</h4>
-                    <p class="text-muted mb-4">Bạn chưa có tài khoản, đăng ký ngay</p>
+                    <h4 class="mt-5">@lang('settings.Register')</h4>
                     <form action="{{ route('store-register') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Tên người dùng <span class="text-danger">*</span></label>
+                            <label class="form-label">@lang('settings.Name') <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Tên tài khoản <span class="text-danger">*</span></label>
+                            <label class="form-label">@lang('settings.Username') <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" name="username" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <label class="form-label">@lang('settings.Email') <span class="text-danger">*</span></label>
                             <input class="form-control" type="email" name="email" required>
                         </div>
                         <div class="mb-3">
@@ -84,28 +82,36 @@
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
-                                Đăng ký
+                                @lang('settings.Register')
                             </button>
                         </div>
                         <div class="text-center mt-4">
-                            <p class="text-muted font-16">Đăng nhập với</p>
+                            <p class="text-muted font-16">@lang('settings.Login_with')</p>
                             <ul class="social-list list-inline mt-3">
                                 <li class="list-inline-item">
-                                    <a href="{{ route('login-social', ['social' => 'facebook']) }}" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
+                                    <a href="{{ route('login-social', ['social' => 'facebook']) }}"
+                                        class="social-list-item border-primary text-primary"><i
+                                            class="mdi mdi-facebook"></i></a>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a href="{{ route('login-social', ['social' => 'google']) }}" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
+                                    <a href="{{ route('login-social', ['social' => 'google']) }}"
+                                        class="social-list-item border-danger text-danger"><i
+                                            class="mdi mdi-google"></i></a>
                                 </li>
                             </ul>
                         </div>
                         <footer class="footer footer-alt">
-                            <p class="text-muted">Đã có tài khoản? <a href="{{ route('login') }}" class="text-muted ms-1"><b>Đăng nhập</b></a></p>
+                            <p class="text-muted">@lang('settings.Register_message')
+                                <a href="{{ route('login') }}" class="text-muted ms-1"><b>@lang('settings.Login')</b>
+                                </a>
+                            </p>
                         </footer>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="auth-fluid-right text-center" style="background-image: url('{{asset($login_background_img ? asset('/storage/app/AvnGeneralSettings/' . $login_background_img) : asset('/resources/assets/images/bg-auth.jpg'))}}'); background-size: auto;background-repeat: no-repeat;background-position: center;">
+        <div class="auth-fluid-right text-center"
+            style="background-image: url('{{ asset($login_background_img ? asset('/storage/app/AvnGeneralSettings/' . $login_background_img) : asset('/resources/assets/images/bg-auth.jpg')) }}'); background-size: auto;background-repeat: no-repeat;background-position: center;">
             <div class="auth-user-testimonial">
                 {!! $login_background_text !!}
             </div>
@@ -120,17 +126,18 @@
 <!--- Thông báo ---------->
 @if (session()->has('Success'))
     <script>
-        $.NotificationApp.send("Thành công", "{{ session()->get('Success') }}", "bottom-right", "rgba(0,0,0,0.2)",
+        $.NotificationApp.send("@lang('settings.Success')", "{{ session()->get('Success') }}", "bottom-right", "rgba(0,0,0,0.2)",
             "success")
     </script>
 @endif
 @if (session()->has('Failed'))
     <script>
-        $.NotificationApp.send("Thất bại", "{{ session()->get('Failed') }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
+        $.NotificationApp.send("@lang('settings.Failed')", "{{ session()->get('Failed') }}", "bottom-right", "rgba(0,0,0,0.2)",
+            "error")
     </script>
 @endif
 @if ($errors->any())
     <script>
-        $.NotificationApp.send("Thất bại", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
+        $.NotificationApp.send("@lang('settings.Failed')", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
     </script>
 @endif

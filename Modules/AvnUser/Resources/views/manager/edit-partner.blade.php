@@ -45,10 +45,12 @@
                                     </label>
                                     <select class="form-select" name="gender">
                                         <option value="0" class="form-control"
-                                            {{ $partner && $partner->gender == '0' ? 'selected' : '' }}>@lang('settings.Male')
+                                            {{ $partner && $partner->gender == '0' ? 'selected' : '' }}>
+                                            @lang('settings.Male')
                                         </option>
                                         <option value="1" class="form-control"
-                                            {{ $partner && $partner->gender == '1' ? 'selected' : '' }}>@lang('settings.Female')
+                                            {{ $partner && $partner->gender == '1' ? 'selected' : '' }}>
+                                            @lang('settings.Female')
                                         </option>
                                     </select>
                                 </div>
@@ -100,7 +102,7 @@
                     </div>
                     <div class="card">
                         <div class="card-body shadow-lg">
-                            <h4 class="header-title">@lang('settings.Account_info')</h4>
+                            <h4 class="header-title">@lang('avnuser::profile.Life_story')</h4>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
@@ -120,8 +122,12 @@
                     </div>
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center mt-3 mb-3">
-                            <button type="submit" class="btn btn-danger me-3">@lang('settings.Update.update')</button>
-                            <a href="{{ route('list-partner') }}" class="btn btn-secondary ms-3">@lang('settings.Back')</a>
+                            <button type="submit" class="btn btn-danger me-3">
+                                @lang('settings.Update.update')
+                            </button>
+                            <a href="{{ route('list-partner') }}" class="btn btn-secondary ms-3">
+                                @lang('settings.Back')
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -154,7 +160,9 @@
                                     <textarea class="form-control" name="note" rows="5"></textarea>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-danger mt-3">@lang('settings.Update.update')</button>
+                                    <button type="submit" class="btn btn-danger mt-3">
+                                        @lang('settings.Update.update')
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -185,10 +193,10 @@
                             </table>
                             <div class="text-center">
                                 <a href="{{ route('money-history', ['user_id' => $user->id]) }}"
-                                    class="btn btn-outline-primary">@lang('settings.View_more')
+                                    class="btn btn-outline-primary">
+                                    @lang('settings.View_more')
                                 </a>
                             </div>
-
                         </div>
                         @if (count($user->sessions))
                             <h4 class="mt-3">@lang('settings.Working_session'): </h4>
@@ -212,11 +220,11 @@
                                                     <span
                                                         class="badge bg-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'danger' : 'warning') }} text-white">
                                                         @if ($item->status == 1)
-                                                            Đã xử lý
+                                                            @lang('settings.Processed')
                                                         @elseif ($item->status == -1)
-                                                            Từ chối
+                                                            @lang('settings.Deny')
                                                         @else
-                                                            Chưa xử lý
+                                                            @lang('settings.Unprocessed')
                                                         @endif
                                                     </span>
                                                 </td>
@@ -229,7 +237,7 @@
                                                                 $minutes = $time_end->diffInMinutes($created);
                                                             }
                                                         @endphp
-                                                        {{ $item->time ?? $minutes }} phút
+                                                        {{ $item->time ?? $minutes }} @lang('settings.minute')
                                                     @else
                                                         ...
                                                     @endif
@@ -238,16 +246,16 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <h4 class="mt-3">Tháng này: </h4>
+                                <h4 class="mt-3">@lang('settings.This_month'): </h4>
                                 <table class="table">
                                     <thead class="table-dark align-middle">
                                         <tr>
-                                            <th>Tài khoản</th>
-                                            <th>Tổng số phiên</th>
-                                            <th>Phiên chưa xử lý</th>
-                                            <th>Phiên đã xử lý</th>
-                                            <th>Phiên đã từ chối</th>
-                                            <th>Thời gian đã xử lý</th>
+                                            <th>@lang('settings.Account')</th>
+                                            <th>@lang('settings.Sum_session')</th>
+                                            <th>@lang('settings.Unprocessed_session')</th>
+                                            <th>@lang('settings.Processed_session')</th>
+                                            <th>@lang('settings.Denied_session')</th>
+                                            <th>@lang('settings.Processing_time')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -274,7 +282,7 @@
                                                 {{ count($user_sessions->where('status', -1)) }}
                                             </td>
                                             <td class="fw-bold text-success">
-                                                {{ $user_sessions->sum('time') }} phút
+                                                {{ $user_sessions->sum('time') }} @lang('settings.minute')
                                             </td>
                                         </tr>
                                     </tbody>
@@ -282,8 +290,9 @@
                             </div>
                             <div class="text-center">
                                 <a href="{{ route('list-session-user', ['user_id' => $user->id]) }}"
-                                    class="btn btn-outline-primary">Xem
-                                    thêm</a>
+                                    class="btn btn-outline-primary">
+                                    @lang('settings.View_more')
+                                </a>
                             </div>
                         @endif
                     </div>
@@ -293,7 +302,6 @@
     </div>
 @endsection
 @section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>

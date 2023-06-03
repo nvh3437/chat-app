@@ -62,12 +62,6 @@ class CustomerController extends Controller
     }
     //---------------------  Thông tin cá nhân ------------------//
 
-    public function myProfile()
-    {
-        $user = Auth::user();
-        return view('avnuser::customer.my-profile', compact('user'));
-    }
-
     public function updateCustomerProfile(Request $request)
     {
         try {

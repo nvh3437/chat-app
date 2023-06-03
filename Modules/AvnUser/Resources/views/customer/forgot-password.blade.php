@@ -7,10 +7,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Quên mật khẩu</title>
+    <title>@lang('settings.Forgot_password')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="{{ GeneralSettings::where('key', 'web_title')->first()->value ?? 'Quản trị doanh nghiệp' }}"
-        name="description" />
+    <meta content="@lang('settings.Forgot_password')" name="description" />
     <meta content="AVNTech" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('resources/assets/images/favicon.ico') }}">
@@ -21,7 +20,7 @@
     <link href="{{ asset('resources/assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css"
         id="dark-style" />
     <style>
-        .auth-fluid{
+        .auth-fluid {
             background-image: initial;
         }
     </style>
@@ -51,27 +50,30 @@
                             </span>
                         </a>
                     </div>
-                    <h4 class="mt-5">Quên mật khẩu</h4>
-                    <p class="text-muted mb-4">Nhập email bạn đã đăng ký và chúng tôi sẽ gửi email cho các bạn để khôi phục mật khẩu</p>
+                    <h4 class="mt-5">@lang('settings.Forgot_password')</h4>
+                    <p class="text-muted mb-4">@lang('settings.Forgot_password_message')</p>
                     <form action="{{ route('password.email') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Nhập email</label>
-                            <input class="form-control" type="email" name="email" required value="{{ old('email') }}">
+                            <label class="form-label">@lang('settings.Email')</label>
+                            <input class="form-control" type="email" name="email" required
+                                value="{{ old('email') }}">
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
-                                Gửi
+                                @lang('settings.Send')
                             </button>
                         </div>
                         <footer class="footer footer-alt">
-                            <p class="text-muted">Đã có tài khoản? <a href="{{ route('login') }}" class="text-muted ms-1"><b>Đăng nhập</b></a></p>
+                            <p class="text-muted">@lang('settings.Login_message') <a href="{{ route('login') }}"
+                                    class="text-muted ms-1"><b>@lang('settings.Login')</b></a></p>
                         </footer>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="auth-fluid-right text-center" style="background-image: url(https://system.avntech.vn/storage/app/AvnGeneralSettings/1672023779-t-a72919ff65c8bd96e4d9.jpg);background-size: auto;background-repeat: no-repeat;background-position: center;">
+        <div class="auth-fluid-right text-center"
+            style="background-image: url(https://system.avntech.vn/storage/app/AvnGeneralSettings/1672023779-t-a72919ff65c8bd96e4d9.jpg);background-size: auto;background-repeat: no-repeat;background-position: center;">
             <div class="auth-user-testimonial">
                 <!-- <p class="lead"></p> -->
                 {!! $login_background_text !!}
@@ -87,17 +89,18 @@
 <!--- Thông báo ---------->
 @if (session()->has('Success'))
     <script>
-        $.NotificationApp.send("Thành công", "{{ session()->get('Success') }}", "bottom-right", "rgba(0,0,0,0.2)",
+        $.NotificationApp.send("@lang('settings.Success')", "{{ session()->get('Success') }}", "bottom-right", "rgba(0,0,0,0.2)",
             "success")
     </script>
 @endif
 @if (session()->has('Failed'))
     <script>
-        $.NotificationApp.send("Thất bại", "{{ session()->get('Failed') }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
+        $.NotificationApp.send("@lang('settings.Failed')", "{{ session()->get('Failed') }}", "bottom-right", "rgba(0,0,0,0.2)",
+            "error")
     </script>
 @endif
 @if ($errors->any())
     <script>
-        $.NotificationApp.send("Thất bại", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
+        $.NotificationApp.send("@lang('settings.Failed')", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
     </script>
 @endif
