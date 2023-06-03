@@ -21,9 +21,9 @@
                     @method('delete')
                     <span class="float-end">
                         <button type="submit" class="text-dark border-0 bg-transparent">
-                            <small>Xóa hết</small>
+                            <small>@lang('settings.Clear')</small>
                         </button>
-                    </span>Thông báo
+                    </span>@lang('settings.Notify')
                 </form>
 
             </h5>
@@ -32,27 +32,26 @@
         <div style="max-height: 230px; max-width: 320px; min-width: 250px;" data-simplebar>
             @foreach ($notifications as $notification)
                 <!-- item-->
-                <a href="{{ route('read-notifications', ['id'=>$notification->id]) }}" data-link="{{ $notification->link ?? 'none' }}" data-id="{{ $notification->id }}" data-status="{{ $notification->status }}" class="dropdown-item notify-item id notification-btn">
+                <a href="{{ route('read-notifications', ['id' => $notification->id]) }}"
+                    data-link="{{ $notification->link ?? 'none' }}" data-id="{{ $notification->id }}"
+                    data-status="{{ $notification->status }}" class="dropdown-item notify-item id notification-btn">
                     <div class="notify-icon bg-primary">
                         <i class="{{ $notification->icon }}"></i>
                         @if ($notification->status == 0)
                             <span class="noti-icon-badge" style="top: 10px;left: 45px;"></span>
                         @endif
-                        
+
                     </div>
                     <p class="notify-details">{{ $notification->title }}</p>
                     <p class="text-muted mb-0 user-msg">
                         <small>{!! $notification->content !!}</small>
                     </p>
                     <p class="notify-details">
-                        <small class="text-muted">{{ NotificationController::timeAgo($notification->created_at) }}</small>
+                        <small
+                            class="text-muted">{{ NotificationController::timeAgo($notification->created_at) }}</small>
                     </p>
                 </a>
             @endforeach
         </div>
     </div>
 </li>
-
-
-
-

@@ -3,24 +3,23 @@
 namespace Modules\AvnUser\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Lang;
 
-class UpdateCustomerRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     public function rules()
     {
         return [
             'name' => 'required',
-            'gender' => 'required',
-            // 'email' => 'unique:users',
+            'email' => 'unique:users,email,' . $this->user,
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Tên chuyên gia không thể bỏ trống',
-            'gender.required' => 'Giới tính không thể bỏ trống',
-            // 'email.unique' => 'Đã có email này',
+            'name.required' => Lang::get('settings.Auth.Validate.name.Required'),
+            'email.unique' => Lang::get('settings.Auth.Validate.email.Unique'),
         ];
     }
 

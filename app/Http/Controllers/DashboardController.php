@@ -16,6 +16,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Modules\AvnUser\Entities\AddSubMoney;
 use Illuminate\Support\Facades\DB;
+use Lang;
 
 class DashboardController extends Controller
 {

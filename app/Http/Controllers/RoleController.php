@@ -13,6 +13,7 @@ use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RoleRequest;
+use Lang;
 
 class RoleController extends Controller
 {
@@ -28,9 +29,9 @@ class RoleController extends Controller
             $role = new Role();
             $role->name = $request->name;
             $role->save();
-            return redirect()->route('role-list')->with('Success', 'Thêm thành công');
+            return redirect()->route('role-list')->with('Success', Lang::get('settings.Add.Add_success'));
         } catch (Exception $e) {
-            return redirect()->route('role-list')->with('Failed', 'Thêm thất bại');
+            return redirect()->route('role-list')->with('Failed', Lang::get('settings.Add.Add_failed'));
         }
     }
 
@@ -38,7 +39,7 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         if ($role->id == 1) {
-            return redirect()->route('role-list')->with('Failed', 'Role mặc định không thể sửa');
+            return redirect()->route('role-list')->with('Failed', Lang::get('settings.Role.Validate.Role_default_edit_failed'));
         }
         $menus = AvnMenu::get();
         $other_permissions = Permission::where('menu_id', null)->get();
@@ -50,7 +51,7 @@ class RoleController extends Controller
         try {
             $role = Role::findOrFail($id);
             if ($role->id == 1) {
-                return redirect()->route('role-list')->with('Failed', 'Role mặc định không thể xóa');
+                return redirect()->route('role-list')->with('Failed', Lang::get('settings.Role.Validate.Role_default_edit_failed'));
             }
             $role->name = $request->name;
             $role->save();
@@ -64,9 +65,9 @@ class RoleController extends Controller
                     $permission_role->save();
                 }
             }
-            return redirect()->route('role-list')->with('Success', 'Cập nhập thành công');
+            return redirect()->route('role-list') ->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return redirect()->route('role-list')->with('Failed', 'Cập nhập thất bại');
+            return redirect()->route('role-list') ->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -95,9 +96,9 @@ class RoleController extends Controller
                     $user_role->save();
                 }
             }
-            return redirect()->route('role-list')->with('Success', 'Cập nhập thành công');
+            return redirect()->route('role-list')->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return redirect()->route('role-list')->with('Failed', 'Cập nhập thất bại');
+            return redirect()->route('role-list')->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -106,24 +107,23 @@ class RoleController extends Controller
         try {
             $role = Role::findOrFail($id);
             if ($role->id == 1) {
-                return redirect()->route('role-list')->with('Failed', 'Role mặc định không thể xóa');
+                return redirect()->route('role-list')->with('Failed', Lang::get('settings.Role.Validate.Role_default_delete_failed'));
             }
             $role->delete();
-            return redirect()->route('role-list')->with('Success', 'Xóa thành công');
+            return redirect()->route('role-list')->with('Success', Lang::get('settings.Delete.Delete_success'));
         } catch (Exception $e) {
-            return redirect()->route('role-list')->with('Failed', 'Xóa thất bại');
+            return redirect()->route('role-list')->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
     public static function isNotBlock($menu = null, $route_names = null)
     {
-        if($route_names == null)
-        {
+        if ($route_names == null) {
             $permissions = Permission::where('route_names', 'like', '%' . $menu->route_name . '%')->get();
-        }else{
+        } else {
             $permissions = collect();
             foreach ($route_names as $item) {
                 $permissionsx = Permission::where('route_names', 'like', '%' . $item . '%')->get();
-                if(count($permissionsx) > 0){
+                if (count($permissionsx) > 0) {
                     $permissions = $permissions->merge($permissionsx);
                 }
             }
@@ -133,12 +133,12 @@ class RoleController extends Controller
         } else {
             $currentUser = Auth::user();
             $currentUserRoles = $currentUser->roles;
-            foreach($currentUserRoles as $role){
+            foreach ($currentUserRoles as $role) {
                 // Danh sách quyền của role
                 $user_permissions = $role->permissions;
                 // Duyệt danh sách quyền của role
                 foreach ($user_permissions as $permission) {
-                    if($permissions->contains('id', $permission->id)){
+                    if ($permissions->contains('id', $permission->id)) {
                         return true;
                     }
                 }

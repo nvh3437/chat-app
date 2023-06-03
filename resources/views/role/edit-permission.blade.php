@@ -88,7 +88,7 @@
                                                                         type="button" data-bs-toggle="collapse"
                                                                         data-bs-target="#collapse0" aria-expanded="false"
                                                                         aria-controls="collapse0">
-                                                                        Khác
+                                                                        @lang('settings.Other')
                                                                     </button>
                                                                 </h2>
                                                                 <div id="collapse0" class="accordion-collapse collapse"

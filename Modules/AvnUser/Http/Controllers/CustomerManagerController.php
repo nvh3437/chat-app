@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Modules\AvnUser\Http\Requests\StoreCustomerRequest;
-use Modules\AvnUser\Http\Requests\UpdateCustomerRequest;
+use Modules\AvnUser\Http\Requests\StoreProfileRequest;
+use Modules\AvnUser\Http\Requests\UpdateProfileRequest;
 use Modules\AvnChat\Entities\ChatRoomUser;
 use Illuminate\Database\Eloquent\Builder;
+use Lang;
 
 class CustomerManagerController extends Controller
 {
@@ -32,7 +33,7 @@ class CustomerManagerController extends Controller
         return view('avnuser::manager.add-customer');
     }
 
-    public function storeCustomer(StoreCustomerRequest $request)
+    public function storeCustomer(StoreProfileRequest $request)
     {
         try {
             // Lưu bảng user 
@@ -75,9 +76,9 @@ class CustomerManagerController extends Controller
                 $customer->img = $path;
             }
             $customer->save();
-            return redirect()->route('list-customer')->with('Success', 'Thêm thành công');
+            return redirect()->route('list-customer')->with('Success', Lang::get('settings.Add.Add_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
+            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
         }
     }
 
@@ -88,7 +89,7 @@ class CustomerManagerController extends Controller
         return view('avnuser::manager.edit-customer', compact('customer', 'user'));
     }
 
-    public function updateCustomer(UpdateCustomerRequest $request, $id)
+    public function updateCustomer(UpdateProfileRequest $request, $id)
     {
         try {
             // Lưu bảng user 
@@ -97,7 +98,7 @@ class CustomerManagerController extends Controller
             if ($user->email != $request->email && $request->email) {
                 $user_change_mail = User::where('email', $request->email)->first();
                 if ($user_change_mail) {
-                    return back()->with('Failed', 'Email đã tồn tại');
+                    return back()->with('Failed', Lang::get('settings.Auth.Validate.email.Unique'));
                 }
                 $user->email = $request->email;
             }
@@ -135,9 +136,9 @@ class CustomerManagerController extends Controller
                 $customer->img = $path;
             }
             $customer->save();
-            return redirect()->route('list-customer')->with('Success', 'Cập nhật thành công');
+            return redirect()->route('list-customer')->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
     public function updateMoneyCustomer(Request $request, $id)
@@ -158,9 +159,9 @@ class CustomerManagerController extends Controller
             $addsub->surplus = $customer->money;
             $addsub->save();
 
-            return back()->with('Success', 'Cập nhật thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
     public function deleteCustomer($id)
@@ -172,9 +173,9 @@ class CustomerManagerController extends Controller
                 File::delete($customer->img);
             }
             $customer->delete();
-            return back()->with('Success', 'Xóa thành công');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 }

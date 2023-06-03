@@ -72,7 +72,8 @@
                                                     </li>
                                                     <li>
                                                         <a href="javascript: void(0);" data-bs-toggle="modal"
-                                                            data-bs-target="#delete-{{ $role->id }}" class="dropdown-item">
+                                                            data-bs-target="#delete-{{ $role->id }}"
+                                                            class="dropdown-item">
                                                             @lang('avnrole.delete')
                                                         </a>
                                                     </li>
@@ -84,20 +85,24 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                            <h5 class="modal-title text-dark">@lang('settings.Confirm')</h5>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal"aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body text-dark">
-                                                            <p>Bạn có muốn xóa không?</p>
+                                                            <p>@lang('settings.Delete_confirm', ['name' => $role->name])</p>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                                                            <button type="button" class="btn btn-light"
+                                                                data-bs-dismiss="modal">
+                                                                @lang('settings.Cancel')
                                                             </button>
-                                                            <form action="{{ route('role-destroy', [$role->id]) }}" method="POST">
+                                                            <form action="{{ route('role-destroy', [$role->id]) }}"
+                                                                method="POST">
                                                                 @csrf
                                                                 @method('delete')
-                                                                <button type="submit" class="btn btn-primary">@lang('avnrole.delete')</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">@lang('avnrole.delete')</button>
                                                             </form>
                                                         </div>
                                                     </div>

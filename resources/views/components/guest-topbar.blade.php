@@ -87,17 +87,17 @@
                     <div
                         class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
                         <div class=" dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Chào mừng !</h6>
+                            <h6 class="text-overflow m-0">@lang('settings.Welcome')!</h6>
                         </div>
                         <a href="{{ route('profile') }}" class="dropdown-item notify-item">
                             <i class="mdi mdi-account-circle me-1"></i>
-                            <span>Thông tin cá nhân</span>
+                            <span>@lang('settings.Profile')</span>
                         </a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item notify-item">
                                 <i class="mdi mdi-logout me-1"></i>
-                                <span>Đăng xuất</span>
+                                <span>@lang('settings.Logout')</span>
                             </button>
                         </form>
                     </div>
@@ -113,7 +113,7 @@
                 <li class="notification-list">
                     <a class="nav-link end-bar-toggle" href="{{ route('login') }}">
                         <i class="noti-icon"></i>
-                        Đăng nhập
+                        @lang('settings.Login')
                     </a>
                 </li>
             @endif

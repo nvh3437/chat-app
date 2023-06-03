@@ -124,7 +124,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-2 col-12">
-                                        <label class="form-label">@lang('settings.address')</label>
+                                        <label class="form-label">@lang('settings.Address')</label>
                                         <input type="text" value="{{ $settings['address']['value'] ?? '' }}"
                                             name="address" class="form-control" placeholder="1234 Main St">
                                     </div>
@@ -224,7 +224,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body shadow-lg">
-                                <h4 class="header-title">@lang('settings.login_bkg_title')</h4>
+                                <h4 class="header-title">@lang('settings.Login_bkg_title')</h4>
                                 <form action="{{ route('general-settings-update-image') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
@@ -254,7 +254,7 @@
                                     </div>
                                     @if ($isNotBlock)
                                         <div class="d-flex flex-column">
-                                            <h6 class="font-15 w-100">@lang('settings.login_bkg_text')</h6>
+                                            <h6 class="font-15 w-100">@lang('settings.Login_bkg_text')</h6>
                                             <div id="login_background_text" style="height: 300px;">
                                                 {!! $settings['login_background_text']['value'] !!}
                                             </div>

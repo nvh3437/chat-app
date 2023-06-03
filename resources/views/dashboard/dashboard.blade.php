@@ -29,9 +29,8 @@
                                 {{ $banner['home_banner_title']['value'] ?? '' }}</h1>
                             <p class="mb-4 font-16 text-white-50">{{ $banner['home_banner_description']['value'] ?? '' }}</p>
                             @if ($banner['home_banner_link']['value'])
-                                <a href="{{ $banner['home_banner_link']['value'] }}" target="_blank"
-                                    class="btn btn-success">Xem
-                                    thêm
+                                <a href="{{ $banner['home_banner_link']['value'] }}" target="_blank" class="btn btn-success">
+                                    @lang('settings.View_more')
                                     <i class="mdi mdi-arrow-right ms-1"></i>
                                 </a>
                             @endif
@@ -79,9 +78,9 @@
                                         <p class="text-center p-2">{{ $partner->profile->description }}</p>
                                     @endif
                                 </div>
-                                <a href="{{ route('order-chat', ['partner' => $partner->id]) }}"
-                                    class="testimonial-name">Đặt
-                                    lịch</a>
+                                <a href="{{ route('order-chat', ['partner' => $partner->id]) }}" class="testimonial-name">
+                                    @lang('settings.Booking')
+                                </a>
                             </div>
                         @endforeach
 
@@ -128,8 +127,10 @@
                         @endif
                         @if ($feature['home_feature_link']['value'])
                             <a href="{{ $feature['home_feature_link']['value'] ?? '' }}"
-                                class="btn btn-primary rounded-pill mt-3" target="_blank">Xem thêm <i
-                                    class="mdi mdi-arrow-right ms-1"></i></a>
+                                class="btn btn-primary rounded-pill mt-3" target="_blank">
+                                @lang('settings.View_more')
+                                <i class="mdi mdi-arrow-right ms-1"></i>
+                            </a>
                         @endif
                     </div>
                 </div>
@@ -162,8 +163,10 @@
                     @endforeach
                 </div>
                 <div class="d-flex justify-content-center">
-                    <a href="{{ route('post-page') }}" class="btn btn-success rounded-pill mt-5">Xem thêm<i
-                            class="mdi mdi-arrow-right ms-1"></i></a>
+                    <a href="{{ route('post-page') }}" class="btn btn-success rounded-pill mt-5">
+                        @lang('settings.View_more')
+                        <i class="mdi mdi-arrow-right ms-1"></i>
+                    </a>
                 </div>
             </div>
         </section>
@@ -195,8 +198,10 @@
                     @endforeach
                 </div>
                 <div class="d-flex justify-content-center">
-                    <a href="{{ route('service-page') }}" class="btn btn-success rounded-pill mt-3">Xem thêm<i
-                            class="mdi mdi-arrow-right ms-1"></i></a>
+                    <a href="{{ route('service-page') }}" class="btn btn-success rounded-pill mt-3">
+                        @lang('settings.View_more')
+                        <i class="mdi mdi-arrow-right ms-1"></i>
+                    </a>
                 </div>
             </div>
         </section>

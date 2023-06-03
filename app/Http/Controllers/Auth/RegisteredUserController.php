@@ -14,6 +14,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 // use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Lang;
 
 class RegisteredUserController extends Controller
 {
@@ -45,40 +46,40 @@ class RegisteredUserController extends Controller
     public static function storeAPI(Request $request)
     {
         try {
-        $rules = [
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'password' => ['required', Rules\Password::defaults()],
-        ];
-        $customMessages = [
-            'username.required' => 'Tên đăng nhập không thể bỏ trống',
-            'username.string' => 'Tên đăng nhập phải là một chuỗi',
-            'username.max' => 'Tên đăng nhập tối đa 255 ký tự',
-            'username.unique' => 'Username đã tồn tại',
-            'password.required' => 'Mật khẩu không thể bỏ trống',
-        ];
-        $validator = Validator::make( $request->all(), $rules, $customMessages );
-        if ($validator->fails()) {
-            return [
-                'success' => false,
-                'message' => $validator->errors()->first(),
-                'data' => null,
+            $rules = [
+                'username' => ['required', 'string', 'max:255', 'unique:users'],
+                'password' => ['required', Rules\Password::defaults()],
             ];
-        }
-        $user = User::create([
-            'name' => $request->username,
-            'username' => $request->username,
-            'type' => $request->type ?? 'guest',
-            'password' => Hash::make($request->password),
-        ]);
-        event(new Registered($user));
-        Auth::login($user);
-        return [
-            'success' => true,
-            'message' => "Đăng ký thành công",
-            'data' => $user,
-        ];
+            $customMessages = [
+                'username.required' => Lang::get('settings.Auth.Validate.username.Required'),
+                'username.string' => Lang::get('settings.Auth.Validate.username.String'),
+                'username.max' => Lang::get('settings.Auth.Validate.username.Max'),
+                'username.unique' => Lang::get('settings.Auth.Validate.username.Unique'),
+                'password.required' => Lang::get('settings.Auth.Validate.password.Required'),
+            ];
+            $validator = Validator::make($request->all(), $rules, $customMessages);
+            if ($validator->fails()) {
+                return [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                    'data' => null,
+                ];
+            }
+            $user = User::create([
+                'name' => $request->username,
+                'username' => $request->username,
+                'type' => $request->type ?? 'guest',
+                'password' => Hash::make($request->password),
+            ]);
+            event(new Registered($user));
+            Auth::login($user);
+            return [
+                'success' => true,
+                'message' => Lang::get('settings.Auth.Register_success'),
+                'data' => $user,
+            ];
         } catch (\Throwable $th) {
-            return 'Đăng ký không thành công';
+            return Lang::get('settings.Auth.Register_failed');
         }
     }
 }

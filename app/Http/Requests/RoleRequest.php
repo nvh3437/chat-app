@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Lang;
 
 class RoleRequest extends FormRequest
 {
@@ -12,12 +13,12 @@ class RoleRequest extends FormRequest
             'name' => 'required|max:255',
         ];
     }
-    
+
     public function messages()
     {
         return [
-            'name.required' => 'Tên không thể bỏ trống',
-            'name.max' => 'Tên tối đa 255 ký tự',
+            'name.required' => Lang::get('settings.Role.Validate.name.Required'),
+            'name.max' => Lang::get('settings.Role.Validate.name.Max'),
         ];
     }
 
