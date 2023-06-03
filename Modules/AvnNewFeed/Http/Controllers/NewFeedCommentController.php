@@ -37,9 +37,9 @@ class NewFeedCommentController extends Controller
             ])->first();
             $comment->comment = $request->comment;
             $comment->save();
-            return back()->with('Success', 'Cập nhật thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -50,9 +50,9 @@ class NewFeedCommentController extends Controller
                 'id' => $id,
                 'user_id' => Auth::user()->id
             ])->first()->delete();
-            return back()->with('Success', 'Xóa thành công');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 }
