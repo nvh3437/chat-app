@@ -9,7 +9,7 @@ use Modules\AvnSetting\Entities\Footer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GeneralSettings;
-
+use Lang;
 class FooterController extends Controller
 {
     //------------------------------------ Trang chủ -------------------//
@@ -84,9 +84,9 @@ class FooterController extends Controller
             $setting->key = $setting->key ?? 'social_whatsapp';
             $setting->value = trim($request->social_whatsapp);
             $setting->save();
-            return back()->with('Success', 'Cập nhập thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhập thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -99,9 +99,9 @@ class FooterController extends Controller
             $footer->link = $request->link;
             $footer->parent_id = $request->parent_id;
             $footer->save();
-            return back()->with('Success', 'Thêm thành công');
+            return back()->with('Success', Lang::get('settings.Add.Add_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
+            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
         }
     }
 
@@ -113,9 +113,9 @@ class FooterController extends Controller
             $footer->link = $request->link;
             $footer->parent_id = $request->parent_id;
             $footer->save();
-            return back()->with('Success', 'Cập nhật thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -123,9 +123,9 @@ class FooterController extends Controller
     {
         try {
             $footer = Footer::findOrFail($id)->delete();
-            return back()->with('Success', 'Xóa thành công');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 }

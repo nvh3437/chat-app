@@ -64,9 +64,9 @@ class PostController extends Controller
                 $post->alias = Helper::createSlug(trim($post->alias . ' ' . rand()));
             }
             $post->save();
-            return redirect()->route('list-post')->with('Success', 'Thêm thành công');
+            return redirect()->route('list-post')->with('Success', Lang::get('settings.Add.Add_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
+            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
         }
     }
 
@@ -109,9 +109,9 @@ class PostController extends Controller
                     $post->alias = $alias;
             }
             $post->save();
-            return redirect()->route('list-post')->with('Success', 'Cập nhật thành công');
+            return redirect()->route('list-post')->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -123,9 +123,9 @@ class PostController extends Controller
                 File::delete($post->img);
             }
             $post->delete();
-            return back()->with('Success', 'Xóa thành công');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 

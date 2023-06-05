@@ -189,9 +189,9 @@ class PageController extends Controller
                     }
                 }
             }
-            return back()->with('Success', 'Cập nhập thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhập thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
     //------------------------------- Trang liên hệ -----------------------------//
@@ -265,9 +265,9 @@ class PageController extends Controller
                 $setting->value = $path;
                 $setting->save();
             }
-            return back()->with('Success', 'Cập nhập thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhập thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -342,9 +342,9 @@ class PageController extends Controller
                 $setting->value = $path;
                 $setting->save();
             }
-            return back()->with('Success', 'Cập nhập thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhập thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -418,9 +418,9 @@ class PageController extends Controller
                 $setting->value = $path;
                 $setting->save();
             }
-            return back()->with('Success', 'Cập nhập thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhập thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 }
