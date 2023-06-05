@@ -31,9 +31,9 @@ class NavbarController extends Controller
             $nav->order = $request->order;
             $nav->parent_id = $request->parent_id;
             $nav->save();
-            return back()->with('Success', Lang::get("settings.Add.Add_success")'');
+            return back()->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get("settings.Add.Add_failed")'');
+            return back()->with('Failed', 'Thêm thất bại');
         }
     }
 
@@ -53,9 +53,9 @@ class NavbarController extends Controller
             $nav->order = $request->order;
             $nav->parent_id = $request->parent_id;
             $nav->save();
-            return redirect()->route('navbar')->with('Success', Lang::get('settings.Update.Update_success'));
+            return redirect()->route('navbar')->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
+            return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
 
@@ -63,9 +63,9 @@ class NavbarController extends Controller
     {
         try {
             $nav = Navbar::findOrFail($id)->delete();
-            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
+            return back()->with('Success', 'Xóa thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
+            return back()->with('Failed', 'Xóa thất bại');
         }
     }
 }

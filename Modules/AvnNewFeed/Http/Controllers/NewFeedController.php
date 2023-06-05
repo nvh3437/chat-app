@@ -152,7 +152,7 @@ class NewFeedController extends Controller
             }
             return $new_feed;
         } catch (Exception $e) {
-            return back()->with('Failed', ang::get('settings.Update.Update_failed'));
+            return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
 
@@ -174,9 +174,9 @@ class NewFeedController extends Controller
                 }
             }
             $new_feed->delete();
-            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
+            return back()->with('Success', 'Xóa thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
+            return back()->with('Failed', 'Xóa thất bại');
         }
     }
 }

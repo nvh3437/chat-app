@@ -82,9 +82,9 @@ class AvnServiceController extends Controller
                 $setting->value = $path;
                 $setting->save();
             }
-            return back()->with('Success', Lang::get('settings.Update.Update_success'));
+            return back()->with('Success', 'Cập nhập thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
+            return back()->with('Failed', 'Cập nhập thất bại');
         }
     }
     //-------------------- Trang chủ --------------------//
@@ -118,9 +118,9 @@ class AvnServiceController extends Controller
             $service->description = $request->description;
             $service->recommended = $request->recommended ?? 0;
             $service->save();
-            return redirect()->route('service-setting')->with('Success', Lang::get('settings.Add.Add_success'));
+            return redirect()->route('service-setting')->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
+            return back()->with('Failed', 'Thêm thất bại');
         }
     }
 
@@ -152,9 +152,9 @@ class AvnServiceController extends Controller
             $service->description = $request->description;
             $service->recommended = $request->recommended ?? 0;
             $service->save();
-            return redirect()->route('service-setting')->with('Success', Lang::get('settings.Update.Update_success'));
+            return redirect()->route('service-setting')->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
+            return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
 
@@ -166,9 +166,9 @@ class AvnServiceController extends Controller
                 File::delete($service->img);
             }
             $service->delete();
-            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
+            return back()->with('Success', 'Xóa thất bại');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
+            return back()->with('Failed', 'Xóa thất bại');
         }
     }
 

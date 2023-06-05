@@ -42,9 +42,9 @@ class PostCatgoryController extends Controller
                 $category->alias = Helper::createSlug(trim($category->alias . ' ' . rand()));
             }
             $category->save();
-            return back()->with('Success', Lang::get('settings.Add.Add_success'));
+            return back()->with('Success', 'Thêm thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
+            return back()->with('Failed', 'Thêm thất bại');
         }
     }
 
@@ -76,9 +76,9 @@ class PostCatgoryController extends Controller
                     $category->alias = $alias;
             }
             $category->save();
-            return back()->with('Success', Lang::get('settings.Update.Update_success'));
+            return back()->with('Success', 'Cập nhật thành công');
         } catch (Exception $e) {
-            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
+            return back()->with('Failed', 'Cập nhật thất bại');
         }
     }
 
@@ -90,10 +90,10 @@ class PostCatgoryController extends Controller
                 File::delete($category->img);
             }
             $category->delete();
-            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
+            return back()->with('Success', 'Xóa thành công');
         }
         catch(Exception $e){
-            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
+            return back()->with('Failed', 'Xóa thất bại');
         }
     }
 }
