@@ -9,8 +9,14 @@ return new class extends Migration {
     {
         Schema::create('avn_post_categories', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
-            $table->text('description');
+            $table->text('name')->nullable();
+            $table->text('vi')->nullable();
+            $table->text('en')->nullable();
+            $table->text('ja')->nullable();
+            $table->text('description')->nullable();
+            $table->text('description_vi')->nullable();
+            $table->text('description_en')->nullable();
+            $table->text('description_ja')->nullable();
             $table->text('keywords');
             $table->text('img')->nullable();
             $table->text('alias')->nullable();

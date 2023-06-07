@@ -3,18 +3,18 @@
         <ul class="nav nav-tabs nav-bordered">
             <li class="nav-item">
                 <a href="#allChat" data-bs-toggle="tab" aria-expanded="false" class="nav-link active py-2">
-                    Tất cả
+                    @lang('settings.All')
                 </a>
             </li>
             @if ($user->type == 'system')
                 <li class="nav-item">
                     <a href="#partnerFree" data-bs-toggle="tab" aria-expanded="true" class="nav-link py-2">
-                        Đang rảnh
+                        @lang('settings.Free')
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#partnerBusy" data-bs-toggle="tab" aria-expanded="true" class="nav-link py-2">
-                        Đang bận
+                        @lang('settings.Busy')
                     </a>
                 </li>
             @endif

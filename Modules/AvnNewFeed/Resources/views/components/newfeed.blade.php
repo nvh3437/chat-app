@@ -28,10 +28,13 @@
                                         'alias' => $item->alias ?? $item->id,
                                     ];
                                 @endphp
-                                <a href="{{ route('edit-feed', $params) }}" class="dropdown-item">Chỉnh
-                                    sửa</a>
+                                <a href="{{ route('edit-feed', $params) }}" class="dropdown-item">
+                                    @lang('settings.Update.update')
+                                </a>
                                 <a href="javascript:void(0);" data-bs-toggle="modal"
-                                    data-bs-target="#delete-{{ $item->id }}" class="dropdown-item">Xóa</a>
+                                    data-bs-target="#delete-{{ $item->id }}" class="dropdown-item">
+                                    @lang('settings.Delete.delete')
+                                </a>
                             </div>
                         </div>
                         <!------- Quản lý thì đc phép xóa --------->
@@ -43,7 +46,9 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a href="javascript:void(0);" data-bs-toggle="modal"
-                                    data-bs-target="#delete-{{ $item->id }}" class="dropdown-item">Xóa</a>
+                                    data-bs-target="#delete-{{ $item->id }}" class="dropdown-item">
+                                    @lang('settings.Delete.delete')
+                                </a>
                             </div>
                         </div>
                     @endif
@@ -55,9 +60,9 @@
                                 <span class="mx-1">⚬</span>
                                 <span>
                                     @if ($item->status == '0')
-                                        Public
+                                        @lang('settings.Public')
                                     @else
-                                        Cá nhân
+                                        @lang('settings.Private')
                                     @endif
                                 </span>
                             @endif
@@ -93,8 +98,10 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-dark">Bài viết của
-                                {{ $item->new_feed_user->name }}</h5>
+                            <h5 class="modal-title text-dark">
+                                @lang('settings.Post_of')
+                                <span class="text-capitalize">{{ $item->new_feed_user->name }}</span>
+                            </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -117,11 +124,10 @@
                                                         ];
                                                     @endphp
                                                     <a href="{{ route('edit-feed', $params) }}"
-                                                        class="dropdown-item">Chỉnh
-                                                        sửa</a>
+                                                        class="dropdown-item">@lang('settings.Update.update')</a>
                                                     <a href="javascript:void(0);" data-bs-toggle="modal"
                                                         data-bs-target="#delete-{{ $item->id }}"
-                                                        class="dropdown-item">Xóa</a>
+                                                        class="dropdown-item">@lang('settings.Delete.delete')</a>
                                                 </div>
                                             </div>
                                             <!------- Quản lý thì đc phép xóa --------->
@@ -134,7 +140,7 @@
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a href="javascript:void(0);" data-bs-toggle="modal"
                                                         data-bs-target="#delete-{{ $item->id }}"
-                                                        class="dropdown-item">Xóa</a>
+                                                        class="dropdown-item">@lang('settings.Delete.delete')</a>
                                                 </div>
                                             </div>
                                         @endif
@@ -145,9 +151,9 @@
                                                     <span class="mx-1">⚬</span>
                                                     <span>
                                                         @if ($item->status == '0')
-                                                            Public
+                                                            @lang('settings.Public')
                                                         @else
-                                                            Cá nhân
+                                                            @lang('settings.Private')
                                                         @endif
                                                     </span>
                                                 @endif
@@ -156,7 +162,8 @@
                                     </div>
                                 </div>
                                 <div class="py-3 w-100 overflow-hidden">
-                                    <div class="font-18 {{ count($item->images) && $item->description ? 'mb-3' : '' }}">
+                                    <div
+                                        class="font-18 {{ count($item->images) && $item->description ? 'mb-3' : '' }}">
                                         {!! $item->description !!}
                                     </div>
                                     <div class="gallery-container animated-thumbnails-gallery position-relative"
@@ -181,8 +188,9 @@
                                 @if ($comments->hasMorePages())
                                     <a href="javascript: void(0);"
                                         class="load-more-comment btn btn-sm btn-link text-muted ps-0" data-page="1"
-                                        data-feed-id="{{ $item->id }}">Xem thêm
-                                        bình luận</a>
+                                        data-feed-id="{{ $item->id }}">
+                                        @lang('settings.View_more')
+                                    </a>
                                 @endif
                             </div>
                         </div>
@@ -197,10 +205,11 @@
                                         @csrf
                                         <input type="hidden" name="feed_id" value="{{ $item->id }}">
                                         <input type="text" class="form-control border-0 form-control-sm"
-                                            name="comment" placeholder="Bình luận....">
+                                            name="comment" placeholder="@lang('settings.Comment')....">
                                         <div class="mt-2 d-flex justify-content-end align-items-center">
-                                            <button type="submit" class="btn btn-sm btn-success">Bình
-                                                luận</button>
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                @lang('settings.Comment')
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -215,20 +224,20 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-dark">Xác nhận</h5>
+                            <h5 class="modal-title text-dark">@lang('settings.Confirm')</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-dark">
-                            <p>Bạn có muốn xóa không?</p>
+                            <p>@lang('settings.Delete_confirm', ['name' => __('settings.Post')])</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('settings.Cancel')
                             </button>
                             <form action="{{ route('delete-feed', [$item->id]) }}" method="POST">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="btn btn-primary">Xóa</button>
+                                <button type="submit" class="btn btn-primary">@lang('settings.Delete.delete')</button>
                             </form>
                         </div>
                     </div>

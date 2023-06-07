@@ -3,8 +3,9 @@
 namespace Modules\AvnUser\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Lang;
 
-class StoreCustomerRequest extends FormRequest
+class StoreProfileRequest extends FormRequest
 {
     public function rules()
     {
@@ -18,10 +19,10 @@ class StoreCustomerRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Tên không thể bỏ trống',
-            'username.required' => 'Tên đăng nhập không thể bỏ trống',
-            'username.unique' => 'Đã có tên đăng nhập này',
-            'email.unique' => 'Đã có email này',
+            'name.required' => Lang::get('settings.Auth.Validate.name.Required'),
+            'username.required' => Lang::get('settings.Auth.Validate.username.Required'),
+            'username.unique' => Lang::get('settings.Auth.Validate.username.Unique'),
+            'email.unique' => Lang::get('settings.Auth.Validate.email.Unique'),
         ];
     }
 

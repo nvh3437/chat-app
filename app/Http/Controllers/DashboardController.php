@@ -16,6 +16,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Modules\AvnUser\Entities\AddSubMoney;
 use Illuminate\Support\Facades\DB;
+use Lang;
 
 class DashboardController extends Controller
 {
@@ -28,40 +29,40 @@ class DashboardController extends Controller
             'home_seo_image',
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $partner = GeneralSettings::whereIn('key', [
-            'home_partner_title',
-            'home_partner_description',
-            'home_partner_image',
+            'home_partner_title_' . Lang::locale(),
+            'home_partner_description_' . Lang::locale(),
+            'home_partner_image_' . Lang::locale(),
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $banner = GeneralSettings::whereIn('key', [
-            'home_banner_title',
-            'home_banner_description',
+            'home_banner_title_' . Lang::locale(),
+            'home_banner_description_' . Lang::locale(),
             'home_banner_link',
-            'home_banner_image',
+            'home_banner_image_' . Lang::locale(),
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $feature = GeneralSettings::whereIn('key', [
-            'home_feature_icon',
-            'home_feature_img',
-            'home_feature_title',
-            'home_feature_des',
-            'home_feature_sub_title',
-            'home_feature_sub_des',
+            'home_feature_icon_' . Lang::locale(),
+            'home_feature_img_' . Lang::locale(),
+            'home_feature_title_' . Lang::locale(),
+            'home_feature_des_' . Lang::locale(),
+            'home_feature_sub_title_' . Lang::locale(),
+            'home_feature_sub_des_' . Lang::locale(),
             'home_feature_link',
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
-        $feature_list_items = GeneralSettings::where('key', 'like', 'home_feature_list_item_%')->get();
+        $feature_list_items = GeneralSettings::where('key', 'like', 'home_feature_list_item_' . Lang::locale() . '%')->get();
         $post_header = GeneralSettings::whereIn('key', [
-            'post_page_title',
-            'post_page_description',
-            'post_page_icon'
+            'post_page_title_' . Lang::locale(),
+            'post_page_description_' . Lang::locale(),
+            'post_page_icon_' . Lang::locale()
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $service_header = GeneralSettings::whereIn('key', [
-            'service_page_title',
-            'service_page_description',
-            'service_page_icon'
+            'service_page_title_'.Lang::locale(),
+            'service_page_description_'.Lang::locale(),
+            'service_page_icon_'.Lang::locale()
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $contact_header = GeneralSettings::whereIn('key', [
-            'contact_page_title',
-            'contact_page_description',
-            'contact_page_icon'
+            'contact_page_title_' . Lang::locale(),
+            'contact_page_description_' . Lang::locale(),
+            'contact_page_icon_' . Lang::locale()
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $company_info = GeneralSettings::whereIn('key', [
             'address',

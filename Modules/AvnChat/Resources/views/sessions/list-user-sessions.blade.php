@@ -5,10 +5,8 @@
     use Carbon\Carbon;
 @endphp
 @extends(Request()->user()->type == 'system' ? 'layouts.admin' : 'layouts.guest')
-
-
 @section('title')
-    Phiên làm việc
+    @lang('settings.List') @lang('settings.Working_session')
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -30,21 +28,22 @@
                                 <a href="{{ route('list-session') }}" class="btn btn-primary ms-2">
                                     <i class="uil-list-ul"></i>
                                 </a>
+                                <div class="ms-2" style="min-width: 170px;">
+                                    <select class="form-control select2 " data-toggle="select2" name="user_id">
+                                        <option value="">
+                                            {{ $list_users->find($user_id) ? $list_users->find($user_id)->name : __('settings.Partner') }}
+                                        </option>
+                                        @foreach ($list_users as $item)
+                                            <option value="{{ $item->id }}"
+                                                {{ $item->id == $user_id ? 'selected' : '' }}>
+                                                {{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             @endif
-                            <div class="ms-2">
-                                <select class="form-control select2 " data-toggle="select2" name="user_id">
-                                    <option value="">
-                                        {{ $list_users->find($user_id) ? $list_users->find($user_id)->name : 'Chuyên gia' }}
-                                    </option>
-                                    @foreach ($list_users as $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $user_id ? 'selected' : '' }}>
-                                            {{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                         </form>
                     </div>
-                    <h4 class="page-title">Danh sách Phiên làm việc</h4>
+                    <h4 class="page-title">@lang('settings.List') @lang('settings.Working_session')</h4>
                     <div class="d-md-none mb-3">
                         <form action="{{ route('list-session-user') }}" id="filter-mobile">
                             <div class="d-flex me-2">
@@ -67,7 +66,7 @@
                             <div class="d-flex mt-2">
                                 <select class="form-control select2 " data-toggle="select2" name="user_id">
                                     <option value="">
-                                        {{ $list_users->find($user_id) ? $list_users->find($user_id)->name : 'Chuyên gia' }}
+                                        {{ $list_users->find($user_id) ? $list_users->find($user_id)->name : __('settings.Partner') }}
                                     </option>
                                     @foreach ($list_users as $item)
                                         <option value="{{ $item->id }}" {{ $item->id == $user_id ? 'selected' : '' }}>
@@ -85,13 +84,13 @@
                 <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
                     <thead>
                         <tr>
-                            <th>Thời gian</th>
-                            <th>ID</th>
-                            <th>Trạng thái</th>
-                            <th>Chuyên gia</th>
-                            <th>Khách hàng</th>
+                            <th>@lang('settings.Time')</th>
+                            <th>#</th>
+                            <th>@lang('settings.Status')</th>
+                            <th>@lang('settings.Partner')</th>
+                            <th>@lang('settings.Customer')</th>
                             @if (Request()->user()->type == 'system')
-                                <th>Chọn</th>
+                                <th>@lang('settings.Action')</th>
                             @endif
                         </tr>
                     </thead>
@@ -99,9 +98,10 @@
                         @foreach ($sessions as $item)
                             <tr>
                                 <td>
-                                    <span>Bắt đầu: {{ date('H:i - d/m/Y', strtotime($item->created_at)) }}</span>
+                                    <span>@lang('settings.Start'):
+                                        {{ date('H:i - d/m/Y', strtotime($item->created_at)) }}</span>
                                     <br>
-                                    <span>Kết thúc:
+                                    <span>@lang('settings.End'):
                                         {{ $item->end_on ? date('H:i - d/m/Y', strtotime($item->end_on)) : '...' }}</span>
                                 </td>
                                 <td>#{{ $item->id }}</td>
@@ -114,19 +114,19 @@
                                                 $minutes = $time_end->diffInMinutes($created);
                                             }
                                         @endphp
-                                        {{ $item->time ?? $minutes }} phút
+                                        {{ $item->time ?? $minutes }} @lang('settings.minute')
                                     @else
                                         ...
                                     @endif
                                     <br>
                                     @if ($item->status == 1)
-                                        <span class="badge bg-success">Đã xử lý</span>
+                                        <span class="badge bg-success">@lang('settings.Processed')</span>
                                     @elseif($item->status == -1)
-                                        <span class="badge bg-warning">Từ chối</span>
+                                        <span class="badge bg-warning">@lang('settings.Deny')</span>
                                     @elseif($item->end_on)
-                                        <span class="badge bg-primary">Chưa xử lý</span>
+                                        <span class="badge bg-primary">@lang('settings.Unprocessed')</span>
                                     @else
-                                        <span class="badge bg-danger">Phiên đang diễn ra</span>
+                                        <span class="badge bg-danger">@lang('settings.Process_session')</span>
                                     @endif
                                 </td>
                                 <td>
@@ -162,7 +162,8 @@
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title text-dark">Phiên làm việc
+                                                <h5 class="modal-title text-dark">
+                                                    @lang('settings.Working_session')
                                                 </h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
@@ -172,19 +173,22 @@
                                                 @method('put')
                                                 <div class="modal-body text-dark">
                                                     @if ($item->status == 1)
-                                                        <span class="fw-bold badge fs-5 bg-success">Đã xử lý</span>
+                                                        <span
+                                                            class="fw-bold badge fs-5 bg-success">@lang('settings.Processed')</span>
                                                     @elseif($item->status == -1)
-                                                        <span class="fw-bold badge fs-5 bg-warning">Từ chối</span>
+                                                        <span
+                                                            class="fw-bold badge fs-5 bg-warning">@lang('settings.Deny')</span>
                                                     @elseif($item->end_on)
-                                                        <span class="fw-bold badge fs-5 bg-primary">Chưa xử
-                                                            lý</span>
+                                                        <span class="fw-bold badge fs-5 bg-primary">
+                                                            @lang('settings.Unprocessed')
+                                                        </span>
                                                     @else
-                                                        <span class="fw-bold badge fs-5 bg-danger">Phiên đang diễn
-                                                            ra</span>
+                                                        <span class="fw-bold badge fs-5 bg-danger">@lang('settings.Process_session')</span>
                                                     @endif
                                                     <div class="my-2">
-                                                        <label class="form-label border-bottom  fw-bold">Trạng
-                                                            thái</label>
+                                                        <label class="form-label border-bottom  fw-bold">
+                                                            @lang('settings.Status')
+                                                        </label>
                                                         <br>
                                                         @if ($item->end_on)
                                                             <span
@@ -227,10 +231,10 @@
                                                             </span>
                                                         @endif
                                                         <br>
-                                                        <span>Bắt đầu:
+                                                        <span>@lang('settings.Start'):
                                                             {{ date('H:i - d/m/Y', strtotime($item->created_at)) }}</span>
                                                         <br>
-                                                        <span>Kết thúc:
+                                                        <span>@lang('settings.End'):
                                                             {{ $item->end_on ? date('H:i - d/m/Y', strtotime($item->end_on)) : '...' }}</span>
 
                                                         @if ($item->end_on)
@@ -243,8 +247,10 @@
                                                             @endphp
                                                             <div class="input-group mb-2">
                                                                 <label
-                                                                    class="input-group-text fw-bold {{ $item->status == 1 ? 'text-success' : 'text-primary' }}">Thời
-                                                                    gian (phút)</label>
+                                                                    class="input-group-text fw-bold {{ $item->status == 1 ? 'text-success' : 'text-primary' }}">
+                                                                    @lang('settings.Time')
+                                                                    (@lang('settings.minute'))
+                                                                </label>
                                                                 <input type="number"
                                                                     class="form-control fw-bold {{ $item->status == 1 ? 'text-success' : 'text-primary' }}"
                                                                     name="time" value="{{ $item->time ?? $minutes }}">
@@ -252,8 +258,9 @@
                                                         @endif
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label border-bottom  fw-bold">Thanh
-                                                            toán</label>
+                                                        <label class="form-label border-bottom  fw-bold">
+                                                            @lang('settings.Payment')
+                                                        </label>
                                                         <br>
                                                         @if ($item->end_on)
                                                             @php
@@ -281,8 +288,9 @@
                                                         @endif
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label border-bottom  fw-bold">Khách
-                                                            hàng</label>
+                                                        <label class="form-label border-bottom  fw-bold">
+                                                            @lang('settings.Customer')
+                                                        </label>
                                                         <br>
                                                         @foreach ($item->session_customers as $customer)
                                                             <p class="mb-0 ">
@@ -292,8 +300,9 @@
                                                             @if ($item->end_on)
                                                                 <div class="input-group mb-2">
                                                                     <label
-                                                                        class="input-group-text fw-bold {{ $customer->status == 1 ? 'text-success' : 'text-primary' }}">Thanh
-                                                                        toán</label>
+                                                                        class="input-group-text fw-bold {{ $customer->status == 1 ? 'text-success' : 'text-primary' }}">
+                                                                        @lang('settings.Payment')
+                                                                    </label>
                                                                     <input type="text"
                                                                         class="form-control fw-bold {{ $customer->status == 1 ? 'text-success' : 'text-primary' }}"
                                                                         data-toggle="input-mask"
@@ -305,8 +314,9 @@
                                                         @endforeach
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label border-bottom  fw-bold">Quản
-                                                            trị</label>
+                                                        <label class="form-label border-bottom  fw-bold">
+                                                            @lang('settings.Manager')
+                                                        </label>
                                                         <br>
                                                         @foreach ($item->session_system_users as $system_user)
                                                             <p class="mb-0 ">
@@ -317,8 +327,9 @@
                                                         @endforeach
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label border-bottom  fw-bold">Chuyên
-                                                            gia</label>
+                                                        <label class="form-label border-bottom  fw-bold">
+                                                            @lang('settings.Partner')
+                                                        </label>
                                                         <br>
                                                         @foreach ($item->session_partners as $partner)
                                                             <p>
@@ -328,8 +339,9 @@
                                                         @endforeach
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label border-bottom  fw-bold">Ghi
-                                                            âm</label>
+                                                        <label class="form-label border-bottom  fw-bold">
+                                                            @lang('settings.Recording')
+                                                        </label>
                                                         <br>
                                                         @php
                                                             if ($item->end_on) {
@@ -369,13 +381,13 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-light"
-                                                        data-bs-dismiss="modal">Hủy
+                                                        data-bs-dismiss="modal">@lang('settings.Cancel')
                                                     </button>
                                                     @if ($item->end_on && $item->status <= 0)
                                                         <button type="submit" name="status" value="1"
-                                                            class="btn btn-success">Xác nhận</button>
+                                                            class="btn btn-success">@lang('settings.Confirm')</button>
                                                         <button type="submit" name="status" value="-1"
-                                                            class="btn btn-warning">Từ chối</button>
+                                                            class="btn btn-warning">@lang('settings.Deny')</button>
                                                     @endif
                                                 </div>
                                             </form>
@@ -397,12 +409,12 @@
                     <table class="table">
                         <thead class="table-dark align-middle">
                             <tr>
-                                <th>Tài khoản</th>
-                                <th>Tổng số phiên</th>
-                                <th>Phiên chưa xử lý</th>
-                                <th>Phiên đã xử lý</th>
-                                <th>Phiên đã từ chối</th>
-                                <th>Thời gian đã xử lý</th>
+                                <th>@lang('settings.Account')</th>
+                                <th>@lang('settings.Sum_session')</th>
+                                <th>@lang('settings.Unprocessed_session')</th>
+                                <th>@lang('settings.Processed_session')</th>
+                                <th>@lang('settings.Denied_session')</th>
+                                <th>@lang('settings.Processing_time')</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -428,7 +440,7 @@
                                     {{ count($user_sessions->where('status', -1)) }}
                                 </td>
                                 <td class="fw-bold text-success">
-                                    {{ $user_sessions->sum('time') }} phút
+                                    {{ $user_sessions->sum('time') }} @lang('settings.minute')
                                 </td>
                             </tr>
                         </tbody>
@@ -443,8 +455,28 @@
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
 
-    <!-- Datatable Init js -->
-    <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
+    <script>
+        $("#state-saving-datatable").DataTable({
+                stateSave: !0,
+                language: {
+                    "search": "@lang('settings.Search')",
+                    "info": "@lang('settings.Display_per_page', ['page' => '_PAGE_', 'pages' => '_PAGES_'])",
+                    "emptyTable": "@lang('settings.No_data')",
+                    "infoEmpty": "@lang('settings.No_record')",
+                    "lengthMenu": '@lang('settings.Show_entries', ['entries' => '<select><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="-1">' . __('settings.All') . '</option></select>'])',
+                    "zeroRecords": "@lang('settings.No_result')",
+                    paginate: {
+                        previous: "<i class='mdi mdi-chevron-left'>",
+                        next: "<i class='mdi mdi-chevron-right'>"
+                    }
+                },
+                drawCallback: function() {
+                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+                },
+            }),
+            $(".dataTables_length select").addClass("form-select form-select-sm"),
+            $(".dataTables_length label").addClass("form-label");
+    </script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
     <script>
         $('#filter-desktop').on('change', 'input, select', function() {

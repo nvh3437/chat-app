@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Modules\AvnBranch\Entities\Branch;
+use Lang;
 
 class LoginRequest extends FormRequest
 {
@@ -28,8 +29,10 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'username.required' => 'Tên đăng nhập không thể bỏ trống',
-            'password.required' => 'Mật khẩu không thể bỏ trống',
+            'username.required' => Lang::get('settings.Auth.Validate.username.Required'),
+            'username.string' => Lang::get('settings.Auth.Validate.username.String'),
+            'password.required' => Lang::get('settings.Auth.Validate.password.Required'),
+            'password.string' => Lang::get('settings.Auth.Validate.password.String'),
         ];
     }
 
@@ -39,7 +42,7 @@ class LoginRequest extends FormRequest
         if (!Auth::attempt(['email' => $this->username, 'password' => $this->password], $this->remember) && !Auth::attempt($this->only('username', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
             throw ValidationException::withMessages([
-                'username' => trans('auth.failed'),
+                'username' => trans('settings.Auth.Login_failed'),
             ]);
         }
         $user = Auth::user();
@@ -58,7 +61,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'username' => trans('auth.throttle', [
+            'username' => trans('settings.Auth.Throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),

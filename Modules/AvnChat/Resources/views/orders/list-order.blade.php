@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    Đặt lịch
+    @lang('settings.List') @lang('settings.Booking')
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -9,13 +9,13 @@
                 <div class="page-title-box">
                     <div class="page-title-right d-none d-sm-block">
                         <a href="{{ route('order-chat') }}" class="btn btn-success">
-                            Trang Đặt lịch
+                            @lang('settings.Booking_page')
                         </a>
                     </div>
-                    <h4 class="page-title">Danh sách Đặt lịch</h4>
+                    <h4 class="page-title">@lang('settings.List') @lang('settings.Booking')</h4>
                     <div class="d-sm-none mb-2">
                         <a href="{{ route('order-chat') }}" class="btn btn-success">
-                            Trang Đặt lịch
+                            @lang('settings.Booking_page')
                         </a>
                     </div>
                 </div>
@@ -28,25 +28,22 @@
                         <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>STT</th>
-                                    <th>Trạng thái</th>
-                                    <th>Chuyên gia</th>
-                                    <th>Tên</th>
-                                    <th>Đặt lịch</th>
-                                    <th>Ngày gửi</th>
-                                    <th>Chọn</th>
+                                    <th>#</th>
+                                    <th>@lang('settings.Status')</th>
+                                    <th>@lang('settings.Partner')</th>
+                                    <th>@lang('settings.Name')</th>
+                                    <th>@lang('settings.Booking')</th>
+                                    <th>@lang('settings.Date')</th>
+                                    <th>@lang('settings.Action')</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $i = 0;
-                                @endphp
                                 @foreach ($orders as $item)
                                     <tr>
-                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $loop->index }}</td>
                                         <td>
                                             <span
-                                                class="badge badge-outline-{{ $item->status == 1 ? 'primary' : ($item->status == -1 ? 'danger' : 'secondary') }}">{{ $item->status == 1 ? 'Xác nhận' : ($item->status == -1 ? 'Từ chối' : 'Chưa xử lý') }}</span>
+                                                class="badge badge-outline-{{ $item->status == 1 ? 'primary' : ($item->status == -1 ? 'danger' : 'secondary') }}">{{ $item->status == 1 ? __('settings.Confirm') : ($item->status == -1 ? __('settings.Deny') : __('settings.Unprocessed')) }}</span>
                                         </td>
                                         <td>
                                             @if ($item->partner)
@@ -54,7 +51,7 @@
                                                 <br>
                                                 {{ $item->partner->email }}
                                             @else
-                                                <span class="fw-bold">Hệ thông tự chọn</span>
+                                                <span class="fw-bold">@lang('settings.Auto')</span>
                                             @endif
                                         </td>
                                         <td>
@@ -86,7 +83,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title text-dark">Đặt lịch
+                                                    <h5 class="modal-title text-dark">
+                                                        @lang('settings.Booking')
                                                     </h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
@@ -94,30 +92,33 @@
                                                 <div class="modal-body text-dark">
                                                     <div class="mb-2">
                                                         <label
-                                                            class="form-label border-bottom  text-primary border-primary">Trạng
-                                                            thái</label>
+                                                            class="form-label border-bottom  text-primary border-primary">
+                                                            @lang('settings.Status')
+                                                        </label>
                                                         <br>
                                                         <span
-                                                            class="badge badge-outline-{{ $item->status == 1 ? 'primary' : ($item->status == -1 ? 'danger' : 'secondary') }}">{{ $item->status == 1 ? 'Xác nhận' : ($item->status == -1 ? 'Từ chối' : 'Chưa xử lý') }}</span>
+                                                            class="badge badge-outline-{{ $item->status == 1 ? 'primary' : ($item->status == -1 ? 'danger' : 'secondary') }}">{{ $item->status == 1 ? __('settings.Confirm') : ($item->status == -1 ? __('settings.Deny') : __('settings.Unprocessed')) }}</span>
                                                     </div>
                                                     <div class="mb-2">
                                                         <label
-                                                            class="form-label border-bottom  text-primary border-primary">Chuyên
-                                                            gia</label>
+                                                            class="form-label border-bottom  text-primary border-primary">
+                                                            @lang('settings.Partner')
+                                                        </label>
                                                         <br>
                                                         @if ($item->partner)
                                                             <span class="fw-bold">{{ $item->partner->name }}</span>
                                                             <br>
                                                             {{ $item->partner->email }}
                                                         @else
-                                                            <span class="fw-bold">Hệ thông tự chọn</span>
+                                                            <span class="fw-bold">@lang('settings.Auto')</span>
                                                         @endif
                                                     </div>
 
                                                     <div class="mb-2">
                                                         <label
-                                                            class="form-label border-bottom  text-primary border-primary">Người
-                                                            dùng</label>
+                                                            class="form-label border-bottom  text-primary border-primary">
+                                                            @lang('settings.User')
+                                                        </label>
                                                         <br>
                                                         <span class="fw-bold">{{ $item->user->name }}</span><br>
                                                         {{ $item->user->email }}
@@ -128,37 +129,41 @@
                                                     </div>
                                                     <div class="mb-2">
                                                         <label
-                                                            class="form-label border-bottom  text-primary border-primary">Thời
-                                                            gian</label>
+                                                            class="form-label border-bottom  text-primary border-primary">
+                                                            @lang('settings.Booking')
+                                                        </label>
                                                         <br>
                                                         <span
                                                             class="fw-bold">{{ date('H:i | d/m/Y', strtotime($item->start_date . ' ' . $item->start_time)) }}</span>
                                                     </div>
                                                     <div class="mb-2">
                                                         <label
-                                                            class="form-label border-bottom  text-primary border-primary">Ngày
-                                                            tạo</label>
+                                                            class="form-label border-bottom  text-primary border-primary">
+                                                            @lang('settings.Date')
+                                                        </label>
                                                         <br>
                                                         {{ date('H:i | d/m/Y', strtotime($item->created_at)) }}
                                                     </div>
                                                     <div class="mb-2">
                                                         <label
-                                                            class="form-label border-bottom  text-primary border-primary">Ghi
-                                                            chú </label>
+                                                            class="form-label border-bottom  text-primary border-primary">
+                                                            @lang('settings.Note')
+                                                        </label>
                                                         <textarea class="form-control mb-1" id="textBox1" rows="5">{!! $item->note !!}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                                        @lang('settings.Cancel')
                                                     </button>
                                                     <form action="{{ route('process-order', [$item->id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('put')
                                                         <button type="submit" name="status" value="1"
-                                                            class="btn btn-primary">Xác nhận</button>
+                                                            class="btn btn-primary">@lang('settings.Confirm')</button>
                                                         <button type="submit" name="status" value="-1"
-                                                            class="btn btn-danger">Từ chối</button>
+                                                            class="btn btn-danger">@lang('settings.Deny')</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -170,20 +175,23 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                    <h5 class="modal-title text-dark">@lang('settings.Confirm')</h5>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body text-dark">
-                                                    <p>Bạn có muốn xóa không?</p>
+                                                    <p>@lang('settings.Delete_confirm', ['name' => __('settings.Booking')])</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                                        @lang('settings.Cancel')
                                                     </button>
                                                     <form action="{{ route('delete-order', [$item->id]) }}" method="POST">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="submit" class="btn btn-primary">Xóa</button>
+                                                        <button type="submit" class="btn btn-primary">
+                                                            @lang('settings.Delete.delete')
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -203,8 +211,28 @@
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
 
-    <!-- Datatable Init js -->
-    <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
+    <script>
+        $("#state-saving-datatable").DataTable({
+                stateSave: !0,
+                language: {
+                    "search": "@lang('settings.Search')",
+                    "info": "@lang('settings.Display_per_page', ['page' => '_PAGE_', 'pages' => '_PAGES_'])",
+                    "emptyTable": "@lang('settings.No_data')",
+                    "infoEmpty": "@lang('settings.No_record')",
+                    "lengthMenu": '@lang('settings.Show_entries', ['entries' => '<select><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="-1">' . __('settings.All') . '</option></select>'])',
+                    "zeroRecords": "@lang('settings.No_result')",
+                    paginate: {
+                        previous: "<i class='mdi mdi-chevron-left'>",
+                        next: "<i class='mdi mdi-chevron-right'>"
+                    }
+                },
+                drawCallback: function() {
+                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+                },
+            }),
+            $(".dataTables_length select").addClass("form-select form-select-sm"),
+            $(".dataTables_length label").addClass("form-label");
+    </script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
 @endsection
 @section('css')

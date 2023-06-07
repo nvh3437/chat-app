@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnSetting\Entities\Navbar;
+use Lang;
 
 class NavbarController extends Controller
 {
@@ -27,13 +28,18 @@ class NavbarController extends Controller
         try {
             $nav = new Navbar();
             $nav->name = $request->name;
+            if ($request->multi_lang) {
+                $nav->ja = $request->group_name[0];
+                $nav->vi = $request->group_name[1];
+                $nav->en = $request->group_name[2];
+            }
             $nav->link = $request->link;
             $nav->order = $request->order;
             $nav->parent_id = $request->parent_id;
             $nav->save();
-            return back()->with('Success', 'Thêm thành công');
+            return back()->with('Success', Lang::get("settings.Add.Add_success"));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
+            return back()->with('Failed', Lang::get("settings.Add.Add_failed"));
         }
     }
 
@@ -49,23 +55,36 @@ class NavbarController extends Controller
         try {
             $nav = Navbar::findOrFail($id);
             $nav->name = $request->name;
+            if ($request->multi_lang) {
+                $nav->ja = $request->group_name[0];
+                $nav->vi = $request->group_name[1];
+                $nav->en = $request->group_name[2];
+            } else {
+                $nav->ja = null;
+                $nav->vi = null;
+                $nav->en = null;
+            }
             $nav->link = $request->link;
             $nav->order = $request->order;
             $nav->parent_id = $request->parent_id;
             $nav->save();
-            return redirect()->route('navbar')->with('Success', 'Cập nhật thành công');
+            return redirect()->route('navbar')->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
     public function deleteNavbar($id)
     {
         try {
-            $nav = Navbar::findOrFail($id)->delete();
-            return back()->with('Success', 'Xóa thành công');
+            $nav = Navbar::findOrFail($id);
+            foreach ($nav->childrens as $children) {
+                $children->parent_id = 0;
+            }
+            $nav->delete();
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 }

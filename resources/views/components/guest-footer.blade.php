@@ -1,16 +1,18 @@
 @php
     $footer = Modules\AvnSetting\Http\Controllers\FooterController::getFooter();
     $footer_socials = Modules\AvnSetting\Http\Controllers\FooterController::getFooterSocial();
-    $description = App\Models\GeneralSettings::whereIn('key', ['footer_description'])->first();
+    $description = App\Models\GeneralSettings::whereIn('key', ['footer_description_' . Lang::locale()])->first();
     $logo = App\Http\Controllers\Controller::getSetting('logo')->value;
 @endphp
 <footer class="bg-dark py-5">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
-                    width="70" height="70" />
-                <p class="text-muted mt-4">{!! $description->value ?? '' !!}</p>
+                <div class="d-flex align-items-start flex-column flex-md-row align-items-md-center">
+                    <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
+                        width="70" height="70" />
+                    <p class="ms-md-3 text-muted mt-4 mt-md-0">{!! $description->value ?? '' !!}</p>
+                </div>
                 <ul class="social-list list-inline mt-3">
                     @if (isset($footer_socials['social_facebook']) && $footer_socials['social_facebook']['value'])
                         <li class="list-inline-item text-center">
@@ -60,14 +62,26 @@
                 </ul>
             </div>
             <div class="col-lg-6">
-                <div class="row">
+                <div class="row g-3">
                     @foreach ($footer as $item)
-                        <div class="col-lg-3 mt-3 mt-lg-0">
-                            <h5 class="text-light">{{ $item->name }}</h5>
-                            <ul class="list-unstyled ps-0 mb-0 mt-3">
+                        <div class="col-md-6 col-lg-3">
+                            <h5 class="text-light mt-0">
+                                @if ($item->vi || $item->en || $item->ja)
+                                    {{ $item[Lang::locale()] }}
+                                @else
+                                    {{ $item->name }}
+                                @endif
+                            </h5>
+                            <ul class="list-unstyled ps-0 mb-0">
                                 @foreach ($item->childrens as $child)
-                                    <li class="mt-2">
-                                        <a href="{{ $child->link }}" class="text-muted">{{ $child->name }}</a>
+                                    <li>
+                                        <a href="{{ $child->link }}" class="text-muted">
+                                            @if ($child->vi || $child->en || $child->ja)
+                                                {{ $child[Lang::locale()] }}
+                                            @else
+                                                {{ $child->name }}
+                                            @endif
+                                        </a>
                                     </li>
                                 @endforeach
                             </ul>

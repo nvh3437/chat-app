@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\GeneralSettings;
 use Modules\AvnCMS\Http\Requests\CMSRequest;
 use Modules\AvnCMS\Http\Requests\CMSUpdateRequest;
+use Lang;
 
 class CMSController extends Controller
 {
@@ -41,6 +42,11 @@ class CMSController extends Controller
         try {
             $cms = new CMS();
             $cms->name = $request->name;
+            if ($request->multi_lang) {
+                $cms->name_ja = $request->name_ja;
+                $cms->name_vi = $request->name_vi;
+                $cms->name_en = $request->name_en;
+            }
             $cms->keywords = $request->keywords;
             $cms->sort_description = $request->sort_description;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
@@ -54,15 +60,16 @@ class CMSController extends Controller
                 $cms->img = $path;
             }
             $cms->description = $request->description;
-            $cms->alias = Helper::createSlug(trim($cms->name));
-            if (count(CMS::where('alias', $cms->alias)->get()) > 0) {
-                $cms->alias = Helper::createSlug(trim($cms->alias . ' ' . rand()));
+            if ($request->multi_lang) {
+                $cms->description_ja = $request->description_ja;
+                $cms->description_vi = $request->description_vi;
+                $cms->description_en = $request->description_en;
             }
             $cms->link = $request->link;
             $cms->save();
-            return redirect()->route('list-cms')->with('Success', 'Thêm thành công');
+            return redirect()->route('list-cms')->with('Success', Lang::get('settings.Add.Add_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
+            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
         }
     }
 
@@ -77,6 +84,15 @@ class CMSController extends Controller
         try {
             $cms = CMS::findOrFail($id);
             $cms->name = $request->name;
+            if ($request->multi_lang) {
+                $cms->name_ja = $request->name_ja;
+                $cms->name_vi = $request->name_vi;
+                $cms->name_en = $request->name_en;
+            } else {
+                $cms->name_ja = null;
+                $cms->name_vi = null;
+                $cms->name_en = null;
+            }
             $cms->keywords = $request->keywords;
             $cms->sort_description = $request->sort_description;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
@@ -93,39 +109,40 @@ class CMSController extends Controller
                 $cms->img = $path;
             }
             $cms->description = $request->description;
-            $alias = Helper::createSlug($request->name);
-            if ($cms->alias != $alias) {
-                if (count(CMS::where('alias', '==', $alias)->get()) > 0) {
-                    $cms->alias = Helper::createSlug($alias . ' ' . rand());
-                } else
-                    $cms->alias = $alias;
+            if ($request->multi_lang) {
+                $cms->description_ja = $request->description_ja;
+                $cms->description_vi = $request->description_vi;
+                $cms->description_en = $request->description_en;
+            } else {
+                $cms->description_ja = null;
+                $cms->description_vi = null;
+                $cms->description_en = null;
             }
             if ($cms->link != $request->link && $request->link) {
                 $cms_change_link = CMS::where('link', $request->link)->first();
                 if ($cms_change_link) {
-                    return back()->with('Failed', 'Đường dẫn đã tồn tại');
+                    return back()->with('Failed', Lang::get('settings.Validate.Unique', ['name' => Lang::get('settings.Route')]));
                 }
                 $cms->link = $request->link;
             }
             $cms->save();
-            return redirect()->route('list-cms')->with('Success', 'Cập nhật thành công');
+            return redirect()->route('list-cms')->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
     public function deleteCMS($id)
     {
-        try{
+        try {
             $cms = CMS::findOrFail($id);
             if ($cms->img != null) {
                 File::delete($cms->img);
             }
             $cms->delete();
-            return back()->with('Success', 'Xóa thành công');
-        }
-        catch(Exception $e){
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
+        } catch (Exception $e) {
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 }

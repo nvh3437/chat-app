@@ -14,7 +14,7 @@
                     </div>
                     <div class="card">
                         <div class="card-body shadow-lg">
-                            <h4 class="card-title">Thông tin chung</h4>
+                            <h4 class="card-title">@lang('settings.General_info')</h4>
                             <div class="row g-2">
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label">@lang('settings.company_name')</label>
@@ -29,7 +29,7 @@
                             </div>
                             <div class="row g-2">
                                 <div class="mb-3 col-md-6">
-                                    <label class="form-label">@lang('auth.email')</label>
+                                    <label class="form-label">@lang('settings.Email')</label>
                                     <input type="email" name="email" class="form-control"
                                         value="{{ $settings['email']['value'] ?? '' }}" placeholder="Email">
                                 </div>
@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="mb-3 col-12">
-                                <label class="form-label">@lang('settings.address')</label>
+                                <label class="form-label">@lang('settings.Address')</label>
                                 <input type="text" value="{{ $settings['address']['value'] ?? '' }}" name="address"
                                     class="form-control" placeholder="1234 Main St">
                             </div>

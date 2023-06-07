@@ -1,6 +1,6 @@
 @extends('layouts.guest')
 @section('title')
-    Lịch sử số dư
+    @lang('avnuser::profile.Balance_history')
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -23,7 +23,7 @@
                             </form>
                         </div>
                     </div>
-                    <h4 class="page-title">Lịch sử số dư</h4>
+                    <h4 class="page-title">@lang('avnuser::profile.Balance_history')</h4>
                 </div>
             </div>
         </div>
@@ -33,10 +33,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Ngày</th>
-                            <th>Cộng/Trừ</th>
-                            <th>Số dư sau xử lý</th>
-                            <th>Ghi chú</th>
+                            <th>@lang('settings.Date')</th>
+                            <th>@lang('settings.Plus')/@lang('settings.Subtract')</th>
+                            <th>@lang('avnuser::profile.Processed_balance')</th>
+                            <th>@lang('settings.Note')</th>
                         </tr>
                     </thead>
                     <tbody>

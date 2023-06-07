@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\AvnUser\Entities\Profile;
 use Modules\AvnUser\Entities\AddSubMoney;
 use Carbon\Carbon;
+use Lang;
 
 class UserController extends Controller
 {
@@ -46,7 +47,7 @@ class UserController extends Controller
             if ($user->email != $request->email && $request->email) {
                 $user_change_mail = User::where('email', $request->email)->first();
                 if ($user_change_mail) {
-                    return back()->with('Failed', 'Email đã tồn tại');
+                    return back()->with('Failed', Lang::get('settings.Auth.Validate.email.Unique'));
                 }
                 $user->email = $request->email;
             }
@@ -90,9 +91,9 @@ class UserController extends Controller
                 $profile->img = $path;
             }
             $profile->save();
-            return back()->with('Success', 'Cập nhật thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
     public function getUsers(Request $request)

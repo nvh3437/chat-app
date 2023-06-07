@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Modules\AvnUser\Http\Requests\StoreCustomerRequest;
+use Modules\AvnUser\Http\Requests\StoreProfileRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Modules\AvnChat\Entities\ChatRoomUser;
+use Lang;
 
 class CustomerController extends Controller
 {
@@ -24,7 +25,7 @@ class CustomerController extends Controller
         return view('avnuser::customer.customer-register');
     }
 
-    public function storeRegister(StoreCustomerRequest $request)
+    public function storeRegister(StoreProfileRequest $request)
     {
         try {
             // Lưu bảng user 
@@ -40,7 +41,7 @@ class CustomerController extends Controller
             $global_chat_room_user->user_id = $user->id;
             $global_chat_room_user->room_id = 1;
             $global_chat_room_user->save();
-            
+
             // Lưu bảng customer
             $customer = new Profile();
             $customer->id = $user->id;
@@ -49,9 +50,9 @@ class CustomerController extends Controller
             $customer->save();
             event(new Registered($user));
             Auth::login($user);
-            return redirect(RouteServiceProvider::HOME);
+            return redirect(RouteServiceProvider::HOME)->with('Success', Lang::get('settings.Auth.Register_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Đăng ký thất bại');
+            return back()->with('Failed', Lang::get('settings.Auth.Register_failed'));
         }
     }
 
@@ -60,12 +61,6 @@ class CustomerController extends Controller
         return view('avnuser::customer.forgot-password');
     }
     //---------------------  Thông tin cá nhân ------------------//
-
-    public function myProfile()
-    {
-        $user = Auth::user();
-        return view('avnuser::customer.my-profile', compact('user'));
-    }
 
     public function updateCustomerProfile(Request $request)
     {
@@ -76,7 +71,7 @@ class CustomerController extends Controller
             if ($user->email != $request->email && $request->email) {
                 $user_change_mail = User::where('email', $request->email)->first();
                 if ($user_change_mail) {
-                    return back()->with('Failed', 'Email đã tồn tại');
+                    return back()->with('Failed', Lang::get('settings.Auth.Validate.email.Unique'));
                 }
                 $user->email = $request->email;
             }
@@ -114,9 +109,9 @@ class CustomerController extends Controller
                 $customer->img = $path;
             }
             $customer->save();
-            return back()->with('Success', 'Cập nhật thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 }

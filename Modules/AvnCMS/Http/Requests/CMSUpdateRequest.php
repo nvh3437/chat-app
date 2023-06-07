@@ -3,6 +3,7 @@
 namespace Modules\AvnCMS\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Lang;
 
 class CMSUpdateRequest extends FormRequest
 {
@@ -17,8 +18,8 @@ class CMSUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Tiêu đề không thể bỏ trống',
-            'description.required' => 'Nội dung trang không thể bỏ trống',
+            'name.required' => Lang::get('settings.Validate.Required', ['name' => Lang::get('settings.Title')]),
+            'description.required' => Lang::get('settings.Validate.Required', ['name' => Lang::get('settings.Category')]),
         ];
     }
 

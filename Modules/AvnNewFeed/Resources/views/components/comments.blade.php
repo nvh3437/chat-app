@@ -18,10 +18,10 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="javascript: void(0);" class="dropdown-item edit-comment">
-                                <i class='mdi mdi-pencil'></i> Sửa
+                                <i class='mdi mdi-pencil'></i> @lang('settings.Update.update')
                             </a>
                             <a href="javascript: void(0);" class="dropdown-item delete-comment ">
-                                <i class='mdi mdi-delete'></i> Xóa
+                                <i class='mdi mdi-delete'></i> @lang('settings.Delete.delete')
                             </a>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="javascript: void(0);" class="dropdown-item delete-comment">
-                                <i class='mdi mdi-delete'></i> Xóa
+                                <i class='mdi mdi-delete'></i> @lang('settings.Delete.delete')
                             </a>
                         </div>
                     </div>

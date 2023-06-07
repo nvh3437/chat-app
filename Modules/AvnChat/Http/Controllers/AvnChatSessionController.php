@@ -14,6 +14,7 @@ use App\Models\GeneralSettings;
 use Modules\AvnUser\Entities\AddSubMoney;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Lang;
 
 class AvnChatSessionController extends Controller
 {
@@ -47,39 +48,39 @@ class AvnChatSessionController extends Controller
 
     public function processSession($id, Request $request)
     {
-        // try {
-        $session = ChatRoomSession::where('end_on', '!=', null)->findOrFail($id);
-        $session->status = $request->status;
-        $session->time = $request->time;
-        $session->save();
-        foreach ($session->session_users as $session_user) {
-            $session_user->status = $request->status;
-            if ($session_user->user->profile && $session_user->user->type != 'system' && $request->status == 1) {
-                $session_user->money = floatval(str_replace(",", "", $request->moneys[$session_user->id] ?? '0'));
-            } else {
-                $session_user->money = 0;
-            }
-            $session_user->save();
-            if ($session_user->user->profile && $session_user->user->type != 'system' && $request->status == 1) {
-                $profile = $session_user->user->profile;
-                if ($session_user->user->type == 'customer') {
-                    $profile->money = floatval($profile->money) - floatval($session_user->money);
-                    $profile->save();
-                    $addsub = new AddSubMoney();
-                    $addsub->user_id = $profile->id;
-                    $addsub->add = 0;
-                    $addsub->sub = $session_user->money;
-                    $addsub->note = "Thanh toán phiên làm việc #{$session->id} ngày " . date('H:i - d/m/Y', strtotime($session->created_at));
-                    $addsub->surplus = $profile->money;
-                    $addsub->save();
+        try {
+            $session = ChatRoomSession::where('end_on', '!=', null)->findOrFail($id);
+            $session->status = $request->status;
+            $session->time = $request->time;
+            $session->save();
+            foreach ($session->session_users as $session_user) {
+                $session_user->status = $request->status;
+                if ($session_user->user->profile && $session_user->user->type != 'system' && $request->status == 1) {
+                    $session_user->money = floatval(str_replace(",", "", $request->moneys[$session_user->id] ?? '0'));
+                } else {
+                    $session_user->money = 0;
                 }
+                $session_user->save();
+                if ($session_user->user->profile && $session_user->user->type != 'system' && $request->status == 1) {
+                    $profile = $session_user->user->profile;
+                    if ($session_user->user->type == 'customer') {
+                        $profile->money = floatval($profile->money) - floatval($session_user->money);
+                        $profile->save();
+                        $addsub = new AddSubMoney();
+                        $addsub->user_id = $profile->id;
+                        $addsub->add = 0;
+                        $addsub->sub = $session_user->money;
+                        $addsub->note = "Thanh toán phiên làm việc #{$session->id} ngày " . date('H:i - d/m/Y', strtotime($session->created_at));
+                        $addsub->surplus = $profile->money;
+                        $addsub->save();
+                    }
 
+                }
             }
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
+        } catch (Exception $e) {
+            return back()->with('Failed', Lang::get('settings.Update.Update_success'));
         }
-        return back()->with('Success', 'Cập nhật thành công');
-        // } catch (Exception $e) {
-        //     return back()->with('Failed', 'Cập nhật thất bại');
-        // }
 
     }
 }

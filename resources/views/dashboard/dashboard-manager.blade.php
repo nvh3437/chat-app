@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    Báo cáo tổng hợp
+    @lang('settings.Report')
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -11,7 +11,7 @@
                     <div class="page-title-right">
 
                     </div>
-                    <h4 class="page-title">Báo cáo tổng hợp</h4>
+                    <h4 class="page-title">@lang('settings.Report')</h4>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
                                     <div class="card-body text-center">
                                         <i class="dripicons-user-group text-primary" style="font-size: 24px;"></i>
                                         <h3 class="text-primary"><span>{{ number_format($partners) }}</span></h3>
-                                        <p class="text-primary font-15 mb-0">Chuyên gia</p>
+                                        <p class="text-primary font-15 mb-0">@lang('settings.Partner')</p>
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                                     <div class="card-body text-center">
                                         <i class="dripicons-user-group text-success" style="font-size: 24px;"></i>
                                         <h3 class="text-success"><span>{{ number_format($customers) }}</span></h3>
-                                        <p class="text-success font-15 mb-0">Thành Viên</p>
+                                        <p class="text-success font-15 mb-0">@lang('settings.Customer')</p>
                                     </div>
                                 </div>
                             </div>
@@ -46,13 +46,11 @@
                                     <div class="card-body text-center">
                                         <i class="dripicons-user-group text-muted" style="font-size: 24px;"></i>
                                         <h3><span>{{ number_format($chat_room_sessions) }}</span></h3>
-                                        <p class="text-muted font-15 mb-0">Cuộc hội thoại</p>
+                                        <p class="text-muted font-15 mb-0">@lang('settings.Conversation')</p>
                                     </div>
                                 </div>
                             </div>
-
                         </div> <!-- end row -->
-
                     </div>
                 </div> <!-- end card-box-->
             </div> <!-- end col-->
@@ -61,15 +59,15 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        <h4 class="header-title mb-3">Top khách hàng</h4>
+                        <h4 class="header-title mb-3">Top @lang('settings.Customer')</h4>
 
                         <div class="table-responsive">
                             <table class="table table-striped table-sm table-nowrap table-centered mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Tên</th>
-                                        <th>Số lần y.c</th>
-                                        <th>Số tiền đã dùng</th>
+                                        <th>@lang('settings.Name')</th>
+                                        <th>@lang('settings.Number_requests')</th>
+                                        <th>@lang('settings.Amount_spent')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -105,13 +103,13 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        <h4 class="header-title mb-3">Top Chuyên gia</h4>
+                        <h4 class="header-title mb-3">Top @lang('settings.Partner')</h4>
                         <div class="table-responsive">
                             <table class="table table-striped table-sm table-nowrap table-centered mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Tên</th>
-                                        <th>Số lần y.c</th>
+                                        <th>@lang('settings.Name')</th>
+                                        <th>@lang('settings.Number_requests')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -154,7 +152,7 @@
                                 <div class="float-end">
                                     <i class="mdi mdi-account-multiple widget-icon text-success bg-success-lighten"></i>
                                 </div>
-                                <h5 class="text-muted fw-normal mt-0" title="Number of Customers">New Customers</h5>
+                                <h5 class="text-muted fw-normal mt-0" title="Number of Customers">@lang('settings.New_customers')</h5>
                                 <h3 class="mt-3 mb-3">{{ number_format($new_customers) }}</h3>
                                 <p class="mb-0 text-muted">
                                     @php
@@ -163,7 +161,7 @@
                                     <span class="text-{{ $since_last_month >= 0 ? 'success' : 'danger' }} me-2"><i
                                             class="mdi mdi-arrow-{{ $since_last_month >= 0 ? 'up' : 'down' }}-bold"></i>
                                         {{ number_format($since_last_month, 2) }}%</span>
-                                    <span class="text-nowrap">Since last month</span>
+                                    <span class="text-nowrap">@lang('settings.Since_last_month')</span>
                                 </p>
                             </div> <!-- end card-body-->
                         </div> <!-- end card-->
@@ -174,7 +172,7 @@
                                 <div class="float-end">
                                     <i class="mdi mdi-account-multiple widget-icon"></i>
                                 </div>
-                                <h5 class="text-muted fw-normal mt-0" title="Number of Customers">New Partners</h5>
+                                <h5 class="text-muted fw-normal mt-0" title="Number of Customers">@lang('settings.New_partners')</h5>
                                 <h3 class="mt-3 mb-3">{{ number_format($new_partners) }}</h3>
                                 <p class="mb-0 text-muted">
                                     @php
@@ -183,7 +181,7 @@
                                     <span class="text-{{ $since_last_month >= 0 ? 'success' : 'danger' }} me-2"><i
                                             class="mdi mdi-arrow-{{ $since_last_month >= 0 ? 'up' : 'down' }}-bold"></i>
                                         {{ number_format($since_last_month, 2) }}%</span>
-                                    <span class="text-nowrap">Since last month</span>
+                                    <span class="text-nowrap">@lang('settings.Since_last_month')</span>
                                 </p>
                             </div> <!-- end card-body-->
                         </div> <!-- end card-->
@@ -197,16 +195,16 @@
                                 <div class="float-end">
                                     <i class="mdi mdi-cart-plus widget-icon"></i>
                                 </div>
-                                <h5 class="text-muted fw-normal mt-0" title="Number of Orders">Orders</h5>
+                                <h5 class="text-muted fw-normal mt-0" title="Number of Orders">@lang('settings.Working_session')</h5>
                                 <h3 class="mt-3 mb-3">{{ number_format($new_chat_room_sessions) }}</h3>
                                 <p class="mb-0 text-muted">
                                     @php
-                                        $since_last_month = ($new_chat_room_sessions_last_month ? ($new_revernue_last_month - $new_chat_room_sessions_last_month) / $new_chat_room_sessions_last_month : 1) * 100;
+                                        $since_last_month = ($new_chat_room_sessions_last_month ? ($new_chat_room_sessions - $new_chat_room_sessions_last_month) / $new_chat_room_sessions_last_month : 1) * 100;
                                     @endphp
                                     <span class="text-{{ $since_last_month >= 0 ? 'success' : 'danger' }} me-2"><i
                                             class="mdi mdi-arrow-{{ $since_last_month >= 0 ? 'up' : 'down' }}-bold"></i>
                                         {{ number_format($since_last_month, 2) }}%</span>
-                                    <span class="text-nowrap">Since last month</span>
+                                    <span class="text-nowrap">@lang('settings.Since_last_month')</span>
                                 </p>
                             </div> <!-- end card-body-->
                         </div> <!-- end card-->
@@ -217,7 +215,7 @@
                                 <div class="float-end">
                                     <i class="mdi mdi-currency-usd widget-icon"></i>
                                 </div>
-                                <h5 class="text-muted fw-normal mt-0" title="Average Revenue">Revenue</h5>
+                                <h5 class="text-muted fw-normal mt-0" title="Average Revenue">@lang('settings.Revenue')</h5>
                                 <h3 class="mt-3 mb-3">${{ number_format($new_revernue) }}</h3>
                                 <p class="mb-0 text-muted">
                                     @php
@@ -226,7 +224,7 @@
                                     <span class="text-{{ $since_last_month >= 0 ? 'success' : 'danger' }} me-2"><i
                                             class="mdi mdi-arrow-{{ $since_last_month >= 0 ? 'up' : 'down' }}-bold"></i>
                                         {{ number_format($since_last_month, 2) }}%</span>
-                                    <span class="text-nowrap">Since last month</span>
+                                    <span class="text-nowrap">@lang('settings.Since_last_month')</span>
                                 </p>
                             </div> <!-- end card-body-->
                         </div> <!-- end card-->
@@ -254,7 +252,7 @@
                                 <a href="javascript:void(0);" class="dropdown-item">Action</a>
                             </div>
                         </div> --}}
-                        <h4 class="header-title mb-3">Revenue</h4>
+                        <h4 class="header-title mb-3">@lang('settings.Revenue')</h4>
                         <div dir="ltr">
                             <div id="high-performing-product" class="apex-charts" data-colors="#727cf5,#e3eaef"></div>
                         </div>
@@ -312,8 +310,11 @@
                     },
                     colors: e,
                     xaxis: {
-                        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
-                            "Nov", "Dec"
+                        categories: ["@lang('settings.Jan')", "@lang('settings.Feb')", "@lang('settings.Mar')",
+                            "@lang('settings.Apr')", "@lang('settings.May')", "@lang('settings.Jun')",
+                            "@lang('settings.Jul')", "@lang('settings.Aug')", "@lang('settings.Sep')",
+                            "@lang('settings.Oct')",
+                            "@lang('settings.Nov')", "@lang('settings.Dec')"
                         ],
                         axisBorder: {
                             show: !1

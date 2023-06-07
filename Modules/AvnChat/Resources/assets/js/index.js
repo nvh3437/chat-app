@@ -70,7 +70,7 @@ class Room {
      */
     updateLastMessageTime(created_at) {
         var time_element = this.room.find(".last-message-time");
-        time_element.html(time_ago(new Date(created_at)));
+        time_element.html(window.time_ago(new Date(created_at)));
         time_element.attr("data-time", created_at);
     }
 
@@ -92,47 +92,3 @@ class Room {
     }
 }
 
-/**
- * @param {Date} date
- * @return {String}
- * return time ago
- */
-function time_ago(date) {
-    var now = new Date();
-    time_elapsed = Math.floor((now.getTime() - date.getTime()) / 1000);
-    var seconds = time_elapsed;
-    var minutes = Math.floor(time_elapsed / 60);
-    var hours = Math.floor(time_elapsed / 3600);
-    var days = Math.floor(time_elapsed / 86400);
-    var weeks = Math.floor(time_elapsed / 604800);
-    var months = Math.floor(time_elapsed / 2600640);
-    var years = Math.floor(time_elapsed / 31207680);
-    // Seconds
-    if (seconds <= 60) {
-        return "Bây giờ";
-    }
-    //Minutes
-    else if (minutes <= 60) {
-        return minutes + " phút trước";
-    }
-    //Hours
-    else if (hours <= 24) {
-        return hours + " giờ trước";
-    }
-    //Days
-    else if (days <= 7) {
-        return days + " ngày trước";
-    }
-    //Weeks
-    else if (weeks <= 4.3) {
-        return weeks + " tuần trước";
-    }
-    //Months
-    else if (months <= 12) {
-        return months + " tháng trước";
-    }
-    //Years
-    else {
-        return years + " năm trước";
-    }
-}

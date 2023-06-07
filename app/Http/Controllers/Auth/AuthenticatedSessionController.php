@@ -8,12 +8,13 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Lang;
 
 class AuthenticatedSessionController extends Controller
 {
     public function create()
     {
-        return view('auth.login');
+        return view('auth.Login');
     }
 
     public function username()
@@ -22,16 +23,15 @@ class AuthenticatedSessionController extends Controller
     }
     public function store(LoginRequest $request)
     {
-        try{
+        try {
             $request->authenticate();
             $request->session()->regenerate();
             $user = Auth::user();
-            if($user->type == 'system')
+            if ($user->type == 'system')
                 return redirect()->route('dashboard-manager');
             return redirect()->intended(RouteServiceProvider::HOME);
-        }
-        catch(Exception $e){
-            return back('Failed')->with('Thông tin đăng nhập không chính xác');
+        } catch (Exception $e) {
+            return back('Failed')->with(Lang::get('settings.Login_failed'));
         }
     }
 

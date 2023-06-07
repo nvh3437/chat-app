@@ -19,6 +19,9 @@ class AvnContactDatabaseSeeder extends Seeder
     {
         $menu = new AvnMenu();
         $menu->label = 'Liên hệ';
+        $menu->en = 'Contact';
+        $menu->vi = 'Liên hệ';
+        $menu->ja = 'お問い合わせ';
         $menu->route_name = 'list-contact';
         $menu->icon = 'mdi mdi-email-alert-outline';
         $menu->module = "AvnContact";

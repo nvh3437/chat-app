@@ -19,6 +19,9 @@ class AvnUserDatabaseSeeder extends Seeder
     {
         $menu_partner = new AvnMenu();
         $menu_partner->label = 'Chuyên gia';
+        $menu_partner->en = 'Expert';
+        $menu_partner->vi = 'Chuyên gia';
+        $menu_partner->ja = 'エキスパート';
         $menu_partner->route_name = 'list-partner';
         $menu_partner->icon = 'dripicons-user-id';
         $menu_partner->module = "AvnUser";
@@ -37,6 +40,9 @@ class AvnUserDatabaseSeeder extends Seeder
 
         $menu_customer = new AvnMenu();
         $menu_customer->label = 'Khách hàng';
+        $menu_customer->en = 'Customer';
+        $menu_customer->vi = 'Khách hàng';
+        $menu_customer->ja = '顧客';
         $menu_customer->route_name = 'list-customer';
         $menu_customer->icon = 'dripicons-user-group';
         $menu_customer->module = "AvnUser";

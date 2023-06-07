@@ -1,7 +1,7 @@
 @php
     use Carbon\Carbon;
     $seo_props = [];
-    $seo_props['seo_title'] = 'Thông tin cá nhân';
+    $seo_props['seo_title'] = __('settings.Profile');
 @endphp
 @extends('layouts.guest', $seo_props)
 @section('content')
@@ -10,22 +10,17 @@
             <div class="col-xl-4 col-lg-5">
                 <div class="card text-center">
                     <div class="card-body shadow-lg">
-                        @if ($user->profile && $user->profile->img)
-                            <img src="{{ asset($user->profile->img) }}" class="rounded-circle avatar-lg img-thumbnail"
-                                style="object-fit: cover;">
-                        @else
-                            <img src="{{ asset(config('global.default_avatar')) }}"
-                                class="rounded-circle avatar-lg img-thumbnail">
-                        @endif
+                        <img src="{{ asset($user->profile->img ?? config('constants.default_avatar')) }}"
+                            class="rounded-circle avatar-lg img-thumbnail" style="object-fit: cover;">
                         <h4 class="mb-0 mt-2">{{ $user->name }}</h4>
                         <div class="text-start mt-3">
-                            <p class="text-muted mb-2 font-13"><strong>Họ tên :</strong> <span
+                            <p class="text-muted mb-2 font-13"><strong>@lang('settings.Name'):</strong> <span
                                     class="ms-2">{{ $user->name }}</span></p>
 
                             <p class="text-muted mb-2 font-13">
-                                <strong>Ngày sinh :
+                                <strong>@lang('settings.Birth'):
                                     @if ($user->profile && $user->profile->birth_status)
-                                        <span class="badge bg-danger">Ẩn</span>
+                                        <span class="badge bg-danger">@lang('settings.Hide')</span>
                                     @endif
                                 </strong>
                                 <span class="ms-1">
@@ -36,9 +31,9 @@
                             </p>
 
                             <p class="text-muted mb-2 font-13">
-                                <strong>Số điện thoại :
+                                <strong>@lang('settings.Phone'):
                                     @if ($user->profile && $user->profile->phone_status)
-                                        <span class="badge bg-danger">Ẩn</span>
+                                        <span class="badge bg-danger">@lang('settings.Hide')</span>
                                     @endif
                                 </strong>
                                 <span class="ms-1">{{ $user->profile->phone ?? '' }}</span>
@@ -46,9 +41,9 @@
 
                             @if ($user->type == 'partner')
                                 <p class="text-muted mb-2 font-13">
-                                    <strong>Kinh nghiệm :
+                                    <strong>@lang('avnuser::profile.Experience'):
                                         @if ($user->profile && $user->profile->exp_status)
-                                            <span class="badge bg-danger">Ẩn</span>
+                                            <span class="badge bg-danger">@lang('settings.Hide')</span>
                                         @endif
                                     </strong>
                                     <span class="ms-1">{{ $user->profile->exp ?? '' }}</span>
@@ -56,27 +51,27 @@
                             @endif
 
                             <p class="text-muted mb-2 font-13">
-                                <strong>Email :
+                                <strong>@lang('settings.Email'):
                                     @if ($user->profile && $user->profile->email_status)
-                                        <span class="badge bg-danger">Ẩn</span>
+                                        <span class="badge bg-danger">@lang('settings.Hide')</span>
                                     @endif
                                 </strong>
                                 <span class="ms-1">{{ $user->email }}</span>
                             </p>
 
                             <p class="text-muted mb-2 font-13">
-                                <strong>Địa chỉ :
+                                <strong>@lang('settings.Address'):
                                     @if ($user->profile && $user->profile->address_status)
-                                        <span class="badge bg-danger">Ẩn</span>
+                                        <span class="badge bg-danger">@lang('settings.Hide')</span>
                                     @endif
                                 </strong>
                                 <span class="ms-1">{{ $user->profile->address ?? '' }}</span>
                             </p>
 
                             <p class="text-muted mb-2 font-13">
-                                <strong>Tiểu sử :
+                                <strong>@lang('avnuser::profile.Life_story'):
                                     @if ($user->profile && $user->profile->description_status)
-                                        <span class="badge bg-danger">Ẩn</span>
+                                        <span class="badge bg-danger">@lang('settings.Hide')</span>
                                     @endif
                                 </strong>
                             </p>
@@ -92,18 +87,24 @@
                         <form action="{{ route('update-profile') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <h5 class="mb-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin cá
-                                nhân</h5>
+                            <h5 class="mb-2 text-uppercase">
+                                <i class="mdi mdi-account-circle me-1"></i>
+                                @lang('settings.Profile')
+                            </h5>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-2">
-                                        <label class="form-label">Ảnh đại diện</label>
+                                        <label class="form-label">
+                                            @lang('settings.Avatar')</label>
                                         <input type="file" accept="image/*" class="form-control" name="img">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">Tên người dùng <span class="text-danger">*</span></label>
+                                        <label class="form-label">
+                                            @lang('settings.Name')
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <input type="text" class="form-control" name="name" required
                                             value="{{ $user->name }}">
                                     </div>
@@ -111,7 +112,8 @@
                                 @if ($user->type == 'partner')
                                     <div class="col-md-6">
                                         <div class="mb-2">
-                                            <label class="form-label">Năm kinh nghiệm
+                                            <label class="form-label">
+                                                @lang('avnuser::profile.Experience')
                                                 <button class="btn btn-sm btn-link border-0 px-1 py-0"
                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                     data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
@@ -121,9 +123,9 @@
                                                             name="exp_status"
                                                             {{ $user->profile && $user->profile->exp_status ? 'checked' : '' }}
                                                             value="1">
-                                                        <label class="form-check-label" for="exp_status">Không
-                                                            hiển
-                                                            thị</label>
+                                                        <label class="form-check-label" for="exp_status">
+                                                            @lang('settings.Hidden')
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </label>
@@ -134,47 +136,53 @@
                                 @endif
                                 <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">Giới tính <span class="text-danger">*</span>
+                                        <label class="form-label">@lang('settings.Gender')
+                                            <span class="text-danger">*</span>
                                             <button class="btn btn-sm btn-link border-0 px-1 py-0" data-bs-toggle="dropdown"
-                                                aria-expanded="false" data-bs-auto-close="outside"><i
-                                                    class='mdi mdi-earth'></i></button>
+                                                aria-expanded="false" data-bs-auto-close="outside">
+                                                <i class='mdi mdi-earth'></i>
+                                            </button>
                                             <div class="dropdown-menu dropdown-menu-end p-2">
                                                 <div class="form-check form-checkbox-warning">
                                                     <input type="checkbox" class="form-check-input" id="gender_status"
                                                         name="gender_status"
                                                         {{ $user->profile && $user->profile->gender_status ? 'checked' : '' }}
                                                         value="1">
-                                                    <label class="form-check-label" for="gender_status">Không hiển
-                                                        thị</label>
+                                                    <label class="form-check-label" for="gender_status">
+                                                        @lang('settings.Hidden')
+                                                    </label>
                                                 </div>
                                             </div>
                                         </label>
                                         <select class="form-select" name="gender">
                                             <option value="0" class="form-control"
                                                 {{ $user->profile && $user->profile->gender == '0' ? 'selected' : '' }}>
-                                                Nam
+                                                @lang('settings.Male')
                                             </option>
                                             <option value="1" class="form-control"
                                                 {{ $user->profile && $user->profile->gender == '1' ? 'selected' : '' }}>
-                                                Nữ
+                                                @lang('settings.Female')
                                             </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">Ngày sinh
+                                        <label class="form-label">@lang('settings.Birth')
                                             <button class="btn btn-sm btn-link border-0 px-1 py-0"
                                                 data-bs-toggle="dropdown" aria-expanded="false"
-                                                data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
+                                                data-bs-auto-close="outside">
+                                                <i class='mdi mdi-earth'></i>
+                                            </button>
                                             <div class="dropdown-menu dropdown-menu-end p-2">
                                                 <div class="form-check form-checkbox-warning">
                                                     <input type="checkbox" class="form-check-input" id="birth_status"
                                                         name="birth_status"
                                                         {{ $user->profile && $user->profile->birth_status ? 'checked' : '' }}
                                                         value="1">
-                                                    <label class="form-check-label" for="birth_status">Không hiển
-                                                        thị</label>
+                                                    <label class="form-check-label" for="birth_status">
+                                                        @lang('settings.Hidden')
+                                                    </label>
                                                 </div>
                                             </div>
                                         </label>
@@ -184,7 +192,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">Số điện thoại
+                                        <label class="form-label">
+                                            @lang('settings.Phone')
                                             <button class="btn btn-sm btn-link border-0 px-1 py-0"
                                                 data-bs-toggle="dropdown" aria-expanded="false"
                                                 data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
@@ -194,8 +203,9 @@
                                                         name="phone_status"
                                                         {{ $user->profile && $user->profile->phone_status ? 'checked' : '' }}
                                                         value="1">
-                                                    <label class="form-check-label" for="phone_status">Không hiển
-                                                        thị</label>
+                                                    <label class="form-check-label" for="phone_status">
+                                                        @lang('settings.Hidden')
+                                                    </label>
                                                 </div>
                                             </div>
                                         </label>
@@ -205,7 +215,8 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-2">
-                                        <label class="form-label">Địa chỉ
+                                        <label class="form-label">
+                                            @lang('settings.Address')
                                             <button class="btn btn-sm btn-link border-0 px-1 py-0"
                                                 data-bs-toggle="dropdown" aria-expanded="false"
                                                 data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
@@ -215,9 +226,9 @@
                                                         name="address_status"
                                                         {{ $user->profile && $user->profile->address_status ? 'checked' : '' }}
                                                         value="1">
-                                                    <label class="form-check-label" for="address_status">Không
-                                                        hiển
-                                                        thị</label>
+                                                    <label class="form-check-label" for="address_status">
+                                                        @lang('settings.Hidden')
+                                                    </label>
                                                 </div>
                                             </div>
                                         </label>
@@ -226,7 +237,8 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-2">
-                                        <label class="form-label">Tiểu sử
+                                        <label class="form-label">
+                                            @lang('avnuser::profile.Life_story')
                                             <button class="btn btn-sm btn-link border-0 px-1 py-0"
                                                 data-bs-toggle="dropdown" aria-expanded="false"
                                                 data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
@@ -236,27 +248,30 @@
                                                         id="description_status" name="description_status"
                                                         {{ $user->profile && $user->profile->description_status ? 'checked' : '' }}
                                                         value="1">
-                                                    <label class="form-check-label" for="description_status">Không
-                                                        hiển
-                                                        thị</label>
+                                                    <label class="form-check-label" for="description_status">
+                                                        @lang('settings.Hidden')
+                                                    </label>
                                                 </div>
                                             </div>
                                         </label>
                                         <textarea class="form-control" name="description" rows="4">{!! $user->profile->description ?? '' !!}</textarea>
                                     </div>
                                 </div>
-                                <h5 class="mb-2 mt-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Thông tin
-                                    tài khoản</h5>
+                                <h5 class="mb-2 mt-2 text-uppercase"><i class="mdi mdi-account-circle me-1"></i>
+                                    @lang('settings.Account_info')
+                                </h5>
                                 <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">Tài khoản</label>
+                                        <label class="form-label">@lang('settings.Account')</label>
                                         <input type="text" class="form-control" name="username" readonly
                                             value="{{ $user->username }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">Email <span class="text-danger">*</span>
+                                        <label class="form-label">
+                                            @lang('settings.Email')
+                                            <span class="text-danger">*</span>
                                             <button class="btn btn-sm btn-link border-0 px-1 py-0"
                                                 data-bs-toggle="dropdown" aria-expanded="false"
                                                 data-bs-auto-close="outside"><i class='mdi mdi-earth'></i></button>
@@ -266,8 +281,9 @@
                                                         name="email_status"
                                                         {{ $user->profile && $user->profile->email_status ? 'checked' : '' }}
                                                         value="1">
-                                                    <label class="form-check-label" for="email_status">Không hiển
-                                                        thị</label>
+                                                    <label class="form-check-label" for="email_status">
+                                                        @lang('settings.Hidden')
+                                                    </label>
                                                 </div>
                                             </div>
                                         </label>
@@ -277,9 +293,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">Mật khẩu mới
+                                        <label class="form-label">
+                                            @lang('settings.New_password')
                                             <br>
-                                            <small>Thay đổi sang mật khẩu mới (bỏ qua nếu không thay đổi)</small>
+                                            <small>@lang('settings.New_password_message')</small>
                                         </label>
                                         <input type="password" class="form-control" name="password">
                                     </div>
@@ -287,22 +304,25 @@
                             </div>
                             <div class="text-end">
                                 <button type="submit" class="btn btn-success mt-2"><i class="mdi mdi-content-save"></i>
-                                    Lưu</button>
+                                    @lang('settings.Update.update')
+                                </button>
                             </div>
                         </form>
                         <hr>
-                        <h4 class="mt-3">Số dư hiện tại: <span
-                                class="badge bg-primary">{{ number_format($user->profile->money ?? 0, 2) }}
-                                $</span></h4>
+                        <h4 class="mt-3">@lang('avnuser::profile.Current_balance'):
+                            <span class="badge bg-primary">
+                                {{ number_format($user->profile->money ?? 0, 2) }} $
+                            </span>
+                        </h4>
                         @if (count($user->addsub_money))
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead class="table-dark align-middle">
                                         <tr>
-                                            <th>Ngày</th>
-                                            <th>Cộng/Trừ</th>
-                                            <th>Số dư sau xử lý</th>
-                                            <th>Ghi chú</th>
+                                            <th>@lang('settings.Date')</th>
+                                            <th>@lang('settings.Plus')/@lang('settings.Subtract')</th>
+                                            <th>@lang('avnuser::profile.Processed_balance')</th>
+                                            <th>@lang('settings.Note')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -319,20 +339,22 @@
                                     </tbody>
                                 </table>
                                 <div class="text-center">
-                                    <a href="{{ route('money-history') }}" class="btn btn-outline-primary">Xem thêm</a>
+                                    <a href="{{ route('money-history') }}" class="btn btn-outline-primary">
+                                        @lang('settings.View_more')
+                                    </a>
                                 </div>
                             </div>
                         @endif
                         @if (count($user->sessions))
-                            <h4 class="mt-3">Phiên làm việc: </h4>
+                            <h4 class="mt-3">@lang('settings.Working_session'): </h4>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead class="table-dark align-middle">
                                         <tr>
                                             <th>#</th>
-                                            <th>Ngày</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thời gian</th>
+                                            <th>@lang('settings.Date')</th>
+                                            <th>@lang('settings.Status')</th>
+                                            <th>@lang('settings.Time')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -345,11 +367,11 @@
                                                     <span
                                                         class="badge bg-{{ $item->status == 1 ? 'success' : ($item->status == -1 ? 'danger' : 'warning') }} text-white">
                                                         @if ($item->status == 1)
-                                                            Đã xử lý
+                                                            @lang('settings.Processed')
                                                         @elseif ($item->status == -1)
-                                                            Từ chối
+                                                            @lang('settings.Deny')
                                                         @else
-                                                            Chưa xử lý
+                                                            @lang('settings.Unprocessed')
                                                         @endif
                                                     </span>
                                                 </td>
@@ -362,7 +384,7 @@
                                                                 $minutes = $time_end->diffInMinutes($created);
                                                             }
                                                         @endphp
-                                                        {{ $item->time ?? $minutes }} phút
+                                                        {{ $item->time ?? $minutes }} @lang('settings.minute')
                                                     @else
                                                         ...
                                                     @endif
@@ -371,16 +393,16 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <h4 class="mt-3">Tháng này: </h4>
+                                <h4 class="mt-3">@lang('settings.This_month'): </h4>
                                 <table class="table">
                                     <thead class="table-dark align-middle">
                                         <tr>
-                                            <th>Tài khoản</th>
-                                            <th>Tổng số phiên</th>
-                                            <th>Phiên chưa xử lý</th>
-                                            <th>Phiên đã xử lý</th>
-                                            <th>Phiên đã từ chối</th>
-                                            <th>Thời gian đã xử lý</th>
+                                            <th>@lang('settings.Account')</th>
+                                            <th>@lang('settings.Sum_session')</th>
+                                            <th>@lang('settings.Unprocessed_session')</th>
+                                            <th>@lang('settings.Processed_session')</th>
+                                            <th>@lang('settings.Denied_session')</th>
+                                            <th>@lang('settings.Processing_time')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -407,14 +429,16 @@
                                                 {{ count($user_sessions->where('status', -1)) }}
                                             </td>
                                             <td class="fw-bold text-success">
-                                                {{ $user_sessions->sum('time') }} phút
+                                                {{ $user_sessions->sum('time') }} @lang('settings.minute')
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="text-center">
-                                <a href="{{ route('list-session-user') }}" class="btn btn-outline-primary">Xem thêm</a>
+                                <a href="{{ route('list-session-user') }}" class="btn btn-outline-primary">
+                                    @lang('settings.View_more')
+                                </a>
                             </div>
                         @endif
                     </div>
@@ -424,7 +448,6 @@
     </div>
 @endsection
 @section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>

@@ -2,7 +2,7 @@
     <div class="row g-2 mb-2">
         @if ($posts->count() == '0')
             <div class="text-center">
-                <h3 class="text-muted">Chưa có bài viết</h3>
+                <h3 class="text-muted">@lang('settings.Notfound', ['name' => __('settings.Post')])</h3>
             </div>
         @else
             @foreach ($posts as $item)

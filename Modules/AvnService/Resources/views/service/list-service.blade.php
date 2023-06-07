@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+list-service.blade@extends('layouts.admin')
 @section('title')
     Quản lý bài dịch vụ
 @endsection

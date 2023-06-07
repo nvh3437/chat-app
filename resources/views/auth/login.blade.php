@@ -7,10 +7,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>@lang('auth.login')</title>
+    <title>@lang('settings.Login')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="{{ GeneralSettings::where('key', 'web_title')->first()->value ?? '' }}"
-        name="description" />
+    <meta content="@lang('settings.Login')" />
     <meta content="AVNTech" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('resources/assets/images/favicon.ico') }}">
@@ -21,7 +20,7 @@
     <link href="{{ asset('resources/assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css"
         id="dark-style" />
     <style>
-        .auth-fluid{
+        .auth-fluid {
             background-image: initial;
         }
     </style>
@@ -51,20 +50,20 @@
                             </span>
                         </a>
                     </div>
-                    <h4 class="mt-5">@lang('auth.login')</h4>
-                    <p class="text-muted mb-4">@lang('auth.login_text')</p>
+                    <h4 class="mt-5">@lang('settings.Login')</h4>
+                    <p class="text-muted mb-4">@lang('settings.Login_message')</p>
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Tên đăng nhập</label>
+                            <label class="form-label">@lang('settings.Username')</label>
                             <input class="form-control" type="text" id="username" name="username"
-                                value="{{ old('username') }}" placeholder="@lang('auth.enter_email_address')">
+                                value="{{ old('username') }}" placeholder="@lang('settings.Email')">
                         </div>
                         <div class="mb-3">
                             <a class="text-muted float-end" href="{{ route('forgot-password') }}">
-                                <small>Quên mật khẩu</small>
+                                <small>@lang('settings.Forgot_password')</small>
                             </a>
-                            <label class="form-label">Mật khẩu</label> 
+                            <label class="form-label">@lang('settings.Password')</label>
                             <div class="input-group input-group-merge">
                                 <input type="password" name="password" class="form-control">
                                 <div class="input-group-text" data-password="false">
@@ -74,34 +73,44 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="remember" name="remember" value="1">
-                                <label class="form-check-label" for="remember">@lang('auth.remember')</label>
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember"
+                                    value="1">
+                                <label class="form-check-label" for="remember">@lang('settings.Remember')</label>
                             </div>
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
-                                @lang('auth.login')
+                                @lang('settings.Login')
                             </button>
                         </div>
                         <div class="text-center mt-4">
-                            <p class="text-muted font-16">Đăng nhập với</p>
+                            <p class="text-muted font-16">@lang('settings.Login_with')</p>
                             <ul class="social-list list-inline mt-3">
                                 <li class="list-inline-item">
-                                    <a href="{{ route('login-social', ['social' => 'facebook']) }}" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
+                                    <a href="{{ route('login-social', ['social' => 'facebook']) }}"
+                                        class="social-list-item border-primary text-primary"><i
+                                            class="mdi mdi-facebook"></i></a>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a href="{{ route('login-social', ['social' => 'google']) }}" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
+                                    <a href="{{ route('login-social', ['social' => 'google']) }}"
+                                        class="social-list-item border-danger text-danger"><i
+                                            class="mdi mdi-google"></i></a>
                                 </li>
                             </ul>
                         </div>
                         <footer class="footer footer-alt">
-                            <p class="text-muted">Chưa có tài khoản? <a href="{{ route('customer-register') }}" class="text-muted ms-1"><b>Đăng ký ngay</b></a></p>
+                            <p class="text-muted">@lang('settings.No_account')
+                                <a href="{{ route('customer-register') }}"
+                                    class="text-muted ms-1"><b>@lang('settings.Register')</b>
+                                </a>
+                            </p>
                         </footer>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="auth-fluid-right text-center" style="background-image: url('{{asset($login_background_img ? asset('/storage/app/AvnGeneralSettings/' . $login_background_img) : asset('/resources/assets/images/bg-auth.jpg'))}}'); background-size: auto;background-repeat: no-repeat;background-position: center;">
+        <div class="auth-fluid-right text-center"
+            style="background-image: url('{{ asset($login_background_img ? asset('/storage/app/AvnGeneralSettings/' . $login_background_img) : asset('/resources/assets/images/bg-auth.jpg')) }}'); background-size: auto;background-repeat: no-repeat;background-position: center;">
             <div class="auth-user-testimonial">
                 {!! $login_background_text !!}
             </div>
@@ -116,17 +125,18 @@
 <!--- Thông báo ---------->
 @if (session()->has('Success'))
     <script>
-        $.NotificationApp.send("Thành công", "{{ session()->get('Success') }}", "bottom-right", "rgba(0,0,0,0.2)",
+        $.NotificationApp.send("@lang('settings.Success')", "{{ session()->get('Success') }}", "bottom-right", "rgba(0,0,0,0.2)",
             "success")
     </script>
 @endif
 @if (session()->has('Failed'))
     <script>
-        $.NotificationApp.send("Thất bại", "{{ session()->get('Failed') }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
+        $.NotificationApp.send("@lang('settings.Failed')", "{{ session()->get('Failed') }}", "bottom-right", "rgba(0,0,0,0.2)",
+            "error")
     </script>
 @endif
 @if ($errors->any())
     <script>
-        $.NotificationApp.send("Thất bại", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
+        $.NotificationApp.send("@lang('settings.Failed')", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
     </script>
 @endif

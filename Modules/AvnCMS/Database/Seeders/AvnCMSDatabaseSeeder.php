@@ -19,6 +19,9 @@ class AvnCMSDatabaseSeeder extends Seeder
     {
         $menu = new AvnMenu();
         $menu->label = 'CMS';
+        $menu->en = 'Pages';
+        $menu->vi = 'Các Trang';
+        $menu->ja = 'ページ';
         $menu->route_name = 'list-cms';
         $menu->icon = 'mdi mdi-web';
         $menu->module = "AvnCMS";

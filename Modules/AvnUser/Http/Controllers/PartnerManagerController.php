@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Modules\AvnUser\Http\Requests\StorePartnerRequest;
-use Modules\AvnUser\Http\Requests\UpdatePartnerRequest;
+use Modules\AvnUser\Http\Requests\StoreProfileRequest;
+use Modules\AvnUser\Http\Requests\UpdateProfileRequest;
 use Modules\AvnChat\Entities\ChatRoomUser;
 use Modules\AvnChat\Entities\ChatRoom;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\AvnUser\Entities\AddSubMoney;
+use Lang;
 
 class PartnerManagerController extends Controller
 {
@@ -33,7 +34,7 @@ class PartnerManagerController extends Controller
         return view('avnuser::manager.add-partner');
     }
 
-    public function storePartner(StorePartnerRequest $request)
+    public function storePartner(StoreProfileRequest $request)
     {
         try {
             // Lưu bảng user 
@@ -89,9 +90,9 @@ class PartnerManagerController extends Controller
                 $partner->img = $path;
             }
             $partner->save();
-            return redirect()->route('list-partner')->with('Success', 'Thêm thành công');
+            return redirect()->route('list-partner')->with('Success', Lang::get('settings.Add.Add_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
+            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
         }
     }
 
@@ -102,7 +103,7 @@ class PartnerManagerController extends Controller
         return view('avnuser::manager.edit-partner', compact('partner', 'user'));
     }
 
-    public function updatePartner(UpdatePartnerRequest $request, $id)
+    public function updatePartner(UpdateProfileRequest $request, $id)
     {
         try {
             // Lưu bảng user 
@@ -111,7 +112,7 @@ class PartnerManagerController extends Controller
             if ($user->email != $request->email && $request->email) {
                 $user_change_mail = User::where('email', $request->email)->first();
                 if ($user_change_mail) {
-                    return back()->with('Failed', 'Email đã tồn tại');
+                    return back()->with('Failed', Lang::get('settings.Auth.Validate.email.Unique'));
                 }
                 $user->email = $request->email;
             }
@@ -151,9 +152,9 @@ class PartnerManagerController extends Controller
                 $partner->img = $path;
             }
             $partner->save();
-            return redirect()->route('list-partner')->with('Success', 'Cập nhật thành công');
+            return redirect()->route('list-partner')->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
     public function updateMoneyPartner(Request $request, $id)
@@ -174,9 +175,9 @@ class PartnerManagerController extends Controller
             $addsub->surplus = $partner->money;
             $addsub->save();
 
-            return back()->with('Success', 'Cập nhật thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
     public function deletePartner($id)
@@ -188,9 +189,9 @@ class PartnerManagerController extends Controller
                 File::delete($partner->img);
             }
             $partner->delete();
-            return back()->with('Success', 'Xóa thành công');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 }

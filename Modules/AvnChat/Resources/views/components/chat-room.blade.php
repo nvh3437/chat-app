@@ -12,13 +12,13 @@
     <div class="d-flex align-items-start mt-1 p-2 chat-room-badge">
         <div class="me-2 flex-shrink-0 chat-room-img">
             @if (count($imgs) == 1)
-                <img src="{{ asset($imgs[0] ?? 'resources/assets/images/users/avatar-1.jpg') }}"
+                <img src="{{ asset($imgs[0] ?? config('constants.default_avatar')) }}"
                     class="rounded-circle img-thumbnail p-0" style="object-fit: cover; height:48px; width:48px;"
                     alt="{{ $room_name }}" />
             @else
                 <div class="position-relative" style="width: 48px; height: 48px;">
                     @foreach ($imgs as $index => $img)
-                        <img src="{{ asset($img ?? 'resources/assets/images/users/avatar-1.jpg') }}"
+                        <img src="{{ asset($img ?? config('constants.default_avatar')) }}"
                             class="rounded-circle img-thumbnail position-absolute p-0 {{ $index % 2 == 0 ? 'top-0' : 'bottom-0' }} {{ $index % 2 == 0 ? 'start-0' : 'end-0' }}"
                             style="object-fit: cover; height:36px; width:36px;" alt="{{ $room_name }}" />
                     @endforeach
@@ -58,21 +58,21 @@
                     @if ($room->last_message && $room->last_message->user_id)
                         {{ $room->last_message->message }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'add-user') === 0)
-                        {{ 'Đã thêm' . substr($room->last_message->message, strpos($room->last_message->message, ' '), strlen($room->last_message->message)) }}
+                        {{ __('settings.Added') . substr($room->last_message->message, strpos($room->last_message->message, ' '), strlen($room->last_message->message)) }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'kick-user') === 0)
-                        {{ 'Đã xóa' . substr($room->last_message->message, strpos($room->last_message->message, ' '), strlen($room->last_message->message)) }}
+                        {{ __('settings.Deleted') . substr($room->last_message->message, strpos($room->last_message->message, ' '), strlen($room->last_message->message)) }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'start-session') === 0)
-                        {{ 'Bắt đầu phiên làm việc' }}
+                        @lang('settings.Start_session')
                     @elseif ($room->last_message && strpos($room->last_message->message, 'end-session') === 0)
-                        {{ 'Kết thúc phiên làm việc' }}
+                        @lang('settings.End_session')
                     @elseif ($room->last_message && strpos($room->last_message->message, 'start-call') === 0)
-                        {{ 'Bắt đầu cuộc gọi' }}
+                        @lang('settings.Start_call')
                     @elseif ($room->last_message && strpos($room->last_message->message, 'joined-call') === 0)
-                        {{ substr($room->last_message->message, 12) . ' tham gia cuộc gọi' }}
+                        {{ substr($room->last_message->message, 12) . __('settings.joined_call') }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'left-call') === 0)
-                        {{ substr($room->last_message->message, 10) . ' rời khỏi cuộc gọi' }}
+                        {{ substr($room->last_message->message, 10) . __('settings.left_call') }}
                     @elseif ($room->last_message && strpos($room->last_message->message, 'stop-call') === 0)
-                        {{ 'Kết thúc cuộc gọi' }}
+                        @lang('settings.End_call')
                     @endif
                 </span>
             </p>
