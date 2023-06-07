@@ -2,17 +2,17 @@
 japan-chat-app
 composer update 
 php artisan key:generate  
-php artisan migrate:fresh --seed
-php artisan module:seed AvnUser
-php artisan module:seed AvnSetting
-php artisan module:seed AvnService
-php artisan module:seed AvnPost
-php artisan module:seed AvnContact
-php artisan module:seed AvnChat
-php artisan module:seed AvnNewFeed
-php artisan module:seed AvnCMS
-
 /opt/alt/php81/usr/bin/php /usr/local/bin/composer2 update 
+/opt/alt/php81/usr/bin/php artisan migrate:fresh --seed
+/opt/alt/php81/usr/bin/php artisan module:seed AvnUser
+/opt/alt/php81/usr/bin/php artisan module:seed AvnSetting
+/opt/alt/php81/usr/bin/php artisan module:seed AvnService
+/opt/alt/php81/usr/bin/php artisan module:seed AvnPost
+/opt/alt/php81/usr/bin/php artisan module:seed AvnContact
+/opt/alt/php81/usr/bin/php artisan module:seed AvnChat
+/opt/alt/php81/usr/bin/php artisan module:seed AvnNewFeed
+/opt/alt/php81/usr/bin/php artisan module:seed AvnCMS
+
 
 
 composer require ably/ably-php
