@@ -120,7 +120,7 @@
                 </a>
                 <li class="notification-list">
                     <a class="nav-link end-bar-toggle" href="{{ route('login') }}">
-                        <i class="noti-icon"></i>
+                        <i class="noti-icon" style="line-height: 75px;"></i>
                         @lang('settings.Login')
                     </a>
                 </li>
