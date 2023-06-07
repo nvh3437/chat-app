@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    @lang('auth.user_title')
+    @lang('settings.List') @lang('settings.Account')
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -11,7 +11,7 @@
                     @lang('settings.Add.add') @lang('settings.Manager')
                 </a>
             </div>
-            <h4 class="page-title">@lang('auth.user_list')</h4>
+            <h4 class="page-title">@lang('settings.List') @lang('settings.Account')</h4>
             <div class="d-sm-none mb-2">
                 <a href="{{ route('add-user') }}" class="btn btn-danger">
                     <i class="mdi mdi-plus-circle me-1"></i>
@@ -26,10 +26,10 @@
                         <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>@lang('auth.serial')</th>
-                                    <th>@lang('auth.user_name')</th>
+                                    <th>#</th>
+                                    <th>@lang('settings.Username')</th>
                                     <th>@lang('settings.Type')</th>
-                                    <th>@lang('auth.select')</th>
+                                    <th>@lang('settings.Action')</th>
                                 </tr>
                             </thead>
                             <tbody>

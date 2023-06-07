@@ -3,7 +3,7 @@
     use Modules\AvnNewFeed\Http\Controllers\NewFeedLikeController;
     $notifications = App\Http\Controllers\NotificationController::getNotifications();
 @endphp
-@extends('layouts.guest', ['seo_title' => 'Cập nhật bài viết'])
+@extends('layouts.guest', ['seo_title' => __('settings.Update.update') . __('settings.Post')])
 @section('content')
     <div class="container">
         <div class="row mt-2">
@@ -19,25 +19,30 @@
                                     <h5 class="mt-1 mb-0">{{ $user->name }}</h5>
                                     <p class="mb-1 mt-1 text-muted">
                                         @if ($user->type == 'system')
-                                            Quản lý
+                                            @lang('settings.Manager')
                                         @elseif($user->type == 'customer')
-                                            Khách hàng
+                                            @lang('settings.Customer')
                                         @else
-                                            Chuyên gia
+                                            @lang('settings.Partner')
                                         @endif
                                     </p>
                                 </div>
                             </div>
                             <div class="list-group list-group-flush mt-2">
                                 <a href="{{ route('new-feed') }}"
-                                    class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'new-feed' ? 'text-primary' : '' }} border-0"><i
-                                        class='uil uil-images me-1'></i> Bản tin</a>
+                                    class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'new-feed' ? 'text-primary' : '' }} border-0">
+                                    <i class='uil uil-images me-1'></i>
+                                    @lang('settings.Newsfeed')
+                                </a>
                                 <a href="{{ route('my-feed') }}"
-                                    class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'my-feed' ? 'text-primary' : '' }} border-0"><i
-                                        class='uil uil-images me-1'></i> Tin của tôi</a>
-                                <a href="{{ route('chat-index') }}"
-                                    class="list-group-item list-group-item-action border-0"><i
-                                        class='uil uil-comment-alt-message me-1'></i> Tin nhắn</a>
+                                    class="list-group-item list-group-item-action {{ Route::currentRouteName() == 'my-feed' ? 'text-primary' : '' }} border-0">
+                                    <i class='uil uil-images me-1'></i>
+                                    @lang('settings.Myfeed')
+                                </a>
+                                <a href="{{ route('chat-index') }}" class="list-group-item list-group-item-action border-0">
+                                    <i class='uil uil-comment-alt-message me-1'></i>
+                                    @lang('settings.Message')
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -56,13 +61,13 @@
                                     <form action="{{ route('clear-notifications') }}" method="POST">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" class="dropdown-item">Xóa hết</button>
+                                        <button type="submit" class="dropdown-item">@lang('settings.Clear')</button>
                                     </form>
                                 </div>
                             </div>
-                            <h4 class="header-title mb-1">Thông báo</h4>
+                            <h4 class="header-title mb-1">@lang('settings.Notify')</h4>
                             @foreach ($notifications as $notification)
-                            <div class="d-flex mt-3">
+                                <div class="d-flex mt-3">
                                     <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
                                     <div>
                                         <a class="mt-1 font-14"
@@ -76,7 +81,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                @endforeach
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -88,7 +93,7 @@
                             <li class="nav-item">
                                 <a href="#newpost" data-bs-toggle="tab" aria-expanded="false"
                                     class="nav-link active px-3 py-2">
-                                    Cập nhật
+                                    @lang('settings.Update.update')
                                 </a>
                             </li>
                         </ul>
@@ -123,7 +128,7 @@
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" name="status"
                                                     value="1" {{ $edit_feed->status == 1 ? 'checked' : '' }}>
-                                                <label class="form-check-label">Cá nhân</label>
+                                                <label class="form-check-label">@lang('settings.Private')</label>
                                             </div>
                                             <div class="btn-group">
                                                 <input type="file" id="input-images" accept="image/*" multiple hidden>
@@ -133,7 +138,9 @@
                                                     <i class="dripicons-paperclip"></i>
                                                 </label>
                                                 <button type="button" class="btn btn-sm btn-success text-end"
-                                                    id="feed-submit"><i class='uil uil-message me-1'></i>Cập nhật</button>
+                                                    id="feed-submit"><i class='uil uil-message me-1'></i>
+                                                    @lang('settings.Update.update')
+                                                </button>
                                             </div>
                                         </div>
                                     </form>
@@ -193,7 +200,7 @@
             if ((images.length + before_images.length) >= 6) {
                 e.preventDefault();
                 e.stopPropagation();
-                $.NotificationApp.send("Thất bại", "Tối đa 6 tệp", "bottom-right",
+                $.NotificationApp.send("@lang('settings.Failed')", "@lang('settings.Maxfiles', ['num' => 6])", "bottom-right",
                     "rgba(0,0,0,0.2)", "error")
             }
         })
@@ -205,7 +212,7 @@
                 var filesAmount = this.files.length;
                 for (i = 0; i < filesAmount; i++) {
                     if ((images.length + before_images.length) >= 6) {
-                        $.NotificationApp.send("Thất bại", "Tối đa 6 tệp", "bottom-right",
+                        $.NotificationApp.send("@lang('settings.Failed')", "@lang('settings.Maxfiles', ['num' => 6])", "bottom-right",
                             "rgba(0,0,0,0.2)", "error")
                         break
                     }
@@ -256,10 +263,10 @@
         })
 
         $('#feed-submit').on('click', function() {
-            $(this).text('Đang tải lên');
+            $(this).text('@lang('settings.Uploading')');
             $(this).attr('disabled', 'true');
             $('#feed-form').append(
-                '<p class="d-flex align-items-center"><span class="spinner-border text-primary flex-shrink-0 me-1" role="status"></span> <span>Đang tải lên vui lòng không rời khỏi trang.</span></p>'
+                '<p class="d-flex align-items-center"><span class="spinner-border text-primary flex-shrink-0 me-1" role="status"></span> <span>@lang('settings.Uploading_message')</span></p>'
             )
             var status = $('#feed-form input[name=status]')[0].checked ? 1 : 0;
             var description = $('#feed-form textarea[name=description]').val();

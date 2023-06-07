@@ -19,15 +19,19 @@
 @extends('layouts.guest', $seo_props)
 @section('content')
     <!-- START HERO -->
-    @if ($banner['home_banner_title']['value'] || $banner['home_banner_description']['value'])
+    @if (
+        $banner['home_banner_title_' . Lang::locale()]['value'] ||
+            $banner['home_banner_description_' . Lang::locale()]['value']
+    )
         <section class="hero-section">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-5">
                         <div class="mt-md-4">
                             <h1 class="text-white fw-normal mb-4 mt-3 hero-title">
-                                {{ $banner['home_banner_title']['value'] ?? '' }}</h1>
-                            <p class="mb-4 font-16 text-white-50">{{ $banner['home_banner_description']['value'] ?? '' }}</p>
+                                {{ $banner['home_banner_title_' . Lang::locale()]['value'] ?? '' }}</h1>
+                            <p class="mb-4 font-16 text-white-50">
+                                {{ $banner['home_banner_description_' . Lang::locale()]['value'] ?? '' }}</p>
                             @if ($banner['home_banner_link']['value'])
                                 <a href="{{ $banner['home_banner_link']['value'] }}" target="_blank" class="btn btn-success">
                                     @lang('settings.View_more')
@@ -38,7 +42,8 @@
                     </div>
                     <div class="col-md-5 offset-md-2">
                         <div class="text-md-end mt-3 mt-md-0">
-                            <img src="{{ asset($banner['home_banner_image']['value'] ?? $logo) }}" class="img-fluid" />
+                            <img src="{{ asset($banner['home_banner_image_' . Lang::locale()]['value'] ?? $logo) }}"
+                                class="img-fluid" />
                         </div>
                     </div>
                 </div>
@@ -53,14 +58,20 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($partner['home_partner_image']['value'] ?? $logo) }}" class="rounded"
-                            style="height: 80px; width: 80px; object-fit: cover;" />
-                        @if (isset($partner['home_partner_title']) && $partner['home_partner_title']['value'])
-                            <h3><span class="text-primary">{{ $partner['home_partner_title']['value'] }}</span>
+                        <img src="{{ asset($partner['home_partner_image_' . Lang::locale()]['value'] ?? $logo) }}"
+                            class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                        @if (isset($partner['home_partner_title_' . Lang::locale()]) &&
+                                $partner['home_partner_title_' . Lang::locale()]['value']
+                        )
+                            <h3><span
+                                    class="text-primary">{{ $partner['home_partner_title_' . Lang::locale()]['value'] }}</span>
                             </h3>
                         @endif
-                        @if (isset($partner['home_partner_description']) && $partner['home_partner_description']['value'])
-                            <p class="text-muted mt-2">{{ $partner['home_partner_description']['value'] }}</p>
+                        @if (isset($partner['home_partner_description_' . Lang::locale()]) &&
+                                $partner['home_partner_description_' . Lang::locale()]['value']
+                        )
+                            <p class="text-muted mt-2">{{ $partner['home_partner_description_' . Lang::locale()]['value'] }}
+                            </p>
                         @endif
                     </div>
                 </div>
@@ -93,30 +104,39 @@
     <!-- START FEATURES 2 -->
     @if (
         $feature['home_feature_link']['value'] ||
-            $feature['home_feature_sub_des']['value'] ||
-            $feature['home_feature_sub_title']['value'] ||
-            $feature['home_feature_des']['value'] ||
-            $feature['home_feature_title']['value']
+            $feature['home_feature_sub_des_' . Lang::locale()]['value'] ||
+            $feature['home_feature_sub_title_' . Lang::locale()]['value'] ||
+            $feature['home_feature_des_' . Lang::locale()]['value'] ||
+            $feature['home_feature_title_' . Lang::locale()]['value']
     )
         <section class="py-5">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <img src="{{ asset($feature['home_feature_icon']['value'] ?? $logo) }}" class="rounded"
-                                style="height: 80px; width: 80px; object-fit: cover;" />
-                            <h3><span class="text-primary">{{ $feature['home_feature_title']['value'] ?? '' }}</span></h3>
-                            <p class="text-muted mt-2">{{ $feature['home_feature_des']['value'] ?? '' }}</p>
+                            <img src="{{ asset($feature['home_feature_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                                class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                            <h3>
+                                <span class="text-primary">
+                                    {{ $feature['home_feature_title_' . Lang::locale()]['value'] ?? '' }}
+                                </span>
+                            </h3>
+                            <p class="text-muted mt-2">
+                                {{ $feature['home_feature_des_' . Lang::locale()]['value'] ?? '' }}
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="row mt-2 py-5 align-items-center">
                     <div class="col-lg-5">
-                        <img src="{{ asset($feature['home_feature_img']['value'] ?? $logo) }}" class="img-fluid">
+                        <img src="{{ asset($feature['home_feature_img_' . Lang::locale()]['value'] ?? $logo) }}"
+                            class="img-fluid">
                     </div>
                     <div class="col-lg-6 offset-lg-1">
-                        <h3 class="fw-normal">{{ $feature['home_feature_sub_title']['value'] ?? '' }}</h3>
-                        <p class="text-muted mt-3">{{ $feature['home_feature_sub_des']['value'] ?? '' }}</p>
+                        <h3 class="fw-normal">{{ $feature['home_feature_sub_title_' . Lang::locale()]['value'] ?? '' }}
+                        </h3>
+                        <p class="text-muted mt-3">{{ $feature['home_feature_sub_des_' . Lang::locale()]['value'] ?? '' }}
+                        </p>
                         @if ($feature_list_items->count())
                             <div class="mt-4">
                                 @foreach ($feature_list_items as $feature_list_item)
@@ -146,13 +166,16 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <img src="{{ asset($post_header['post_page_icon']['value'] ?? $logo) }}" class="rounded"
-                                style="height: 80px; width: 80px; object-fit: cover;" />
-                            @if ($post_header['post_page_title']['value'])
-                                <h3><span class="text-primary">{{ $post_header['post_page_title']['value'] }}</span></h3>
+                            <img src="{{ asset($post_header['post_page_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                                class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                            @if ($post_header['post_page_title_' . Lang::locale()]['value'])
+                                <h3><span
+                                        class="text-primary">{{ $post_header['post_page_title_' . Lang::locale()]['value'] }}</span>
+                                </h3>
                             @endif
-                            @if ($post_header['post_page_description']['value'])
-                                <p class="text-muted mt-2">{{ $post_header['post_page_description']['value'] }}</p>
+                            @if ($post_header['post_page_description_' . Lang::locale()]['value'])
+                                <p class="text-muted mt-2">
+                                    {{ $post_header['post_page_description_' . Lang::locale()]['value'] }}</p>
                             @endif
                         </div>
                     </div>
@@ -180,14 +203,16 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <img src="{{ asset($service_header['service_page_icon']['value'] ?? $logo) }}" class="rounded"
-                                style="height: 80px; width: 80px; object-fit: cover;" />
-                            @if ($service_header['service_page_title']['value'])
-                                <h3><span class="text-primary">{{ $service_header['service_page_title']['value'] }}</span>
+                            <img src="{{ asset($service_header['service_page_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                                class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                            @if ($service_header['service_page_title_' . Lang::locale()]['value'])
+                                <h3><span
+                                        class="text-primary">{{ $service_header['service_page_title_' . Lang::locale()]['value'] }}</span>
                                 </h3>
                             @endif
-                            @if ($service_header['service_page_description']['value'])
-                                <p class="text-muted mt-2">{{ $service_header['service_page_description']['value'] }}</p>
+                            @if ($service_header['service_page_description_' . Lang::locale()]['value'])
+                                <p class="text-muted mt-2">
+                                    {{ $service_header['service_page_description_' . Lang::locale()]['value'] }}</p>
                             @endif
                         </div>
                     </div>
@@ -213,14 +238,16 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($contact_header['contact_page_icon']['value'] ?? $logo) }}" class="rounded"
-                            style="height: 80px; width: 80px; object-fit: cover;" />
-                        @if ($contact_header['contact_page_title']['value'])
-                            <h3><span class="text-primary">{{ $contact_header['contact_page_title']['value'] }}</span>
+                        <img src="{{ asset($contact_header['contact_page_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                            class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                        @if ($contact_header['contact_page_title_' . Lang::locale()]['value'])
+                            <h3><span
+                                    class="text-primary">{{ $contact_header['contact_page_title_' . Lang::locale()]['value'] }}</span>
                             </h3>
                         @endif
-                        @if ($contact_header['contact_page_description']['value'])
-                            <p class="text-muted mt-2">{{ $contact_header['contact_page_description']['value'] }}</p>
+                        @if ($contact_header['contact_page_description_' . Lang::locale()]['value'])
+                            <p class="text-muted mt-2">
+                                {{ $contact_header['contact_page_description_' . Lang::locale()]['value'] }}</p>
                         @endif
                     </div>
                 </div>

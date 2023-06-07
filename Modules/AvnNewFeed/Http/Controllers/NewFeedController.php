@@ -16,6 +16,7 @@ use Modules\AvnNewFeed\Entities\NewFeedComment;
 use App\Http\Controllers\NotificationController;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\File;
+use Lang;
 
 class NewFeedController extends Controller
 {
@@ -90,7 +91,7 @@ class NewFeedController extends Controller
             }
             return $new_feed;
         } catch (Exception $e) {
-            return back()->with('Failed', 'Đăng bài thất bại');
+            return back()->with('Failed', Lang::get('settings.failed', ['name' => Lang::get('settings.Add_post')]));
         }
     }
 
@@ -152,7 +153,7 @@ class NewFeedController extends Controller
             }
             return $new_feed;
         } catch (Exception $e) {
-            return back()->with('Failed', ang::get('settings.Update.Update_failed'));
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 

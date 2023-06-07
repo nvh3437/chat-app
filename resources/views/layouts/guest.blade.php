@@ -4,7 +4,7 @@
     use App\Models\GeneralSettings;
 @endphp
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="{{Lang::locale()}}">
 
 <head>
     <meta charset="utf-8" />

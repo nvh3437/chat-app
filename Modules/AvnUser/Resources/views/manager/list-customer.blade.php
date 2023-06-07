@@ -104,8 +104,28 @@
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
 
-    <!-- Datatable Init js -->
-    <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
+    <script>
+        $("#state-saving-datatable").DataTable({
+                stateSave: !0,
+                language: {
+                    "search": "@lang('settings.Search')",
+                    "info": "@lang('settings.Display_per_page', ['page' => '_PAGE_', 'pages' => '_PAGES_'])",
+                    "emptyTable": "@lang('settings.No_data')",
+                    "infoEmpty": "@lang('settings.No_record')",
+                    "lengthMenu": '@lang('settings.Show_entries', ['entries' => '<select><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="-1">' . __('settings.All') . '</option></select>'])',
+                    "zeroRecords": "@lang('settings.No_result')",
+                    paginate: {
+                        previous: "<i class='mdi mdi-chevron-left'>",
+                        next: "<i class='mdi mdi-chevron-right'>"
+                    }
+                },
+                drawCallback: function() {
+                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+                },
+            }),
+            $(".dataTables_length select").addClass("form-select form-select-sm"),
+            $(".dataTables_length label").addClass("form-label");
+    </script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
 @endsection
 @section('css')

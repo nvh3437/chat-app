@@ -20,9 +20,9 @@
                         <table id="basic-datatable" class="table dt-responsive nowrap w-100 data-view">
                             <thead>
                                 <tr>
-                                    <th>@lang('avnrole.serial')</th>
+                                    <th>#</th>
                                     <th>Module</th>
-                                    <th>@lang('avnrole.action')</th>
+                                    <th>@lang('settings.Action')</th>
                                 </tr>
                             </thead>
 

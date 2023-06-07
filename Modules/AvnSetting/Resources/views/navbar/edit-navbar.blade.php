@@ -18,10 +18,38 @@
                 <div class="card-body shadow-lg">
                     <div class="row">
                         <div class="col-lg-12">
-                            <label class="form-label">
-                                @lang('settings.Name') <span class="text-danger">*</span>
+                            <label class="form-label align-middle">@lang('settings.Name') <span class="text-danger">*</span>
+                                <label class="form-label ms-1">
+                                    <input type="checkbox" name="multi_lang" id="multi-lang" value="1">
+                                    @lang('settings.Multilingual')
+                                </label>
                             </label>
-                            <input type="text" class="form-control" name="name" required value="{{ $navbar->name }}">
+                            <input type="text" class="form-control" name="name" id="name" required
+                                value="{{ $navbar->name }}">
+                            <div class="input-group flex-nowrap name-group d-none mb-1">
+                                <span class="input-group-text">
+                                    <img src="{{ asset('resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                        width="30">
+                                </span>
+                                <input type="text" class="form-control" name="group_name[]" multiple
+                                    value="{{ $navbar->ja }}">
+                            </div>
+                            <div class="input-group flex-nowrap name-group d-none mb-1">
+                                <span class="input-group-text">
+                                    <img src="{{ asset('resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                        width="30">
+                                </span>
+                                <input type="text" class="form-control" name="group_name[]" multiple
+                                    value="{{ $navbar->vi }}">
+                            </div>
+                            <div class="input-group flex-nowrap name-group d-none">
+                                <span class="input-group-text">
+                                    <img src="{{ asset('resources/assets/images/flags/en.png') }}" alt="user-image"
+                                        width="30">
+                                </span>
+                                <input type="text" class="form-control" name="group_name[]" multiple
+                                    value="{{ $navbar->en }}">
+                            </div>
                         </div>
                         <div class="col-lg-12">
                             <label class="form-label mt-2">
@@ -42,7 +70,11 @@
                                 @foreach ($navbars as $item)
                                     <option value="{{ $item->id }}" @if ($item->id == $navbar->parent_id) selected @endif
                                         class="bg-white">
-                                        {{ $item->name }}
+                                        @if ($item->vi || $item->en || $item->ja)
+                                            {{ $item[Lang::locale()] }}
+                                        @else
+                                            {{ $item->name }}
+                                        @endif
                                     </option>
                                 @endforeach
                             </select>
@@ -58,4 +90,25 @@
             </div>
         </form>
     </div>
+@endsection
+@section('js')
+    <script>
+        $('#multi-lang').on('change', function() {
+            if (this.checked) {
+                $('#name').addClass('d-none');
+                $('.name-group').removeClass('d-none');
+                $('#name').removeAttr('required');
+                $('.name-group input').attr('required', 'required');
+            } else {
+                $('.name-group').addClass('d-none');
+                $('#name').removeClass('d-none');
+                $('#name').attr('required');
+                $('.name-group input').removeAttr('required', 'required');
+            }
+        });
+        @if ($navbar->vi || $navbar->en || $navbar->ja)
+            $('#multi-lang').prop('checked', true);
+            $('#multi-lang').trigger("change");;
+        @endif
+    </script>
 @endsection

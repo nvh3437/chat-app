@@ -21,10 +21,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($service_seo['service_page_icon']['value'] ?? $logo) }}" class="rounded"
-                            style="height: 80px; width: 80px; object-fit: cover;" />
-                        <h1 class="text-primary">{{ $service_seo['service_page_title']['value'] ?? '' }}</h1>
-                        <h2 class="text-muted fs-5 mt-2">{{ $service_seo['service_page_description']['value'] ?? '' }}</h2>
+                        <img src="{{ asset($service_seo['service_page_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                            class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                        <h1 class="text-primary">{{ $service_seo['service_page_title_' . Lang::locale()]['value'] ?? '' }}</h1>
+                        <h2 class="text-muted fs-5 mt-2">
+                            {{ $service_seo['service_page_description_' . Lang::locale()]['value'] ?? '' }}</h2>
                     </div>
                 </div>
             </div>

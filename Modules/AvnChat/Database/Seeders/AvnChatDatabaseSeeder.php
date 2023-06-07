@@ -557,6 +557,9 @@ class AvnChatDatabaseSeeder extends Seeder
 
         $menu = new AvnMenu();
         $menu->label = 'Đặt lịch';
+        $menu->en = 'Booking';
+        $menu->vi = 'Đặt lịch';
+        $menu->ja = '予約';
         $menu->route_name = 'list-order';
         $menu->icon = 'mdi mdi-calendar-sync';
         $menu->module = "AvnChat";
@@ -575,6 +578,9 @@ class AvnChatDatabaseSeeder extends Seeder
         $menu = new AvnMenu();
 
         $menu->label = 'Phiên làm việc';
+        $menu->en = 'Working session';
+        $menu->vi = 'Phiên làm việc';
+        $menu->ja = '作業セッション';
         $menu->route_name = 'list-session';
         $menu->icon = 'mdi mdi-format-list-checks';
         $menu->module = "AvnChat";

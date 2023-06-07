@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\AvnContact\Entities\Contact;
 use App\Models\GeneralSettings;
+use Lang;
 
 class ContactController extends Controller
 {
@@ -48,9 +49,9 @@ class ContactController extends Controller
             'contact_seo_description',
             'contact_seo_keywords',
             'contact_seo_image',
-            'contact_page_title',
-            'contact_page_description',
-            'contact_page_icon'
+            'contact_page_title_' . Lang::locale(),
+            'contact_page_description_' . Lang::locale(),
+            'contact_page_icon_' . Lang::locale()
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $company_info = GeneralSettings::whereIn('key', [
             'address',
@@ -69,9 +70,9 @@ class ContactController extends Controller
             $contact->email = $request->email;
             $contact->message = $request->message;
             $contact->save();
-            return redirect()->route('contact-page', ['success' => true])->with('Success', 'Cảm ơn bạn đã liên hệ với chúng tôi');
+            return redirect()->route('contact-page', ['success' => true])->with('Success', Lang::get('settings.Contact_page_title_2'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Gửi thất bại');
+            return back()->with('Failed', Lang::get('settings.Send_failed'));
         }
 
     }

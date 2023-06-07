@@ -10,6 +10,7 @@ use App\Models\User;
 use Modules\AvnChat\Entities\ChatOrder;
 use Modules\AvnChat\Entities\OrderChat;
 use App\Models\GeneralSettings;
+use Lang;
 
 class AvnChatOrderController extends Controller
 {
@@ -20,9 +21,9 @@ class AvnChatOrderController extends Controller
             'order_chat_seo_description',
             'order_chat_seo_keywords',
             'order_chat_seo_image',
-            'order_chat_page_title',
-            'order_chat_page_description',
-            'order_chat_page_icon'
+            'order_chat_page_title_'.Lang::locale(),
+            'order_chat_page_description_'.Lang::locale(),
+            'order_chat_page_icon_'.Lang::locale(),
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         $success = $request->success ?? false;
         $partners = User::where('type', 'partner')->get();
@@ -41,9 +42,9 @@ class AvnChatOrderController extends Controller
             $order->start_time = date('H:i', strtotime($request->start_time));
             $order->note = $request->note;
             $order->save();
-            return redirect()->route('order-chat', ['success' => true])->with('Success', 'Cảm ơn bạn đã đặt lịch.');
+            return redirect()->route('order-chat', ['success' => true])->with('Success', Lang::get('settings.Booking_mesage_2'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Gửi thất bại');
+            return back()->with('Failed', Lang::get('settings.Send_failed'));
         }
 
     }
@@ -58,9 +59,9 @@ class AvnChatOrderController extends Controller
     {
         try {
             $order = ChatOrder::findOrFail($id)->delete();
-            return back()->with('Success', 'Xóa thành công');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
 
     }
@@ -70,9 +71,9 @@ class AvnChatOrderController extends Controller
             $order = ChatOrder::findOrFail($id);
             $order->status = $request->status;
             $order->save();
-            return back()->with('Success', 'Cập nhật thành công');
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_success'));
         }
 
     }

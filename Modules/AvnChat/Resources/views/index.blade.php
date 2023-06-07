@@ -1,6 +1,6 @@
 @php
     $seo_props = [];
-    $seo_props['seo_title'] = 'Chat';
+    $seo_props['seo_title'] = __('settings.Conversation');
 @endphp
 @extends('layouts.guest', $seo_props)
 @php
@@ -44,7 +44,7 @@
                                 style="transform: translate(-50%, -50%);">
                                 <span class="spinner-border spinner-border-sm me-1" role="status"
                                     aria-hidden="true"></span>
-                                Đang tải thông tin...
+                                @lang('settings.Loading_message')...
                             </div>
                         </div>
                         <div class="pre-loader-error position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
@@ -53,21 +53,16 @@
                                 style="transform: translate(-50%, -50%);">
                                 <span class="spinner-border spinner-border-sm me-1" role="status"
                                     aria-hidden="true"></span>
-                                Có lỗi xảy ra hãy thông báo với quản trị viên...
+                                @lang('settings.Error_message')...
                             </div>
                         </div>
                         <ul class="conversation-list min-vh-75" data-simplebar style="height: 537px">
-                            {{-- <li class = "text-center date-message">
-                                <span class="badge badge-secondary-lighten">
-                                    ngu
-                                </span>
-                            </li> --}}
                         </ul>
                         <div class="row">
                             <div class="col">
                                 <div class="mt-2 bg-light p-3 rounded">
                                     <div class="alert alert-primary d-none alert-join-room text-center mb-0" role="alert">
-                                        <b>Bạn không thể trả lời tin nhắn này</b>
+                                        <b>@lang('settings.Chat_block')</b>
                                     </div>
                                     <form class="chat-form" name="chat-form" id="chat-form">
                                         <div class="row">
@@ -78,8 +73,6 @@
                                                 </div>
                                             </div>
                                             <div class="col mb-2 mb-sm-0 pe-0">
-                                                {{-- <p contenteditable="true" name="message" id="message"
-                                                    class="form-control border-0 mb-0"></p> --}}
                                                 <input type="text" class="form-control border-0"
                                                     placeholder="Enter your text" id="message" required="">
 
@@ -90,9 +83,6 @@
                                                             class="uil uil-paperclip"></i></label>
                                                     <input type="file" accept="image/*" hidden name="files" multiple
                                                         id="files">
-                                                    {{-- <a href="#" class="btn btn-light"> <i
-                                                            class='uil uil-smile'></i>
-                                                    </a> --}}
                                                     <div class="d-grid">
                                                         <button type="submit" class="btn btn-success chat-send"><i
                                                                 class='uil uil-message'></i></button>
@@ -120,7 +110,7 @@
                                 style="transform: translate(-50%, -50%);">
                                 <span class="spinner-border spinner-border-sm me-1" role="status"
                                     aria-hidden="true"></span>
-                                Đang tải tin nhắn...
+                                @lang('settings.Conversation_loading')...
                             </div>
                         </div>
                         <div class="pre-loader-error position-absolute w-100 h-100 bg-secondary top-0 start-0 d-none"
@@ -129,27 +119,12 @@
                                 style="transform: translate(-50%, -50%);">
                                 <span class="spinner-border spinner-border-sm me-1" role="status"
                                     aria-hidden="true"></span>
-                                Có lỗi xảy ra hãy thông báo với quản trị viên...
+                                @lang('settings.Error_message')...
                             </div>
                         </div>
                         <a href="javascript:void(0);" class="back-to-chat-col position-absolute d-lg-none">
                             <i class="dripicons-arrow-thin-left fw-bold fs-1 text-primary"></i>
                         </a>
-                        {{-- <div class="dropdown float-end">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="mdi mdi-dots-horizontal"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">View full</a>
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Edit Contact Info</a>
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Remove</a>
-                            </div>
-                        </div> --}}
-
                         <div class="mt-3 text-center">
                             <!--avatar-->
                             <img src="#" alt=""
@@ -161,30 +136,36 @@
                             <h4 class="chat-info-name"></h4>
                             <button class="btn btn-success btn-sm mt-1 start-call d-none" id="start-call"
                                 data-bs-toggle="modal" data-bs-target="#start-call-modal">
-                                <i class='mdi mdi-phone me-1'></i>Gọi nhóm
+                                <i class='mdi mdi-phone me-1'></i>
+                                @lang('settings.Start_call')
                             </button>
                             <button class="btn btn-danger btn-sm mt-1 admin-stop-call d-none" id="admin-stop-call">
-                                <i class='mdi mdi-phone-hangup me-1'></i>Kết thúc
+                                <i class='mdi mdi-phone-hangup me-1'></i>
+                                @lang('settings.End_call')
                             </button>
                             <div class="mt-2 workspace-session d-none">
                                 <hr class="" />
-                                <button class="btn btn-success btn-sm mt-1 start-session d-none"><i
-                                        class='mdi mdi-connection me-1'></i>Bắt đầu phiên làm việc</button>
-                                <button class="btn btn-danger btn-sm mt-1 end-session d-none"><i
-                                        class='mdi mdi-clock-check-outline me-1'></i>Kết thúc phiên làm việc</button>
-                                <p class="text-muted mt-2 font-14 time-session d-none">Thời gian hoạt động: <br>
+                                <button class="btn btn-success btn-sm mt-1 start-session d-none">
+                                    <i class='mdi mdi-connection me-1'></i>
+                                    @lang('settings.Start_session')
+                                </button>
+                                <button class="btn btn-danger btn-sm mt-1 end-session d-none">
+                                    <i class='mdi mdi-clock-check-outline me-1'></i>
+                                    @lang('settings.End_session')
+                                </button>
+                                <p class="text-muted mt-2 font-14 time-session d-none">@lang('settings.Operating_time'): <br>
                                     <span class="text-success">
-                                        <strong class="day d-none">10days : </strong>
-                                        <strong class="hour d-none">10hours : </strong>
-                                        <strong class="minute d-none">10mins : </strong>
-                                        <strong class="second d-none">10secs</strong>
+                                        <strong class="day d-none"> : </strong>
+                                        <strong class="hour d-none"> : </strong>
+                                        <strong class="minute d-none"> : </strong>
+                                        <strong class="second d-none"></strong>
                                     </span>
                                 </p>
                             </div>
                             @if ($user->type == 'system')
-                                <button class="btn btn-primary btn-sm mt-1 join-room"><i
-                                        class='uil uil-plus me-1'></i>Tham
-                                    gia</button>
+                                <button class="btn btn-primary btn-sm mt-1 join-room"><i class='uil uil-plus me-1'></i>
+                                    @lang('settings.Join')
+                                </button>
                                 <div class="group text-center mt-1 add-users-group d-none">
                                     <div class="accordion" id="accordionExample">
                                         <div class="card-header border-0 pb-0" id="headingOne">
@@ -193,7 +174,7 @@
                                                     data-bs-toggle="collapse" href="#change-info" aria-expanded="true"
                                                     aria-controls="change-info">
                                                     <i class="mdi mdi-information-outline"></i>
-                                                    Thông tin đoạn chat
+                                                    @lang('settings.Conversation_info')
                                                     <i class="mdi mdi-chevron-down accordion-arrow"></i>
                                                 </a>
                                             </h5>
@@ -202,24 +183,24 @@
                                             data-bs-parent="#accordionExample">
                                             <div class="card-body pt-0">
                                                 <hr>
-                                                <label class="form-label">Tên đoạn chat</label>
+                                                <label class="form-label">@lang('settings.Name')</label>
                                                 <input type="text" name="room_chat_name" id="room_chat_name"
                                                     class="form-control">
-                                                <label class="form-label mt-1">Thay đổi ảnh</label>
+                                                <label class="form-label mt-1">@lang('settings.Image')</label>
                                                 <input type="file"accept="image/*" name="room_chat_image"
                                                     id="room_chat_image" class="form-control">
                                                 <button class="btn btn-primary btn-sm mt-1 update-chat-room">
                                                     <i class='dripicons-checkmark'></i>
-                                                    Cập nhật</button>
+                                                    @lang('settings.Update.update')</button>
                                                 <hr>
-                                                <label class="form-label">Thêm thành viên</label>
+                                                <label class="form-label">@lang('settings.Add.add') @lang('settings.member')</label>
                                                 <!-- Multiple Select -->
                                                 <select class="form-control" multiple="multiple"
                                                     data-placeholder="Choose ..." id="add-users-select">
                                                 </select>
                                                 <button class="btn btn-primary btn-sm mt-1 add-users">
                                                     <i class='uil uil-plus me-1'></i>
-                                                    Thêm thành viên
+                                                    @lang('settings.Add.add') @lang('settings.member')
                                                 </button>
                                             </div>
                                         </div>
@@ -277,7 +258,7 @@
                     <div class="position-relative chat-info-imgs" style="height: 3rem;">
                     </div>
                     <h4 class="chat-info-name"></h4>
-                    <h5 class="text-muted status">Cuộc gọi sẽ bắt đầu ngay khi bấm chấp nhận</h5>
+                    <h5 class="text-muted status">@lang('settings.Incoming_call_message')</h5>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-success p-0 rounded-circle avatar-sm fs-3 mx-1"
@@ -299,7 +280,7 @@
                     <div class="position-relative chat-info-imgs" style="height: 3rem;">
                     </div>
                     <h4 class="chat-info-name"></h4>
-                    <h5 class="text-muted status">Đang kết nối...</h5>
+                    <h5 class="text-muted status">@lang('settings.Connecting')...</h5>
                     <div id="mixedaudio"></div>
                     <div class="d-flex joined-users flex-wrap justify-content-center mt-3">
                     </div>
@@ -343,7 +324,7 @@
                     <div class="position-relative chat-info-imgs" style="height: 3rem;">
                     </div>
                     <h4 class="chat-info-name"></h4>
-                    <h4 class="text-muted status">Cuộc gọi đã kết thúc</h4>
+                    <h4 class="text-muted status">@lang('settings.End_call_message')</h4>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-danger p-0 rounded-circle avatar-sm fs-3 mx-1"
@@ -709,7 +690,7 @@
                 if (images.length >= 4) {
                     e.preventDefault();
                     e.stopPropagation();
-                    $.NotificationApp.send("Thất bại", "Tối đa 4 tệp", "bottom-right",
+                    $.NotificationApp.send("@lang('settings.Failed')", "@lang('settings.Maxfiles', ['num' => 4])", "bottom-right",
                         "rgba(0,0,0,0.2)", "error")
                 }
             })
@@ -723,7 +704,7 @@
                     var filesAmount = this.files.length;
                     for (i = 0; i < filesAmount; i++) {
                         if (images.length >= 4) {
-                            $.NotificationApp.send("Thất bại", "Tối đa 4 tệp", "bottom-right",
+                            $.NotificationApp.send("@lang('settings.Failed')", "@lang('settings.Maxfiles', ['num' => 4])", "bottom-right",
                                 "rgba(0,0,0,0.2)", "error")
                             break
                         }
@@ -834,7 +815,7 @@
                             '<button class="btn btn-primary w-100 pre-message-loading mb-1" type="button" disabled>'
                         htm +=
                             '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>'
-                        htm += 'Đang tải...'
+                        htm += '@lang('settings.Conversation_loading')...'
                         htm += '</button>'
                         $('.conversation-list .simplebar-content').prepend(htm);
                         $.ajax({
@@ -936,14 +917,14 @@
                                 $('#start-call-modal .modal-body').html(
                                     $('.chat-info-img')[0].outerHTML +
                                     $('.chat-info-name')[0].outerHTML +
-                                    "<h5 class='text-muted status'>Đang kết nối...</h5>" +
+                                    "<h5 class='text-muted status'>@lang('settings.Connecting')...</h5>" +
                                     '<button class="btn bg-light position-absolute top-0 end-0 bg-transparent" data-bs-dismiss="modal"><i class="mdi mdi-window-minimize"></i></button>'
                                 );
                             } else {
                                 $('#start-call-modal .modal-body').html(
                                     $('.chat-info-imgs')[0].outerHTML +
                                     $('.chat-info-name')[0].outerHTML +
-                                    "<h5 class='text-muted status'>Đang kết nối...</h5>" +
+                                    "<h5 class='text-muted status'>@lang('settings.Connecting')...</h5>" +
                                     '<button class="btn bg-light position-absolute top-0 end-0 bg-transparent" data-bs-dismiss="modal"><i class="mdi mdi-window-minimize"></i></button>'
                                 );
                             }
@@ -1434,7 +1415,7 @@
             function add_join_call_button(call_id, call_pin) {
                 htm = '<li class="clearfix text-center" data-call-id="' + call_id + '" data-pin="' + call_pin + '">'
                 htm += '<button class="btn btn-success" id="join-call-now">'
-                htm += '<i class="mdi mdi-phone"></i> Tham gia cuộc gọi'
+                htm += '<i class="mdi mdi-phone"></i> @lang('settings.Join')'
                 htm += '</button>'
                 htm += '</li>'
                 $('.conversation-list .simplebar-content').append(htm);
@@ -1447,23 +1428,23 @@
             function add_message_send_by_system(message, append = true) {
                 var system_message = ''
                 if (message.message.indexOf("add-user") == 0) {
-                    system_message = 'Đã thêm ' + message.message.substring(message.message.indexOf(
+                    system_message = '@lang('settings.Added')' + message.message.substring(message.message.indexOf(
                         " "), message.message.length)
                 } else if (message.message.indexOf("kick-user") == 0) {
-                    system_message = 'Đã xóa ' + message.message.substring(message.message.indexOf(
+                    system_message = '@lang('settings.Deleted')' + message.message.substring(message.message.indexOf(
                         " "), message.message.length)
                 } else if (message.message.indexOf("start-session") == 0) {
-                    system_message = 'Bắt đầu phiên làm việc'
+                    system_message = '@lang('settings.Start_session')'
                 } else if (message.message.indexOf("end-session") == 0) {
-                    system_message = 'Kết thúc phiên làm việc'
+                    system_message = '@lang('settings.End_session')'
                 } else if (message.message.indexOf("start-call") == 0) {
-                    system_message = 'Bắt đầu cuộc gọi'
+                    system_message = '@lang('settings.Start_call')'
                 } else if (message.message.indexOf("joined-call") == 0) {
-                    system_message = message.message.substring(11) + ' tham gia cuộc gọi'
+                    system_message = message.message.substring(11) + '@lang('settings.joined_call')'
                 } else if (message.message.indexOf("left-call") == 0) {
-                    system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
+                    system_message = message.message.substring(10) + '@lang('settings.left_call')'
                 } else if (message.message.indexOf("stop-call") == 0) {
-                    system_message = 'Kết thúc cuộc gọi'
+                    system_message = '@lang('settings.End_call')'
                 }
                 htm = '<li class = "text-center date-message">'
                 htm += '<span class="badge badge-secondary-lighten">' + system_message + '</span>'
@@ -1481,23 +1462,23 @@
             function update_new_message_in_chat_room_send_by_system(message) {
                 var system_message = ''
                 if (message.message.indexOf("add-user") == 0) {
-                    system_message = 'Đã thêm ' + message.message.substring(message.message.indexOf(
+                    system_message = '@lang('settings.Added')' + message.message.substring(message.message.indexOf(
                         " "), message.message.length)
                 } else if (message.message.indexOf("kick-user") == 0) {
-                    system_message = 'Đã xóa ' + message.message.substring(message.message.indexOf(
+                    system_message = '@lang('settings.Deleted')' + message.message.substring(message.message.indexOf(
                         " "), message.message.length)
                 } else if (message.message.indexOf("start-session") == 0) {
-                    system_message = 'Bắt đầu phiên làm việc'
+                    system_message = '@lang('settings.Start_session')'
                 } else if (message.message.indexOf("end-session") == 0) {
-                    system_message = 'Kết thúc phiên làm việc'
+                    system_message = '@lang('settings.End_session')'
                 } else if (message.message.indexOf("start-call") == 0) {
-                    system_message = 'Bắt đầu cuộc gọi'
+                    system_message = '@lang('settings.Start_call')'
                 } else if (message.message.indexOf("joined-call") == 0) {
-                    system_message = message.message.substring(11) + ' tham gia cuộc gọi'
+                    system_message = message.message.substring(11) + '@lang('settings.joined_call')'
                 } else if (message.message.indexOf("left-call") == 0) {
-                    system_message = message.message.substring(10) + ' rời khỏi cuộc gọi'
+                    system_message = message.message.substring(10) + '@lang('settings.left_call')'
                 } else if (message.message.indexOf("stop-call") == 0) {
-                    system_message = 'Kết thúc cuộc gọi'
+                    system_message = '@lang('settings.End_call')'
                 }
 
                 $(".chat-room[data-id=" + (message.room_id) + "] .new-message").html(system_message);
@@ -1626,7 +1607,7 @@
                         htm +=
                             '<div class="col-12 position-relative m-0 p-0 img-container mt-2">'
                         htm += '<div class="spinner-border" role="status">'
-                        htm += '<span class="visually-hidden">Loading...</span>'
+                        htm += '<span class="visually-hidden">@lang('settings.Loading')...</span>'
                         htm += '</div>'
                         htm += '</div>'
                     });
@@ -1666,7 +1647,7 @@
              * 
              * @returns {String}
              */
-            function time_ago(date) {
+            window.time_ago = function time_ago(date) {
                 var now = new Date()
                 time_elapsed = Math.floor((now.getTime() - date.getTime()) / 1000)
                 var seconds = time_elapsed
@@ -1678,31 +1659,31 @@
                 var years = Math.floor(time_elapsed / 31207680)
                 // Seconds
                 if (seconds <= 60) {
-                    return 'Bây giờ'
+                    return '@lang('settings.Now')'
                 }
                 //Minutes
                 else if (minutes <= 60) {
-                    return minutes + ' phút trước'
+                    return minutes + '@lang('settings.Minutes_before', ['minutes' => ''])'
                 }
                 //Hours
                 else if (hours <= 24) {
-                    return hours + ' giờ trước'
+                    return hours + '@lang('settings.Hours_before', ['hours' => ''])'
                 }
                 //Days
                 else if (days <= 7) {
-                    return days + ' ngày trước'
+                    return days + '@lang('settings.Days_before', ['days' => ''])'
                 }
                 //Weeks
                 else if (weeks <= 4.3) {
-                    return weeks + ' tuần trước'
+                    return weeks + '@lang('settings.Weeks_before', ['weeks' => ''])'
                 }
                 //Months
                 else if (months <= 12) {
-                    return months + ' tháng trước'
+                    return months + '@lang('settings.Months_before', ['months' => ''])'
                 }
                 //Years
                 else {
-                    return years + ' năm trước'
+                    return years + '@lang('settings.Years_before', ['years' => ''])'
                 }
             }
 
@@ -1718,8 +1699,8 @@
             // check internet conection
             window.addEventListener("offline", (e) => {
                 $.toast({
-                    text: "Không có kết nối internet",
-                    heading: "Có lỗi xảy ra",
+                    text: "@lang('settings.Lost_connect')",
+                    heading: "@lang('settings.Has_error')",
                     icon: 'danger',
                     position: 'bottom-left',
                     hideAfter: false,
@@ -1732,8 +1713,8 @@
             window.addEventListener("online", (e) => {
                 $.toast().reset('all');
                 $.toast({
-                    text: "Thành công",
-                    heading: "Đã kết nối lại",
+                    text: "@lang('settings.Success')",
+                    heading: "@lang('settings.Reconnect')",
                     icon: 'success',
                     position: 'bottom-left',
                     hideAfter: 3000,
@@ -1870,7 +1851,7 @@
             // format select users add to chat
             function formatSelect(data) {
                 if (data.loading) {
-                    return $('<span>Đang tải...</span>')
+                    return $('<span>@lang('settings.Loading')...</span>')
                 }
                 var htm = '<div class="d-flex align-items-center">'
                 htm += '<img src="'
@@ -1994,7 +1975,7 @@
                 room_calling_id = room_id
                 window.is_ringing = false
                 is_calling = true
-                $('#start-call-modal .status').html('Đang kết nối...')
+                $('#start-call-modal .status').html('@lang('settings.Connecting')...')
                 $('#in-call-modal .chat-info-name').html($('.chat-info .chat-info-name').html())
                 if ($('.chat-info .chat-info-imgs').hasClass('d-none')) {
                     $('#in-call-modal .chat-info-img').attr('src', $('.chat-info .chat-info-img').attr(
@@ -2034,7 +2015,7 @@
                         call_id = res.id
                         call_pin = res.pin
                         start_connect_call()
-                        $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
+                        $('#start-call-modal .modal-body .status').html('@lang('settings.Ringing')...')
                         $('.stop-call').removeAttr('disabled')
                         window.start_call_timeout = setTimeout(cancel_calling, 60000)
                     }
@@ -2053,7 +2034,7 @@
                         call_id = res.id
                         call_pin = res.pin
                         start_connect_call()
-                        $('#start-call-modal .modal-body .status').html('Đang đổ chuông...')
+                        $('#start-call-modal .modal-body .status').html('@lang('settings.Ringing')...')
                         $('.stop-call').removeAttr('disabled')
                         window.start_call_timeout = setTimeout(cancel_calling, 60000)
                     }
@@ -2065,7 +2046,7 @@
                 window.call_pin = $(this).parent().attr('data-pin')
 
                 $('.in-call-modal .chat-info-name').html($('.chat-info .chat-info-name').html())
-                $('.in-call-modal .status').html('Đang kết nối...')
+                $('.in-call-modal .status').html('@lang('settings.Connecting')...')
                 if ($('.chat-info .chat-info-imgs').hasClass('d-none')) {
                     $('#in-call-modal .chat-info-img').attr('src', $('.chat-info .chat-info-img').attr(
                         'src'));

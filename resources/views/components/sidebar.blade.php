@@ -37,7 +37,13 @@
                             <a data-bs-toggle="collapse" href="#sidebar-{{ $menu->id }}"
                                 aria-controls="sidebar-{{ $menu->id }}" class="side-nav-link">
                                 <i class="{{ $menu->icon }}"></i>
-                                <span> {{ $menu->label }} </span>
+                                <span>
+                                    @if ($menu->vi || $menu->en || $menu->ja)
+                                        {{ $menu[Lang::locale()] }}
+                                    @else
+                                        {{ $menu->label }}
+                                    @endif
+                                </span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <div class="collapse" id="sidebar-{{ $menu->id }}" style="">
@@ -48,15 +54,26 @@
                                                 RoleController::isNotBlock($children))
                                             @if (count($children->childrens) <= 0)
                                                 <li class="children">
-                                                    <a
-                                                        href="{{ route($children->route_name) }}">{{ $children->label }}</a>
+                                                    <a href="{{ route($children->route_name) }}">
+                                                        @if ($children->vi || $children->en || $children->ja)
+                                                            {{ $children[Lang::locale()] }}
+                                                        @else
+                                                            {{ $children->label }}
+                                                        @endif
+                                                    </a>
                                                 </li>
                                             @else
                                                 <li class="side-nav-item children parent-1">
                                                     <a data-bs-toggle="collapse"
                                                         href="#siber-third-{{ $children->id }}" aria-expanded="false"
                                                         aria-controls="siber-third-{{ $children->id }}">
-                                                        <span> {{ $children->label }} </span>
+                                                        <span>
+                                                            @if ($children->vi || $children->en || $children->ja)
+                                                                {{ $children[Lang::locale()] }}
+                                                            @else
+                                                                {{ $children->label }}
+                                                            @endif
+                                                        </span>
                                                         <span class="menu-arrow"></span>
                                                     </a>
                                                     <div class="collapse" id="siber-third-{{ $children->id }}">
@@ -67,8 +84,13 @@
                                                                         ($children1->module != null && Module::find($children1->module)->isEnabled() == 1)) &&
                                                                         RoleController::isNotBlock($children1))
                                                                     <li class="children-1">
-                                                                        <a
-                                                                            href="{{ route($children1->route_name) }}">{{ $children1->label }}</a>
+                                                                        <a href="{{ route($children1->route_name) }}">
+                                                                            @if ($children1->vi || $children1->en || $children1->ja)
+                                                                                {{ $children1[Lang::locale()] }}
+                                                                            @else
+                                                                                {{ $children1->label }}
+                                                                            @endif
+                                                                        </a>
                                                                     </li>
                                                                 @endif
                                                             @endforeach
@@ -85,7 +107,13 @@
                         <li class="side-nav-item no-child">
                             <a href="{{ route($menu->route_name) }}" class="side-nav-link">
                                 <i class="{{ $menu->icon }}"></i>
-                                <span>{{ $menu->label }}</span>
+                                <span>
+                                    @if ($menu->vi || $menu->en || $menu->ja)
+                                        {{ $menu[Lang::locale()] }}
+                                    @else
+                                        {{ $menu->label }}
+                                    @endif
+                                </span>
                             </a>
                         </li>
                     @endif

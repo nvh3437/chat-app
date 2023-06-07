@@ -58,15 +58,105 @@
                     <div class="card">
                         <div class="card-body shadow-lg">
                             <div class="row">
-                                <div class="col-lg-12">
-                                    <label class="form-label">
-                                        @lang('settings.Image')
-                                    </label>
-                                    <input accept="image/*" class="form-control" type="file" name="home_banner_image">
-                                    @if (isset($home_seo['home_banner_image']))
-                                        <img src="{{ asset($home_seo['home_banner_image']['value']) }}" width="200"
-                                            class="mt-2" alt="">
+                                <label class="form-label">
+                                    @lang('settings.Image')
+                                </label>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_banner_image_ja">
+                                    </div>
+                                    @if (isset($home_seo['home_banner_image_ja']))
+                                        <img src="{{ asset($home_seo['home_banner_image_ja']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
                                     @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_banner_image_vi">
+                                    </div>
+                                    @if (isset($home_seo['home_banner_image_vi']))
+                                        <img src="{{ asset($home_seo['home_banner_image_vi']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
+                                    @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_banner_image_en">
+                                    </div>
+                                    @if (isset($home_seo['home_banner_image_en']))
+                                        <img src="{{ asset($home_seo['home_banner_image_en']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
+                                    @endif
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        @lang('settings.Title')
+                                    </label>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_banner_title_ja" rows="3">{{ isset($home_seo['home_banner_title_ja']) ? $home_seo['home_banner_title_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_banner_title_vi" rows="3">{{ isset($home_seo['home_banner_title_vi']) ? $home_seo['home_banner_title_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_banner_title_en" rows="3">{{ isset($home_seo['home_banner_title_en']) ? $home_seo['home_banner_title_en']['value'] : '' }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label mt-2">
+                                        @lang('settings.Description')
+                                    </label>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_banner_description_ja" rows="3">{{ isset($home_seo['home_banner_description_ja']) ? $home_seo['home_banner_description_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_banner_description_vi" rows="3">{{ isset($home_seo['home_banner_description_vi']) ? $home_seo['home_banner_description_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_banner_description_en" rows="3">{{ isset($home_seo['home_banner_description_en']) ? $home_seo['home_banner_description_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label mt-2">
@@ -75,18 +165,6 @@
                                     <input class="form-control" type="url" name="home_banner_link"
                                         value="{{ isset($home_seo['home_banner_link']) ? $home_seo['home_banner_link']['value'] : '' }}">
                                 </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        @lang('settings.Title')
-                                    </label>
-                                    <textarea class="form-control" name="home_banner_title" rows="3">{{ isset($home_seo['home_banner_title']) ? $home_seo['home_banner_title']['value'] : '' }}</textarea>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label mt-2">
-                                        @lang('settings.Description')
-                                    </label>
-                                    <textarea class="form-control" name="home_banner_description" rows="3">{{ isset($home_seo['home_banner_description']) ? $home_seo['home_banner_description']['value'] : '' }}</textarea>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,27 +172,105 @@
                     <div class="card">
                         <div class="card-body shadow-lg">
                             <div class="row">
-                                <div class="col-lg-12">
-                                    <label class="form-label">
-                                        @lang('settings.Image')
-                                    </label>
-                                    <input accept="image/*" class="form-control" type="file" name="home_partner_image">
-                                    @if (isset($home_seo['home_partner_image']))
-                                        <img src="{{ asset($home_seo['home_partner_image']['value']) }}" width="200"
-                                            class="mt-2" alt="">
+                                <label class="form-label">
+                                    @lang('settings.Image')
+                                </label>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_partner_image_ja">
+                                    </div>
+                                    @if (isset($home_seo['home_partner_image_ja']))
+                                        <img src="{{ asset($home_seo['home_partner_image_ja']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
+                                    @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_partner_image_vi">
+                                    </div>
+                                    @if (isset($home_seo['home_partner_image_vi']))
+                                        <img src="{{ asset($home_seo['home_partner_image_vi']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
+                                    @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_partner_image_en">
+                                    </div>
+                                    @if (isset($home_seo['home_partner_image_en']))
+                                        <img src="{{ asset($home_seo['home_partner_image_en']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
                                     @endif
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         @lang('settings.Title')
                                     </label>
-                                    <textarea class="form-control" name="home_partner_title" rows="3">{{ isset($home_seo['home_partner_title']) ? $home_seo['home_partner_title']['value'] : '' }}</textarea>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_partner_title_ja" rows="3">{{ isset($home_seo['home_partner_title_ja']) ? $home_seo['home_partner_title_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_partner_title_vi" rows="3">{{ isset($home_seo['home_partner_title_vi']) ? $home_seo['home_partner_title_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_partner_title_en" rows="3">{{ isset($home_seo['home_partner_title_en']) ? $home_seo['home_partner_title_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         @lang('settings.Description')
                                     </label>
-                                    <textarea class="form-control" name="home_partner_description" rows="3">{{ isset($home_seo['home_partner_description']) ? $home_seo['home_partner_description']['value'] : '' }}</textarea>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_partner_description_ja" rows="3">{{ isset($home_seo['home_partner_description_ja']) ? $home_seo['home_partner_description_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_partner_description_vi" rows="3">{{ isset($home_seo['home_partner_description_vi']) ? $home_seo['home_partner_description_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_partner_description_en" rows="3">{{ isset($home_seo['home_partner_description_en']) ? $home_seo['home_partner_description_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -123,52 +279,200 @@
                     <div class="card">
                         <div class="card-body shadow-lg">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <label class="form-label">
-                                        @lang('settings.Icon')
-                                    </label>
-                                    <input accept="image/*" class="form-control" type="file"
-                                        name="home_feature_icon">
-                                    @if (isset($home_seo['home_feature_icon']))
-                                        <img src="{{ asset($home_seo['home_feature_icon']['value']) }}" width="200"
-                                            class="mt-2" alt="">
+                                <label class="form-label">
+                                    @lang('settings.Icon')
+                                </label>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_feature_icon_ja">
+                                    </div>
+                                    @if (isset($home_seo['home_feature_icon_ja']))
+                                        <img src="{{ asset($home_seo['home_feature_icon_ja']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid">
+                                    @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_feature_icon_vi">
+                                    </div>
+                                    @if (isset($home_seo['home_feature_icon_vi']))
+                                        <img src="{{ asset($home_seo['home_feature_icon_vi']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid">
+                                    @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_feature_icon_en">
+                                    </div>
+                                    @if (isset($home_seo['home_feature_icon_en']))
+                                        <img src="{{ asset($home_seo['home_feature_icon_en']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid">
+                                    @endif
+                                </div>
+                                <label class="form-label">
+                                    @lang('settings.Image')
+                                </label>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_feature_img_ja">
+                                    </div>
+                                    @if (isset($home_seo['home_feature_img_ja']))
+                                        <img src="{{ asset($home_seo['home_feature_img_ja']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid">
+                                    @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_feature_img_vi">
+                                    </div>
+                                    @if (isset($home_seo['home_feature_img_vi']))
+                                        <img src="{{ asset($home_seo['home_feature_img_vi']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid">
+                                    @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="home_feature_img_en">
+                                    </div>
+                                    @if (isset($home_seo['home_feature_img_en']))
+                                        <img src="{{ asset($home_seo['home_feature_img_en']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid">
                                     @endif
                                 </div>
                                 <div class="col-lg-6">
-                                    <label class="form-label">
-                                        @lang('settings.Image')
-                                    </label>
-                                    <input accept="image/*" class="form-control" type="file" name="home_feature_img">
-                                    @if (isset($home_seo['home_feature_img']))
-                                        <img src="{{ asset($home_seo['home_feature_img']['value']) }}" width="200"
-                                            class="mt-2" alt="">
-                                    @endif
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">
+                                    <label class="form-label mt-2">
                                         @lang('settings.Title')
                                     </label>
-                                    <input class="form-control" type="text" name="home_feature_title"
-                                        value="{{ isset($home_seo['home_feature_title']) ? $home_seo['home_feature_title']['value'] : '' }}">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_title_ja" rows="3">{{ isset($home_seo['home_feature_title_ja']) ? $home_seo['home_feature_title_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_title_vi" rows="3">{{ isset($home_seo['home_feature_title_vi']) ? $home_seo['home_feature_title_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_title_en" rows="3">{{ isset($home_seo['home_feature_title_en']) ? $home_seo['home_feature_title_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         @lang('settings.Description')
                                     </label>
-                                    <textarea class="form-control" name="home_feature_des" rows="3"> {{ isset($home_seo['home_feature_des']) ? $home_seo['home_feature_des']['value'] : '' }}</textarea>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_des_ja" rows="3">{{ isset($home_seo['home_feature_des_ja']) ? $home_seo['home_feature_des_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_des_vi" rows="3">{{ isset($home_seo['home_feature_des_vi']) ? $home_seo['home_feature_des_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_des_en" rows="3">{{ isset($home_seo['home_feature_des_en']) ? $home_seo['home_feature_des_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         @lang('settings.Intro_title')
                                     </label>
-                                    <input class="form-control" type="text" name="home_feature_sub_title"
-                                        value="{{ isset($home_seo['home_feature_sub_title']) ? $home_seo['home_feature_sub_title']['value'] : '' }}">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_sub_title_ja" rows="3">{{ isset($home_seo['home_feature_sub_title_ja']) ? $home_seo['home_feature_sub_title_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_sub_title_vi" rows="3">{{ isset($home_seo['home_feature_sub_title_vi']) ? $home_seo['home_feature_sub_title_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_sub_title_en" rows="3">{{ isset($home_seo['home_feature_sub_title_en']) ? $home_seo['home_feature_sub_title_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-12">
+
+                                <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         @lang('settings.Intro_description')
                                     </label>
-                                    <textarea class="form-control" name="home_feature_sub_des" rows="3"> {{ isset($home_seo['home_feature_sub_des']) ? $home_seo['home_feature_sub_des']['value'] : '' }}</textarea>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_sub_des_ja" rows="3">{{ isset($home_seo['home_feature_sub_des_ja']) ? $home_seo['home_feature_sub_des_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_sub_des_vi" rows="3">{{ isset($home_seo['home_feature_sub_des_vi']) ? $home_seo['home_feature_sub_des_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="home_feature_sub_des_en" rows="3">{{ isset($home_seo['home_feature_sub_des_en']) ? $home_seo['home_feature_sub_des_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label mt-2">
@@ -182,15 +486,17 @@
                                 <div class="form-label mt-2">
                                     <label>
                                         @lang('settings.Introduce')
+                                        <img src="{{ asset('resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                            width="30">
                                     </label>
-                                    <button type="button"
-                                        class="btn btn-outline-success add-feature-item">@lang('settings.Add.add')</button>
+                                    <button type="button" class="btn btn-outline-success add-feature-item"
+                                        data-lang="ja">@lang('settings.Add.add')</button>
                                 </div>
-                                @if (count($home_feature_list_items) > 0)
-                                    @foreach ($home_feature_list_items as $home_feature_list_item)
+                                @if (count($home_feature_list_items_ja) > 0)
+                                    @foreach ($home_feature_list_items_ja as $home_feature_list_item)
                                         <div class="input-group mb-2">
                                             <input class="form-control" multiple type="text"
-                                                name="home_feature_list_items[]"
+                                                name="home_feature_list_items_ja[]"
                                                 value="{{ $home_feature_list_item->value }}">
                                             <button type="button"
                                                 class="btn btn-outline-secondary delete-feature-item">@lang('settings.Delete.delete')</button>
@@ -199,7 +505,65 @@
                                 @else
                                     <div class="input-group mb-2">
                                         <input class="form-control" multiple type="text"
-                                            name="home_feature_list_items[]" value="">
+                                            name="home_feature_list_items_ja[]" value="">
+                                        <button type="button"
+                                            class="btn btn-outline-secondary delete-feature-item">@lang('settings.Delete.delete')</button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-12 home_feature_list_items">
+                                <div class="form-label mt-2">
+                                    <label>
+                                        @lang('settings.Introduce')
+                                        <img src="{{ asset('resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                            width="30">
+                                    </label>
+                                    <button type="button" class="btn btn-outline-success add-feature-item"
+                                        data-lang="vi">@lang('settings.Add.add')</button>
+                                </div>
+                                @if (count($home_feature_list_items_vi) > 0)
+                                    @foreach ($home_feature_list_items_vi as $home_feature_list_item)
+                                        <div class="input-group mb-2">
+                                            <input class="form-control" multiple type="text"
+                                                name="home_feature_list_items_vi[]"
+                                                value="{{ $home_feature_list_item->value }}">
+                                            <button type="button"
+                                                class="btn btn-outline-secondary delete-feature-item">@lang('settings.Delete.delete')</button>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="input-group mb-2">
+                                        <input class="form-control" multiple type="text"
+                                            name="home_feature_list_items_vi[]" value="">
+                                        <button type="button"
+                                            class="btn btn-outline-secondary delete-feature-item">@lang('settings.Delete.delete')</button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-12 home_feature_list_items">
+                                <div class="form-label mt-2">
+                                    <label>
+                                        @lang('settings.Introduce')
+                                        <img src="{{ asset('resources/assets/images/flags/en.png') }}" alt="user-image"
+                                            width="30">
+                                    </label>
+                                    <button type="button" class="btn btn-outline-success add-feature-item"
+                                        data-lang="en">@lang('settings.Add.add')</button>
+                                </div>
+                                @if (count($home_feature_list_items_en) > 0)
+                                    @foreach ($home_feature_list_items_en as $home_feature_list_item)
+                                        <div class="input-group mb-2">
+                                            <input class="form-control" multiple type="text"
+                                                name="home_feature_list_items_en[]"
+                                                value="{{ $home_feature_list_item->value }}">
+                                            <button type="button"
+                                                class="btn btn-outline-secondary delete-feature-item">@lang('settings.Delete.delete')</button>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="input-group mb-2">
+                                        <input class="form-control" multiple type="text"
+                                            name="home_feature_list_items_en[]" value="">
                                         <button type="button"
                                             class="btn btn-outline-secondary delete-feature-item">@lang('settings.Delete.delete')</button>
                                     </div>
@@ -223,11 +587,11 @@
         $('.home_feature_list_items').on('click', '.add-feature-item', function() {
             var htm = '<div class="input-group mb-2">'
             htm += '<input class="form-control" multiple type="text"'
-            htm += 'name="home_feature_list_items[]" value="">'
+            htm += 'name="home_feature_list_items_' + $(this).attr('data-lang') + '[]" value="">'
             htm += '<button type="button"'
             htm += 'class="btn btn-outline-secondary delete-feature-item">Xóa</button>'
             htm += '</div>'
-            $('.home_feature_list_items').append(htm);
+            $(this).parent().parent().append(htm);
         });
     </script>
 @endsection

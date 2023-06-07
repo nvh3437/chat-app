@@ -58,27 +58,105 @@
                     <div class="card">
                         <div class="card-body shadow-lg">
                             <div class="row">
-                                <div class="col-lg-12">
-                                    <label class="form-label mt-2">
-                                        @lang('settings.Icon')
-                                    </label>
-                                    <input accept="image/*" class="form-control" type="file" name="contact_page_icon">
-                                    @if (isset($contact_seo['contact_page_icon']))
-                                        <img src="{{ asset($contact_seo['contact_page_icon']['value']) }}" width="200"
-                                            class="mt-2" alt="">
+                                <label class="form-label">
+                                    @lang('settings.Image')
+                                </label>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="contact_page_icon_ja">
+                                    </div>
+                                    @if (isset($contact_seo['contact_page_icon_ja']))
+                                        <img src="{{ asset($contact_seo['contact_page_icon_ja']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
                                     @endif
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="contact_page_icon_vi">
+                                    </div>
+                                    @if (isset($contact_seo['contact_page_icon_vi']))
+                                        <img src="{{ asset($contact_seo['contact_page_icon_vi']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
+                                    @endif
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <input accept="image/*" class="form-control" type="file"
+                                            name="contact_page_icon_en">
+                                    </div>
+                                    @if (isset($contact_seo['contact_page_icon_en']))
+                                        <img src="{{ asset($contact_seo['contact_page_icon_en']['value']) }}"
+                                            style="height: 200px; object-fit: cover;" class="mt-2 mb-3 img-fluid"
+                                            alt="">
+                                    @endif
+                                </div>
+                                <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         @lang('settings.Title')
                                     </label>
-                                    <textarea class="form-control" name="contact_page_title" rows="3">{{ isset($contact_seo['contact_page_title']) ? $contact_seo['contact_page_title']['value'] : '' }}</textarea>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <textarea class="form-control" name="contact_page_title_ja" rows="3">{{ isset($contact_seo['contact_page_title_ja']) ? $contact_seo['contact_page_title_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="contact_page_title_vi" rows="3">{{ isset($contact_seo['contact_page_title_vi']) ? $contact_seo['contact_page_title_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="contact_page_title_en" rows="3">{{ isset($contact_seo['contact_page_title_en']) ? $contact_seo['contact_page_title_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <label class="form-label mt-2">
                                         @lang('settings.Description')
                                     </label>
-                                    <textarea class="form-control" name="contact_page_description" rows="3">{{ isset($contact_seo['contact_page_description']) ? $contact_seo['contact_page_description']['value'] : '' }}</textarea>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="contact_page_description_ja" rows="3">{{ isset($contact_seo['contact_page_description_ja']) ? $contact_seo['contact_page_description_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="contact_page_description_vi" rows="3">{{ isset($contact_seo['contact_page_description_vi']) ? $contact_seo['contact_page_description_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <textarea class="form-control" name="contact_page_description_en" rows="3">{{ isset($contact_seo['contact_page_description_en']) ? $contact_seo['contact_page_description_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -66,7 +66,7 @@
                             <input class="form-control" type="email" name="email" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">@lang('auth.password')</label>
+                            <label class="form-label">@lang('settings.Password')</label>
                             <div class="input-group input-group-merge">
                                 <input type="password" name="password" class="form-control" required>
                                 <div class="input-group-text" data-password="false">
@@ -77,7 +77,7 @@
                         <div class="mb-3">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" name="remember" value="1">
-                                <label class="form-check-label" for="remember">@lang('auth.remember')</label>
+                                <label class="form-check-label" for="remember">@lang('settings.Remember')</label>
                             </div>
                         </div>
                         <div class="d-grid mb-0 text-center">

@@ -21,10 +21,13 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($post_seo['post_page_icon']['value'] ?? $logo) }}" class="rounded"
+                        <img src="{{ asset($post_seo['post_page_icon_' . Lang::locale()]['value'] ?? $logo) }}" class="rounded"
                             style="height: 80px; width: 80px; object-fit: cover;" />
-                        <h1><span class="text-primary">{{ $post_seo['post_page_title']['value'] ?? '' }}</span></h1>
-                        <h2 class="text-muted fs-5 mt-2">{{ $post_seo['post_page_description']['value'] ?? '' }}</h2>
+                        <h1><span
+                                class="text-primary">{{ $post_seo['post_page_title_' . Lang::locale()]['value'] ?? '' }}</span>
+                        </h1>
+                        <h2 class="text-muted fs-5 mt-2">
+                            {{ $post_seo['post_page_description_' . Lang::locale()]['value'] ?? '' }}</h2>
                     </div>
                 </div>
             </div>

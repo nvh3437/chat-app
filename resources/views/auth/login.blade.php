@@ -7,9 +7,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>@lang('auth.login')</title>
+    <title>@lang('settings.Login')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="@lang('auth.login')" />
+    <meta content="@lang('settings.Login')" />
     <meta content="AVNTech" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('resources/assets/images/favicon.ico') }}">
@@ -50,14 +50,14 @@
                             </span>
                         </a>
                     </div>
-                    <h4 class="mt-5">@lang('auth.login')</h4>
-                    <p class="text-muted mb-4">@lang('auth.login_text')</p>
+                    <h4 class="mt-5">@lang('settings.Login')</h4>
+                    <p class="text-muted mb-4">@lang('settings.Login_message')</p>
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">@lang('settings.Username')</label>
                             <input class="form-control" type="text" id="username" name="username"
-                                value="{{ old('username') }}" placeholder="@lang('auth.enter_email_address')">
+                                value="{{ old('username') }}" placeholder="@lang('settings.Email')">
                         </div>
                         <div class="mb-3">
                             <a class="text-muted float-end" href="{{ route('forgot-password') }}">
@@ -75,12 +75,12 @@
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="remember" name="remember"
                                     value="1">
-                                <label class="form-check-label" for="remember">@lang('auth.remember')</label>
+                                <label class="form-check-label" for="remember">@lang('settings.Remember')</label>
                             </div>
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
-                                @lang('auth.login')
+                                @lang('settings.Login')
                             </button>
                         </div>
                         <div class="text-center mt-4">

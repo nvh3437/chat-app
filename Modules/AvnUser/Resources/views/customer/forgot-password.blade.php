@@ -65,7 +65,7 @@
                             </button>
                         </div>
                         <footer class="footer footer-alt">
-                            <p class="text-muted">@lang('settings.Login_message') <a href="{{ route('login') }}"
+                            <p class="text-muted">@lang('settings.Login_alert') <a href="{{ route('login') }}"
                                     class="text-muted ms-1"><b>@lang('settings.Login')</b></a></p>
                         </footer>
                     </form>

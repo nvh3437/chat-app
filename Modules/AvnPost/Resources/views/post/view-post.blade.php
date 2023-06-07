@@ -1,7 +1,11 @@
 @php
     $user = App\Http\Controllers\Controller::getUser();
     $seo_props = [];
-    $seo_props['seo_title'] = $post->name;
+    if ($post->name_vi || $post->name_en || $post->name_ja) {
+        $seo_props['seo_title'] = $post['name_' . Lang::locale()];
+    } else {
+        $seo_props['seo_title'] = $post->name;
+    }
     $seo_props['seo_description'] = $post->sort_description;
     $seo_props['seo_keywords'] = $post->keywords;
     $seo_props['seo_image'] = $post->img;
@@ -20,17 +24,33 @@
                 <div class="card shadow-lg overflow-hidden">
                     <div class="card-body">
                         <div class="col-lg-12 mx-auto mb-6">
-                            <h1 class="fw-bold fs-3 fs-lg-5 lh-sm mb-2 mt-1">{{ $post->name }}</h1>
+                            <h1 class="fw-bold fs-3 fs-lg-5 lh-sm mb-2 mt-1">
+                                @if ($post->name_vi || $post->name_en || $post->name_ja)
+                                    {{ $post['name_' . Lang::locale()] }}
+                                @else
+                                    {{ $post->name }}
+                                @endif
+                            </h1>
                             <p class="text-muted">
                                 <span> <i class="far fa-clock text-primary"></i>
                                     {{ date('d/m/Y', strtotime($post->updated_at)) }}
                                     |</span>
-                                <span><i class="fas fa-book-open text-primary"></i> {{ $post->category->name }} |</span>
+                                <span><i class="fas fa-book-open text-primary"></i>
+                                    @if ($post->category->vi || $post->category->en || $post->category->ja)
+                                        {{ $post->category[Lang::locale()] }}
+                                    @else
+                                        {{ $post->category->name }}
+                                    @endif |
+                                </span>
                                 <span><i class="fas fa-user-edit text-primary"></i>
                                     {{ $post->post_created->name }}</span>
                             </p>
                             <div class="ck-content" id="editor">
-                                {!! $post->description !!}
+                                @if ($post->description_vi || $post->description_en || $post->description_ja)
+                                    {!! $post['description_' . Lang::locale()] !!}
+                                @else
+                                    {!! $post->description !!}
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -38,7 +58,7 @@
             </div>
             @if (count($posts) > 0)
                 <div class="row g-2 mb-2">
-                    <h4 class="header-title p-0">Bài viết liên quan</h4>
+                    <h4 class="header-title p-0">@lang('settings.Related_posts')</h4>
                     @foreach ($posts as $item)
                         @php
                             $params = [
@@ -71,11 +91,11 @@
                 </div>
             @endif
             <div class="row">
-                <h4 class="header-title p-0">Bình luận</h4>
+                <h4 class="header-title p-0">@lang('settings.Comment')</h4>
                 @if ($user == '')
                     <div class="card shadow-lg">
                         <div class="card-body">
-                            <a href="{{ route('login') }}" class="text-danger">Vui lòng đăng nhập để bình luận</a>
+                            <a href="{{ route('login') }}" class="text-danger">@lang('settings.Comment_message')</a>
                         </div>
                     </div>
                 @else
@@ -85,15 +105,16 @@
                                 class="comment-area-box">
                                 @csrf
                                 <input type="hidden" name="post_id" value="{{ $post->id }}">
-                                <textarea rows="4" class="form-control resize-none" placeholder="Nhập bình luận...." name="comment"></textarea>
+                                <textarea rows="4" class="form-control resize-none" placeholder="@lang('settings.Enter_comment')...." name="comment"></textarea>
                                 <div class="text-end my-2">
                                     <button type="submit" class="btn btn-sm btn-success"><i
-                                            class='uil uil-message me-1'></i>Gửi</button>
+                                            class='uil uil-message me-1'></i>@lang('settings.Send')</button>
                                 </div>
                             </form>
                             @foreach ($comments as $item)
                                 <div class="d-flex">
-                                    <img class="me-2 rounded" src="{{ asset('/resources/assets/images/logo.png') }}"
+                                    <img class="me-2 rounded"
+                                        src="{{ asset($item->post_comment->profile->avatar ?? config('constants.default_avatar')) }}"
                                         height="32">
                                     <div class="w-auto me-2">
                                         @if ($user->id == $item->user_id)
@@ -103,7 +124,10 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title text-dark">Sửa bình luận</h5>
+                                                            <h5 class="modal-title text-dark">
+                                                                @lang('settings.Update.update')
+                                                                @lang('settings.Comment')
+                                                            </h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
@@ -118,8 +142,9 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light"
-                                                                    data-bs-dismiss="modal">Hủy</button>
-                                                                <button type="submit" class="btn btn-success">Sửa</button>
+                                                                    data-bs-dismiss="modal">@lang('settings.Cancel')</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-success">@lang('settings.Update.update')</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -131,23 +156,23 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                            <h5 class="modal-title text-dark">@lang('settings.Confirm')</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body text-dark">
-                                                            <p>Bạn có muốn xóa không?</p>
+                                                            <p>@lang('settings.Delete_confirm', ['name' => ''])</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-light"
-                                                                data-bs-dismiss="modal">Hủy
+                                                                data-bs-dismiss="modal">@lang('settings.Cancel')
                                                             </button>
                                                             <form action="{{ route('delete-post-comment', [$item->id]) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('delete')
                                                                 <button type="submit"
-                                                                    class="btn btn-primary">Xóa</button>
+                                                                    class="btn btn-primary">@lang('settings.Delete.delete')</button>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -171,10 +196,10 @@
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <a href="javascript:void(0);" class="dropdown-item"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#edit-{{ $item->id }}">Sửa</a>
+                                                    data-bs-target="#edit-{{ $item->id }}">@lang('settings.Update.update')</a>
                                                 <a href="javascript:void(0);" class="dropdown-item"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#delete-{{ $item->id }}">Xóa</a>
+                                                    data-bs-target="#delete-{{ $item->id }}">@lang('settings.Delete.delete')</a>
                                             </div>
                                         </div>
                                     @endif
@@ -193,7 +218,8 @@
 @endsection
 @section('js')
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/vi.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/translations/{{ App::currentLocale() }}.js">
+    </script>
 @endsection
 
 @section('css')

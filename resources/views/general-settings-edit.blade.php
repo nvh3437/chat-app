@@ -29,7 +29,7 @@
                             </div>
                             <div class="row g-2">
                                 <div class="mb-3 col-md-6">
-                                    <label class="form-label">@lang('auth.email')</label>
+                                    <label class="form-label">@lang('settings.Email')</label>
                                     <input type="email" name="email" class="form-control"
                                         value="{{ $settings['email']['value'] ?? '' }}" placeholder="Email">
                                 </div>

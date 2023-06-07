@@ -10,7 +10,7 @@ use Modules\AvnNewFeed\Entities\NewFeed;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Modules\AvnNewFeed\Http\Requests\NewFeedCommentRequest;
-
+use Lang;
 class NewFeedCommentController extends Controller
 {
     public function storeCommentFeed(NewFeedCommentRequest $request)
@@ -21,9 +21,9 @@ class NewFeedCommentController extends Controller
             $comment->feed_id = $request->feed_id;
             $comment->user_id = Auth::user()->id;
             $comment->save();
-            return back()->with('Success', 'Bình luận thành công');
+            return back()->with('Success', Lang::get('settings.success', ['name' => Lang::get('settings.Comment')]));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Bình luận thất bại');
+            return back()->with('Failed', Lang::get('settings.failed', ['name' => Lang::get('settings.Comment')]));
         }
     }
 

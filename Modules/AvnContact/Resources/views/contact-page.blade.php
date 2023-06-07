@@ -21,18 +21,21 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($contact_seo['contact_page_icon']['value'] ?? $logo) }}" class="rounded"
-                            style="height: 80px; width: 80px; object-fit: cover;" />
-                        <h1><span class="text-primary">{{ $contact_seo['contact_page_title']['value'] ?? '' }}</span></h1>
-                        <h2 class="text-muted fs-5 mt-2">{{ $contact_seo['contact_page_description']['value'] ?? '' }}</h2>
+                        <img src="{{ asset($contact_seo['contact_page_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                            class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                        <h1><span
+                                class="text-primary">{{ $contact_seo['contact_page_title_' . Lang::locale()]['value'] ?? '' }}</span>
+                        </h1>
+                        <h2 class="text-muted fs-5 mt-2">
+                            {{ $contact_seo['contact_page_description_' . Lang::locale()]['value'] ?? '' }}</h2>
                     </div>
                 </div>
             </div>
             @if ($success)
                 <div class="text-center mt-3">
-                    <h3>Cảm ơn bạn đã liên hệ với <span class="text-primary">Chúng tôi</span></h3>
-                    <p class="text-muted mt-2">Chúng tôi sẽ trả lời bạn trong thời gian sớm nhất</p>
-                    <a href="{{ route('home-page') }}" type="button" class="btn btn-primary">Quay lại trang chủ</a>
+                    <h3>@lang('settings.Contact_page_title')</h3>
+                    <p class="text-muted mt-2">@lang('settings.Contact_page_alert')</p>
+                    <a href="{{ route('home-page') }}" type="button" class="btn btn-primary">@lang('settings.Back_home')</a>
                 </div>
             @endif
             @include('avncontact::components.contact-form', [$company_info])

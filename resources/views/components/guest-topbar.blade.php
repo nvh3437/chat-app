@@ -17,24 +17,32 @@
         </a>
         <ul class="list-unstyled topbar-menu float-end mb-0">
             <li class="dropdown notification-list topbar-dropdown d-none d-lg-block">
-                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" id="topbar-languagedrop"
-                    href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{ asset('/resources/assets/images/flags/us.jpg') }}" alt="user-image" class="me-1"
-                        height="12"> <span class="align-middle">English</span> <i class="mdi mdi-chevron-down"></i>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="topbar-languagedrop" href="#"
+                    role="button" aria-haspopup="true" aria-expanded="false">
+                    @if (Lang::locale() == 'en')
+                        <img src="{{ asset('/resources/assets/images/flags/en.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">English</span>
+                    @elseif(Lang::locale() == 'ja')
+                        <img src="{{ asset('/resources/assets/images/flags/ja.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Japan</span>
+                    @elseif(Lang::locale() == 'vi')
+                        <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Vietnam</span>
+                    @endif
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu"
                     aria-labelledby="topbar-languagedrop">
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                        <img src="{{ asset('/resources/assets/images/flags/jp.png') }}" alt="user-image" class="me-1"
+                    <a href="{{ route('set-lang', ['locale' => 'ja']) }}" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/flags/ja.png') }}" alt="user-image" class="me-1"
                             height="12"> <span class="align-middle">Japan</span>
                     </a>
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                        <img src="{{ asset('/resources/assets/images/flags/us.jpg') }}" alt="user-image" class="me-1"
+                    <a href="{{ route('set-lang', ['locale' => 'vi']) }}" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image" class="me-1"
                             height="12"> <span class="align-middle">Vietnam</span>
                     </a>
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                        <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image" class="me-1"
+                    <a href="{{ route('set-lang', ['locale' => 'en']) }}" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/flags/en.png') }}" alt="user-image" class="me-1"
                             height="12"> <span class="align-middle">English</span>
                     </a>
                 </div>
@@ -131,11 +139,22 @@
                                 <a class="nav-link dropdown-toggle arrow-none" href="menulink{{ $item->id }}"
                                     id="topnav-dashboards" role="button" data-bs-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    {{ $item->name }} <div class="arrow-down"></div>
+                                    @if ($item->vi || $item->en || $item->ja)
+                                        {{ $item[Lang::locale()] }}
+                                    @else
+                                        {{ $item->name }}
+                                    @endif
+                                    <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-dashboards">
                                     @foreach ($item->childrens as $child)
-                                        <a href="{{ $child->link }}" class="dropdown-item">{{ $child->name }}</a>
+                                        <a href="{{ $child->link }}" class="dropdown-item">
+                                            @if ($child->vi || $child->en || $child->ja)
+                                                {{ $child[Lang::locale()] }}
+                                            @else
+                                                {{ $child->name }}
+                                            @endif
+                                        </a>
                                     @endforeach
                                 </div>
                             </li>
@@ -143,11 +162,44 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="{{ $item->link }}"
                                     id="topnav-dashboards">
-                                    {{ $item->name }}
+                                    @if ($item->vi || $item->en || $item->ja)
+                                        {{ $item[Lang::locale()] }}
+                                    @else
+                                        {{ $item->name }}
+                                    @endif
                                 </a>
                             </li>
                         @endif
                     @endforeach
+                    <li class="nav-item dropdown d-lg-none">
+                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-languagedrop"
+                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @if (Lang::locale() == 'en')
+                                <img src="{{ asset('/resources/assets/images/flags/en.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">English</span>
+                            @elseif(Lang::locale() == 'ja')
+                                <img src="{{ asset('/resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">Japan</span>
+                            @elseif(Lang::locale() == 'vi')
+                                <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">Vietnam</span>
+                            @endif
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-languagedrop">
+                            <a href="{{ route('set-lang', ['locale' => 'ja']) }}" class="dropdown-item">
+                                <img src="{{ asset('/resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">Japan</span>
+                            </a>
+                            <a href="{{ route('set-lang', ['locale' => 'vi']) }}" class="dropdown-item">
+                                <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">Vietnam</span>
+                            </a>
+                            <a href="{{ route('set-lang', ['locale' => 'en']) }}" class="dropdown-item">
+                                <img src="{{ asset('/resources/assets/images/flags/en.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">English</span>
+                            </a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </nav>

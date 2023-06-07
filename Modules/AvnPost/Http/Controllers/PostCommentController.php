@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Helper;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Lang;
 
 class PostCommentController extends Controller
 {
@@ -23,9 +24,9 @@ class PostCommentController extends Controller
             $comment->user_id = Auth::user()->id;
             $comment->post_id = $request->post_id;
             $comment->save();
-            return back()->with('Success', 'Bình luận thành công');
+            return back()->with('Success', Lang::get('settings.success', ['name' => Lang::get('settings.Comment')]));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Bình luận thất bại');
+            return back()->with('Failed', Lang::get('settings.failed', ['name' => Lang::get('settings.Comment')]));
         }
     }
 

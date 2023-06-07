@@ -3,6 +3,7 @@
 namespace Modules\AvnNewFeed\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Lang;
 
 class NewFeedCommentRequest extends FormRequest
 {
@@ -16,7 +17,7 @@ class NewFeedCommentRequest extends FormRequest
     public function messages()
     {
         return [
-            'comment.required' => 'Bình luận không thể bỏ trống',
+            'comment.required' => Lang::get('settings.Validate.Required', ['name' => Lang::get('settings.Comment')]),
         ];
     }
 

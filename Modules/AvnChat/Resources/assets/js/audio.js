@@ -17,7 +17,7 @@ $(document).ready(function () {
                     return;
                 }
                 $("#start-call-modal .modal-body .status").html(
-                    "Đang kết nối..."
+                    "@lang('settings.Connecting')..."
                 );
                 // Create session
                 janus = new Janus({
@@ -213,7 +213,7 @@ $(document).ready(function () {
                                                         ).append(htm);
                                                         $(
                                                             "#in-call-modal .modal-body .status"
-                                                        ).html("Đã kết nối...");
+                                                        ).html("Connected...");
                                                     },
                                                 });
                                             }

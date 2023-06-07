@@ -20,7 +20,28 @@
                             <div class="mb-3 row">
                                 <div class="mb-2 col-12">
                                     <label class="form-label">@lang('settings.Introduce')</label>
-                                    <textarea class="form-control" name="footer_description" rows="3">{{ isset($footer_description['footer_description']) ? $footer_description['footer_description']['value'] : '' }}</textarea>
+
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <textarea class="form-control" name="footer_description_ja" rows="3">{{ isset($footer_description['footer_description_ja']) ? $footer_description['footer_description_ja']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <textarea class="form-control" name="footer_description_vi" rows="3">{{ isset($footer_description['footer_description_vi']) ? $footer_description['footer_description_vi']['value'] : '' }}</textarea>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}" alt="user-image"
+                                                width="30">
+                                        </span>
+                                        <textarea class="form-control" name="footer_description_en" rows="3">{{ isset($footer_description['footer_description_en']) ? $footer_description['footer_description_en']['value'] : '' }}</textarea>
+                                    </div>
                                 </div>
                                 <label class="form-label">@lang('settings.Social')</label>
                                 <div class="input-group mb-2">
@@ -84,8 +105,8 @@
                                             <i class="mdi mdi-linkedin"></i>
                                         </a>
                                     </span>
-                                    <input type="text" class="form-control" placeholder="Linkedin" aria-label="Linkedin"
-                                        aria-describedby="basic-addon1"
+                                    <input type="text" class="form-control" placeholder="Linkedin"
+                                        aria-label="Linkedin" aria-describedby="basic-addon1"
                                         value="{{ $footer_description['social_linkedin']['value'] ?? '' }}"
                                         name="social_linkedin">
                                 </div>
@@ -118,9 +139,35 @@
                             @csrf
                             <div class="input-group mb-3 row">
                                 <div class="mb-2 col-12">
-                                    <label class="form-label">@lang('settings.Name') <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="name" required>
+                                    <label class="form-label align-middle">@lang('settings.Name') <span
+                                            class="text-danger">*</span>
+                                        <label class="form-label ms-1">
+                                            <input type="checkbox" name="multi_lang" class="multi-lang" value="1">
+                                            @lang('settings.Multilingual')
+                                        </label>
+                                    </label>
+                                    <input type="text" class="form-control" name="name" id="name" required>
+                                    <div class="input-group flex-nowrap name-group d-none mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input type="text" class="form-control" name="group_name[]" multiple>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group d-none mb-1">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input type="text" class="form-control" name="group_name[]" multiple>
+                                    </div>
+                                    <div class="input-group flex-nowrap name-group d-none">
+                                        <span class="input-group-text">
+                                            <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                alt="user-image" width="30">
+                                        </span>
+                                        <input type="text" class="form-control" name="group_name[]" multiple>
+                                    </div>
                                 </div>
                                 <div class="mb-2 col-12">
                                     <label class="form-label">@lang('settings.Route')</label>
@@ -132,7 +179,12 @@
                                         <option value="0" class="bg-white">@lang('settings.Not_have')</option>
                                         @foreach ($footer->where('parent_id', 0) as $item)
                                             <option value="{{ $item->id }}" class="bg-white">
-                                                {{ $item->name }}</option>
+                                                @if ($item->vi || $item->en || $item->ja)
+                                                    {{ $item[Lang::locale()] }}
+                                                @else
+                                                    {{ $item->name }}
+                                                @endif
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -153,6 +205,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>@lang('settings.Name')</th>
+                                    <th>@lang('settings.Multilingual')</th>
                                     <th>@lang('settings.Belong')</th>
                                     <th>@lang('settings.Route')</th>
                                     <th>@lang('settings.Action')</th>
@@ -162,12 +215,27 @@
                                 @foreach ($footer as $item)
                                     <tr>
                                         <td>{{ $loop->index }}</td>
-                                        <td>{{ $item->name }}</td>
                                         <td>
-                                            @if ($item->parent_id == '0')
+                                            @if ($item->vi || $item->en || $item->ja)
+                                                {{ $item[Lang::locale()] }}
+                                            @else
+                                                {{ $item->name }}
+                                            @endif
+                                        </td>
+                                        <td class="text-success">
+                                            @if ($item->vi || $item->ja || $item->end)
+                                                <i class="mdi mdi-check-all me-1"></i>@lang('settings.Multilingual')
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (!$item->parent)
                                                 @lang('settings.Not_have')
                                             @else
-                                                {{ $item->parent->name }}
+                                                @if ($item->parent->vi || $item->parent->en || $item->parent->ja)
+                                                    {{ $item->parent[Lang::locale()] }}
+                                                @else
+                                                    {{ $item->parent->name }}
+                                                @endif
                                             @endif
                                         </td>
                                         <td>{{ $item->link }}</td>
@@ -198,10 +266,49 @@
                                                     @method('PUT')
                                                     <div class="modal-body text-dark">
                                                         <div class="mb-2">
-                                                            <label class="form-label">@lang('settings.Name') <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="name"
-                                                                required value="{{ $item->name }}">
+                                                            <label class="form-label align-middle">@lang('settings.Name') <span
+                                                                    class="text-danger">*</span>
+                                                                <label class="form-label ms-1">
+                                                                    <input type="checkbox" name="multi_lang"
+                                                                        class="multi-lang" value="1"
+                                                                        {{ $item->vi || $item->en || $item->ja ? 'checked' : '' }}>
+                                                                    @lang('settings.Multilingual')
+                                                                </label>
+                                                            </label>
+                                                            <input type="text"
+                                                                class="form-control {{ $item->vi || $item->en || $item->ja ? 'd-none' : 'required' }}"
+                                                                name="name" id="name"
+                                                                value="{{ $item->name }}">
+                                                            <div
+                                                                class="input-group flex-nowrap name-group {{ $item->vi || $item->en || $item->ja ? 'required' : 'd-none' }} mb-1">
+                                                                <span class="input-group-text">
+                                                                    <img src="{{ asset('resources/assets/images/flags/ja.png') }}"
+                                                                        alt="user-image" width="30">
+                                                                </span>
+                                                                <input type="text" class="form-control"
+                                                                    name="group_name[]" multiple
+                                                                    value="{{ $item->ja }}">
+                                                            </div>
+                                                            <div
+                                                                class="input-group flex-nowrap name-group {{ $item->vi || $item->en || $item->ja ? 'required' : 'd-none' }} mb-1">
+                                                                <span class="input-group-text">
+                                                                    <img src="{{ asset('resources/assets/images/flags/vi.png') }}"
+                                                                        alt="user-image" width="30">
+                                                                </span>
+                                                                <input type="text" class="form-control"
+                                                                    name="group_name[]" multiple
+                                                                    value="{{ $item->vi }}">
+                                                            </div>
+                                                            <div
+                                                                class="input-group flex-nowrap name-group {{ $item->vi || $item->en || $item->ja ? 'required' : 'd-none' }}">
+                                                                <span class="input-group-text">
+                                                                    <img src="{{ asset('resources/assets/images/flags/en.png') }}"
+                                                                        alt="user-image" width="30">
+                                                                </span>
+                                                                <input type="text" class="form-control"
+                                                                    name="group_name[]" multiple
+                                                                    value="{{ $item->en }}">
+                                                            </div>
                                                         </div>
                                                         <div class="mb-2">
                                                             <label class="form-label">@lang('settings.Route')</label>
@@ -254,7 +361,7 @@
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn btn-primary">
-                                                            @lang('settings.Delete,delete')
+                                                            @lang('settings.Delete.delete')
                                                         </button>
                                                     </form>
                                                 </div>
@@ -271,13 +378,49 @@
     </div>
 @endsection
 @section('js')
+    <script>
+        $('.multi-lang').on('change', function() {
+            if (this.checked) {
+                $(this).parent().parent().parent().find('#name').addClass('d-none');
+                $(this).parent().parent().parent().find('.name-group').removeClass('d-none');
+                $(this).parent().parent().parent().find('#name').removeAttr('required');
+                $(this).parent().parent().parent().find('.name-group input').attr('required', 'required');
+            } else {
+                $(this).parent().parent().parent().find('.name-group').addClass('d-none');
+                $(this).parent().parent().parent().find('#name').removeClass('d-none');
+                $(this).parent().parent().parent().find('#name').attr('required', 'required');
+                $(this).parent().parent().parent().find('.name-group input').removeAttr('required');
+            }
+        });
+        $('.required input, input.required').attr('required', 'required');
+    </script>
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
 
-    <!-- Datatable Init js -->
-    <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
+    <script>
+        $("#state-saving-datatable").DataTable({
+                stateSave: !0,
+                language: {
+                    "search": "@lang('settings.Search')",
+                    "info": "@lang('settings.Display_per_page', ['page' => '_PAGE_', 'pages' => '_PAGES_'])",
+                    "emptyTable": "@lang('settings.No_data')",
+                    "infoEmpty": "@lang('settings.No_record')",
+                    "lengthMenu": '@lang('settings.Show_entries', ['entries' => '<select><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="-1">' . __('settings.All') . '</option></select>'])',
+                    "zeroRecords": "@lang('settings.No_result')",
+                    paginate: {
+                        previous: "<i class='mdi mdi-chevron-left'>",
+                        next: "<i class='mdi mdi-chevron-right'>"
+                    }
+                },
+                drawCallback: function() {
+                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+                },
+            }),
+            $(".dataTables_length select").addClass("form-select form-select-sm"),
+            $(".dataTables_length label").addClass("form-label");
+    </script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
 @endsection
 @section('css')

@@ -8,7 +8,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\FileBackupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImageUploadController;
-
+use Illuminate\Support\Facades\App;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,7 +21,15 @@ use App\Http\Controllers\ImageUploadController;
 */
 
 Route::get('/', [DashboardController::class, 'dashboard'])->name('home-page');
-
+Route::get('/language/{locale}', function (string $locale) {
+    if (!in_array($locale, ['en', 'vi', 'ja'])) {
+        abort(400);
+    }
+    App::setLocale($locale);
+    session(['locale' => $locale]);
+    // session()->put('locale', $locale);
+    return back();
+})->name('set-lang');
 Route::get('/forbidden', function () {
     return view('forbidden');
 })->name('forbidden');

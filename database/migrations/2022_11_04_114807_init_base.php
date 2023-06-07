@@ -4,21 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up(){
+    public function up()
+    {
         Schema::dropIfExists('personal_access_tokens');
         Schema::dropIfExists('password_resets');
         Schema::dropIfExists('users');
         Schema::dropIfExists('failed_jobs');
         Schema::dropIfExists('avn_general_settings');
         Schema::dropIfExists('avn_menu');
-        
+
         Schema::dropIfExists('avn_user_roles');
         Schema::dropIfExists('avn_permission_roles');
         Schema::create('users', function (Blueprint $table) {
@@ -62,7 +62,10 @@ return new class extends Migration
 
         Schema::create('avn_menu', function (Blueprint $table) {
             $table->id();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('vi')->nullable();
+            $table->string('en')->nullable();
+            $table->string('ja')->nullable();
             $table->string('route_name');
             $table->string('icon');
             $table->string('module')->nullable();
@@ -105,9 +108,9 @@ return new class extends Migration
         Schema::create('avn_permissions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('menu_id')->nullable()
-                    ->constrained('avn_menu')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                ->constrained('avn_menu')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('name');
             $table->text('route_names');
             $table->timestamps();
@@ -121,13 +124,13 @@ return new class extends Migration
 
         Schema::create('avn_permission_roles', function (Blueprint $table) {
             $table->foreignId('role_id')
-                    ->constrained('avn_roles')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                ->constrained('avn_roles')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreignId('permission_id')
-                    ->constrained('avn_permissions')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                ->constrained('avn_permissions')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->primary(['permission_id', 'role_id']);
         });
 
@@ -135,11 +138,11 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('role_id');
             $table->foreign('user_id')->references('id')->on('users')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('avn_roles')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->primary(['user_id', 'role_id']);
         });
     }
@@ -149,7 +152,8 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down(){
+    public function down()
+    {
         Schema::dropIfExists('avn_user_roles');
         Schema::dropIfExists('avn_permission_roles');
         Schema::dropIfExists('avn_roles');

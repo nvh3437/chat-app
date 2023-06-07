@@ -136,7 +136,7 @@
                                 @endif
                                 <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">@lang('settings.Giới tính')
+                                        <label class="form-label">@lang('settings.Gender')
                                             <span class="text-danger">*</span>
                                             <button class="btn btn-sm btn-link border-0 px-1 py-0" data-bs-toggle="dropdown"
                                                 aria-expanded="false" data-bs-auto-close="outside">
