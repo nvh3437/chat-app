@@ -260,7 +260,7 @@ return [
     'Start_session' => 'Bắt đầu phiên làm việc',
     'End_session' => 'Kết thúc phiên làm việc',
     'Start_call' => 'Bắt đầu cuộc gọi',
-    'End_call' => 'Bắt đầu cuộc gọi',
+    'End_call' => 'Kết thúc cuộc gọi',
     'joined_call' => ' tham gia cuộc gọi',
     'left_call' => ' rời khỏi cuộc gọi',
     'All' => 'Tất cả',
