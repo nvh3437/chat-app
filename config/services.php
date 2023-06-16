@@ -31,13 +31,13 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'facebook' => [
-        'client_id' => '844986103261731',
-        'client_secret' => '7d34b9eb18219d6af2b51b50833abf94',
-        'redirect' => 'https://japan.avntech.vn/login/facebook/callback',
+        'client_id' => '694930635551376',
+        'client_secret' => '365c8ce2faac36a12b9af1b518477608',
+        'redirect' => 'https://hikari-hr.com/login/facebook/callback',
     ],
     'google' => [
         'client_id' => '332630337654-343bn4hb8e1mcp69h2hh1jfcu8tb16gb.apps.googleusercontent.com',
         'client_secret' => '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',
-        'redirect' => 'https://japan.avntech.vn/login/google/callback',
+        'redirect' => 'https://hikari-hr.com/login/google/callback',
     ],
 ];
