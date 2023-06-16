@@ -338,7 +338,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.2.2/adapter.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
-    {{-- @vite(['Modules/AvnChat/Resources/assets/js/chat.js']) --}}
+    @vite(['Modules/AvnChat/Resources/assets/js/chat.js'])
     <script src="{{ asset('resources/js/janus.js') }}"></script>
     <script src="{{ asset('Modules/AvnChat/Resources/assets/js/index.js') }}"></script>
     <script type="text/javascript">
