@@ -19,7 +19,7 @@
                 <div class="row mb-40">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body shadow-lg">
                                 <h4 class="header-title">@lang('settings.logo_title')</h4>
                                 <form class="text-center" action="{{ route('general-settings-update-image') }}"
                                     method="POST" enctype="multipart/form-data">
@@ -55,7 +55,7 @@
                 <div class="row mb-40">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body shadow-lg">
                                 <h4 class="header-title">@lang('settings.favicon_title')</h4>
                                 <form class="text-center" action="{{ route('general-settings-update-image') }}"
                                     method="POST" enctype="multipart/form-data">
@@ -93,74 +93,129 @@
                 <div class="row xm_3">
                     <div class="col-12 no-apadmin">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <h4 class="header-title col-6">@lang('settings.general_info')</h4>
-                                    <div class="col-6 d-flex justify-content-end">
-                                        @if ($isNotBlock)
-                                            <a href="{{ route('general-settings-edit') }}" class="btn btn-primary"> <span
-                                                    class="ti-pencil-alt"></span>Sửa</a>
-                                        @endif
-
+                            <div class="card-body shadow-lg">
+                                <form action="{{ route('general-settings-update') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('put')
+                                    <div class="row g-2">
+                                        <div class="mb-2 col-md-6">
+                                            <label class="form-label">@lang('settings.company_name')</label>
+                                            <input type="text" name="company_name" class="form-control"
+                                                value="{{ $settings['company_name']['value'] ?? '' }}">
+                                        </div>
+                                        <div class="mb-2 col-md-6">
+                                            <label class="form-label">@lang('settings.website_name')</label>
+                                            <input type="text" name="web_title" class="form-control"
+                                                value="{{ $settings['web_title']['value'] ?? '' }}">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <table class="table mb-0">
-                                        <tbody>
-                                            <tr>
-                                                <td>@lang('settings.company_name')</td>
-                                                <td>{{ $settings['company_name']['value'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>@lang('settings.website_name')</td>
-                                                <td>{{ $settings['web_title']['value'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>@lang('auth.email')</td>
-                                                <td>{{ $settings['email']['value'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>@lang('settings.phone_number')</td>
-                                                <td>{{ $settings['phone_number']['value'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>@lang('settings.address')</td>
-                                                <td>{{ $settings['address']['value'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Ngày thành lập</td>
-                                                <td>{{ isset($settings['startup_date']) ? date('d/m/Y', strtotime($settings['startup_date']['value'])) : '' }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mục tiêu</td>
-                                                <td>{{ isset($settings['company_goals']) ? trim($settings['company_goals']['value']) : '' }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Sứ mệnh</td>
-                                                <td>{{ isset($settings['company_mission']) ? trim($settings['company_mission']['value']) : '' }}
-                                                </td>
-                                            </tr>
-                                            @if (isset($settings['time_morning']['value']) && isset($settings['time_afternoon']['value']))
-                                                <tr>
-                                                    <td>Giờ làm việc</td>
-                                                    <td>
-                                                        <p>Sáng:
-                                                            {{ date('H:i', strtotime(explode(', ', $settings['time_morning']['value'])[0])) }}
-                                                            -
-                                                            {{ date('H:i', strtotime(explode(', ', $settings['time_morning']['value'])[1])) }}<br>
-                                                            Chiều:
-                                                            {{ date('H:i', strtotime(explode(', ', $settings['time_afternoon']['value'])[0])) }}
-                                                            -
-                                                            {{ date('H:i', strtotime(explode(', ', $settings['time_afternoon']['value'])[1])) }}
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    <div class="row g-2">
+                                        <div class="mb-2 col-md-6">
+                                            <label class="form-label">@lang('settings.Email')</label>
+                                            <input type="email" name="email" class="form-control"
+                                                value="{{ $settings['email']['value'] ?? '' }}" placeholder="Email">
+                                        </div>
+                                        <div class="mb-2 col-md-6">
+                                            <label class="form-label">@lang('settings.phone_number')</label>
+                                            <input type="text" name="phone_number" class="form-control"
+                                                value="{{ $settings['phone_number']['value'] ?? '0' }}">
+                                            <span class="font-13 text-muted"></span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2 col-12">
+                                        <label class="form-label">@lang('settings.Address')</label>
+                                        <input type="text" value="{{ $settings['address']['value'] ?? '' }}"
+                                            name="address" class="form-control" placeholder="1234 Main St">
+                                    </div>
+                                    <label class="form-label">@lang('settings.Social')</label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <a href="javascript: void(0);"
+                                                class="social-list-item border-primary text-primary">
+                                                <i class="mdi mdi-facebook"></i>
+                                            </a>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Facebook"
+                                            aria-label="Facebook" aria-describedby="basic-addon1"
+                                            value="{{ $settings['social_facebook']['value'] ?? '' }}"
+                                            name="social_facebook">
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <a href="javascript: void(0);"
+                                                class="social-list-item border-danger text-danger">
+                                                <i class="mdi mdi-google"></i>
+                                            </a>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Google"
+                                            aria-label="Google" aria-describedby="basic-addon1"
+                                            value="{{ $settings['social_google']['value'] ?? '' }}" name="social_google">
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <a href="javascript: void(0);"
+                                                class="social-list-item border-warning text-warning">
+                                                <i class="mdi mdi-instagram"></i>
+                                            </a>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Instagram"
+                                            aria-label="Instagram" aria-describedby="basic-addon1"
+                                            value="{{ $settings['social_instagram']['value'] ?? '' }}"
+                                            name="social_instagram">
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <a href="javascript: void(0);"
+                                                class="social-list-item border-danger text-danger">
+                                                <i class="mdi mdi-youtube"></i>
+                                            </a>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Youtube"
+                                            aria-label="Youtube" aria-describedby="basic-addon1"
+                                            value="{{ $settings['social_youtube']['value'] ?? '' }}"
+                                            name="social_youtube">
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <a href="javascript: void(0);" class="social-list-item border-info text-info">
+                                                <i class="mdi mdi-twitter"></i>
+                                            </a>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Twitter"
+                                            aria-label="Twitter" aria-describedby="basic-addon1"
+                                            value="{{ $settings['social_twitter']['value'] ?? '' }}"
+                                            name="social_twitter">
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <a href="javascript: void(0);" class="social-list-item border-info text-info">
+                                                <i class="mdi mdi-linkedin"></i>
+                                            </a>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Linkedin"
+                                            aria-label="Linkedin" aria-describedby="basic-addon1"
+                                            value="{{ $settings['social_linkedin']['value'] ?? '' }}"
+                                            name="social_linkedin">
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <a href="javascript: void(0);"
+                                                class="social-list-item border-success text-success">
+                                                <i class="mdi mdi-whatsapp"></i>
+                                            </a>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Whatsapp"
+                                            aria-label="Whatsapp" aria-describedby="basic-addon1"
+                                            value="{{ $settings['social_whatsapp']['value'] ?? '' }}"
+                                            name="social_whatsapp">
+                                    </div>
+                                    @if ($isNotBlock)
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">@lang('settings.save')</button>
+                                        </div>
+                                    @endif
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -168,8 +223,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-body">
-                                <h4 class="header-title">@lang('settings.login_bkg_title')</h4>
+                            <div class="card-body shadow-lg">
+                                <h4 class="header-title">@lang('settings.Login_bkg_title')</h4>
                                 <form action="{{ route('general-settings-update-image') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
@@ -199,7 +254,7 @@
                                     </div>
                                     @if ($isNotBlock)
                                         <div class="d-flex flex-column">
-                                            <h6 class="font-15 w-100">@lang('settings.login_bkg_text')</h6>
+                                            <h6 class="font-15 w-100">@lang('settings.Login_bkg_text')</h6>
                                             <div id="login_background_text" style="height: 300px;">
                                                 {!! $settings['login_background_text']['value'] !!}
                                             </div>

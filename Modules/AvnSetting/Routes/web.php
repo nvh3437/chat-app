@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('setting')->group(function() {
+Route::prefix('setting')->group(function () {
 
     //-------------------------------------------- Navbar -------------------------------------//
     Route::get('/navbar', 'NavbarController@navbar')->middleware(['auth', 'permission'])->name('navbar');
@@ -24,31 +24,25 @@ Route::prefix('setting')->group(function() {
     Route::get('/footer', 'FooterController@footer')->middleware(['auth', 'permission'])->name('footer');
     Route::put('/update-footer-des', 'FooterController@updateFooterDes')->middleware(['auth', 'permission'])->name('update-footer-des');
 
-        // Thông tin cơ bản
+    // Thông tin cơ bản
     Route::post('/store-footer', 'FooterController@storeFooter')->middleware(['auth', 'permission'])->name('store-footer');
     Route::put('/update-footer/{id}', 'FooterController@updateFooter')->middleware(['auth', 'permission'])->name('update-footer');
     Route::delete('/delete-footer/{id}', 'FooterController@deleteFooter')->middleware(['auth', 'permission'])->name('delete-footer');
 
-        // Icon
-    Route::post('/store-footer-icon', 'FooterController@storeFooterIcon')->middleware(['auth', 'permission'])->name('store-footer-icon');
-    Route::put('/update-footer-icon/{id}', 'FooterController@updateFooterIcon')->middleware(['auth', 'permission'])->name('update-footer-icon');
-    Route::delete('/delete-footer-icon/{id}', 'FooterController@deleteFooterIcon')->middleware(['auth', 'permission'])->name('delete-footer-icon');
-
     //------------------------------------------- Seo các trang -------------------------------//
 
-        // Trang chủ
+    // Trang chủ
     Route::get('/home-seo', 'PageController@homeSeo')->middleware(['auth', 'permission'])->name('home-seo');
     Route::put('/update-home-seo', 'PageController@updateHomeSeo')->middleware(['auth', 'permission'])->name('update-home-seo');
 
-        // Liên hệ
+    // Liên hệ
     Route::get('/contact-seo', 'PageController@contactSeo')->middleware(['auth', 'permission'])->name('contact-seo');
     Route::put('/update-contact-seo', 'PageController@updateContactSeo')->middleware(['auth', 'permission'])->name('update-contact-seo');
 
-        // Dịch vụ
-    Route::get('/service-seo', 'PageController@serviceSeo')->middleware(['auth', 'permission'])->name('service-seo');
-    Route::put('/update-service-seo', 'PageController@updateServiceSeo')->middleware(['auth', 'permission'])->name('update-service-seo');
-
-        // Bài viết
+    // Bài viết
     Route::get('/post-seo', 'PageController@postSeo')->middleware(['auth', 'permission'])->name('post-seo');
     Route::put('/update-post-seo', 'PageController@updatePostSeo')->middleware(['auth', 'permission'])->name('update-post-seo');
+
+    Route::get('/order-chat-seo', 'PageController@orderChatSeo')->middleware(['auth', 'permission'])->name('order-chat-seo');
+    Route::put('/update-order-chat-seo', 'PageController@updateOrderChatSeo')->middleware(['auth', 'permission'])->name('update-order-chat-seo');
 });

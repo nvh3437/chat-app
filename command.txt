@@ -1,0 +1,190 @@
+
+japan-chat-app
+composer update 
+php artisan key:generate  
+/opt/alt/php81/usr/bin/php /usr/local/bin/composer2 update 
+/opt/alt/php81/usr/bin/php artisan migrate:fresh --seed
+/opt/alt/php81/usr/bin/php artisan module:seed AvnUser
+/opt/alt/php81/usr/bin/php artisan module:seed AvnSetting
+/opt/alt/php81/usr/bin/php artisan module:seed AvnService
+/opt/alt/php81/usr/bin/php artisan module:seed AvnPost
+/opt/alt/php81/usr/bin/php artisan module:seed AvnContact
+/opt/alt/php81/usr/bin/php artisan module:seed AvnChat
+/opt/alt/php81/usr/bin/php artisan module:seed AvnNewFeed
+/opt/alt/php81/usr/bin/php artisan module:seed AvnCMS
+
+
+
+composer require ably/ably-php
+
+vite production:
+    env to production
+    npm run build
+    manifest to ../public/build/assets/
+
+
+https://viblo.asia/p/webrtc-va-install-janus-on-ubuntu-1804-gAm5yy885db
+https://github.com/meetecho/janus-gateway
+
+
+open port usd for ec2 instance
+    1,instance->sercurity->sercurity groups
+    2,Inbound rules->Edit inbound rules
+    3,add rules->all upd port range: 0 - 65535->anywhere ipv4->save rules
+    
+apt-get update
+apt-get install pkg-config -y
+apt-get install dist -y
+apt-get install make -y
+apt-get install make-guile -y
+
+apt-get install build-essential -y
+apt-get install libssl-dev -y
+apt-get install meson -y
+apt-get install cmake -y
+apt-get install libnanomsg-dev -y
+apt-get install doxygen  -y
+apt-get install graphviz -y
+#apt-get install apache2 -y
+apt-get install nginx -y
+
+apt-get install libmicrohttpd-dev -y
+apt-get install libjansson-dev -y
+apt-get install libsofia-sip-ua-dev -y
+apt-get install libglib2.0-dev -y
+apt-get install libopus-dev -y
+apt-get install libogg-dev -y
+apt-get install libcurl4-openssl-dev -y
+apt-get install liblua5.3-dev -y
+apt-get install libconfig-dev -y
+apt-get install libtool -y
+apt-get install automake -y
+
+    cd --
+    wget https://github.com/cisco/libsrtp/archive/v2.2.0.tar.gz
+    tar xfv v2.2.0.tar.gz
+    cd libsrtp-2.2.0
+    ./configure --prefix=/usr --enable-openssl
+    make shared_library && sudo make install
+
+    cd --
+    git clone https://gitlab.freedesktop.org/libnice/libnice
+    cd libnice
+    meson --prefix=/usr build && ninja -C build && sudo ninja -C build install
+
+    cd --
+    git clone https://github.com/sctplab/usrsctp
+    cd usrsctp
+    ./bootstrap
+    ./configure --prefix=/usr --disable-programs --disable-inet --disable-inet6
+    make && sudo make install
+
+    cd --
+    git clone https://libwebsockets.org/repo/libwebsockets
+    cd libwebsockets
+    mkdir build
+    cd build
+    cmake -DLWS_MAX_SMP=1 -DLWS_WITHOUT_EXTENSIONS=0 -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-fpic" ..
+    make && sudo make install
+
+    cd --
+    git clone https://github.com/eclipse/paho.mqtt.c.git
+    cd paho.mqtt.c
+    make && sudo make install
+
+    cd --
+    git clone https://github.com/alanxz/rabbitmq-c
+    cd rabbitmq-c
+    git submodule init
+    git submodule update
+    mkdir build && cd build
+    cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+    make && sudo make install
+
+    cd --
+    git clone https://github.com/meetecho/janus-gateway.git
+    cd janus-gateway
+    sh autogen.sh
+    ./configure --prefix=/opt/janus
+    make
+    make install
+    make configs
+    #./configure  --disable-rabbitmq
+    #./configure --enable-docs
+    #config====================================================================================
+        nano /opt/janus/etc/janus/janus.jcfg
+            thêm: 
+            media: {
+                rtp_port_range = "10000-20000"
+            }
+
+            nat: {
+                stun_server = "stun.l.google.com"
+                stun_port = 19302
+                nice_debug = false
+                full_trickle = true
+                nat_1_1_mapping = "public ip"
+                keep_private_host = true
+            }   
+            events: {
+                broadcast = true
+            }
+        cập nhật
+            admin_secret = {string}
+            thêm vào .env
+    #config plugins =========================================================================================
+        nano /opt/janus/etc/janus/janus.plugin.audiobridge.jcfg
+        set admin_key = {string}
+        cập nhật admin key vào env
+    #config admin api (secret = janusoverlord)=================================================================================
+        nano /opt/janus/etc/janus/janus.transport.http.jcfg
+        set: 
+        admin: {
+            admin_http = true  
+        }
+
+    #config even handler================================================================================
+        nano /opt/janus/etc/janus/janus.eventhandler.sampleevh.jcfg
+        set: [general]
+            enabled = true
+            events = all
+            grouping = true
+            backend = http://localhost:8080
+            backend_user = email admin account
+            backend_pwd = password admin account
+
+            
+        bỏ qua csrf_token cho các route nhận thông báo từ janus
+            file App\Http\Middleware\VerifyCsrfToken 
+            thêm path(uri) vào $except:
+                protected $except = [
+                    'chat/ngu',
+                    'chat/*',
+                ];
+
+    #config nginx======================================================================================
+        sudo nano /etc/nginx/sites-enabled/default
+        
+        thêm: location /janus {
+                 proxy_pass http://127.0.0.1:8088/janus;
+        }
+        location /admin {
+                 proxy_pass http://127.0.0.1:7088/admin;
+        }
+        cập nhật lại url janus trong file reesources/js/janus.js
+
+        sudo systemctl restart nginx
+        sudo systemctl restart nginx
+    #run====================================================================================
+    /opt/janus/bin/janus
+
+    #sudo service apache2 start
+64 joined left created
+    
+
+
+https://7a5e-2a09-bac5-d456-18be-00-277-32.ngrok-free.app/japan-chat-app/chat/janus-event
+
+chrome://flags
+search: Insecure origins treated as secure
+enable và nhập ip vào (http://52.221.199.143/) để bỏ qua bảo mật đối với các trang không có tên miền hoặc http//:

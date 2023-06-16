@@ -7,7 +7,8 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\FileBackupController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\ImageUploadController;
+use Illuminate\Support\Facades\App;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,26 +20,25 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-})->name('home-page');
-
-Route::get('/dashboard', function () {
-    return redirect()->route('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/', [DashboardController::class, 'dashboard'])->name('home-page');
+Route::get('/language/{locale}', function (string $locale) {
+    if (!in_array($locale, ['en', 'vi', 'ja'])) {
+        abort(400);
+    }
+    App::setLocale($locale);
+    session(['locale' => $locale]);
+    // session()->put('locale', $locale);
+    return back();
+})->name('set-lang');
 Route::get('/forbidden', function () {
     return view('forbidden');
 })->name('forbidden');
 
 // Dashboard
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-Route::get('/dashboard-manager', [DashboardController::class, 'dbManager'])->middleware(['auth', 'verified'])->name('dashboard-manager');
+Route::get('/dashboard-manager', [DashboardController::class, 'dbManager'])->middleware(['auth', 'verified', 'permission'])->name('dashboard-manager');
 
 // setting
-Route::get('/general-settings', [GeneralSettingsController::class, 'index'])->middleware(['auth', 'verified'])->name('general-settings');
-
-Route::get('/general-settings-edit', [GeneralSettingsController::class, 'edit'])->middleware(['auth', 'verified', 'permission'])->name('general-settings-edit');
+Route::get('/general-settings', [GeneralSettingsController::class, 'index'])->middleware(['auth', 'verified', 'permission'])->name('general-settings');
 
 Route::put('/general-settings-update', [GeneralSettingsController::class, 'update'])->middleware(['auth', 'verified', 'permission'])->name('general-settings-update');
 
@@ -61,9 +61,7 @@ Route::get('/modules-settings-link', [ModuleController::class, 'modulesSettingsL
 // File backup
 Route::get('/list-backup', [FileBackupController::class, 'listBackup'])->middleware(['auth', 'verified', 'permission'])->name('list-backup');
 Route::post('/confirm-backup', [FileBackupController::class, 'confirmBackup'])->middleware(['auth', 'verified'])->name('confirm-backup');
+Route::post('image-upload', [ImageUploadController::class, 'storeImage'])->name('image-upload');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 require __DIR__ . '/auth.php';
 require __DIR__ . '/role.php';

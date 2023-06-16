@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+list-service.blade@extends('layouts.admin')
 @section('title')
     Quản lý bài dịch vụ
 @endsection
@@ -30,12 +30,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Loại</th>
                                     <th>Tiêu đề</th>
                                     <th>Giá</th>
                                     <th>Chọn</th>
@@ -48,7 +47,6 @@
                                 @foreach ($services as $item)
                                     <tr>
                                         <td>{{ ++$i }}</td>
-                                        <td>{{ $item->service_type->name }}</td>                                       
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->price }}</td>
                                         <td>

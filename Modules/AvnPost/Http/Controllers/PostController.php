@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GeneralSettings;
 use Modules\AvnPost\Http\Requests\PostRequest;
+use Lang;
 
 class PostController extends Controller
 {
@@ -43,6 +44,13 @@ class PostController extends Controller
         try {
             $post = new Post();
             $post->name = $request->name;
+            if ($request->multi_lang) {
+                $post->name_ja = $request->name_ja;
+                $post->name_vi = $request->name_vi;
+                $post->name_en = $request->name_en;
+            }
+            $post->keywords = $request->keywords;
+            $post->sort_description = $request->sort_description;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $image = $request->file('img');
                 $filename = date("Y-m-d-h-i-s-") . rand(111111, 888999) . '.' . $image->getClientOriginalExtension();
@@ -54,17 +62,22 @@ class PostController extends Controller
                 $post->img = $path;
             }
             $post->description = $request->description;
+            if ($request->multi_lang) {
+                $post->description_ja = $request->description_ja;
+                $post->description_vi = $request->description_vi;
+                $post->description_en = $request->description_en;
+            }
             $post->category_id = $request->category_id;
             $post->created_by = Auth::user()->id;
             $post->updated_by = Auth::user()->id;
-            $post->alias = Helper::createSlug(trim($post->name));
+            $post->alias = Helper::createSlug(trim($request->multi_lang ? $request->name_en : $request->name));
             if (count(Post::where('alias', $post->alias)->get()) > 0) {
                 $post->alias = Helper::createSlug(trim($post->alias . ' ' . rand()));
             }
             $post->save();
-            return redirect()->route('list-post')->with('Success', 'Thêm thành công');
+            return redirect()->route('list-post')->with('Success', Lang::get('settings.Add.Add_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Thêm thất bại');
+            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
         }
     }
 
@@ -80,6 +93,17 @@ class PostController extends Controller
         try {
             $post = Post::findOrFail($id);
             $post->name = $request->name;
+            if ($request->multi_lang) {
+                $post->name_ja = $request->name_ja;
+                $post->name_vi = $request->name_vi;
+                $post->name_en = $request->name_en;
+            } else {
+                $post->name_ja = null;
+                $post->name_vi = null;
+                $post->name_en = null;
+            }
+            $post->keywords = $request->keywords;
+            $post->sort_description = $request->sort_description;
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 if ($post->img != null) {
                     File::delete($post->img);
@@ -94,10 +118,18 @@ class PostController extends Controller
                 $post->img = $path;
             }
             $post->description = $request->description;
+            if ($request->multi_lang) {
+                $post->description_ja = $request->description_ja;
+                $post->description_vi = $request->description_vi;
+                $post->description_en = $request->description_en;
+            } else {
+                $post->description_ja = null;
+                $post->description_vi = null;
+                $post->description_en = null;
+            }
             $post->category_id = $request->category_id;
-            $post->created_by = $post->created_by;
             $post->updated_by = Auth::user()->id;
-            $alias = Helper::createSlug($request->name);
+            $alias = Helper::createSlug($request->multi_lang ? $request->name_en : $request->name);
             if ($post->alias != $alias) {
                 if (count(Post::where('alias', '==', $alias)->get()) > 0) {
                     $post->alias = Helper::createSlug($alias . ' ' . rand());
@@ -105,37 +137,39 @@ class PostController extends Controller
                     $post->alias = $alias;
             }
             $post->save();
-            return redirect()->route('list-post')->with('Success', 'Cập nhật thành công');
+            return redirect()->route('list-post')->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return back()->with('Failed', 'Cập nhật thất bại');
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
     public function deletePost($id)
     {
-        try{
+        try {
             $post = Post::findOrFail($id);
             if ($post->img != null) {
                 File::delete($post->img);
             }
             $post->delete();
-            return back()->with('Success', 'Xóa thành công');
-        }
-        catch(Exception $e){
-            return back()->with('Failed', 'Xóa thất bại');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
+        } catch (Exception $e) {
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 
     //------------------------------------ Trang bài viết -------------------------------//
     public function postPage()
     {
-        $posts = Post::orderByDesc('updated_at')->limit(15)->get();
+        $posts = Post::orderByDesc('updated_at')->paginate(12);
         $categories = PostCategory::get();
         $post_seo = GeneralSettings::whereIn('key', [
             'post_seo_title',
             'post_seo_description',
             'post_seo_keywords',
-            'post_seo_image'
+            'post_seo_image',
+            'post_page_title_' . Lang::locale(),
+            'post_page_description_' . Lang::locale(),
+            'post_page_icon_' . Lang::locale()
         ])->select('key', 'value')->get()->keyBy('key')->toArray();
         return view('avnpost::post.post-page', compact('posts', 'categories', 'post_seo'));
     }
@@ -146,15 +180,9 @@ class PostController extends Controller
         if (!$category) {
             $category = PostCategory::findOrFail($alias);
         }
-        $posts = Post::where('category_id', $category->id)->orderByDesc('updated_at')->limit(15)->get();
+        $posts = Post::where('category_id', $category->id)->orderByDesc('updated_at')->paginate(12);
         $categories = PostCategory::get();
-        $post_seo = GeneralSettings::whereIn('key', [
-            'post_seo_title',
-            'post_seo_description',
-            'post_seo_keywords',
-            'post_seo_image'
-        ])->select('key', 'value')->get()->keyBy('key')->toArray();
-        return view('avnpost::post.post-of-category', compact('category', 'posts', 'categories', 'post_seo'));
+        return view('avnpost::post.post-of-category', compact('category', 'posts', 'categories'));
     }
 
     public function viewPost($alias)
@@ -166,7 +194,7 @@ class PostController extends Controller
         $comments = PostComment::where('post_id', $post->id)->get();
 
         // Các bài viết liên quan
-        $posts = Post::where('category_id', $post->category_id)->get();
+        $posts = Post::where('category_id', $post->category_id)->where('id', '!=', $post->id)->take(6)->get();
         return view('avnpost::post.view-post', compact('post', 'comments', 'posts'));
     }
 }

@@ -10,8 +10,8 @@ window._ = _;
 import axios from 'axios';
 window.axios = axios;
 
+axios.defaults.withCredentials = true;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -32,3 +32,40 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+
+// import Echo from 'laravel-echo';
+// import Pusher from 'pusher-js';
+
+// window.Pusher = Pusher;
+
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: import.meta.env.VITE_ABLY_PUBLIC_KEY,
+//     wsHost: 'realtime-pusher.ably.io',
+//     wsPort: 443,
+//     disableStats: true,
+//     encrypted: true,
+// });
+
+// import Echo from '@ably/laravel-echo';
+
+// import * as Ably from 'ably';
+
+// window.Ably = Ably;
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+ 
+window.Pusher = Pusher;
+ 
+// Create new echo client instance using ably-js client driver.
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_ABLY_PUBLIC_KEY,
+    wsHost: 'realtime-pusher.ably.io',
+    wsPort: 443,
+    disableStats: true,
+    encrypted: true,
+    cluster:'',
+    authEndpoint: 'broadcasting/auth'
+
+});

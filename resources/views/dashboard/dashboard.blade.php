@@ -1,279 +1,373 @@
 @php
+    $logo = App\Http\Controllers\Helper::getLogo();
     $services = Modules\AvnService\Http\Controllers\AvnServiceController::getService();
     $posts = Modules\AvnPost\Http\Controllers\PostController::getPost();
-
-    // SEO bài viết
-    $title_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_title'])->first();
-    $description_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_description'])->first();
-    $keyword_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_keywords'])->first();
-    $img_post = App\Models\GeneralSettings::whereIn('key', ['post_seo_image'])->first();
-
-    // SEO dịch vụ
-    $title_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_title'])->first();
-    $description_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_description'])->first();
-    $keyword_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_keywords'])->first();
-    $img_service = App\Models\GeneralSettings::whereIn('key', ['service_seo_image'])->first();
-
-    // SEO liên hệ
-    $title_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_title'])->first();
-    $description_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_description'])->first();
-    $keyword_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_keywords'])->first();
-    $img_contact = App\Models\GeneralSettings::whereIn('key', ['contact_seo_image'])->first();
-
-    // SEO trang chủ
-    $title_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_title'])->first();
-    $description_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_description'])->first();
-    $keyword_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_keywords'])->first();
-    $img_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_image'])->first();
-    $link_home = App\Models\GeneralSettings::whereIn('key', ['home_seo_link'])->first();
-    $feature_icon = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_icon'])->first();
-    $feature_img = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_img'])->first();
-    $feature_title = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_title'])->first();
-    $feature_des = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_des'])->first();
-    $feature_title_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_title_2'])->first();
-    $feature_des_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_des_2'])->first();
-    $feature_li_1 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_1'])->first();
-    $feature_li_2 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_2'])->first();
-    $feature_li_3 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_3'])->first();
-    $feature_li_4 = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_li_4'])->first();
-    $feature_button = App\Models\GeneralSettings::whereIn('key', ['home_seo_feature_button'])->first();
+    $seo_props = [];
+    if (isset($home_seo['home_seo_title'])) {
+        $seo_props['seo_title'] = $home_seo['home_seo_title']['value'] ?? '';
+    }
+    if (isset($home_seo['home_seo_description'])) {
+        $seo_props['seo_description'] = $home_seo['home_seo_description']['value'] ?? '';
+    }
+    if (isset($home_seo['home_seo_keywords'])) {
+        $seo_props['seo_keywords'] = $home_seo['home_seo_keywords']['value'] ?? '';
+    }
+    if (isset($home_seo['home_seo_image'])) {
+        $seo_props['seo_image'] = $home_seo['home_seo_image']['value'] ?? '';
+    }
 @endphp
-@extends('layouts.guest')
-@section('title')
-    {{ $title_home->value ?? '' }}
-@endsection
+@extends('layouts.guest', $seo_props)
 @section('content')
     <!-- START HERO -->
-    <section class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-5">
-                    <div class="mt-md-4">
-                        <h2 class="text-white fw-normal mb-4 mt-3 hero-title">{{ $keyword_home->value ?? '' }}</h2>
-                        <p class="mb-4 font-16 text-white-50">{{ $description_home->value ?? '' }}</p>
-                        <a href="{{ $link_home->value ?? '' }}" target="_blank" class="btn btn-success">Xem thêm <i class="mdi mdi-arrow-right ms-1"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-5 offset-md-2">
-                    <div class="text-md-end mt-3 mt-md-0">
-                        <img src="{{ asset($img_home->value ?? '/resources/assets/images/startup.svg') }}" style="max-height: 200px; object-fit: cover;" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- END HERO -->
-
-    <!-- START FEATURES 2 -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <img src="{{ asset($feature_icon->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
-                        <h3><span class="text-primary">{{ $feature_title->value ?? '' }}</span></h3>
-                        <p class="text-muted mt-2">{{ $feature_des->value ?? '' }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-2 py-5 align-items-center">
-                <div class="col-lg-5">
-                    <img src="{{ asset($feature_img->value ?? '/resources/assets/images/logo.png') }}" class="img-fluid">
-                </div>
-                <div class="col-lg-6 offset-lg-1">
-                    <h3 class="fw-normal">{{ $feature_title_2->value ?? '' }}</h3>
-                    <p class="text-muted mt-3">{{ $feature_des_2->value ?? '' }}</p>
-                    <div class="mt-4">
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> {{ $feature_li_1->value ?? '' }}</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> {{ $feature_li_2->value ?? '' }}</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> {{ $feature_li_3->value ?? '' }}</p>
-                        <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> {{ $feature_li_4->value ?? '' }}</p>
-                    </div>
-                    <a href="{{ $feature_button->value ?? '' }}" class="btn btn-primary rounded-pill mt-3">Xem thêm <i class="mdi mdi-arrow-right ms-1"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- END FEATURES 2 -->
-
-    <!-- START FEATURES 1 -->
-    <section class="py-5 bg-light-lighten border-top border-bottom border-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <img src="{{ asset($img_post->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
-                        <h3><span class="text-primary">{{ $keyword_post->value ?? '' }}</span></h3>
-                        <p class="text-muted mt-2">{{ $description_post->value ?? '' }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                @foreach($posts as $item)
-                    @php
-                        $params = [
-                            'alias' => $item->alias ?? $item->id,
-                        ];
-                    @endphp
-                    <div class="col-lg-3">
-                        <a href="{{ route('view-post', $params) }}">
-                            <div class="card d-block">
-                                <img class="card-img-top" src="{{ asset($item->img ?? '/resources/assets/images/logo.png') }}" alt="{{$item->name}}" style="max-height: 400px; object-fit: cover;">
-                                <div class="card-body position-relative">
-                                    <h4 class="mt-0">
-                                        <a class="text-title">{{$item->name}}</a>
-                                    </h4>
-                                    <p class="mb-2">
-                                        <span class="pe-2 text-nowrap">
-                                            <i class="mdi mdi-timer-outline"></i>
-                                            <b>{{ date('d/m/Y', strtotime($item->updated_at)) }}</b>
-                                        </span>
-                                        <span class="pe-2 text-nowrap">
-                                            <i class="mdi mdi-menu-open"></i>
-                                            <b>{{$item->category->name}}</b>
-                                        </span>
-                                        <span class="text-nowrap">
-                                            <i class="mdi mdi-comment-multiple-outline"></i>
-                                            <b>{{count($item->comments)}}</b>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-            <div class="d-flex justify-content-center">
-                <a href="{{ route('post-page') }}" class="btn btn-success rounded-pill mt-3">Xem thêm<i class="mdi mdi-arrow-right ms-1"></i></a>
-            </div>
-        </div>
-    </section>
-    <!-- END FEATURES 1 -->
-
-    <!-- START PRICING -->
-    <section class="py-5 bg-light-lighten border-top border-bottom border-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <img src="{{ asset($img_service->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
-                        <h3><span class="text-primary">{{ $keyword_service->value ?? '' }}</span></h3>
-                        <p class="text-muted mt-2">{{ $description_service->value ?? '' }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-5 pt-3">
-                @foreach($services as $item)
-                <div class="col-md-3">
-                    <div class="card card-pricing card-pricing-recommended">
-                        <div class="card-body text-center">
-                            @if($item->recommended == '1')
-                                <div class="card-pricing-plan-tag">Khuyến nghị</div>
+    @if (
+        $banner['home_banner_title_' . Lang::locale()]['value'] ||
+            $banner['home_banner_description_' . Lang::locale()]['value']
+    )
+        <section class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <div class="mt-md-4">
+                            <h1 class="text-white fw-normal mb-4 mt-3 hero-title">
+                                {{ $banner['home_banner_title_' . Lang::locale()]['value'] ?? '' }}</h1>
+                            <p class="mb-4 font-16 text-white-50">
+                                {{ $banner['home_banner_description_' . Lang::locale()]['value'] ?? '' }}</p>
+                            @if ($banner['home_banner_link']['value'])
+                                <a href="{{ $banner['home_banner_link']['value'] }}" target="_blank" class="btn btn-success">
+                                    @lang('settings.View_more')
+                                    <i class="mdi mdi-arrow-right ms-1"></i>
+                                </a>
                             @endif
-                            <p class="card-pricing-plan-name fw-bold text-uppercase">{{$item->service_type->name}}</p>
-                            <img src="{{ asset($item->service_type->img) }}" alt="{{$item->name}}" class="rounded" style="width: 80px; height: 80px; object-fit: cover">
-                            <h2 class="card-pricing-price">{{$item->price}}</h2>
-                            <ul class="card-pricing-features">
-                                <div id="editor">
-                                    {!! $item->description !!}
-                                </div>
-                            </ul>
-                            <button class="btn btn-primary mt-4 mb-2 rounded-pill">Chọn</button>
+                        </div>
+                    </div>
+                    <div class="col-md-5 offset-md-2">
+                        <div class="text-md-end mt-3 mt-md-0">
+                            <img src="{{ asset($banner['home_banner_image_' . Lang::locale()]['value'] ?? $logo) }}"
+                                class="img-fluid" />
                         </div>
                     </div>
                 </div>
-                @endforeach
             </div>
-            <div class="d-flex justify-content-center">
-                <a href="{{ route('service-page') }}" class="btn btn-success rounded-pill mt-3">Xem thêm<i class="mdi mdi-arrow-right ms-1"></i></a>
+        </section>
+    @endif
+    <!-- END HERO -->
+
+    <!-- START TOP PARTNER -->
+    <section class="py-5 border-bottom border-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center">
+                        <img src="{{ asset($partner['home_partner_image_' . Lang::locale()]['value'] ?? $logo) }}"
+                            class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                        @if (isset($partner['home_partner_title_' . Lang::locale()]) &&
+                                $partner['home_partner_title_' . Lang::locale()]['value']
+                        )
+                            <h3><span
+                                    class="text-primary">{{ $partner['home_partner_title_' . Lang::locale()]['value'] }}</span>
+                            </h3>
+                        @endif
+                        @if (isset($partner['home_partner_description_' . Lang::locale()]) &&
+                                $partner['home_partner_description_' . Lang::locale()]['value']
+                        )
+                            <p class="text-muted mt-2">{{ $partner['home_partner_description_' . Lang::locale()]['value'] }}
+                            </p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="customers-testimonials" class="owl-carousel">
+                        @foreach ($top_partners as $partner)
+                            <div class="item">
+                                <div class="shadow-effect">
+                                    <img src="{{ asset($partner->profile->img ?? '/resources/assets/images/users/avatar-1.jpg') }}"
+                                        alt="user-image" class="w-100" style="object-fit: cover;height: 10.5rem;">
+                                    <h4 class="mt-2 mb-0 text-capitalize ">{{ $partner->name }}</h4>
+                                    @if ($partner->profile && $partner->profile->description && !$partner->description_status)
+                                        <p class="text-center p-2">{{ $partner->profile->description }}</p>
+                                    @endif
+                                </div>
+                                <a href="{{ route('order-chat', ['partner' => $partner->id]) }}" class="testimonial-name">
+                                    @lang('settings.Booking')
+                                </a>
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-    <!-- END PRICING -->
+    <!-- END TOP PARTNER -->
+    <!-- START FEATURES 2 -->
+    @if (
+        $feature['home_feature_link']['value'] ||
+            $feature['home_feature_sub_des_' . Lang::locale()]['value'] ||
+            $feature['home_feature_sub_title_' . Lang::locale()]['value'] ||
+            $feature['home_feature_des_' . Lang::locale()]['value'] ||
+            $feature['home_feature_title_' . Lang::locale()]['value']
+    )
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <img src="{{ asset($feature['home_feature_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                                class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                            <h3>
+                                <span class="text-primary">
+                                    {{ $feature['home_feature_title_' . Lang::locale()]['value'] ?? '' }}
+                                </span>
+                            </h3>
+                            <p class="text-muted mt-2">
+                                {{ $feature['home_feature_des_' . Lang::locale()]['value'] ?? '' }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2 py-5 align-items-center">
+                    <div class="col-lg-5">
+                        <img src="{{ asset($feature['home_feature_img_' . Lang::locale()]['value'] ?? $logo) }}"
+                            class="img-fluid">
+                    </div>
+                    <div class="col-lg-6 offset-lg-1">
+                        <h3 class="fw-normal">{{ $feature['home_feature_sub_title_' . Lang::locale()]['value'] ?? '' }}
+                        </h3>
+                        <p class="text-muted mt-3">{{ $feature['home_feature_sub_des_' . Lang::locale()]['value'] ?? '' }}
+                        </p>
+                        @if ($feature_list_items->count())
+                            <div class="mt-4">
+                                @foreach ($feature_list_items as $feature_list_item)
+                                    <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i>
+                                        {{ $feature_list_item->value ?? '' }}</p>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if ($feature['home_feature_link']['value'])
+                            <a href="{{ $feature['home_feature_link']['value'] ?? '' }}"
+                                class="btn btn-primary rounded-pill mt-3" target="_blank">
+                                @lang('settings.View_more')
+                                <i class="mdi mdi-arrow-right ms-1"></i>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+    <!-- END FEATURES 2 -->
 
+    <!-- START FEATURES 1 -->
+    @if ($posts->count())
+        <section class="py-5 bg-light-lighten border-top border-bottom border-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <img src="{{ asset($post_header['post_page_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                                class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                            @if ($post_header['post_page_title_' . Lang::locale()]['value'])
+                                <h3><span
+                                        class="text-primary">{{ $post_header['post_page_title_' . Lang::locale()]['value'] }}</span>
+                                </h3>
+                            @endif
+                            @if ($post_header['post_page_description_' . Lang::locale()]['value'])
+                                <p class="text-muted mt-2">
+                                    {{ $post_header['post_page_description_' . Lang::locale()]['value'] }}</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center gy-2">
+                    @foreach ($posts as $item)
+                        @include('avnpost::components.post-card', [$item])
+                    @endforeach
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="{{ route('post-page') }}" class="btn btn-success rounded-pill mt-5">
+                        @lang('settings.View_more')
+                        <i class="mdi mdi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
+    <!-- END FEATURES 1 -->
+
+    <!-- START PRICING -->
+    @if ($services->count())
+        <section class="py-5 bg-light-lighten border-top border-bottom border-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <img src="{{ asset($service_header['service_page_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                                class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                            @if ($service_header['service_page_title_' . Lang::locale()]['value'])
+                                <h3><span
+                                        class="text-primary">{{ $service_header['service_page_title_' . Lang::locale()]['value'] }}</span>
+                                </h3>
+                            @endif
+                            @if ($service_header['service_page_description_' . Lang::locale()]['value'])
+                                <p class="text-muted mt-2">
+                                    {{ $service_header['service_page_description_' . Lang::locale()]['value'] }}</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5 gx-3 justify-content-center">
+                    @foreach ($services as $item)
+                        @include('avnservice::components.service-card', [$item])
+                    @endforeach
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="{{ route('service-page') }}" class="btn btn-success rounded-pill mt-3">
+                        @lang('settings.View_more')
+                        <i class="mdi mdi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
+    <!-- END PRICING -->
     <!-- START CONTACT -->
     <section class="py-5 bg-light-lighten border-top border-bottom border-light">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <img src="{{ asset($img_contact->value ?? '/resources/assets/images/logo.png') }}" class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
-                        <h3><span class="text-primary">{{ $keyword_contact->value ?? '' }}</span></h3>
-                        <p class="text-muted mt-2">{{ $description_contact->value ?? '' }}</p>
+                        <img src="{{ asset($contact_header['contact_page_icon_' . Lang::locale()]['value'] ?? $logo) }}"
+                            class="rounded" style="height: 80px; width: 80px; object-fit: cover;" />
+                        @if ($contact_header['contact_page_title_' . Lang::locale()]['value'])
+                            <h3><span
+                                    class="text-primary">{{ $contact_header['contact_page_title_' . Lang::locale()]['value'] }}</span>
+                            </h3>
+                        @endif
+                        @if ($contact_header['contact_page_description_' . Lang::locale()]['value'])
+                            <p class="text-muted mt-2">
+                                {{ $contact_header['contact_page_description_' . Lang::locale()]['value'] }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
-            <div class="row align-items-center mt-3">
-                <div class="col-md-4">
-                    <p class="text-muted"><span class="fw-bold">Số điện thoại:</span><br> <span class="d-block mt-1">{{ $home_seo['phone_number']['value'] ?? '' }}</span></p>
-                    <p class="text-muted mt-4"><span class="fw-bold">Email :</span><br> <span class="d-block mt-1">{{ $home_seo['email']['value'] ?? '' }}</span></p>
-                    <p class="text-muted mt-4"><span class="fw-bold">Địa chỉ :</span><br> <span class="d-block mt-1">{{ $home_seo['address']['value'] ?? '' }}</span></p>
-                    <p class="text-muted mt-4"><span class="fw-bold">Giờ làm việc:</span><br> <span class="d-block mt-1">{{ isset($home_seo['time_morning']['value']) ? date('H:i', strtotime(explode(', ', $home_seo['time_morning']['value'])[0])) : '' }} 
-                    Tới 
-                    {{ isset($home_seo['time_morning']['value']) ? date('H:i', strtotime(explode(', ', $home_seo['time_morning']['value'])[1])) : '' }}</span></p>
-                </div>
-                <div class="col-md-8">
-                    <form action="{{ route('store-contact') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                        <div class="row mt-4">
-                            <div class="col-lg-6">
-                                <div class="mb-2">
-                                    <label for="fullname" class="form-label">Tên bạn <span class="text-danger">*</span></label>
-                                    <input class="form-control form-control-light" type="text" name="name" placeholder="Nhập tên..." required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-2">
-                                    <label for="emailaddress" class="form-label">Địa chỉ email</label>
-                                    <input class="form-control form-control-light" type="email" name="email" placeholder="Nhập Email...">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col-lg-12">
-                                <div class="mb-2">
-                                    <label for="subject" class="form-label">Tiêu đề <span class="text-danger">*</span></label>
-                                    <input class="form-control form-control-light" type="text" name="title" placeholder="Nhập tiêu đề..." required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col-lg-12">
-                                <div class="mb-2">
-                                    <label for="comments" class="form-label">Nội dung <span class="text-danger">*</span></label>
-                                    <textarea rows="4" class="form-control form-control-light" name="message" placeholder="Nhập nội dung..." required></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-12 text-end">
-                                <button class="btn btn-primary">Gửi <i class="mdi mdi-telegram ms-1"></i> </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            @include('avncontact::components.contact-form', [$company_info])
         </div>
     </section>
     <!-- END CONTACT -->
 @endsection
-@section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
-
-    <!-- Datatable Init js -->
-    <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript">
-        function setHeight(fieldId){
-            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
-        }
-        setHeight('textBox1');
-    </script>
-@endsection
 @section('css')
-    <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .shadow-effect {
+            background: #fff;
+            padding: 0 0 20px 0;
+            border-radius: 4px;
+            text-align: center;
+            border: 1px solid #ECECEC;
+            box-shadow: 0 19px 38px rgba(0, 0, 0, 0.10), 0 15px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        #customers-testimonials .shadow-effect p {
+            font-family: inherit;
+            font-size: 17px;
+            line-height: 1.5;
+            margin: 0 0 17px 0;
+            font-weight: 300;
+        }
+
+        .testimonial-name {
+            margin: -17px auto 0;
+            display: table;
+            width: auto;
+            background: var(--bs-primary);
+            padding: 9px 35px;
+            border-radius: 12px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 9px 18px rgba(0, 0, 0, 0.12), 0 5px 7px rgba(0, 0, 0, 0.05);
+        }
+
+        #customers-testimonials .item {
+            text-align: center;
+            padding: 50px;
+            margin-bottom: 80px;
+            opacity: .2;
+            -webkit-transform: scale3d(0.8, 0.8, 1);
+            transform: scale3d(0.8, 0.8, 1);
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #customers-testimonials .owl-item.active.center .item {
+            opacity: 1;
+            -webkit-transform: scale3d(1.0, 1.0, 1);
+            transform: scale3d(1.0, 1.0, 1);
+        }
+
+        .owl-carousel .owl-item img {
+            transform-style: preserve-3d;
+            margin: 0 auto 17px;
+        }
+
+        #customers-testimonials.owl-carousel .owl-dots .owl-dot.active span,
+        #customers-testimonials.owl-carousel .owl-dots .owl-dot:hover span {
+            background: var(--bs-primary);
+            transform: translate3d(0px, -50%, 0px) scale(0.7);
+        }
+
+        #customers-testimonials.owl-carousel .owl-dots {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+
+        #customers-testimonials.owl-carousel .owl-dots .owl-dot {
+            display: inline-block;
+        }
+
+        #customers-testimonials.owl-carousel .owl-dots .owl-dot span {
+            background: var(--bs-primary);
+            display: inline-block;
+            height: 20px;
+            margin: 0 2px 5px;
+            transform: translate3d(0px, -50%, 0px) scale(0.3);
+            transform-origin: 50% 50% 0;
+            transition: all 250ms ease-out 0s;
+            width: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('resources/assets/owl/assets/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('resources/assets/owl/assets/owl.theme.default.min.css') }}">
+@endsection
+@section('js')
+    <script src="{{ asset('resources/assets/owl/owl.carousel.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            "use strict";
+            //  TESTIMONIALS CAROUSEL HOOK
+            $('#customers-testimonials').owlCarousel({
+                loop: true,
+                center: true,
+                items: 3,
+                margin: 0,
+                autoplay: true,
+                dots: true,
+                autoplayTimeout: 8500,
+                smartSpeed: 450,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    768: {
+                        items: 2
+                    },
+                    1170: {
+                        items: 3
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

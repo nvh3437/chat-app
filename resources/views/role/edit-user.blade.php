@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    @lang('avnrole.update_user')
+    @lang('settings.Update.update') @lang('settings.User')
 @endsection
 @section('css')
     <style>
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">@lang('avnrole.update_user')</h4>
+                    <h4 class="page-title">@lang('settings.Update.update') @lang('settings.User')</h4>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg">
                         <div class="row">
                             <div class="col-12">
                                 <form action="{{ route('role-update-user', ['id' => $role->id]) }}" method="POST">
@@ -39,14 +39,14 @@
                                         <div class="col-12 col-lg-12 col-xl-12">
                                             <div class="row">
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="name">@lang('avnrole.name') *</label>
+                                                    <label class="form-label" for="name">@lang('settings.Name') *</label>
                                                     <input type="text"
                                                         class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }} @error('name') is-invalid @enderror"
                                                         name="name" value="{{ $role->name }}">
                                                 </div>
                                                 <div class="mb-3 row">
                                                     @foreach ($users as $user)
-                                                        @if ($user->username != 'superadmin' && $user->type == 'system')
+                                                        @if ($user->username != 'adminsystem' && $user->type == 'system')
                                                             <div class="col-6 form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     value="{{ $user->id }}"
@@ -61,22 +61,18 @@
                                                     @endforeach
                                                 </div>
                                                 <div class="col d-flex justify-content-center">
-                                                <button type="submit" class="btn btn-primary">@lang('avnrole.update')</button>
+                                                    <button type="submit"
+                                                        class="btn btn-primary">@lang('settings.Update.update')</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
-
                             </div> <!-- end col-->
                         </div>
-                        <!-- end row -->
-
                     </div> <!-- end card-body -->
                 </div> <!-- end card-->
             </div> <!-- end col-->
         </div>
-        <!-- end row-->
-
     </div>
 @endsection

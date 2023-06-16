@@ -10,9 +10,20 @@ return new class extends Migration
     {
         Schema::create('avn_posts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->text('name')->nullable();
+            $table->text('name_en')->nullable();
+            $table->text('name_vi')->nullable();
+            $table->text('name_ja')->nullable();
             $table->text('img')->nullable();
-            $table->longText('description');
+            $table->text('img_en')->nullable();
+            $table->text('img_vi')->nullable();
+            $table->text('img_ja')->nullable();
+            $table->longText('description')->nullable();
+            $table->longText('description_en')->nullable();
+            $table->longText('description_vi')->nullable();
+            $table->longText('description_ja')->nullable();
+            $table->text('keywords')->nullable();
+            $table->text('sort_description')->nullable();
             $table->text('alias')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')

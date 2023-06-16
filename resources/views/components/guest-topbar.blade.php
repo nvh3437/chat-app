@@ -1,115 +1,131 @@
 @php
     $user = App\Http\Controllers\Controller::getUser();
-    $menu = Modules\AvnSetting\Http\Controllers\NavbarController::getMenu(); 
+    $menu = Modules\AvnSetting\Http\Controllers\NavbarController::getMenu();
     $logo = App\Http\Controllers\Controller::getSetting('logo')->value;
 @endphp
 <div class="navbar-custom topnav-navbar">
     <div class="container">
-        <a href="{{ route('dashboard') }}" class="topnav-logo">
+        <a href="{{ route('home-page') }}" class="topnav-logo">
             <span class="topnav-logo-lg">
-                <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}" alt="image" class="img-fluid" width="50">
+                <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
+                    alt="image" class="img-fluid" width="50">
             </span>
             <span class="topnav-logo-sm">
-                <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}" alt="image" class="img-fluid" width="50">
+                <img src="{{ $logo ? asset('/storage/app/AvnGeneralSettings/' . $logo) : asset('/resources/assets/images/logo.png') }}"
+                    alt="image" class="img-fluid" width="50">
             </span>
         </a>
         <ul class="list-unstyled topbar-menu float-end mb-0">
             <li class="dropdown notification-list topbar-dropdown d-none d-lg-block">
-                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" id="topbar-languagedrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span> <i class="mdi mdi-chevron-down"></i>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="topbar-languagedrop" href="#"
+                    role="button" aria-haspopup="true" aria-expanded="false">
+                    @if (Lang::locale() == 'en')
+                        <img src="{{ asset('/resources/assets/images/flags/en.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">English</span>
+                    @elseif(Lang::locale() == 'ja')
+                        <img src="{{ asset('/resources/assets/images/flags/ja.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Japan</span>
+                    @elseif(Lang::locale() == 'vi')
+                        <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Vietnam</span>
+                    @endif
                 </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu" aria-labelledby="topbar-languagedrop">
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu"
+                    aria-labelledby="topbar-languagedrop">
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                        <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Japan</span>
+                    <a href="{{ route('set-lang', ['locale' => 'ja']) }}" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/flags/ja.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Japan</span>
                     </a>
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                        <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Vietnam</span>
+                    <a href="{{ route('set-lang', ['locale' => 'vi']) }}" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Vietnam</span>
                     </a>
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                        <img src="{{ asset('/resources/assets/images/logo.png') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
+                    <a href="{{ route('set-lang', ['locale' => 'en']) }}" class="dropdown-item notify-item">
+                        <img src="{{ asset('/resources/assets/images/flags/en.png') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">English</span>
                     </a>
                 </div>
             </li>
-            @if($user)
-                @include('components.notification')
-                @if($user->type == 'system')
+            @if ($user)
+
+                <li class="notification-list">
+                    <a class="nav-link end-bar-toggle" href="{{ route('chat-index') }}">
+                        <i class="uil-facebook-messenger noti-icon" style="line-height: 76px; font-size: 26px;"></i>
+                        <span class="noti-icon-badge"></span>
+                    </a>
+                </li>
+                {{-- @include('components.notification') --}}
+                @if ($user->type == 'system')
                     <li class="notification-list">
                         <a class="nav-link end-bar-toggle" href="{{ route('dashboard-manager') }}">
                             <i class="dripicons-gear noti-icon"></i>
                         </a>
                     </li>
                 @endif
+                <a class="navbar-toggle mx-1" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
                 <li class="dropdown notification-list">
-                    <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
-                        aria-expanded="false">
+                    <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown"
+                        id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         <span class="account-user-avatar">
-                        @if($user->type == 'partern') 
-                            @if($user->partern->img == '')
-                                <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
+                            @if ($user->profile && $user->profile->img)
+                                <img src="{{ asset($user->profile->img) }}" alt="user-image" class="rounded-circle">
                             @else
-                                <img src="{{ asset($user->partern->img) }}" alt="user-image" class="rounded-circle">
+                                <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image"
+                                    class="rounded-circle">
                             @endif
-                        @elseif($user->type == 'customer') 
-                            @if($user->customer->img == '')
-                                <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
-                            @else
-                                <img src="{{ asset($user->customer->img) }}" alt="user-image" class="rounded-circle">
-                            @endif
-                        @else
-                            <img src="{{ asset('/resources/assets/images/users/avatar-1.jpg') }}" alt="user-image" class="rounded-circle">
-                        @endif
                         </span>
                         <span>
                             @php
-                                $user = App\Http\Controllers\Controller::getUser(); 
+                                $user = App\Http\Controllers\Controller::getUser();
                             @endphp
-                            @if($user)
-                                <span class="account-user-name">{{$user->name}}</span>
-                                <span class="account-position">0 $</span>
+                            @if ($user)
+                                <span class="account-user-name">{{ $user->name }}</span>
+                                <span class="account-position">{{ number_format($user->profile->money ?? 0, 2) }}
+                                    $</span>
                             @endif
                         </span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
+                    <div
+                        class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
                         <div class=" dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Chào mừng !</h6>
+                            <h6 class="text-overflow m-0">@lang('settings.Welcome')!</h6>
                         </div>
-                        @if($user->type == 'partern')
-                            <a href="{{route('profile')}}" class="dropdown-item notify-item">
-                                <i class="mdi mdi-account-circle me-1"></i>
-                                <span>Thông tin cá nhân</span>
-                            </a>
-                        @elseif($user->type == 'customer')
-                            <a href="{{route('my-profile')}}" class="dropdown-item notify-item">
-                                <i class="mdi mdi-account-circle me-1"></i>
-                                <span>Thông tin cá nhân</span>
-                            </a>
-                        @endif
+                        <a href="{{ route('profile') }}" class="dropdown-item notify-item">
+                            <i class="mdi mdi-account-circle me-1"></i>
+                            <span>@lang('settings.Profile')</span>
+                        </a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item notify-item">
                                 <i class="mdi mdi-logout me-1"></i>
-                                <span>Đăng xuất</span>
+                                <span>@lang('settings.Logout')</span>
                             </button>
                         </form>
                     </div>
-                </li>     
+                </li>
             @else
-                 <li class="notification-list">
+                <a class="navbar-toggle mx-1" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+                <li class="notification-list">
                     <a class="nav-link end-bar-toggle" href="{{ route('login') }}">
-                        <i class="noti-icon"></i>
-                        Đăng nhập
+                        <i class="noti-icon" style="line-height: 75px;"></i>
+                        @lang('settings.Login')
                     </a>
                 </li>
             @endif
         </ul>
-        <a class="navbar-toggle"  data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
-            <div class="lines">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </a>
     </div>
 </div>
 <div class="topnav">
@@ -118,25 +134,72 @@
             <div class="collapse navbar-collapse" id="topnav-menu-content">
                 <ul class="navbar-nav">
                     @foreach ($menu as $item)
-                        @if ($item->parent_id == '0' && count($item->childrens) > 0)
+                        @if (count($item->childrens) > 0)
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="menulink{{ $item->id }}" id="topnav-dashboards" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ $item->name }} <div class="arrow-down"></div>
+                                <a class="nav-link dropdown-toggle arrow-none" href="menulink{{ $item->id }}"
+                                    id="topnav-dashboards" role="button" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    @if ($item->vi || $item->en || $item->ja)
+                                        {{ $item[Lang::locale()] }}
+                                    @else
+                                        {{ $item->name }}
+                                    @endif
+                                    <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-dashboards">
                                     @foreach ($item->childrens as $child)
-                                        <a href="{{ $child->link }}" class="dropdown-item">{{ $child->name }}</a>
+                                        <a href="{{ $child->link }}" class="dropdown-item">
+                                            @if ($child->vi || $child->en || $child->ja)
+                                                {{ $child[Lang::locale()] }}
+                                            @else
+                                                {{ $child->name }}
+                                            @endif
+                                        </a>
                                     @endforeach
                                 </div>
                             </li>
-                        @elseif($item->parent_id == '0')
+                        @else
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="{{ $item->link }}" id="topnav-dashboards">
-                                    {{ $item->name }} 
+                                <a class="nav-link dropdown-toggle arrow-none" href="{{ $item->link }}"
+                                    id="topnav-dashboards">
+                                    @if ($item->vi || $item->en || $item->ja)
+                                        {{ $item[Lang::locale()] }}
+                                    @else
+                                        {{ $item->name }}
+                                    @endif
                                 </a>
                             </li>
                         @endif
                     @endforeach
+                    <li class="nav-item dropdown d-lg-none">
+                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-languagedrop"
+                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @if (Lang::locale() == 'en')
+                                <img src="{{ asset('/resources/assets/images/flags/en.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">English</span>
+                            @elseif(Lang::locale() == 'ja')
+                                <img src="{{ asset('/resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">Japan</span>
+                            @elseif(Lang::locale() == 'vi')
+                                <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">Vietnam</span>
+                            @endif
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-languagedrop">
+                            <a href="{{ route('set-lang', ['locale' => 'ja']) }}" class="dropdown-item">
+                                <img src="{{ asset('/resources/assets/images/flags/ja.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">Japan</span>
+                            </a>
+                            <a href="{{ route('set-lang', ['locale' => 'vi']) }}" class="dropdown-item">
+                                <img src="{{ asset('/resources/assets/images/flags/vi.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">Vietnam</span>
+                            </a>
+                            <a href="{{ route('set-lang', ['locale' => 'en']) }}" class="dropdown-item">
+                                <img src="{{ asset('/resources/assets/images/flags/en.png') }}" alt="user-image"
+                                    class="me-1" height="12"> <span class="align-middle">English</span>
+                            </a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </nav>

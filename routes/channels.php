@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,21 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+// Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+//     return (int) $user->id === (int) $id;
+// });
+Broadcast::channel('chat', function () {
+    return true;
+});
+Broadcast::channel('chat.room.{room_id}', function ($user, $room_id) {
+    if ($user->type == 'system') {
+        return $user;
+    }
+    return $user->room_users->where('room_id', $room_id)->first();
+});
+Broadcast::channel('joined.user.{room_id}', function ($user, $user_id) {
+    if ($user->id == $user_id) {
+        return $user;
+    }
+    return false;
 });

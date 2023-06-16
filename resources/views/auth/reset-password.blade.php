@@ -7,10 +7,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Nhập lại mật khẩu</title>
+    <title>@lang('settings.Reset_password')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="{{ GeneralSettings::where('key', 'web_title')->first()->value ?? 'Quản trị doanh nghiệp' }}"
-        name="description" />
+    <meta content="@lang('settings.Reset_password')" name="description" />
     <meta content="AVNTech" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('resources/assets/images/favicon.ico') }}">
@@ -21,7 +20,7 @@
     <link href="{{ asset('resources/assets/css/app-dark.min.css') }}" rel="stylesheet" type="text/css"
         id="dark-style" />
     <style>
-        .auth-fluid{
+        .auth-fluid {
             background-image: initial;
         }
     </style>
@@ -36,7 +35,7 @@
     <div class="auth-fluid">
         <div class="auth-fluid-form-box">
             <div class="align-items-center d-flex h-100">
-                <div class="card-body">
+                <div class="card-body shadow-lg">
                     <div class="auth-brand text-center text-lg-start">
                         <a href="#" class="logo-dark">
                             <span class="logo-lg">
@@ -51,35 +50,40 @@
                             </span>
                         </a>
                     </div>
-                    <h4 class="mt-5">Nhập lại mật khẩu</h4>
+                    <h4 class="mt-5">@lang('settings.Reset_password')</h4>
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
                         <input type="hidden" name="token" value="{{ $request->route('token') }}">
                         <div class="mb-3">
-                            <label class="form-label">Email <span class="text-danger">*</span></label>
-                            <input class="form-control" type="email" name="email" required value="{{ $request->email }}">
+                            <label class="form-label">@lang('settings.Email') <span class="text-danger">*</span></label>
+                            <input class="form-control" type="email" name="email" required
+                                value="{{ $request->email }}">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Nhập mật khẩu mới <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" name="password" required placeholder="Ít nhất 8 ký tự cả chữ và số">
+                            <label class="form-label">@lang('settings.New_password') <span class="text-danger">*</span></label>
+                            <input class="form-control" type="password" name="password" required
+                                placeholder="@lang('settings.Auth.Validate.password.Input')">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Nhập lại mật khẩu <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" name="password_confirmation" required placeholder="Ít nhất 8 ký tự cả chữ và số">
+                            <label class="form-label">@lang('settings.Re_password') <span class="text-danger">*</span></label>
+                            <input class="form-control" type="password" name="password_confirmation" required
+                                placeholder="@lang('settings.Auth.Validate.password.Input')">
                         </div>
                         <div class="d-grid mb-0 text-center">
                             <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i>
-                                Gửi
+                                @lang('settings.Confirm')
                             </button>
                         </div>
                         <footer class="footer footer-alt">
-                            <p class="text-muted">Đã có tài khoản? <a href="{{ route('login') }}" class="text-muted ms-1"><b>Đăng nhập</b></a></p>
+                            <p class="text-muted">@lang('settings.Register_message') <a href="{{ route('login') }}"
+                                    class="text-muted ms-1"><b>@lang('settings.Login')</b></a></p>
                         </footer>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="auth-fluid-right text-center" style="background-image: url(https://system.avntech.vn/storage/app/AvnGeneralSettings/1672023779-t-a72919ff65c8bd96e4d9.jpg);background-size: auto;background-repeat: no-repeat;background-position: center;">
+        <div class="auth-fluid-right text-center"
+            style="background-image: url(https://system.avntech.vn/storage/app/AvnGeneralSettings/1672023779-t-a72919ff65c8bd96e4d9.jpg);background-size: auto;background-repeat: no-repeat;background-position: center;">
             <div class="auth-user-testimonial">
                 <!-- <p class="lead"></p> -->
                 {!! $login_background_text !!}
@@ -95,18 +99,18 @@
 <!--- Thông báo ---------->
 @if (session()->has('Success'))
     <script>
-        $.NotificationApp.send("Thành công", "{{ session()->get('Success') }}", "bottom-right", "rgba(0,0,0,0.2)",
+        $.NotificationApp.send("@lang('settings.Success')", "{{ session()->get('Success') }}", "bottom-right", "rgba(0,0,0,0.2)",
             "success")
     </script>
 @endif
 @if (session()->has('Failed'))
     <script>
-        $.NotificationApp.send("Thất bại", "{{ session()->get('Failed') }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
+        $.NotificationApp.send("@lang('settings.Failed')", "{{ session()->get('Failed') }}", "bottom-right", "rgba(0,0,0,0.2)",
+            "error")
     </script>
 @endif
 @if ($errors->any())
     <script>
-        $.NotificationApp.send("Thất bại", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
+        $.NotificationApp.send("@lang('settings.Failed')", "{{ $errors->all()[0] }}", "bottom-right", "rgba(0,0,0,0.2)", "error")
     </script>
 @endif
-

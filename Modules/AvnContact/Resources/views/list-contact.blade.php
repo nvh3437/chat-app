@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    Liên hệ
+    @lang('settings.List') @lang('settings.Contact')
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -9,13 +9,13 @@
                 <div class="page-title-box">
                     <div class="page-title-right d-none d-sm-block">
                         <a href="{{ route('contact-page') }}" class="btn btn-success">
-                            Trang liên hệ
+                            @lang('settings.Contact_page')
                         </a>
                     </div>
-                    <h4 class="page-title">Danh sách đơn liên hệ</h4>
+                    <h4 class="page-title">@lang('settings.List') @lang('settings.Contact')</h4>
                     <div class="d-sm-none mb-2">
                         <a href="{{ route('contact-page') }}" class="btn btn-success">
-                            Trang liên hệ
+                            @lang('settings.Contact_page')
                         </a>
                     </div>
                 </div>
@@ -23,30 +23,35 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="card-body">
                         <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>STT</th>
-                                    <th>Tiêu đề</th>
-                                    <th>Tên</th>
-                                    <th>Ngày gửi</th>
-                                    <th>Chọn</th>
+                                    <th>#</th>
+                                    <th>@lang('settings.Status')</th>
+                                    <th>@lang('settings.Title')</th>
+                                    <th>@lang('settings.Name')</th>
+                                    <th>@lang('settings.Date')</th>
+                                    <th>@lang('settings.Action')</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $i = 0;
-                                @endphp
                                 @foreach ($contacts as $item)
                                     <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $item->title }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ date('H:i:s | d/m/Y', strtotime($item->created_at)) }}</td>
+                                        <td>{{ $loop->index }}</td>
                                         <td>
-                                            <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#view-{{ $item->id }}" class="action-icon">
+                                            <span
+                                                class="badge badge-outline-{{ $item->status == 1 ? 'primary' : ($item->status == -1 ? 'danger' : 'secondary') }}">{{ $item->status == 1 ? __('settings.Confirm') : ($item->status == -1 ? __('settings.Deny') : __('settings.Unprocessed')) }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $item->title }}
+                                        </td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ date('H:i | d/m/Y', strtotime($item->created_at)) }}</td>
+                                        <td>
+                                            <a href="javascript: void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#view-{{ $item->id }}" class="action-icon">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
                                             <a href="javascript: void(0);" data-bs-toggle="modal"
@@ -56,33 +61,52 @@
                                         </td>
                                     </tr>
                                     <!----Modal Edit----->
-                                    <div class="modal fade" id="view-{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal fade" id="view-{{ $item->id }}" tabindex="-1"
+                                        aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title text-dark">Xem đơn liên hệ</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <h5 class="modal-title text-dark">@lang('settings.Contact')</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body text-dark">
                                                     <div class="mb-2">
-                                                        <label class="form-label">Tiêu đề</label>
-                                                        <input type="text" class="form-control" value="{{$item->title}}">
+                                                        <label class="form-label">@lang('settings.Title')
+                                                            <span
+                                                                class="badge badge-outline-{{ $item->status == 1 ? 'primary' : ($item->status == -1 ? 'danger' : 'secondary') }}">{{ $item->status == 1 ? __('settings.Confirm') : ($item->status == -1 ? __('settings.Deny') : __('settings.Unprocessed')) }}</span>
+                                                        </label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{ $item->title }}">
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label">Tên người gửi</label>
-                                                        <input type="text" class="form-control" value="{{$item->name}}">
+                                                        <label class="form-label">@lang('settings.Name')</label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{ $item->name }}">
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label">Email </label>
-                                                        <input type="email" class="form-control" value="{{$item->email}}">
+                                                        <label class="form-label">@lang('settings.Email')</label>
+                                                        <input type="email" class="form-control"
+                                                            value="{{ $item->email }}">
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label">Nội dung </label>
+                                                        <label class="form-label">@lang('settings.Content')</label>
                                                         <textarea class="form-control mb-1" id="textBox1" rows="5">{!! $item->message !!}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>  
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                                        @lang('settings.Cancel')
+                                                    </button>
+                                                    <form action="{{ route('process-contact', [$item->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('put')
+                                                        <button type="submit" name="status" value="1"
+                                                            class="btn btn-primary">@lang('settings.Confirm')</button>
+                                                        <button type="submit" name="status" value="-1"
+                                                            class="btn btn-danger">@lang('settings.Deny')</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -93,20 +117,24 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title text-dark">Xác nhận</h5>
+                                                    <h5 class="modal-title text-dark">@lang('settings.Confirm')</h5>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body text-dark">
-                                                    <p>Bạn có muốn xóa không?</p>
+                                                    <p>@lang('settings.Delete_confirm', ['name' => __('settings.Contact')])</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy
+                                                    <button type="button" class="btn btn-light"
+                                                        data-bs-dismiss="modal">@lang('settings.Cancel')
                                                     </button>
-                                                    <form action="{{ route('delete-contact', [$item->id]) }}" method="POST">
+                                                    <form action="{{ route('delete-contact', [$item->id]) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="submit" class="btn btn-primary">Xóa</button>
+                                                        <button type="submit" class="btn btn-primary">
+                                                            @lang('settings.Delete.delete')
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -122,23 +150,34 @@
     </div>
 @endsection
 @section('js')
-    <script src="{{ asset('resources/assets/js/vendor/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('resources/assets/js/vendor/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
 
-    <!-- Datatable Init js -->
-    <script src="{{ asset('resources/assets/js/pages/demo.datatable-init.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript">
-        function setHeight(fieldId){
-            document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
-        }
-        setHeight('textBox1');
+    <script>
+        $("#state-saving-datatable").DataTable({
+                stateSave: !0,
+                language: {
+                    "search": "@lang('settings.Search')",
+                    "info": "@lang('settings.Display_per_page', ['page' => '_PAGE_', 'pages' => '_PAGES_'])",
+                    "emptyTable": "@lang('settings.No_data')",
+                    "infoEmpty": "@lang('settings.No_record')",
+                    "lengthMenu": '@lang('settings.Show_entries', ['entries' => '<select><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="-1">' . __('settings.All') . '</option></select>'])',
+                    "zeroRecords": "@lang('settings.No_result')",
+                    paginate: {
+                        previous: "<i class='mdi mdi-chevron-left'>",
+                        next: "<i class='mdi mdi-chevron-right'>"
+                    }
+                },
+                drawCallback: function() {
+                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+                },
+            }),
+            $(".dataTables_length select").addClass("form-select form-select-sm"),
+            $(".dataTables_length label").addClass("form-label");
     </script>
+    <script src="{{ asset('resources/assets/js/vendor/dataTables.buttons.min.js') }}"></script>
 @endsection
 @section('css')
-    <link href="{{ asset('resources/assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('resources/assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
 @endsection

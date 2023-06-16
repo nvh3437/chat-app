@@ -24,6 +24,6 @@ class Navbar extends Model
 
     public function childrens()
     {
-        return $this->hasMany(Navbar::class,'parent_id', 'id');
+        return $this->hasMany(Navbar::class,'parent_id', 'id')->orderBy('order');
     }
 }

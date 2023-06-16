@@ -3,14 +3,13 @@
 namespace Modules\AvnCMS\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Lang;
 
 class CMSRequest extends FormRequest
 {
     public function rules()
     {
         return [
-            'name' => 'required',
-            'description' => 'required',
             'link' => 'unique:avn_cms',
         ];
     }
@@ -18,9 +17,7 @@ class CMSRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Tiêu đề không thể bỏ trống',
-            'description.required' => 'Nội dung trang không thể bỏ trống',
-            'link.unique' => 'Đã có đường dẫn này',
+            'link.unique' => Lang::get('settings.Validate.Unique', ['name' => Lang::get('settings.Route')]),
         ];
     }
 

@@ -36,25 +36,25 @@
                 <span>
                     <span class="account-user-name">{{$user->name}}</span>
                     @if($user->type == 'customer')
-                        <span class="account-user-name">{{ number_format($user->customer->money, 0, ',', '.') }} $</span>
+                        <span class="account-user-name">{{ number_format($user->profile->money, 0, ',', '.') }} $</span>
                     @endif
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
                 <!-- item-->
                 <div class=" dropdown-header noti-title">
-                    <h6 class="text-overflow m-0">Chào mừng !</h6>
+                    <h6 class="text-overflow m-0">@lang('settings.Welcome')!</h6>
                 </div>
                 <!--- route info của quản lý -->
-                <a href="{{route('manager-profile')}}" class="dropdown-item notify-item">
+                <a href="{{route('profile')}}" class="dropdown-item notify-item">
                     <i class="mdi mdi-account-circle me-1"></i>
-                    <span>Thông tin cá nhân</span>
+                    <span>@lang('settings.Profile')</span>
                 </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="dropdown-item notify-item">
                         <i class="mdi mdi-logout me-1"></i>
-                        <span>Đăng xuất</span>
+                        <span>@lang('settings.Logout')</span>
                     </button>
                 </form>
             </div>

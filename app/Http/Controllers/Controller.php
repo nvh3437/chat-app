@@ -9,11 +9,13 @@ use App\Models\GeneralSettings;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreUserRequest as URequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Modules\AvnChat\Entities\ChatRoomUser;
+use Lang;
 
 class Controller extends BaseController
 {
@@ -22,17 +24,17 @@ class Controller extends BaseController
     //------------------ Side bar ---------------------------//
     public static function getMenu()
     {
-        $menus = AvnMenu::where('parent','=',0)->orderBy('order', 'asc')->get();
+        $menus = AvnMenu::where('parent', '=', 0)->orderBy('order', 'asc')->get();
         return $menus;
     }
     public static function getChildrenMenu($parent_id)
     {
-        $modules = AvnMenu::where('parent',$parent_id)->get();
+        $modules = AvnMenu::where('parent', $parent_id)->get();
         return $modules;
     }
     public static function getSetting($key = '')
     {
-        $setting = GeneralSettings::where('key',$key)->select('value')->first();
+        $setting = GeneralSettings::where('key', $key)->select('value')->first();
         return $setting;
     }
     //------------------ User ---------------------------//
@@ -52,7 +54,7 @@ class Controller extends BaseController
     public static function editUser($id)
     {
         $user = User::findOrFail($id);
-        return view('edit-user',compact('user'));
+        return view('edit-user', compact('user'));
     }
     public static function storeUser(Request $request)
     {
@@ -64,10 +66,14 @@ class Controller extends BaseController
             $user->name = $request->name;
             $user->password = Hash::make($request->password);
             $user->save();
-            return redirect()->route('list-user')->with('Success','Thêm thành công');
-        } catch (\Exception $e) {
-            return back()->with('Failed','Thêm thất bại');
-        }   
+            $global_chat_room_user = new ChatRoomUser();
+            $global_chat_room_user->user_id = $user->id;
+            $global_chat_room_user->room_id = 1;
+            $global_chat_room_user->save();
+            return back()->with('Success', Lang::get('settings.Add.Add_success'));
+        } catch (Exception $e) {
+            return back()->with('Failed', Lang::get('settings.Add.Add_failed'));
+        }
     }
     public static function updateUser(Request $request, $id)
     {
@@ -75,27 +81,26 @@ class Controller extends BaseController
             $user = User::findOrFail($id);
             $user->username = $request->username;
             $user->email = $request->email;
-            $user->type = 'system';
             $user->name = $request->name;
             if ($request->password != null && strlen($request->password) > 0) {
                 $user->password = Hash::make($request->password);
             }
             $user->save();
-            return redirect()->route('list-user')->with('Success','Cập nhập thành công');
-        } catch (\Exception $e) {
-            return back()->with('Failed','Cập nhập thất bại');
-        }   
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
+        } catch (Exception $e) {
+            return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
+        }
     }
     public static function deleteUser($id)
     {
         try {
             $user = User::findOrFail($id)->delete();
-            return back()->with('Success','Xóa thành công');
-        } catch  (\Exception $e) {
-            return back()->with('Failed','Xóa thất bại');
+            return back()->with('Success', Lang::get('settings.Delete.Delete_success'));
+        } catch (Exception $e) {
+            return back()->with('Failed', Lang::get('settings.Delete.Delete_failed'));
         }
     }
 
-    
-    
+
+
 }

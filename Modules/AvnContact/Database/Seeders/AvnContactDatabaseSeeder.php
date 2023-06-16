@@ -19,13 +19,16 @@ class AvnContactDatabaseSeeder extends Seeder
     {
         $menu = new AvnMenu();
         $menu->label = 'Liên hệ';
+        $menu->en = 'Contact';
+        $menu->vi = 'Liên hệ';
+        $menu->ja = 'お問い合わせ';
         $menu->route_name = 'list-contact';
         $menu->icon = 'mdi mdi-email-alert-outline';
         $menu->module = "AvnContact";
         $menu->save();
 
         $permission1 = new Permission();
-        $permission1->route_names = 'list-contact, delete-contact';
+        $permission1->route_names = 'list-contact, process-contact, delete-contact';
         $permission1->name = 'Quản lý liên hệ';
         $permission1->menu_id = $menu->id;
         $permission1->save();

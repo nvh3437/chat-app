@@ -1,7 +1,8 @@
 <?php
 use Modules\AvnUser\Http\Controllers\CustomerController;
-use Modules\AvnUser\Http\Controllers\ParternController;
+use Modules\AvnUser\Http\Controllers\UserController;
 use Modules\AvnUser\Http\Controllers\SocialController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,14 +15,18 @@ use Modules\AvnUser\Http\Controllers\SocialController;
 */
 
 //-------------------------- Quản lý ---------------------//
-Route::prefix('user')->group(function() {
+Route::prefix('user')->group(function () {
+
+    Route::post('/get-users', 'UserController@getUsers');
+
     // Chuyên gia
-    Route::get('/list-partern', 'ParternManagerController@listPartern')->middleware(['auth', 'permission'])->name('list-partern');
-    Route::get('/add-partern', 'ParternManagerController@addPartern')->middleware(['auth', 'permission'])->name('add-partern');
-    Route::get('/edit-partern/{id}', 'ParternManagerController@editPartern')->middleware(['auth', 'permission'])->name('edit-partern');
-    Route::post('/store-partern', 'ParternManagerController@storePartern')->middleware(['auth', 'permission'])->name('store-partern');
-    Route::put('/update-partern/{id}', 'ParternManagerController@updatePartern')->middleware(['auth', 'permission'])->name('update-partern');
-    Route::delete('/delete-partern/{id}', 'ParternManagerController@deletePartern')->middleware(['auth', 'permission'])->name('delete-partern');
+    Route::get('/list-partner', 'PartnerManagerController@listPartner')->middleware(['auth', 'permission'])->name('list-partner');
+    Route::get('/add-partner', 'PartnerManagerController@addPartner')->middleware(['auth', 'permission'])->name('add-partner');
+    Route::get('/edit-partner/{id}', 'PartnerManagerController@editPartner')->middleware(['auth', 'permission'])->name('edit-partner');
+    Route::post('/store-partner', 'PartnerManagerController@storePartner')->middleware(['auth', 'permission'])->name('store-partner');
+    Route::put('/update-partner/{id}', 'PartnerManagerController@updatePartner')->middleware(['auth', 'permission'])->name('update-partner');
+    Route::delete('/delete-partner/{id}', 'PartnerManagerController@deletePartner')->middleware(['auth', 'permission'])->name('delete-partner');
+    Route::post('/update-money-partner/{id}', 'PartnerManagerController@updateMoneyPartner')->middleware(['auth', 'permission'])->name('update-money-partner');
 
     // Khách
     Route::get('/list-customer', 'CustomerManagerController@listCustomer')->middleware(['auth', 'permission'])->name('list-customer');
@@ -30,10 +35,7 @@ Route::prefix('user')->group(function() {
     Route::post('/store-customer', 'CustomerManagerController@storeCustomer')->middleware(['auth', 'permission'])->name('store-customer');
     Route::put('/update-customer/{id}', 'CustomerManagerController@updateCustomer')->middleware(['auth', 'permission'])->name('update-customer');
     Route::delete('/delete-customer/{id}', 'CustomerManagerController@deleteCustomer')->middleware(['auth', 'permission'])->name('delete-customer');
-
-    // Quản lý
-    Route::get('/manager-profile', 'ManagerController@managerProfile')->middleware(['auth'])->name('manager-profile');
-    Route::put('/update-manager-profile', 'ManagerController@updateManagerProfile')->middleware(['auth'])->name('update-manager-profile');
+    Route::post('/update-money-customer/{id}', 'CustomerManagerController@updateMoneyCustomer')->middleware(['auth', 'permission'])->name('update-money-customer');
 });
 
 //-------------------------- Khách hàng tự đăng ký, xem thông tin bản thân,... ---------------------//
@@ -47,13 +49,14 @@ Route::get('/forgot-password', [CustomerController::class, 'forgotPassword'])->n
 Route::get('login/{social}', [SocialController::class, 'redirectToProvider'])->name('login-social');
 Route::get('login/{social}/callback', [SocialController::class, 'handleProviderCallback'])->name('login-social-callback');
 
-    // Template reset password: resources\views\auth\reset-password.blade.php
+// Template reset password: resources\views\auth\reset-password.blade.php
 // Route::get('/reset-password/{token}', [CustomerController::class, 'resetPassword'])->name('reset-password');
 
 // Thông tin cá nhân
-Route::get('/my-profile', [CustomerController::class, 'myProfile'])->middleware(['auth'])->name('my-profile');
-Route::put('/update-customer-profile', [CustomerController::class, 'updateCustomerProfile'])->middleware(['auth'])->name('update-customer-profile');
+// Route::get('/my-profile', [CustomerController::class, 'myProfile'])->middleware(['auth'])->name('my-profile');
+// Route::put('/update-customer-profile', [CustomerController::class, 'updateCustomerProfile'])->middleware(['auth'])->name('update-customer-profile');
 
 //-------------------------- Chuyên gia xem thông tin bản thân,... ---------------------//
-Route::get('/profile', [ParternController::class, 'profile'])->middleware(['auth'])->name('profile');
-Route::put('/update-partern-profile', [ParternController::class, 'updateParternProfile'])->middleware(['auth'])->name('update-partern-profile');
+Route::get('/money-history', [UserController::class, 'moneyHistory'])->middleware(['auth'])->name('money-history');
+Route::get('/profile', [UserController::class, 'profile'])->middleware(['auth'])->name('profile');
+Route::put('/update-profile', [UserController::class, 'updateProfile'])->middleware(['auth'])->name('update-profile');

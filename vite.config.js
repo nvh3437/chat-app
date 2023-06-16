@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'Modules/AvnChat/resources/assets/js/chat.js',
             ],
             refresh: true,
         }),

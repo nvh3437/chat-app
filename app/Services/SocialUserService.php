@@ -6,8 +6,9 @@ use App\Models\User;
 use Modules\AvnUser\Entities\SocialUser;
 use Laravel\Socialite\Contracts\Provider;
 use App\Http\Controllers\Helper;
-use Modules\AvnUser\Entities\Customer;
+use Modules\AvnUser\Entities\Profile;
 use Illuminate\Support\Facades\Hash;
+use Modules\AvnChat\Entities\ChatRoomUser;
 
 class SocialUserService
 {
@@ -39,19 +40,21 @@ class SocialUserService
                     'type' => 'customer',
                 ]);
             }
-            $customer = $user->customer_id;
+            $customer = Profile::find($user->id);
 
             if (!$customer) {
-                $customer = Customer::create([
+                $customer = Profile::create([
                     'id' => $user->id,
-                    'name' => $user->name,
                     'img' => $providerUser->getAvatar(),
                 ]);
             }
 
             $account->user()->associate($user);
             $account->save();
-
+            $global_chat_room_user = new ChatRoomUser();
+            $global_chat_room_user->user_id = $user->id;
+            $global_chat_room_user->room_id = 1;
+            $global_chat_room_user->save();
             return $user;
         }
     }
