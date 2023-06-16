@@ -4,7 +4,7 @@
     use App\Models\GeneralSettings;
 @endphp
 <!DOCTYPE html>
-<html lang="{{Lang::locale()}}">
+<html lang="{{ Lang::locale() }}">
 
 <head>
     <meta charset="utf-8" />
@@ -28,6 +28,7 @@
         content="{{ asset(isset($seo_image) ? $seo_image : ($logo ? '/storage/app/AvnGeneralSettings/' . $logo : '/resources/assets/images/logo.png')) }}" />
     <meta name="twitter:image"
         content="{{ asset(isset($seo_image) ? $seo_image : ($logo ? '/storage/app/AvnGeneralSettings/' . $logo : '/resources/assets/images/logo.png')) }}" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     {{-- seo keyword --}}
     @if (isset($seo_keywords))
         @foreach (explode(', ', $seo_keywords) as $seo_keyword)
