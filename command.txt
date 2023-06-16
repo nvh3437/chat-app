@@ -175,6 +175,7 @@ apt-get install automake -y
         set: 
         admin: {
             admin_http = true  
+            admin_https = true  
         }
 
     #config even handler================================================================================
