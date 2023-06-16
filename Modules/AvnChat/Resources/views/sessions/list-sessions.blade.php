@@ -366,10 +366,10 @@
                                                         <p>
                                                             <audio controls>
                                                                 <source
-                                                                    src="{{ env('JANUS_URL') . '/record-' . $call->id . '.wav' }}"
+                                                                    src="{{ env('JANUS_SERVER_URL_RECORD') . 'record-' . $call->id . '.wav' }}"
                                                                     type="audio/wav">
                                                                 <a download="{{ 'record-' . $call->id . '-at-' . date('H-i-s-d-m-Y', strtotime($call->created_at)) }}"
-                                                                    href="{{ env('JANUS_URL') . '/record-' . $call->id . '.wav' }}"
+                                                                    href="{{ env('JANUS_SERVER_URL_RECORD') . 'record-' . $call->id . '.wav' }}"
                                                                     class="fw-bold">
                                                                     {{ 'record-' . $call->id . '-at-' . date('H-i-s-d-m-Y', strtotime($call->created_at)) }}
                                                                 </a>
