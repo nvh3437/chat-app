@@ -26,6 +26,10 @@ class AvnChatController extends Controller
 {
     public function index(Request $request)
     {
+
+        if (!file_exists('storage/app/AvnRecord')) {
+            File::makeDirectory('storage/app/AvnRecord', 0777, true, true);
+        }
         $user = Auth::user();
 
         // get room

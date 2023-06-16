@@ -60,7 +60,7 @@ class AvnCallController extends Controller
         if ($room->is_workspace) {
             $request_janus['record'] = true;
             $request_janus['record_file'] = 'record-' . $call->id . '.wav';
-            $request_janus['record_dir'] = env('JANUS_SERVER_PUBLIC_ROOT');
+            $request_janus['record_dir'] = env('JANUS_SERVER_PATH_SAVE_RECORD');
         }
         $response = Http::accept('application/json')->post(env('JANUS_URL') . "/admin", [
             "janus" => "message_plugin",
