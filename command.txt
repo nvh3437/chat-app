@@ -182,9 +182,9 @@ apt-get install automake -y
         nano /opt/janus/etc/janus/janus.eventhandler.sampleevh.jcfg
         set: [general]
             enabled = true
-            events = all
+            events = plugins
             grouping = true
-            backend = http://localhost:8080
+            backend = https://hikari-hr.com/chat/janus-event
             backend_user = email admin account
             backend_pwd = password admin account
 
