@@ -67,8 +67,12 @@
                             </div>
                             <h4 class="header-title mb-1">@lang('settings.Notify')</h4>
                             @foreach ($notifications as $notification)
-                                <div class="d-flex mt-3">
+                                <div class="d-flex mt-3 position-relative">
                                     <i class='uil uil-arrow-growth me-2 font-18 text-primary'></i>
+                                    @if ($notification->status == 0)
+                                        <i
+                                            class=" dripicons-dot fs-1 text-danger position-absolute top-0 start-0"style="margin-top: -22px;margin-left: -10px;"></i>
+                                    @endif
                                     <div>
                                         <a class="mt-1 font-14"
                                             href="{{ route('read-notifications', ['id' => $notification->id]) }}"
