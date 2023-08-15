@@ -29,8 +29,10 @@ class SocialUserService
                 'provider' => $providerName
             ]);
 
+            if (!$providerUser->getEmail()) {
+                return redirect()->route('login')->with('Failed', 'Tài khoản không có địa chỉ email');
+            }
             $user = User::whereEmail($providerUser->getEmail())->where('email', '!=', null)->first();
-
             if (!$user) {
                 $user = User::create([
                     'email' => $providerUser->getEmail(),

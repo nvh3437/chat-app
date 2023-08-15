@@ -232,3 +232,6 @@ enable và nhập ip vào (http://52.221.199.143/) để bỏ qua bảo mật đ
 php artisan aimeos:setup --option=setup/default/demo:1
 
 
+CREATE USER 'admisystem1'@'%' IDENTIFIED BY 'p234234!asAdfsword';
+GRANT ALL PRIVILEGES ON *.* TO 'admisystem1'@'%';
+FLUSH PRIVILEGES;
