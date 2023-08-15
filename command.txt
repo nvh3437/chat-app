@@ -55,6 +55,7 @@ sudo nano /etc/nginx/sites-enabled/default
 
 
 sudo systemctl restart nginx
+sudo systemctl restart mysql
 sudo systemctl restart php8.1-fpm
 
 https://viblo.asia/p/webrtc-va-install-janus-on-ubuntu-1804-gAm5yy885db
