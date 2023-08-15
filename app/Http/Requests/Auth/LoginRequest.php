@@ -46,7 +46,15 @@ class LoginRequest extends FormRequest
             ]);
         }
         $user = Auth::user();
-
+        if ($user->status != 1) {
+            Auth::guard('web')->logout();
+            $this->session()->invalidate();
+            $this->session()->regenerateToken();
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages([
+                'username' => trans('settings.Auth.Login_failed'),
+            ]);
+        }
         RateLimiter::clear($this->throttleKey());
     }
 

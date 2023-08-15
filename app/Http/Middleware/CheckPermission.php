@@ -24,6 +24,10 @@ class CheckPermission
         $currentRoute = Route::currentRouteName();
         $currentUser = Auth::user();
 
+        if ($currentUser->status != 1) {
+            Auth::guard('web')->logout();
+            return redirect('/');
+        }
         // Danh sách role của user hiện tại
         $currentUserRoles = $currentUser->roles;
         // Danh sách route user được truy cập

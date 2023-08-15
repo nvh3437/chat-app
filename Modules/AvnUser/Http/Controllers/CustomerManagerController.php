@@ -36,7 +36,7 @@ class CustomerManagerController extends Controller
     public function storeCustomer(StoreProfileRequest $request)
     {
         try {
-            // Lưu bảng user 
+            // Lưu bảng user
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
@@ -92,7 +92,7 @@ class CustomerManagerController extends Controller
     public function updateCustomer(UpdateProfileRequest $request, $id)
     {
         try {
-            // Lưu bảng user 
+            // Lưu bảng user
             $user = User::findOrFail($id);
             $user->name = $request->name;
             if ($user->email != $request->email && $request->email) {
@@ -105,6 +105,7 @@ class CustomerManagerController extends Controller
             if ($request->password != null && strlen($request->password) > 0) {
                 $user->password = Hash::make($request->password);
             }
+            $user->status = $request->status;
             $user->save();
 
             // Lưu bảng customer
@@ -136,7 +137,7 @@ class CustomerManagerController extends Controller
                 $customer->img = $path;
             }
             $customer->save();
-            return redirect()->route('list-customer')->with('Success', Lang::get('settings.Update.Update_success'));
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
             return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }

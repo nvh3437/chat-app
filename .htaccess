@@ -1,3 +1,7 @@
+RewriteEngine on
+RewriteRule ^vendor/(.*) public/vendor/$1
+RewriteRule ^aimeos/(.*) public/aimeos/$1
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Aimeos\Shop\Controller\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Routing\Controller;
@@ -65,9 +66,9 @@ class RoleController extends Controller
                     $permission_role->save();
                 }
             }
-            return redirect()->route('role-list') ->with('Success', Lang::get('settings.Update.Update_success'));
+            return redirect()->route('role-list')->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
-            return redirect()->route('role-list') ->with('Failed', Lang::get('settings.Update.Update_failed'));
+            return redirect()->route('role-list')->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
     }
 
@@ -128,10 +129,13 @@ class RoleController extends Controller
                 }
             }
         }
+        $currentUser = Auth::user();
+        if (($menu->route_names == 'aimeos_shop_admin' || $route_names == 'aimeos_shop_admin') && $currentUser->can('admin', [AdminController::class, config('shop.roles', ['admin', 'editor'])]) === true) {
+            return true;
+        }
         if ($permissions == null || count($permissions) <= 0) {
             return true;
         } else {
-            $currentUser = Auth::user();
             $currentUserRoles = $currentUser->roles;
             foreach ($currentUserRoles as $role) {
                 // Danh sách quyền của role

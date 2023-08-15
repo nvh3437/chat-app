@@ -15,8 +15,32 @@
                     @csrf
                     <div class="card">
                         <div class="card-body shadow-lg">
-                            <h4 class="header-title">@lang('settings.Account_info')</h4>
+                            <h4 class="header-title">
+                                @lang('settings.Account_info')
+                                @if ($user->status == 1)
+                                    <span class="badge bg-success pt-1">
+                                        <i class="mdi mdi-lock-check"></i>
+                                        @lang('settings.Active')
+                                    </span>
+                                @else
+                                    <span class="badge bg-danger pt-1">
+                                        <i class="mdi mdi-lock-alert"></i>
+                                        @lang('settings.Disabled')
+                                    </span>
+                                @endif
+                            </h4>
                             <div class="row g-2">
+                                <div class="col-12">
+                                    <label class="form-label" for="status">
+                                        @lang('settings.Status') <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" name="status">
+                                        <option value="1" {{ $user->status == 1 ? 'selected' : '' }}>
+                                            @lang('settings.Active')</option>
+                                        <option value="0" {{ $user->status != 1 ? 'selected' : '' }}>
+                                            @lang('settings.Disabled')</option>
+                                    </select>
+                                </div>
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label">
                                         @lang('settings.Name') @lang('settings.account')

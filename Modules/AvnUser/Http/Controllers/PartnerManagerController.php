@@ -37,7 +37,7 @@ class PartnerManagerController extends Controller
     public function storePartner(StoreProfileRequest $request)
     {
         try {
-            // Lưu bảng user 
+            // Lưu bảng user
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
@@ -106,7 +106,7 @@ class PartnerManagerController extends Controller
     public function updatePartner(UpdateProfileRequest $request, $id)
     {
         try {
-            // Lưu bảng user 
+            // Lưu bảng user
             $user = User::findOrFail($id);
             $user->name = $request->name;
             if ($user->email != $request->email && $request->email) {
@@ -119,6 +119,7 @@ class PartnerManagerController extends Controller
             if ($request->password != null && strlen($request->password) > 0) {
                 $user->password = Hash::make($request->password);
             }
+            $user->status = $request->status;
             $user->save();
 
             // Lưu bảng partner
@@ -152,7 +153,7 @@ class PartnerManagerController extends Controller
                 $partner->img = $path;
             }
             $partner->save();
-            return redirect()->route('list-partner')->with('Success', Lang::get('settings.Update.Update_success'));
+            return back()->with('Success', Lang::get('settings.Update.Update_success'));
         } catch (Exception $e) {
             return back()->with('Failed', Lang::get('settings.Update.Update_failed'));
         }
