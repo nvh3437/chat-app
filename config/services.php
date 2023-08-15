@@ -31,8 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'facebook' => [
-        'client_id' => '694930635551376',
-        'client_secret' => '365c8ce2faac36a12b9af1b518477608',
+        'client_id' => '844986103261731',
+        'client_secret' => '7d34b9eb18219d6af2b51b50833abf94',
         'redirect' => 'https://hikari-hr.com/login/facebook/callback',
     ],
     'google' => [
