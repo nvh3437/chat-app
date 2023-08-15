@@ -29,6 +29,7 @@
                                     <th>#</th>
                                     <th>@lang('settings.Username')</th>
                                     <th>@lang('settings.Type')</th>
+                                    <th>@lang('settings.Status')</th>
                                     <th>@lang('settings.Action')</th>
                                 </tr>
                             </thead>
@@ -39,7 +40,7 @@
                                 @foreach ($users as $item)
                                     <tr>
                                         <td>{{ ++$i }}</td>
-                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->username }}</td>
                                         <td>
                                             @if ($item->type == 'customer')
                                                 <span class="badge bg-success">@lang('settings.Customer')</span>
@@ -47,6 +48,19 @@
                                                 <span class="badge bg-primary">@lang('settings.Partner')</span>
                                             @else
                                                 <span class="badge bg-danger">@lang('settings.Manager')</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($item->status == 1)
+                                                <span class="badge bg-success">
+                                                    <i class="mdi mdi-lock-check"></i>
+                                                    @lang('settings.Active')
+                                                </span>
+                                            @else
+                                                <span class="badge bg-danger">
+                                                    <i class="mdi mdi-lock-alert"></i>
+                                                    @lang('settings.Disabled')
+                                                </span>
                                             @endif
                                         </td>
                                         <td>

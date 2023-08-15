@@ -13,7 +13,7 @@ return [
     'background' => 'Background',
     'Login_bkg_title' => 'Login Banner Information',
     'Login_bkg_text' => 'Banner Content',
-    
+
     // Settings edit
     'company_info' => 'Business information',
 
@@ -307,4 +307,6 @@ return [
     'English' => 'English',
     'Vietnamese' => 'Vietnamese',
     'Japanese' => 'Japanese',
+    'Disabled' => 'Disabled',
+    'Active' => 'Active',
 ];

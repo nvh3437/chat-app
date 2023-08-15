@@ -307,4 +307,6 @@ return [
     'English' => '英語',
     'Vietnamese' => 'ベトナム語',
     'Japanese' => '日本語',
+    'Disabled' => '無効',
+    'Active' => 'アクティブ',
 ];

@@ -47,5 +47,13 @@ class AuthServiceProvider extends ServiceProvider
                 ->line('Nhấn vào nút bên dưới để đặt lại mật khẩu của bạn trên hệ thống ' . $company . ' của chúng tôi.')
                 ->action('Đặt lại mật khẩu', route('password.reset', ['token' => $token]));
         });
+
+        Gate::define('admin', function($user, $class, $roles) {
+            if( isset( $user->superuser ) && $user->superuser ) {
+                return true;
+            }
+            return app( '\Aimeos\Shop\Base\Support' )->checkUserGroup( $user, $roles );
+        });
+
     }
 }

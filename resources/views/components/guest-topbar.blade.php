@@ -48,7 +48,6 @@
                 </div>
             </li>
             @if ($user)
-
                 <li class="notification-list">
                     <a class="nav-link end-bar-toggle" href="{{ route('chat-index') }}">
                         <i class="uil-facebook-messenger noti-icon" style="line-height: 76px; font-size: 26px;"></i>
@@ -59,6 +58,12 @@
                 @if ($user->type == 'system')
                     <li class="notification-list">
                         <a class="nav-link end-bar-toggle" href="{{ route('dashboard-manager') }}">
+                            <i class="dripicons-gear noti-icon"></i>
+                        </a>
+                    </li>
+                @elseif ($user->can('admin', [AdminController::class, config('shop.roles', ['admin', 'editor'])]) === true)
+                    <li class="notification-list">
+                        <a class="nav-link end-bar-toggle" href="{{ route('aimeos_shop_admin') }}">
                             <i class="dripicons-gear noti-icon"></i>
                         </a>
                     </li>

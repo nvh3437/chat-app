@@ -309,4 +309,6 @@ return [
     'English' => 'Tiếng Anh',
     'Vietnamese' => 'Tiếng Việt',
     'Japanese' => 'Tiếng Nhật',
+    'Disabled' => 'Khóa',
+    'Active' => 'Mở khóa',
 ];

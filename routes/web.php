@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\App;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', [DashboardController::class, 'dashboard'])->name('home-page');
 Route::get('/language/{locale}', function (string $locale) {
     if (!in_array($locale, ['en', 'vi', 'ja'])) {
