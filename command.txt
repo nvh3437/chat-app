@@ -1,8 +1,8 @@
 
 japan-chat-app
-composer update 
-php artisan key:generate  
-/opt/alt/php81/usr/bin/php /usr/local/bin/composer2 update 
+composer update
+php artisan key:generate
+/opt/alt/php81/usr/bin/php /usr/local/bin/composer2 update
 /opt/alt/php81/usr/bin/php artisan migrate:fresh --seed
 php artisan module:seed AvnUser
 php artisan module:seed AvnSetting
@@ -30,7 +30,7 @@ sudo apt-get install php-curl
 sudo apt-get install php-xml
 sudo apt-get install php-imap
 sudo apt-get install php-mysqlnd
-sudo apt-get install php-mbstring 
+sudo apt-get install php-mbstring
 sudo apt-get install php-zip
 sudo apt-get install php-fpm
 sudo apt-get install mysql-server -y
@@ -65,7 +65,7 @@ open port usd for ec2 instance
     1,instance->sercurity->sercurity groups
     2,Inbound rules->Edit inbound rules
     3,add rules->all upd port range: 0 - 65535->anywhere ipv4->save rules
-    
+
 apt-get update
 apt-get install pkg-config -y
 apt-get install dist -y
@@ -147,7 +147,7 @@ apt-get install automake -y
     #./configure --enable-docs
     #config====================================================================================
         nano /opt/janus/etc/janus/janus.jcfg
-            thêm: 
+            thêm:
             media: {
                 rtp_port_range = "10000-20000"
             }
@@ -159,7 +159,7 @@ apt-get install automake -y
                 full_trickle = true
                 nat_1_1_mapping = "public ip"
                 keep_private_host = true
-            }   
+            }
             events: {
                 broadcast = true
             }
@@ -172,10 +172,10 @@ apt-get install automake -y
         cập nhật admin key vào env
     #config admin api (secret = janusoverlord)=================================================================================
         nano /opt/janus/etc/janus/janus.transport.http.jcfg
-        set: 
+        set:
         admin: {
-            admin_http = true  
-            admin_https = true  
+            admin_http = true
+            admin_https = true
         }
 
     #config even handler================================================================================
@@ -188,9 +188,9 @@ apt-get install automake -y
             backend_user = email admin account
             backend_pwd = password admin account
 
-            
+
         bỏ qua csrf_token cho các route nhận thông báo từ janus
-            file App\Http\Middleware\VerifyCsrfToken 
+            file App\Http\Middleware\VerifyCsrfToken
             thêm path(uri) vào $except:
                 protected $except = [
                     'chat/ngu',
@@ -199,7 +199,7 @@ apt-get install automake -y
 
     #config nginx======================================================================================
         sudo nano /etc/nginx/sites-enabled/default
-        
+
         thêm: location /janus {
                  proxy_pass http://127.0.0.1:8088/janus;
         }
@@ -215,7 +215,7 @@ apt-get install automake -y
 
     #sudo service apache2 start
 64 joined left created
-    
+
 
 
 https://7a5e-2a09-bac5-d456-18be-00-277-32.ngrok-free.app/japan-chat-app/chat/janus-event
@@ -223,5 +223,11 @@ https://7a5e-2a09-bac5-d456-18be-00-277-32.ngrok-free.app/japan-chat-app/chat/ja
 chrome://flags
 search: Insecure origins treated as secure
 enable và nhập ip vào (http://52.221.199.143/) để bỏ qua bảo mật đối với các trang không có tên miền hoặc http//:
+
+
+
+
+
+php artisan aimeos:setup --option=setup/default/demo:1
 
 
