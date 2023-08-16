@@ -15,6 +15,7 @@ return new class extends Migration {
         Schema::table('users', function (Blueprint $table) {
             $table->dateTime('last_activity')->nullable();
             $table->smallInteger('status')->default(1);
+            $table->string('siteid')->default('1.');
         });
     }
 
