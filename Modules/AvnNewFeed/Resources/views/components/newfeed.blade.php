@@ -71,8 +71,9 @@
                 </div>
             </div>
             <div class="py-3 w-100 overflow-hidden border-top border-bottom ">
-                <div class="font-18 {{ count($item->images) ? 'mb-3' : '' }}">
-                    {!! $item->description !!}
+                <div class="font-16 {{ count($item->images) ? 'mb-3' : '' }}">
+                    {!! preg_replace('/(https?:\/\/\S+)/', '<a href="$1">$1</a>', str_replace("\n", '<br />', $item->description)) !!}
+
                 </div>
                 <div class="gallery-container animated-thumbnails-gallery position-relative"
                     {{ count($item->images) > 4 ? 'data-view-more=' . count($item->images) - 4 : '' }}>
@@ -145,7 +146,7 @@
                                             </div>
                                         @endif
                                         <h5 class="m-0">{{ $item->new_feed_user->name }}</h5>
-                                        <p class="text-muted">
+                                        <p class="text-muted mb-0">
                                             <small>{{ NotificationController::timeAgo($item->updated_at) }}
                                                 @if ($user->id == $item->new_feed_user->id)
                                                     <span class="mx-1">⚬</span>
@@ -163,8 +164,8 @@
                                 </div>
                                 <div class="py-3 w-100 overflow-hidden">
                                     <div
-                                        class="font-18 {{ count($item->images) && $item->description ? 'mb-3' : '' }}">
-                                        {!! $item->description !!}
+                                        class="font-16 {{ count($item->images) && $item->description ? 'mb-3' : '' }}">
+                                        {!! preg_replace('/(https?:\/\/\S+)/', '<a href="$1">$1</a>', str_replace("\n", '<br />', $item->description)) !!}
                                     </div>
                                     <div class="gallery-container animated-thumbnails-gallery position-relative"
                                         {{ count($item->images) > 4 ? 'data-view-more=' . count($item->images) - 4 : '' }}>

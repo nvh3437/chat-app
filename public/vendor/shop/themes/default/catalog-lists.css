@@ -363,7 +363,7 @@
 .catalog-list-items .addbasket .btn-pin.active,
 .catalog-list-items .addbasket .btn-primary:hover,
 .catalog-list-items .addbasket .btn-pin:hover {
-	background-color: var(--ai-warning);
-	border-color: var(--ai-warning);
+	background-color: var(--ai-secondary);
+	border-color: var(--ai-secondary);
 	color: var(--ai-bg) !important;
 }

@@ -116,8 +116,8 @@ img {
 
 .aimeos .btn-primary,
 .aimeos .btn-primary:visited {
-	background-color: var(--ai-primary);
-	border: 1px solid var(--ai-primary);
+	background-color: var(--bs-primary);
+	border: 1px solid var(--bs-primary);
 	color: var(--ai-bg);
 	letter-spacing: 1.5px;
 }
