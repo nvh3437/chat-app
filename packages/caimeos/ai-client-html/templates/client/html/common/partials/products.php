@@ -354,11 +354,12 @@ $detailFilter = array_flip( $this->config( 'client/html/catalog/detail/url/filte
 										title="<?= $enc->attr( $this->translate( 'client', 'Add to basket' ), $enc::TRUST ) ?>"
 										<?= !$productItem->isAvailable() ? 'disabled' : '' ?> >
 									</button><!--
-									--><a class="btn-pin"
+									-->
+                                    <!-- <a class="btn-pin"
 										href="<?= $enc->attr( $this->link( 'client/html/catalog/session/pinned/url', ['pin_action' => 'add', 'pin_id' => $id, 'd_name' => $productItem->getName( 'url' )] ) ) ?>"
 										data-rmurl="<?= $enc->attr( $this->link( 'client/html/catalog/session/pinned/url', ['pin_action' => 'delete', 'pin_id' => $id, 'd_name' => $productItem->getName( 'url' )] ) ) ?>"
 										title="<?= $enc->attr( $this->translate( 'client', 'Pin product' ), $enc::TRUST ) ?>">
-									</a>
+									</a> -->
 								</div>
 							</div>
 						<?php endif ?>
