@@ -36,7 +36,7 @@ if( $sort === 'price' ) {
 <nav class="pagination">
 
 	<div class="sort" aria-label="<?= $enc->attr( $this->translate( 'client', 'Sort by' ) ) ?>">
-		<span><?= $enc->html( $this->translate( 'client', 'Sort by' ), $enc::TRUST ) ?>:</span>
+		<span><?= $enc->html( $this->translate( 'client', 'Sort by:' ), $enc::TRUST ) ?></span>
 		<ul>
 			<li>
 				<?php $url = $this->link( $key, ['f_sort' => 'relevance'] + $params ) ?>

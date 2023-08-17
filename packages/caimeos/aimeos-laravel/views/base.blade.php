@@ -36,7 +36,7 @@
 	<body class="{{ $page ?? '' }}">
 		<nav class="navbar navbar-expand-md navbar-top">
 			<a class="navbar-brand" href="/" title="{{ __('To the home page') }}">
-				<img src="{{ asset( 'aimeos/' . ( app( 'aimeos.context' )->get()->locale()->getSiteItem()->getLogo() ?: '../vendor/shop/themes/default/assets/logo.png' ) ) }}" height="40" alt="{{ __('To the home page') }}">
+				<img src="{{ asset( 'aimeos/' . ( app( 'aimeos.context' )->get()->locale()->getSiteItem()->getLogo() ?: '../vendor/shop/themes/default/assets/logo.png' ) ) }}" height="80" alt="{{ __('To the home page') }}">
 			</a>
 
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-top" aria-controls="navbar-top" aria-expanded="false" aria-label="Toggle navigation">

@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Cao Anh Nhat <anhnhata8cool@gmail.com>, 2018
 # hh hh <minhtrung.4791@gmail.com>, 2020
@@ -124,13 +124,14 @@ msgstr "Thêm"
 msgid ""
 "Additional delivery costs for each item, e.g. $20 for one heavy item will be"
 " $100 for five items it total"
-msgstr ""
+msgstr "Phí giao hàng bổ sung cho mỗi sản phẩm, ví dụ: $20 cho một sản phẩm nặng sẽ là"
+" $100 cho năm sản phẩm tổng cộng"
 
 msgid "Additional information where the customer's apartment can be found"
-msgstr ""
+msgstr "Thông tin bổ sung về vị trí căn hộ của khách hàng"
 
 msgid "Additional information where the supplier's apartment can be found"
-msgstr ""
+msgstr "Thông tin bổ sung về vị trí căn hộ của nhà cung cấp"
 
 msgid "Address 1"
 msgstr "Địa chỉ 1"
@@ -149,18 +150,18 @@ msgstr "Địa chỉ khách hàng nhận hàng"
 
 #, php-format
 msgid "Admin JQAdm type is empty"
-msgstr ""
+msgstr "Loại Admin JQAdm trống"
 
 msgid "Advanced"
 msgstr "Nâng cao"
 
 #, php-format
 msgid "Aimeos caching is disabled by \"%1$s\""
-msgstr ""
+msgstr "Aimeos caching bị vô hiệu hóa bởi \"%1$s\""
 
 #, php-format
 msgid "Aimeos debug logging is enabled by \"%1$s\""
-msgstr ""
+msgstr "Aimeos debug logging được kích hoạt bởi \"%1$s\""
 
 #, php-format
 msgid "Aimeos object not available"
@@ -172,24 +173,26 @@ msgstr "Tất cả"
 msgid ""
 "All attributes that uniquely define an article, e.g. width, length and color"
 " for jeans"
-msgstr ""
+msgstr "Tất cả các thuộc tính định rõ đặc điểm của một bài viết, ví dụ: chiều rộng, "
+"chiều dài và màu sắc cho quần jeans"
 
 msgid "Allow custom price"
 msgstr "Chấp nhận giá tùy chỉnh"
 
 msgid "Allow customers to choose themselves how much they want to pay"
-msgstr "Cho phép khách hạng chọn số tiền phải trả"
+msgstr "Cho phép khách hàng tự chọn số tiền mà họ muốn trả"
 
 msgid "Alphanumeric string that can identify the group uniquely"
-msgstr "Chuỗi ký tự để xác định nhóm duy nhất"
+msgstr "Chuỗi chữ và số có thể xác định nhóm một cách duy nhất"
 
 msgid "Apply"
-msgstr ""
+msgstr "Áp dụng"
 
 msgid ""
 "Article specific configuration options, will be available as key/value pairs"
 " in the templates"
-msgstr ""
+msgstr "Các tùy chọn cấu hình cụ thể cho bài viết, sẽ được hiển thị dưới dạng cặp "
+"khóa/giá trị trong các mẫu"
 
 msgid "Attribute"
 msgstr "Thuộc tính"
@@ -216,27 +219,28 @@ msgid "Attribute position (optional)"
 msgstr "Vị trí thuộc tính (tùy chọn)"
 
 msgid "Attribute properties that are not shared with other attributes"
-msgstr ""
+msgstr "Các thuộc tính không được chia sẻ với các thuộc tính khác"
 
 msgid "Attribute type that limits the list of available attributes"
-msgstr ""
+msgstr "Loại thuộc tính hạn chế danh sách các thuộc tính có sẵn"
 
 msgid "Attributes"
 msgstr "Các thuộc tính"
 
 msgid "Available currency for the current site"
-msgstr ""
+msgstr "Tiền tệ có sẵn cho trang web hiện tại"
 
 msgid "Available intervals in the front-end"
-msgstr ""
+msgstr "Các khoảng thời gian có sẵn trong giao diện trước"
 
 msgid "Available language for the current site"
-msgstr ""
+msgstr "Ngôn ngữ có sẵn cho trang web hiện tại"
 
 msgid ""
 "Average product rating and total number of ratings by customers for this "
 "product"
-msgstr ""
+msgstr "Đánh giá trung bình sản phẩm và tổng số lượt đánh giá của khách hàng cho "
+"sản phẩm này"
 
 msgid "Back in stock"
 msgstr "Đã có hàng"
@@ -257,16 +261,16 @@ msgid "Birthday of the customer"
 msgstr "Ngày sinh khách hàng"
 
 msgid "Boost factor"
-msgstr ""
+msgstr "Yếu tố tăng cường"
 
 msgid "Boost factor (optional)"
-msgstr ""
+msgstr "Yếu tố tăng cường (tùy chọn)"
 
 msgid "Bug or suggestion?"
-msgstr "Lỗi hoặc gợi ý khác?"
+msgstr "Lỗi hoặc gợi ý?"
 
 msgid "Bulk edit"
-msgstr ""
+msgstr "Chỉnh sửa hàng loạt"
 
 msgid "Cancel"
 msgstr "Hủy bỏ"
@@ -284,33 +288,34 @@ msgid "Catalog Lists Types"
 msgstr "Loại danh mục"
 
 msgid "Categories"
-msgstr ""
+msgstr "Danh mục"
 
 msgid "Categories the product can be found in by the user on the web site"
-msgstr ""
+msgstr "Các danh mục mà người dùng có thể tìm thấy sản phẩm trên trang web"
 
 msgid "Categories the product will be shown for in the promotional section"
-msgstr ""
+msgstr "Các danh mục mà sản phẩm sẽ được hiển thị trong phần khuyến mãi"
 
 msgid ""
 "Category specific configuration options, will be available as key/value "
 "pairs in the templates"
-msgstr ""
+msgstr "Các tùy chọn cấu hình cụ thể cho danh mục, sẽ được hiển thị dưới dạng cặp "
+"khóa/giá trị trong các mẫu"
 
 msgid "Change costs/item in %"
-msgstr ""
+msgstr "Thay đổi chi phí/mặt hàng trong %"
 
 msgid "Change rebate in %"
-msgstr ""
+msgstr "Thay đổi giảm giá trong %"
 
 msgid "Change value in %"
-msgstr ""
+msgstr "Thay đổi giá trị trong %"
 
 msgid "Channel"
-msgstr ""
+msgstr "Kênh"
 
 msgid "Channel the order has been placed"
-msgstr ""
+msgstr "Kênh mà đơn hàng đã được đặt"
 
 msgid "Choose file"
 msgstr "Chọn tập tin"
@@ -364,11 +369,11 @@ msgid "Company name (optional)"
 msgstr "Tên công ty (tùy chọn)"
 
 msgid "Completed orders"
-msgstr ""
+msgstr "Đơn hàng hoàn thành"
 
 msgid ""
 "Completed orders within the last seven days compared to the period before"
-msgstr ""
+msgstr "Đơn hàng hoàn thành trong vòng 7 ngày gần đây so với giai đoạn trước đó"
 
 msgid "Config"
 msgstr "Cấu hình"
@@ -378,7 +383,7 @@ msgstr "Có thể cấu hình"
 
 msgid ""
 "Configuration options, will be available as key/value pairs in the list item"
-msgstr ""
+msgstr "Các tùy chọn cấu hình, sẽ được hiển thị dưới dạng cặp khóa/giá trị trong mục danh sách"
 
 msgid "Copy"
 msgstr "Sao chép"
@@ -404,7 +409,7 @@ msgstr "Mã quốc gia (bắt buộc)"
 msgid ""
 "Country specific tax rate to calculate and display the included tax (B2C) or"
 " add the tax if required (B2B)"
-msgstr ""
+msgstr "Tỷ lệ thuế cụ thể cho từng quốc gia để tính toán và hiển thị thuế đã bao gồm (B2C) hoặc thêm thuế nếu cần thiết (B2B)"
 
 msgid "Country state code (optional)"
 msgstr "Mã tỉnh (tùy chọn)"
@@ -449,7 +454,7 @@ msgid "Customer Property Types"
 msgstr "Loại tài sản khách hàng"
 
 msgid "Customer characteristics that are not shared with other customers"
-msgstr ""
+msgstr "Các đặc điểm của khách hàng không được chia sẻ với các khách hàng khác"
 
 msgid "Customer comment (optional)"
 msgstr "KH bình luần (tùy chọn)"
@@ -2141,11 +2146,11 @@ msgstr ""
 
 #, php-format
 msgid "invoice"
-msgstr ""
+msgstr "hóa đơn"
 
 #, php-format
 msgid "latest"
-msgstr ""
+msgstr "mới nhất"
 
 #, php-format
 msgid "locale"

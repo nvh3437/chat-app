@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Hoang Bac Nam, 2022
@@ -123,13 +123,13 @@ msgid "-%1$s%%"
 msgstr ""
 
 msgid "A non-recoverable error occured"
-msgstr ""
+msgstr "Đã xảy ra lỗi không thể khôi phục"
 
 msgid "Account"
-msgstr ""
+msgstr "Tài khoản"
 
 msgid "Add billing address"
-msgstr ""
+msgstr "Thêm địa chỉ thanh toán"
 
 msgid "Add to basket"
 msgstr "Thêm vào giỏ"
@@ -155,34 +155,35 @@ msgid ""
 "All deliveries shipped are subject to our terms and conditions, which are available on our website and which you accepted when placing your order.\n"
 "\n"
 "This email contains confidential information and is exclusively for the use of the person addressed. Should you not be that person then please reply to this e-mail and delete the e-mail and attachments afterwards."
-msgstr ""
+msgstr "Tất cả các lô hàng được gửi đi đều phải tuân theo các điều khoản và điều kiện của chúng tôi, có sẵn trên trang web của chúng tôi và mà bạn đã chấp nhận khi đặt đơn hàng của bạn.
+Email này chứa thông tin mật và chỉ dành riêng cho người được gửi đến. Nếu bạn không phải là người đó, vui lòng trả lời e-mail này và xóa e-mail và tệp đính kèm sau đó."
 
 #. / Payment e-mail legal information
 msgid "All orders are subject to our terms and conditions."
-msgstr ""
+msgstr "Tất cả các đơn đặt hàng đều phải tuân theo các điều khoản và điều kiện của chúng tôi."
 
 msgid "An account has been created for you."
-msgstr ""
+msgstr "Một tài khoản đã được tạo cho bạn"
 
 msgid "Article"
-msgstr ""
+msgstr "Bài viết"
 
 msgid "Article no."
-msgstr ""
+msgstr "Chỉ số bài viết"
 
 msgid "Article no.:"
-msgstr "Chỉ số bài đăng.:"
+msgstr "Bài viết số:"
 
 #, php-format
 msgid "At least one billing address part is missing or invalid"
-msgstr ""
+msgstr "Địa chỉ thanh toán bị thiếu hoặc không hợp lệ"
 
 #, php-format
 msgid "At least one delivery address part is missing or invalid"
-msgstr ""
+msgstr "Địa chỉ giao hàng bị thiếu hoặc không hợp lệ"
 
 msgid "Attributes"
-msgstr "Các thuộc tính"
+msgstr "Thuộc tính"
 
 msgid "Back"
 msgstr "Quay lại"
@@ -191,11 +192,11 @@ msgid "Basket"
 msgstr "Giỏ hàng"
 
 msgid "Billing address"
-msgstr "Địa chỉ hóa đơn"
+msgstr "Địa chỉ thanh toán"
 
 #, php-format
 msgid "Billing address part \"%1$s\" is invalid"
-msgstr ""
+msgstr "Phần địa chỉ hóa đơn \"%1$s\" không hợp lệ"
 
 #, php-format
 msgid "Billing address part \"%1$s\" is missing"
@@ -205,10 +206,10 @@ msgid "Birthday"
 msgstr "Ngày sinh"
 
 msgid "Bulk order"
-msgstr ""
+msgstr "Đơn đặt hàng lớn"
 
 msgid "Bundled products"
-msgstr ""
+msgstr "Sản phẩm được gói lại"
 
 msgid "Buy now"
 msgstr "Mua ngay bây giờ"
@@ -217,7 +218,7 @@ msgid "Cancel"
 msgstr "Hủy bỏ"
 
 msgid "Categories"
-msgstr ""
+msgstr "Thể loại"
 
 msgid "Change"
 msgstr "Thay đổi"
@@ -226,13 +227,13 @@ msgid "Change payment"
 msgstr "Đổi phương thức thanh toán"
 
 msgid "Channel"
-msgstr ""
+msgstr "Kênh"
 
 msgid "Characteristics"
-msgstr ""
+msgstr "Đặc điểm"
 
 msgid "Check"
-msgstr ""
+msgstr "Kiểm tra"
 
 msgid "Checkout"
 msgstr "Thanh toán"
@@ -281,27 +282,27 @@ msgid "Country"
 msgstr "Quốc gia"
 
 msgid "Coupon codes"
-msgstr ""
+msgstr "Mã giảm giá"
 
 msgid "Coupons"
-msgstr ""
+msgstr "Phiếu giảm giá"
 
 msgid "Create a customer account for me"
-msgstr ""
+msgstr "Tạo một tài khoản khách hàng cho tôi"
 
 msgid "Created"
 msgstr "Tạo bởi"
 
 msgid "Customer account"
-msgstr ""
+msgstr "Tài khoản khách hàng"
 
 #, php-format
 msgid "Customer with ID \"%1$s\" not found"
-msgstr ""
+msgstr "Không tìm thấy khách hàng với ID \"%1$s\""
 
 #, php-format
 msgid "Dear %1$s %2$s"
-msgstr ""
+msgstr "Kính gửi %1$s %2$s"
 
 #, php-format
 msgid "Dear %1$s %2$s %3$s"
@@ -309,31 +310,31 @@ msgstr "Thân gửi %1$s  %2$s %3$s"
 
 #, php-format
 msgid "Dear Miss %1$s %2$s"
-msgstr ""
+msgstr "Kính gửi Chị %1$s %2$s"
 
 #, php-format
 msgid "Dear Mr %1$s %2$s"
-msgstr ""
+msgstr "Kính gửi Anh %1$s %2$s"
 
 #, php-format
 msgid "Dear Mrs %1$s %2$s"
-msgstr ""
+msgstr "Kính gửi Cô %1$s %2$s"
 
 #, php-format
 msgid "Dear Ms %1$s %2$s"
-msgstr ""
+msgstr "Kính gửi Cô %1$s %2$s"
 
 msgid "Dear Sir or Madam"
 msgstr "Thân gửi Anh hoặc Chị"
 
 msgid "Dear customer"
-msgstr ""
+msgstr "Kính gửi quý khách hàng"
 
 msgid "Delete"
 msgstr "Xóa"
 
 msgid "Delete item"
-msgstr ""
+msgstr "Xóa mục"
 
 msgid "Delivery"
 msgstr "Vận chuyển"
@@ -343,11 +344,11 @@ msgstr "Địa chỉ gửi"
 
 #, php-format
 msgid "Delivery address deleted successfully"
-msgstr ""
+msgstr "Xóa địa chỉ giao hàng thành công"
 
 #, php-format
 msgid "Delivery address part \"%1$s\" is invalid"
-msgstr ""
+msgstr "Phần địa chỉ giao hàng \"%1$s\" không hợp lệ"
 
 #, php-format
 msgid "Delivery address part \"%1$s\" is missing"
@@ -360,26 +361,26 @@ msgid "Description"
 msgstr "Mô tả"
 
 msgid "Details"
-msgstr ""
+msgstr "Chi tiết"
 
 msgid "Don't store address"
-msgstr ""
+msgstr "Không lưu địa chỉ"
 
 msgid "Downloads"
-msgstr ""
+msgstr "Tải xuống"
 
 msgid "E-Mail"
 msgstr "Email"
 
 #. / E-mail HTML title
 msgid "E-mail notification"
-msgstr ""
+msgstr "Thông báo qua email"
 
 msgid "End date"
 msgstr "Ngày kết thúc"
 
 msgid "Favorite products"
-msgstr ""
+msgstr "Sản phẩm yêu thích"
 
 msgid "Fax"
 msgstr "Fax"
@@ -389,10 +390,10 @@ msgstr "Các mục với phần dấu *"
 
 #, php-format
 msgid "File \"%1$s\" doesn't exist"
-msgstr ""
+msgstr "Tập tin \"%1$s\" không tồn tại"
 
 msgid "Filter"
-msgstr ""
+msgstr "Bộ lọc"
 
 msgid "First name"
 msgstr "Tên"
@@ -404,13 +405,13 @@ msgid "Go"
 msgstr "Truy cập"
 
 msgid "Grid view"
-msgstr ""
+msgstr "Xem lưới"
 
 msgid "HH:mm"
-msgstr ""
+msgstr "HH:mm"
 
 msgid "Highest price"
-msgstr ""
+msgstr "Giá cao nhất"
 
 #, php-format
 msgid ""
@@ -428,16 +429,20 @@ msgid ""
 "policy\">privacy policy</a> and <a href=\"%3$s\" target=\"_blank\" "
 "title=\"cancellation policy\" alt=\"cancellation policy\">cancellation "
 "policy</a>"
-msgstr ""
+msgstr "Tôi chấp nhận <a href=\"%1$s\" target=\"_blank\" title=\"điều khoản và "
+"điều kiện\" alt=\"điều khoản và điều kiện\">điều khoản và điều kiện</a>, <a "
+"href=\"%2$s\" target=\"_blank\" title=\"chính sách bảo mật\" alt=\"chính sách "
+"bảo mật\">chính sách bảo mật</a> và <a href=\"%3$s\" target=\"_blank\" "
+"title=\"chính sách hủy\" alt=\"chính sách hủy\">chính sách hủy</a>"
 
 msgid "If back in stock"
-msgstr ""
+msgstr "Nếu có hàng trở lại"
 
 msgid "If price decreases"
-msgstr ""
+msgstr "Nếu giá giảm"
 
 msgid "If you have any questions, please reply to this e-mail"
-msgstr ""
+msgstr "Nếu bạn có bất kỳ câu hỏi nào, vui lòng trả lời email này"
 
 #, php-format
 msgid "Incl. %1$s%% %2$s"
@@ -452,23 +457,23 @@ msgid "Included rebates"
 msgstr "Bao gồm phần giảm giá"
 
 msgid "Interval"
-msgstr ""
+msgstr "Khoảng thời gian"
 
 #, php-format
 msgid "Invalid characters in class name \"%1$s\""
-msgstr ""
+msgstr "Ký tự không hợp lệ trong tên lớp \"%1$s\""
 
 #, php-format
 msgid "Invalid characters in client name \"%1$s\""
-msgstr ""
+msgstr "Ký tự không hợp lệ trong tên khách hàng \"%1$s\""
 
 #, php-format
 msgid "Invalid characters in client name \"%1$s\" in \"%2$s\""
-msgstr ""
+msgstr "Ký tự không hợp lệ trong tên khách hàng \"%1$s\" tại \"%2$s\""
 
 #, php-format
 msgid "Invalid class name \"%1$s\""
-msgstr ""
+msgstr "Tên lớp không hợp lệ \"%1$s\""
 
 #, php-format
 msgid "Invalid domain \"%1$s\""
@@ -489,61 +494,62 @@ msgid "Last name"
 msgstr "Họ"
 
 msgid "Last seen"
-msgstr ""
+msgstr "Lần cuối xem"
 
 msgid "Latest"
-msgstr ""
+msgstr "Mới nhất"
 
 msgid "Like entered by you"
-msgstr ""
+msgstr "Thích được nhập bởi bạn"
 
 msgid "List view"
-msgstr ""
+msgstr "Xem danh sách"
 
 msgid "Login"
-msgstr ""
+msgstr "Đăng nhập"
 
 msgid "Lowest price"
-msgstr ""
+msgstr "Giá thấp nhất"
 
 msgid "More reviews"
-msgstr ""
+msgstr "Xem thêm đánh giá"
 
 msgid "Name"
 msgstr "Tên"
 
 msgid "New"
-msgstr ""
+msgstr "Mới"
 
 msgid "New delivery address"
-msgstr ""
+msgstr "Địa chỉ giao hàng mới"
 
 msgid "Next"
 msgstr "Tiếp theo"
 
 msgid "Next order"
-msgstr ""
+msgstr "Đơn hàng tiếp theo"
 
 #, php-format
 msgid ""
 "No articles found for <span class=\"searchstring\">\"%1$s\"</span>. Please "
 "try again with a different keyword."
-msgstr ""
+msgstr "Không tìm thấy bài viết nào cho <span class=\"searchstring\">\"%1$s\"</span>. "
+"Vui lòng thử lại với một từ khóa khác."
 
 msgid "No order ID available in session"
-msgstr ""
+msgstr "Không có ID đơn hàng có sẵn trong phiên"
 
 #, php-format
 msgid "No product with ID \"%1$s\" found"
-msgstr ""
+msgstr "Không tìm thấy sản phẩm nào với ID \"%1$s\""
 
 #, php-format
 msgid "No service for code \"%1$s\" found"
-msgstr ""
+msgstr "Không tìm thấy dịch vụ nào cho mã \"%1$s\""
 
 #, php-format
 msgid "No type item for \"%1$s/%2$s\" in \"%3$s\" found"
-msgstr ""
+msgstr "Không tìm thấy loại mục cho \"%1$s/%2$s\" tại \"%3$s\""
 
 #, php-format
 msgid "No view available"
@@ -551,42 +557,42 @@ msgstr "Hiện không hiển thị được"
 
 #, php-format
 msgid "Number of coupon codes exceeds the limit"
-msgstr ""
+msgstr "Số lượng mã giảm giá vượt quá giới hạn"
 
 #, php-format
 msgid "Object doesn't implement \"%1$s\""
-msgstr ""
+msgstr "Đối tượng không thực hiện \"%1$s\""
 
 msgid "One month"
-msgstr ""
+msgstr "Một tháng"
 
 msgid "One or more products you are watching have been updated."
-msgstr ""
+msgstr "Một hoặc nhiều sản phẩm bạn đang theo dõi đã được cập nhật."
 
 msgid "One week"
-msgstr ""
+msgstr "Một tuần"
 
 msgid "Open submenu"
-msgstr ""
+msgstr "Mở submenu"
 
 msgid "Options"
-msgstr "Tùy chọ"
+msgstr "Tùy chọn"
 
 msgid "Order"
-msgstr ""
+msgstr "Đơn hàng"
 
 #, php-format
 msgid "Order %1$s"
-msgstr ""
+msgstr "Đơn hàng %1$s"
 
 msgid "Order ID"
-msgstr "Số hiệu hóa đơn"
+msgstr "Số hiệu đơn hàng"
 
 msgid "Order channel"
-msgstr "Kênh hóa đơn"
+msgstr "Kênh đơn hàng"
 
 msgid "Order date"
-msgstr ""
+msgstr "Ngày đặt hàng"
 
 msgid "Order details"
 msgstr "Chi tiết về hóa đơn"
@@ -595,27 +601,27 @@ msgid "Order history"
 msgstr "Lịch sử đã đặt hàng"
 
 msgid "Order status"
-msgstr ""
+msgstr "Trạng thái đơn hàng"
 
 #, php-format
 msgid "Order with ID \"%1$s\" not found"
 msgstr "Đặt hàng với chỉ số \"%1$s\" không tìm thấy"
 
 msgid "Other customers also bought"
-msgstr ""
+msgstr "Khách hàng khác cũng đã mua"
 
 msgid "Our products"
-msgstr ""
+msgstr "Sản phẩm của chúng tôi"
 
 #, php-format
 msgid "Page %1$d of %2$d"
 msgstr "Trang %1$d của %2$d"
 
 msgid "Password"
-msgstr ""
+msgstr "Mật khẩu"
 
 msgid "Pay now"
-msgstr ""
+msgstr "Thanh toán ngay"
 
 msgid "Payment"
 msgstr "Chi trả"
@@ -627,10 +633,10 @@ msgid "Payment status"
 msgstr "Trạng thái chi trả"
 
 msgid "Pin product"
-msgstr ""
+msgstr "Ghim sản phẩm"
 
 msgid "Pinned products"
-msgstr ""
+msgstr "Sản phẩm đã được ghim"
 
 msgid "Please accept the terms and conditions"
 msgstr "Vui lòng chấp nhận các điều khoản sau đây"
@@ -645,21 +651,21 @@ msgid "Please choose your payment method"
 msgstr "Xin vui lòng chọn phương thức thanh toán của bạn"
 
 msgid "Please enter at least three characters"
-msgstr ""
+msgstr "Vui lòng nhập ít nhất ba ký tự"
 
 msgid "Please enter your payment details"
-msgstr ""
+msgstr "Vui lòng nhập thông tin thanh toán của bạn"
 
 #, php-format
 msgid "Please recheck your delivery choice"
-msgstr ""
+msgstr "Vui lòng kiểm tra lại lựa chọn giao hàng của bạn"
 
 #, php-format
 msgid "Please recheck your payment choice"
-msgstr ""
+msgstr "Vui lòng kiểm tra lại lựa chọn thanh toán của bạn"
 
 msgid "Please select"
-msgstr ""
+msgstr "Vui lòng chọn"
 
 msgid "Postal code"
 msgstr "Mã vùng"
@@ -671,34 +677,34 @@ msgid "Price"
 msgstr "Giá"
 
 msgid "Price range"
-msgstr ""
+msgstr "Khoảng giá"
 
 msgid "Proceed"
-msgstr ""
+msgstr "Tiến hành"
 
 msgid "Processing the payment failed"
-msgstr ""
+msgstr "Xử lý thanh toán thất bại"
 
 msgid "Product"
-msgstr ""
+msgstr "Sản phẩm"
 
 msgid "Product image"
-msgstr ""
+msgstr "Hình ảnh sản phẩm"
 
-msgid "Products you might be also interested in"
-msgstr ""
+msgid "Products you might also be interested in"
+msgstr "Các sản phẩm bạn cũng có thể quan tâm"
 
 msgid "Properties"
-msgstr ""
+msgstr "Thuộc tính"
 
 msgid "Qty"
-msgstr ""
+msgstr "Số lượng"
 
 msgid "Quantity"
 msgstr "Số lượng"
 
 msgid "Rating"
-msgstr ""
+msgstr "Đánh giá"
 
 msgid "Reference"
 msgstr ""
@@ -718,19 +724,19 @@ msgid "Result for \"%1$s\""
 msgstr "Kết quả của \"%1$s\""
 
 msgid "Reviews"
-msgstr ""
+msgstr "Đánh giá"
 
 msgid "SKU or article name"
-msgstr ""
+msgstr "SKU hoặc tên bài viết"
 
 msgid "Sale"
-msgstr ""
+msgstr "Giảm giá"
 
 msgid "Salutation"
 msgstr "Lời chào mừng"
 
 msgid "Save"
-msgstr ""
+msgstr "Lưu"
 
 msgid "Search"
 msgstr "Tìm kiếm"
@@ -746,16 +752,16 @@ msgid "Select country"
 msgstr "Chọn quốc gia"
 
 msgid "Select currency"
-msgstr ""
+msgstr "Chọn đơn vị tiền tệ"
 
 msgid "Select language"
-msgstr ""
+msgstr "Chọn ngôn ngữ"
 
 msgid "Select salutation"
 msgstr "Chọn lời chào"
 
 msgid "Select state"
-msgstr ""
+msgstr "Chọn tiểu bang"
 
 msgid "Service fees"
 msgstr "Phí dịch vụ"
@@ -764,7 +770,7 @@ msgid "Services"
 msgstr "Dịch vụ"
 
 msgid "Share"
-msgstr ""
+msgstr "Chia sẻ"
 
 msgid "Shipping"
 msgstr "Chuyển hàng"
@@ -782,10 +788,10 @@ msgid "State"
 msgstr "Bang"
 
 msgid "Status"
-msgstr ""
+msgstr "Trạng thái"
 
 msgid "Stock"
-msgstr ""
+msgstr "Tồn kho"
 
 #. / Stock string composition with stock type (%1$s, normally left out)
 #. and stock level string (%2$s)
@@ -793,7 +799,7 @@ msgstr ""
 #. stock level string (%2$s)
 #, php-format
 msgid "Stock: %1$s, %2$s"
-msgstr ""
+msgstr "Tồn kho: %1$s, %2$s"
 
 #. / Stock string composition with stock type (%1$s, normally left out),
 #. stock level string (%2$s) and back in stock date (%3$s)
@@ -801,7 +807,7 @@ msgstr ""
 #. level string (%2$s) and back in stock date (%3$s)
 #, php-format
 msgid "Stock: %1$s, %2$s, back on %3$s"
-msgstr ""
+msgstr "Tồn kho: %1$s, %2$s, trở lại vào ngày %3$s"
 
 msgid "Street"
 msgstr "Tên đường"
@@ -810,48 +816,48 @@ msgid "Sub-total"
 msgstr "Tiền tổng cộng"
 
 msgid "Submit"
-msgstr ""
+msgstr "Gửi"
 
 msgid "Subscription ID"
-msgstr ""
+msgstr "ID đăng ký"
 
 msgid "Subscription details"
-msgstr ""
+msgstr "Chi tiết đăng ký"
 
 msgid "Subscription interval"
-msgstr ""
+msgstr "Khoảng thời gian đăng ký"
 
 msgid "Subscription product"
-msgstr ""
+msgstr "Sản phẩm đăng ký"
 
 #, php-format
 msgid "Subscription with ID \"%1$s\" not found"
-msgstr ""
+msgstr "Không tìm thấy đăng ký với ID \"%1$s\""
 
 msgid "Subscriptions"
-msgstr ""
+msgstr "Đăng ký"
 
 msgid "Suggested products"
-msgstr ""
+msgstr "Sản phẩm gợi ý"
 
 msgid "Sum"
 msgstr "Tổng"
 
 msgid "Supplier information"
-msgstr ""
+msgstr "Thông tin nhà cung cấp"
 
 msgid "Suppliers"
-msgstr ""
+msgstr "Nhà cung cấp"
 
 msgid "Take a look"
-msgstr ""
+msgstr "Nhìn vào"
 
 msgid "Telephone"
 msgstr "Số điện thoại"
 
 #, php-format
 msgid "Template \"%1$s\" not available"
-msgstr ""
+msgstr "Mẫu \"%1$s\" không khả dụng"
 
 msgid "Terms and conditions"
 msgstr "Thỏa thuận với người dùng"
@@ -862,7 +868,7 @@ msgstr "Thỏa thuận với người dùng"
 #. status (%3%s)
 #, php-format
 msgid "Thank you for your order %1$s from %2$s."
-msgstr ""
+msgstr "Cảm ơn bạn đã đặt hàng %1$s từ %2$s."
 
 #. / Payment e-mail intro with order ID (%1$s), order date (%2$s) and payment
 #. status (%3%s)
@@ -873,7 +879,9 @@ msgid ""
 "Thank you for your order %1$s from %2$s.\n"
 "\n"
 "The order is pending until we receive the final payment. If you've chosen to pay in advance, please transfer the money to our bank account with the order ID %1$s as reference."
-msgstr ""
+msgstr "Cảm ơn bạn đã đặt hàng %1$s từ %2$s.\n"
+"\n"
+"Đơn hàng đang chờ xử lý cho đến khi chúng tôi nhận được thanh toán cuối cùng. Nếu bạn đã chọn thanh toán trước, vui lòng chuyển tiền vào tài khoản ngân hàng của chúng tôi với mã đơn hàng %1$s làm tham chiếu."
 
 #. / Payment e-mail intro with order ID (%1$s), order date (%2$s) and payment
 #. status (%3%s)
@@ -884,20 +892,24 @@ msgid ""
 "Thank you for your order %1$s from %2$s.\n"
 "\n"
 "We received the payment and will care about your order immediately."
-msgstr ""
+msgstr "Cảm ơn bạn đã đặt hàng %1$s từ %2$s.\n"
+"\n"
+"Chúng tôi đã nhận được thanh toán và sẽ chăm sóc đơn hàng của bạn ngay lập tức."
 
 msgid ""
 "Thank you for your order and authorizing the payment.\n"
 "An e-mail with the order details will be sent to you within the next few minutes."
-msgstr ""
+msgstr "Cảm ơn bạn đã đặt hàng và xác nhận thanh toán.\n"
+"Một email chứa chi tiết đơn hàng sẽ được gửi đến bạn trong vài phút tới."
 
 msgid ""
 "Thank you for your order.\n"
 "We received your payment and an e-mail with the order details will be sent to you within the next few minutes."
-msgstr ""
+msgstr "Cảm ơn bạn đã đặt hàng.\n"
+"Chúng tôi đã nhận được thanh toán của bạn và một email chứa chi tiết đơn hàng sẽ được gửi đến bạn trong vài phút tới."
 
 msgid "Thank you for your review!"
-msgstr ""
+msgstr "Cảm ơn bạn đã viết đánh giá!"
 
 #. / Delivery e-mail intro with order ID (%1$s), order date (%2$s) and
 #. delivery status (%3%s)
@@ -907,19 +919,23 @@ msgstr ""
 msgid ""
 "The delivery status of your order %1$s from %2$s has been changed to "
 "\"%3$s\"."
-msgstr ""
+msgstr "Trạng thái giao hàng của đơn hàng %1$s từ %2$s đã được thay đổi thành "
+"\"%3$s\"."
 
 #, php-format
 msgid ""
 "The order is pending until we receive the final payment. If you've chosen to"
 " pay in advance, please transfer the money to our bank account with the "
 "order ID %1$s as reference."
-msgstr ""
+msgstr "Đơn hàng đang chờ xử lý cho đến khi chúng tôi nhận được thanh toán cuối "
+"cùng. Nếu bạn đã chọn thanh toán trước, vui lòng chuyển tiền vào tài khoản"
+" ngân hàng của chúng tôi với mã đơn hàng %1$s làm tham chiếu."
 
 msgid ""
 "The order was canceled.\n"
 "Do you wish to retry your order?"
-msgstr ""
+msgstr "Đơn hàng đã bị hủy.\n"
+"Bạn có muốn thử lại đơn hàng của bạn?"
 
 #. / Delivery e-mail intro with order ID (%1$s), order date (%2$s) and
 #. delivery status (%3%s)
@@ -927,15 +943,16 @@ msgstr ""
 #. delivery status (%3%s)
 #, php-format
 msgid "The parcel for your order %1$s from %2$s could not be delivered."
-msgstr ""
+msgstr "Đơn hàng cho đơn hàng %1$s từ %2$s không thể được giao"
 
 msgid ""
 "The payment confirmation for your order is still pending.\n"
 "You will get an e-mail as soon as the payment is authorized."
-msgstr ""
+msgstr "Xác nhận thanh toán cho đơn hàng của bạn vẫn đang chờ xử lý.\n"
+"Bạn sẽ nhận được email ngay khi thanh toán được xác nhận."
 
 msgid "The payment couldn't be renewed"
-msgstr ""
+msgstr "Thanh toán không thể được gia hạn"
 
 #. / Payment e-mail intro with order ID (%1$s), order date (%2$s) and payment
 #. status (%3%s)
@@ -943,89 +960,91 @@ msgstr ""
 #. status (%3%s)
 #, php-format
 msgid "The payment for your order %1$s from %2$s has been refunded."
-msgstr ""
+msgstr "Thanh toán cho đơn hàng %1$s từ %2$s đã được hoàn trả."
 
 msgid "The subscription for the product has ended"
-msgstr ""
+msgstr "Đăng ký cho sản phẩm đã kết thúc."
 
 msgid "The subscription for the product has ended."
-msgstr ""
+msgstr "Đăng ký cho sản phẩm đã kết thúc."
 
 #, php-format
 msgid "The value of your voucher is %1$s"
 msgid_plural "The value of your vouchers are %1$s"
-msgstr[0] ""
+msgstr[0] "Giá trị của phiếu giảm giá của bạn là %1$s"
+msgstr[1] "Giá trị của các phiếu giảm giá của bạn là %1$s"
 
 msgid "Three month"
-msgstr ""
+msgstr "Ba tháng"
 
 msgid "Time frame"
-msgstr ""
+msgstr "Khoảng thời gian"
 
 msgid "Toggle fullscreen"
-msgstr ""
+msgstr "Chuyển đổi chế độ toàn màn hình"
 
 msgid "Top seller"
-msgstr ""
+msgstr "Bán chạy nhất"
 
 msgid "Total"
 msgstr "Tổng cộng"
 
 msgid "Total quantity"
-msgstr ""
+msgstr "Tổng số lượng"
 
 msgid "Try again"
-msgstr ""
+msgstr "Thử lại"
 
 msgid "Two weeks"
-msgstr ""
+msgstr "Hai tuần"
 
 #, php-format
 msgid "Unable to call method \"%1$s\""
-msgstr ""
+msgstr "Không thể gọi phương thức \"%1$s\""
 
 #, php-format
 msgid "Unable to create an account for \"%1$s\": %2$s"
-msgstr ""
+msgstr "Không thể tạo tài khoản cho \"%1$s\": %2$s"
 
 #, php-format
 msgid "Unable to create an account: %1$s"
-msgstr ""
+msgstr "Không thể tạo tài khoản: %1$s"
 
 #, php-format
 msgid "Unable to save address for customer \"%1$s\": %2$s"
-msgstr ""
+msgstr "Không thể lưu địa chỉ cho khách hàng \"%1$s\": %2$s"
 
 #, php-format
 msgid "Unable to set cache entry: %1$s"
-msgstr ""
+msgstr "Không thể đặt mục bộ cache: %1$s"
 
 msgid ""
 "Unfortunately, the payment for your order was refused.\n"
 "Do you wish to retry?"
-msgstr ""
+msgstr "Rất tiếc, thanh toán cho đơn hàng của bạn bị từ chối.\n"
+"Bạn có muốn thử lại không?"
 
 msgid "Update"
 msgstr "Cập nhật"
 
 msgid "Variant"
-msgstr ""
+msgstr "Biến thể"
 
 msgid "Vat ID"
-msgstr ""
+msgstr "Mã số thuế VAT"
 
 msgid "Vendor response"
-msgstr ""
+msgstr "Phản hồi của nhà cung cấp"
 
 msgid "Watch"
-msgstr ""
+msgstr "Xem"
 
 msgid "Watched products"
-msgstr ""
+msgstr "Sản phẩm đã xem"
 
 msgid ""
 "We have received your payment, and will take care of your order immediately."
-msgstr ""
+msgstr "Chúng tôi đã nhận được thanh toán của bạn và sẽ chăm sóc đơn hàng của bạn ngay lập tức."
 
 #. / Delivery e-mail intro with order ID (%1$s), order date (%2$s) and
 #. delivery status (%3%s)
@@ -1033,68 +1052,68 @@ msgstr ""
 #. delivery status (%3%s)
 #, php-format
 msgid "We received the returned parcel for your order %1$s from %2$s."
-msgstr ""
+msgstr "Chúng tôi đã nhận được kiện hàng đã trả lại cho đơn hàng %1$s từ %2$s."
 
 msgid "Web site"
 msgstr "Trang web"
 
 msgid "What do you think about the product"
-msgstr ""
+msgstr "Bạn nghĩ gì về sản phẩm này?"
 
 msgid "X"
-msgstr ""
+msgstr "X"
 
 #. / Date format with year (Y), month (m) and day (d). See
 #. http://php.net/manual/en/function.date.php
 msgid "Y-m-d"
-msgstr "Y-m-d"
+msgstr "d-m-Y"
 
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "DD-MM-YYYY"
 
 msgid "YYYY-MM-DD HH:mm"
-msgstr ""
+msgstr "HH:mm DD-MM-YYYY"
 
 msgid "You are here:"
 msgstr "Bạn đang ở đây"
 
 #, php-format
 msgid "You can only save up to %1$s products as favorites"
-msgstr ""
+msgstr "Bạn chỉ có thể lưu tối đa %1$s sản phẩm vào mục yêu thích"
 
 #, php-format
 msgid "You can only watch up to %1$s products"
-msgstr ""
+msgstr "Bạn chỉ có thể xem tối đa %1$s sản phẩm"
 
 msgid "You can use your voucher any time in our online shop"
-msgstr ""
+msgstr "Bạn có thể sử dụng phiếu mua hàng của bạn bất kỳ lúc nào tại cửa hàng trực tuyến của chúng tôi"
 
 msgid "You can use your vouchers at any time in our online shop"
-msgstr ""
+msgstr "Bạn có thể sử dụng phiếu mua hàng của bạn bất kỳ lúc nào tại cửa hàng trực tuyến của chúng tôi"
 
 msgid "You will now be forwarded to the next step"
-msgstr ""
+msgstr "Bạn sẽ được chuyển tiếp đến bước tiếp theo"
 
 msgid "You've cancelled the subscription"
-msgstr ""
+msgstr "Bạn đã hủy đăng ký"
 
 msgid "Your account"
-msgstr ""
+msgstr "Tài khoản của bạn"
 
 msgid "Your choice"
-msgstr ""
+msgstr "Lựa chọn của bạn"
 
 msgid "Your comment"
-msgstr ""
+msgstr "Bình luận của bạn"
 
 #. / Account creation e-mail subject
 msgid "Your new account"
-msgstr ""
+msgstr "Tài khoản mới của bạn"
 
 #. / Payment e-mail subject with order ID
 #, php-format
 msgid "Your order %1$s"
-msgstr ""
+msgstr "Đơn hàng của bạn %1$s"
 
 #. / Delivery e-mail intro with order ID (%1$s), order date (%2$s) and
 #. delivery status (%3%s)
@@ -1102,63 +1121,63 @@ msgstr ""
 #. delivery status (%3%s)
 #, php-format
 msgid "Your order %1$s from %2$s has been dispatched."
-msgstr ""
+msgstr "Đơn hàng %1$s từ %2$s đã được gửi đi."
 
 msgid "Your rating"
-msgstr ""
+msgstr "Đánh giá của bạn"
 
 msgid "Your reference"
-msgstr ""
+msgstr "Tham chiếu của bạn"
 
 msgid "Your reference number"
-msgstr ""
+msgstr "Số tham chiếu của bạn"
 
 msgid "Your review"
-msgstr ""
+msgstr "Đánh giá của bạn"
 
 msgid "Your search result"
-msgstr ""
+msgstr "Kết quả tìm kiếm của bạn"
 
 msgid "Your subscription"
-msgstr ""
+msgstr "Đăng ký của bạn"
 
 msgid "Your subscription product"
-msgstr ""
+msgstr "Sản phẩm đăng ký của bạn"
 
 msgid "Your voucher"
-msgstr ""
+msgstr "Phiếu mua hàng của bạn"
 
 msgid "Your voucher: "
-msgstr ""
+msgstr "Phiếu mua hàng của bạn: "
 
 msgid "Your vouchers: "
-msgstr ""
+msgstr "Phiếu mua hàng của bạn: "
 
 #. / Product notification e-mail subject
 msgid "Your watched products"
-msgstr ""
+msgstr "Sản phẩm bạn đã xem"
 
 msgid "Zoom in/out"
-msgstr ""
+msgstr "Phóng to/thu nhỏ"
 
 #, php-format
 msgid "address"
 msgstr "địa chỉ"
 
 msgid "clear all"
-msgstr ""
+msgstr "xóa tất cả"
 
 #, php-format
 msgid "delivery"
 msgstr "vận chuyển"
 
 msgid "favorite"
-msgstr ""
+msgstr "ưa thích"
 
 #. / Price quantity format with quantity (%1$s)
 #, php-format
 msgid "from %1$s"
-msgstr ""
+msgstr "từ %1$s"
 
 msgid "like billing address"
 msgstr "giống như địa chỉ trên hóa đơn"
@@ -1167,10 +1186,10 @@ msgid "new address"
 msgstr "địa chỉ mới"
 
 msgid "none"
-msgstr ""
+msgstr "không"
 
 msgid "on request"
-msgstr ""
+msgstr "theo yêu cầu"
 
 #, php-format
 msgid "order"
@@ -1181,46 +1200,46 @@ msgid "payment"
 msgstr "thanh toán"
 
 msgid "pin"
-msgstr ""
+msgstr "đính ghim"
 
 msgid "price:default"
-msgstr ""
+msgstr "giá: mặc định"
 
 #, php-format
 msgid "process"
-msgstr ""
+msgstr "xử lý"
 
 #. / code for "product is in stock"
 msgid "stock-high"
-msgstr ""
+msgstr "còn hàng"
 
 #. / code for "only a few products are available"
 msgid "stock-low"
-msgstr ""
+msgstr "còn ít hàng"
 
 #. / code for "product is out of stock"
 msgid "stock-out"
-msgstr ""
+msgstr "hết hàng"
 
 #. / code for "product is available (without stock limit)"
 msgid "stock-unlimited"
-msgstr ""
+msgstr "không giới hạn"
 
 #, php-format
 msgid "summary"
 msgstr "tóm tắt"
 
 msgid "tax"
-msgstr ""
+msgstr "thuế"
 
 msgid "watch"
-msgstr ""
+msgstr "theo dõi"
 
 msgid "▲ Name"
-msgstr ""
+msgstr "▲ Tên"
 
 msgid "▲ Price"
-msgstr ""
+msgstr "▲ Giá"
 
 msgid "▶"
 msgstr "▶"
@@ -1229,13 +1248,13 @@ msgid "▶▶"
 msgstr "▶▶"
 
 msgid "▼"
-msgstr ""
+msgstr "▼"
 
 msgid "▼ Name"
-msgstr ""
+msgstr "▼ Tên"
 
 msgid "▼ Price"
-msgstr ""
+msgstr "▼ Giá"
 
 msgid "◀"
 msgstr "◀"

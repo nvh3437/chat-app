@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Darshan Sampat <darshan@usindia.com>, 2018
 msgid ""
@@ -121,13 +121,13 @@ msgid "-%1$s%%"
 msgstr "-%1$s%%"
 
 msgid "A non-recoverable error occured"
-msgstr ""
+msgstr "回復不能なエラーが発生しました"
 
 msgid "Account"
 msgstr "アカウント"
 
 msgid "Add billing address"
-msgstr ""
+msgstr "請求先住所を追加する"
 
 msgid "Add to basket"
 msgstr "バスケットに追加"
@@ -696,7 +696,7 @@ msgid "Quantity"
 msgstr "数量"
 
 msgid "Rating"
-msgstr ""
+msgstr "評価"
 
 msgid "Reference"
 msgstr ""
