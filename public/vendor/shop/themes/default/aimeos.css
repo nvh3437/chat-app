@@ -702,6 +702,9 @@ body > .content, body .main-section {
     .section.catalog-filter-attribute{
         display: none;
     }
+    .product.row{
+        overflow: hidden;
+    }
 }
 
 @media (min-width:992px) {
