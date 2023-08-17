@@ -697,6 +697,7 @@ body > .content, body .main-section {
         width: 100% !important;
     }
 
+    .section.aimeos.catalog-session,
     .section.catalog-filter-supplier,
     .section.catalog-filter-attribute{
         display: none;
@@ -1026,6 +1027,7 @@ body > .content, body .main-section {
 
 .aimeos .product .addbasket .input-group {
 	text-align: center;
+    justify-content: center;
 }
 
 .aimeos .product .addbasket input {

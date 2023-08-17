@@ -146,7 +146,7 @@ $detailFilter = array_flip( $this->config( 'client/html/catalog/detail/url/filte
 
 						<?php if( !$productItem->getRefItems( 'price', 'default', 'default' )->empty() ) : ?>
 							<div class="addbasket">
-								<div class="input-group">
+								<div class="input-group ">
 									<input type="hidden"
 										name="<?= $enc->attr( $this->formparam( 'b_action' ) ) ?>"
 										value="add"
@@ -167,11 +167,11 @@ $detailFilter = array_flip( $this->config( 'client/html/catalog/detail/url/filte
 										title="<?= $enc->attr( $this->translate( 'client', 'Add to basket' ), $enc::TRUST ) ?>"
 										<?= !$productItem->isAvailable() ? 'disabled' : '' ?> >
 									</button>
-									<a class="btn-pin"
+									<!-- <a class="btn-pin"
 										href="<?= $enc->attr( $this->link( 'client/html/catalog/session/pinned/url', ['pin_action' => 'add', 'pin_id' => $id, 'd_name' => $productItem->getName( 'url' )] ) ) ?>"
 										data-rmurl="<?= $enc->attr( $this->link( 'client/html/catalog/session/pinned/url', ['pin_action' => 'delete', 'pin_id' => $id, 'd_name' => $productItem->getName( 'url' )] ) ) ?>"
 										title="<?= $enc->attr( $this->translate( 'client', 'Pin product' ), $enc::TRUST ) ?>">
-									</a>
+									</a> -->
 								</div>
 							</div>
 						<?php endif ?>
