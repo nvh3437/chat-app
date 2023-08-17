@@ -706,7 +706,9 @@ body > .content, body .main-section {
         overflow: hidden;
     }
 }
-
+.section.aimeos.catalog-session{
+    display: none;
+}
 @media (min-width:992px) {
 	.navbar {
 		min-height: 10rem;
