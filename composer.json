@@ -142,9 +142,11 @@
             "App\\": "app/",
             "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-            "Aimeos\\Base\\Config\\": "packages/caimeos/aimeos-base/src/Config/"
-        }
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "classmap": [
+            "packages/caimeos/aimeos-base/src/Config/PHPArray.php"
+          ]
     },
     "autoload-dev": {
         "psr-4": {
