@@ -21,6 +21,7 @@
         "laminas/laminas-diactoros": "~2.5||~3.0",
         "symfony/psr-http-message-bridge": "~2.0",
         "caimeos/aimeos-core": "*",
+        "caimeos/aimeos-base": "*",
         "caimeos/ai-laravel": "*",
         "caimeos/ai-admin-graphql": "*",
         "caimeos/ai-admin-jqadm": "*",

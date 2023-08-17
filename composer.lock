@@ -761,7 +761,7 @@
             "dist": {
                 "type": "path",
                 "url": "packages/caimeos/aimeos-laravel",
-                "reference": "6d39de62b387a27d1799314c00bc5f9f1641fb13"
+                "reference": "0afc4c6eb52a831142d20789149f8826eabe47dd"
             },
             "require": {
                 "caimeos/ai-admin-graphql": "*",
@@ -773,6 +773,7 @@
                 "caimeos/ai-controller-frontend": "*",
                 "caimeos/ai-controller-jobs": "*",
                 "caimeos/ai-laravel": "*",
+                "caimeos/aimeos-base": "*",
                 "caimeos/aimeos-core": "*",
                 "composer-runtime-api": "^2.1",
                 "doctrine/dbal": "~2.9||~3.0",
