@@ -34,8 +34,9 @@
 		<link rel="preload" href="{{ asset('vendor/shop/themes/default/assets/bootstrap-icons.woff2') }}" as="font" type="font/woff2" crossorigin>
 	</head>
 	<body class="{{ $page ?? '' }}">
-		<nav class="navbar navbar-expand-md navbar-top">
-			<a class="navbar-brand" href="/" title="{{ __('To the home page') }}">
+		<nav class="navbar navbar-expand-md navbar-top p-0">
+			<div class="container-fluid">
+                <a class="navbar-brand" href="/" title="{{ __('To the home page') }}">
 				<img src="{{ asset( 'aimeos/' . ( app( 'aimeos.context' )->get()->locale()->getSiteItem()->getLogo() ?: '../vendor/shop/themes/default/assets/logo.png' ) ) }}" height="80" alt="{{ __('To the home page') }}">
 			</a>
 
@@ -67,6 +68,7 @@
 			</ul>
 
 			@yield('aimeos_head_basket')
+            </div>
 		</nav>
 
 		<div class="content">

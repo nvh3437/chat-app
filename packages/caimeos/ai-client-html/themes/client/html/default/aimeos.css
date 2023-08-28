@@ -683,6 +683,12 @@ body > .content, body .main-section {
 	}
 }
 
+@media (max-width:992px) {
+    .navbar .section.aimeos.catalog-filter{
+        display: none !important;
+    }
+}
+
 @media (min-width:992px) {
 	.navbar {
 		min-height: 10rem;

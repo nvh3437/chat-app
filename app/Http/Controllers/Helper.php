@@ -193,4 +193,12 @@ class Helper
         $string = strtolower($string);
         return $string;
     }
+    public static function textFormat($str = '')
+    {
+        return preg_replace(
+            '/(https?:\/\/[^\s]+)/',
+            '<a href="$1">$1</a>',
+            str_replace("\n", '<br />', $str),
+        );
+    }
 }

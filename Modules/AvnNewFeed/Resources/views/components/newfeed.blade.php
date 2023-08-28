@@ -2,6 +2,7 @@
     use App\Http\Controllers\NotificationController;
     use Modules\AvnNewFeed\Http\Controllers\NewFeedLikeController;
     use Modules\AvnNewFeed\Entities\NewFeedComment;
+    use App\Http\Controllers\Helper;
 @endphp
 @foreach ($newsfeed as $item)
     @php
@@ -72,8 +73,7 @@
             </div>
             <div class="py-3 w-100 overflow-hidden border-top border-bottom ">
                 <div class="font-16 {{ count($item->images) ? 'mb-3' : '' }}">
-                    {!! preg_replace('/(https?:\/\/\S+)/', '<a href="$1">$1</a>', str_replace("\n", '<br />', $item->description)) !!}
-
+                    {!! Helper::textFormat($item->description) !!}
                 </div>
                 <div class="gallery-container animated-thumbnails-gallery position-relative"
                     {{ count($item->images) > 4 ? 'data-view-more=' . count($item->images) - 4 : '' }}>
@@ -165,7 +165,7 @@
                                 <div class="py-3 w-100 overflow-hidden">
                                     <div
                                         class="font-16 {{ count($item->images) && $item->description ? 'mb-3' : '' }}">
-                                        {!! preg_replace('/(https?:\/\/\S+)/', '<a href="$1">$1</a>', str_replace("\n", '<br />', $item->description)) !!}
+                                        {!! Helper::textFormat($item->description) !!}
                                     </div>
                                     <div class="gallery-container animated-thumbnails-gallery position-relative"
                                         {{ count($item->images) > 4 ? 'data-view-more=' . count($item->images) - 4 : '' }}>
