@@ -114,7 +114,7 @@ if( $catid = $this->config( 'client/html/catalog/filter/tree/startid' ) ) {
 			<?= $this->block()->get( 'catalog/filter/search' ) ?>
 			 <?= $this->block()->get( 'catalog/filter/price' ) ?>
 			<?= $this->block()->get( 'catalog/filter/supplier' ) ?>
-			<?= $this->block()->get( 'catalog/filter/attribute' ) ?>
+			<!-- $this->block()->get( 'catalog/filter/attribute' ) -->
 
 		</form>
 	</nav>
