@@ -514,7 +514,7 @@ msgid "New"
 msgstr "新しい"
 
 msgid "New delivery address"
-msgstr ""
+msgstr "新しい配送先住所"
 
 msgid "Next"
 msgstr "次"
@@ -716,7 +716,7 @@ msgid "Result for \"%1$s\""
 msgstr "\"%1$s\"の結果"
 
 msgid "Reviews"
-msgstr ""
+msgstr "レビュー"
 
 msgid "SKU or article name"
 msgstr ""
@@ -836,7 +836,7 @@ msgid "Sum"
 msgstr "合計"
 
 msgid "Supplier information"
-msgstr ""
+msgstr "サプライヤー情報"
 
 msgid "Suppliers"
 msgstr "サプライヤー"
