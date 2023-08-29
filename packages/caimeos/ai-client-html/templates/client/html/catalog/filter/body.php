@@ -107,9 +107,8 @@ if( $catid = $this->config( 'client/html/catalog/filter/tree/startid' ) ) {
 			<?php foreach( map( $this->param() )->only( ['f_sort', 'l_type'] ) as $name => $value ) : ?>
 				<input type="hidden" name="<?= $enc->attr( $this->formparam( $name ) ) ?>" value="<?= $enc->attr( $value ) ?>">
 			<?php endforeach ?>
-            <input type="hidden" name="locale" value="<?= $this->get( 'selectCurrencyId', 'EUR' ) ?>">
-            <input type="hidden" name="currency" value="<?= $this->get( 'selectLanguageId', 'en' ) ?>">
-
+            <input type="hidden" name="locale" value="<?= $this->param()['locale'] ?? '' ?>">
+            <input type="hidden" name="currency" value="<?= $this->param()['currency'] ?? '' ?>">
 			<?= $this->block()->get( 'catalog/filter/tree' ) ?>
 			<?= $this->block()->get( 'catalog/filter/search' ) ?>
 			 <?= $this->block()->get( 'catalog/filter/price' ) ?>
