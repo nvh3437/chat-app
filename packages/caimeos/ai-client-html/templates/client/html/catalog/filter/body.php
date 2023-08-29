@@ -103,7 +103,7 @@ if( $catid = $this->config( 'client/html/catalog/filter/tree/startid' ) ) {
 
 	<nav class="container-xxl">
 		<form method="GET" action="<?= $enc->attr( $this->link( $linkKey, $params->all() ) ) ?>">
-
+sd
 			<?php foreach( map( $this->param() )->only( ['f_sort', 'l_type'] ) as $name => $value ) : ?>
 				<input type="hidden" name="<?= $enc->attr( $this->formparam( $name ) ) ?>" value="<?= $enc->attr( $value ) ?>">
 			<?php endforeach ?>
