@@ -10,6 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use App\Http\Controllers\Helper;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -18,9 +19,9 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-    protected $policies = [
-        'App\Models\Model' => 'App\Policies\ModelPolicy',
-    ];
+    // protected $policies = [
+    //     'App\Models\Model' => 'App\Policies\ModelPolicy',
+    // ];
 
     /**
      * Register any authentication / authorization services.
@@ -47,13 +48,10 @@ class AuthServiceProvider extends ServiceProvider
                 ->line('Nhấn vào nút bên dưới để đặt lại mật khẩu của bạn trên hệ thống ' . $company . ' của chúng tôi.')
                 ->action('Đặt lại mật khẩu', route('password.reset', ['token' => $token]));
         });
-
-        Gate::define('admin', function($user, $class, $roles) {
-            if( isset( $user->superuser ) && $user->superuser ) {
-                return true;
-            }
-            return app( '\Aimeos\Shop\Base\Support' )->checkUserGroup( $user, $roles );
-        });
-
+        Passport::useClientModel(\App\Models\Client::class);
+        Passport::hashClientSecrets();
+        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 }

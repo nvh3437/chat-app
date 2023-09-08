@@ -1,111 +1,4 @@
 {
-    "repositories": {
-        "caimeos/aimeos-laravel": {
-            "type": "path",
-            "url": "packages/caimeos/aimeos-laravel",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/aimeos-core": {
-            "type": "path",
-            "url": "packages/caimeos/aimeos-core",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-laravel": {
-            "type": "path",
-            "url": "packages/caimeos/ai-laravel",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-admin-graphql": {
-            "type": "path",
-            "url": "packages/caimeos/ai-admin-graphql",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-admin-jqadm": {
-            "type": "path",
-            "url": "packages/caimeos/ai-admin-jqadm",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-admin-jsonadm": {
-            "type": "path",
-            "url": "packages/caimeos/ai-admin-jsonadm",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-client-html" : {
-            "type": "path",
-            "url": "packages/caimeos/ai-client-html",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-client-jsonapi" : {
-            "type": "path",
-            "url": "packages/caimeos/ai-client-jsonapi",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-cms-grapesjs" : {
-            "type": "path",
-            "url": "packages/caimeos/ai-cms-grapesjs",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-controller-jobs" : {
-            "type": "path",
-            "url": "packages/caimeos/ai-controller-jobs",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/ai-controller-frontend" : {
-            "type": "path",
-            "url": "packages/caimeos/ai-controller-frontend",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/aimeos-base" : {
-            "type": "path",
-            "url": "packages/caimeos/aimeos-base",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/upscheme" : {
-            "type": "path",
-            "url": "packages/caimeos/upscheme",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/macro" : {
-            "type": "path",
-            "url": "packages/caimeos/macro",
-            "options": {
-                "symlink": true
-            }
-        },
-        "caimeos/map" : {
-            "type": "path",
-            "url": "packages/caimeos/map",
-            "options": {
-                "symlink": true
-            }
-        }
-    },
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
@@ -113,12 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "caimeos/aimeos-laravel": "*",
         "ably/ably-php": "^1.1",
         "doctrine/dbal": "^3.5",
         "guzzlehttp/guzzle": "^7.5",
         "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
+        "laravel/passport": "*",
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.7",
@@ -143,10 +36,7 @@
             "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        },
-        "classmap": [
-            "packages/caimeos/aimeos-base/src/Config/PHPArray.php"
-          ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

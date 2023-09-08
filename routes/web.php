@@ -9,6 +9,9 @@ use App\Http\Controllers\FileBackupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImageUploadController;
 use Illuminate\Support\Facades\App;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,6 +64,10 @@ Route::get('/modules-settings-link', [ModuleController::class, 'modulesSettingsL
 Route::get('/list-backup', [FileBackupController::class, 'listBackup'])->middleware(['auth', 'verified', 'permission'])->name('list-backup');
 Route::post('/confirm-backup', [FileBackupController::class, 'confirmBackup'])->middleware(['auth', 'verified'])->name('confirm-backup');
 Route::post('image-upload', [ImageUploadController::class, 'storeImage'])->name('image-upload');
+
+Route::get('/shop_admin', function () {
+    return redirect('https://shop.hikari-hr.com/?loginaction=oauthclientlogin');
+})->middleware(['auth'])->name('shop_admin');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/role.php';

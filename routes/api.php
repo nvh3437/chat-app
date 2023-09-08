@@ -47,14 +47,14 @@ use Illuminate\Validation\ValidationException;
 // // logout
 // Route::post('/tokens/destroy', function (Request $request) {
 //     $request->user()->currentAccessToken()->delete();
-    
+
 // });
 // // login
 // Route::post('/sanctum/token', function (Request $request) {
 
- 
+
 //     $user = User::where('username', $request->username)->first();
- 
+
 //     if (! $user || ! Hash::check($request->password, $user->password)) {
 //         throw ValidationException::withMessages([
 //             'username' => ['Thông tin đăng nhập được cung cấp không chính xác.'],
@@ -68,6 +68,6 @@ use Illuminate\Validation\ValidationException;
 
 
 // get data
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
