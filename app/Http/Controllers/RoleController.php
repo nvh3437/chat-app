@@ -130,9 +130,6 @@ class RoleController extends Controller
             }
         }
         $currentUser = Auth::user();
-        if (($menu->route_names == 'aimeos_shop_admin' || $route_names == 'aimeos_shop_admin') && $currentUser->can('admin', [AdminController::class, config('shop.roles', ['admin', 'editor'])]) === true) {
-            return true;
-        }
         if ($permissions == null || count($permissions) <= 0) {
             return true;
         } else {
