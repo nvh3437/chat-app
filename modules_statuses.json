@@ -6,5 +6,6 @@
     "AvnSetting": true,
     "AvnNewFeed": true,
     "AvnChat": true,
-    "AvnCMS": true
+    "AvnCMS": true,
+    "AvnAttendanceAuto": true
 }

@@ -1,0 +1,11 @@
+{
+    "name": "AvnAttendanceAuto",
+    "alias": "avnattendanceauto",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AvnAttendanceAuto\\Providers\\AvnAttendanceAutoServiceProvider"
+    ],
+    "files": []
+}
