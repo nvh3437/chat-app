@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->text('header');
             $table->text('value');
-            $table->boolean('progress')->default(false);
+            $table->string('progress')->default('non-progress');
             $table->timestamps();
         });
     }
