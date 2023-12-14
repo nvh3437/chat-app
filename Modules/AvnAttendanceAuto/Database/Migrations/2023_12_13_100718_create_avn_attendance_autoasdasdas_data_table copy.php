@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('avn_attendance_auto_data', function (Blueprint $table) {
-            $table->id();
-            $table->text('header');
-            $table->text('value');
+        Schema::table('avn_attendance_auto_data', function (Blueprint $table) {
             $table->boolean('progress')->default(false);
-            $table->timestamps();
         });
     }
 
