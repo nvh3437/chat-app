@@ -24,14 +24,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $menu_shop = new AvnMenu();
-        $menu_shop->label = 'Cửa hàng';
-        $menu_shop->en = 'Shop';
-        $menu_shop->vi = 'Cửa hàng';
-        $menu_shop->ja = '店';
-        $menu_shop->route_name = 'aimeos_shop_admin';
-        $menu_shop->icon = 'mdi mdi-store';
-        $menu_shop->save();
+        // $menu_shop = new AvnMenu();
+        // $menu_shop->label = 'Cửa hàng';
+        // $menu_shop->en = 'Shop';
+        // $menu_shop->vi = 'Cửa hàng';
+        // $menu_shop->ja = '店';
+        // $menu_shop->route_name = 'aimeos_shop_admin';
+        // $menu_shop->icon = 'mdi mdi-store';
+        // $menu_shop->save();
 
             $user = new User();
             $user->id = 1;
